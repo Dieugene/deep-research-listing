@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Институциональные факторы листинговых режимов — обзор литературы</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f5f0;
+  --surface: #ffffff;
+  --text: #1a1a1a;
+  --text-secondary: #555;
+  --accent: #b44a2f;
+  --accent-light: #e8d5ce;
+  --strong: #1b5e3b;
+  --strong-light: #d4e8dc;
+  --moderate: #8b6914;
+  --moderate-light: #f0e6c8;
+  --weak: #8c4b5e;
+  --weak-light: #f0d8e0;
+  --novel: #4a5e8c;
+  --novel-light: #d8e0f0;
+  --border: #d8d4cc;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.page-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* Header */
+header {
+  margin-bottom: 48px;
+  border-bottom: 3px solid var(--accent);
+  padding-bottom: 32px;
+}
+
+header h1 {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+
+header .subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+header .meta {
+  margin-top: 16px;
+  font-size: 12px;
+  color: #888;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+header .meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Section */
+section {
+  margin-bottom: 48px;
+}
+
+section h2 {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--text);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+section h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 24px 0 12px;
+  color: var(--text);
+}
+
+p { margin-bottom: 12px; color: var(--text-secondary); }
+
+/* Evidence strength badges */
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.badge-strong { background: var(--strong-light); color: var(--strong); }
+.badge-moderate { background: var(--moderate-light); color: var(--moderate); }
+.badge-weak { background: var(--weak-light); color: var(--weak); }
+.badge-novel { background: var(--novel-light); color: var(--novel); }
+
+/* Factor cards */
+.factors-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.factor-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 20px 24px;
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-template-columns: 36px 1fr 100px;
+  gap: 16px;
+  align-items: start;
+  transition: border-color 0.2s;
+}
+
+.factor-card:hover {
+  border-color: var(--accent);
+}
+
+.factor-num {
+  font-family: 'IBM Plex Serif', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.2;
+}
+
+.factor-body h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.factor-body .mechanism {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.factor-body .refs {
+  font-size: 12px;
+  color: #999;
+}
+
+.factor-body .refs a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.factor-body .refs a:hover { text-decoration: underline; }
+
+.factor-evidence {
+  text-align: right;
+  padding-top: 2px;
+}
+
+/* Comparison table */
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  font-size: 13px;
+}
+
+.comparison-table th {
+  background: #2a2a2a;
+  color: #fff;
+  font-weight: 500;
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.comparison-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.comparison-table tr:last-child td { border-bottom: none; }
+
+.comparison-table tr:nth-child(even) td {
+  background: #faf9f6;
+}
+
+.status-confirmed { color: var(--strong); font-weight: 600; }
+.status-partial { color: var(--moderate); font-weight: 600; }
+.status-weak { color: var(--weak); font-weight: 600; }
+.status-new { color: var(--novel); font-weight: 600; }
+
+/* Heatmap */
+.heatmap-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+}
+
+.heatmap {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.heatmap th {
+  padding: 8px 12px;
+  font-weight: 500;
+  font-size: 12px;
+  text-align: center;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--border);
+}
+
+.heatmap th:first-child {
+  text-align: left;
+  min-width: 180px;
+}
+
+.heatmap td {
+  padding: 8px 12px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+.heatmap td:first-child {
+  text-align: left;
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.heat-high { background: #c8e6c9; color: #1b5e20; }
+.heat-mid { background: #fff3e0; color: #e65100; }
+.heat-low { background: #fce4ec; color: #880e4f; }
+.heat-gap { background: #f5f5f5; color: #bbb; font-style: italic; font-weight: 400; font-size: 11px; }
+
+/* References */
+.ref-list {
+  columns: 1;
+  gap: 24px;
+}
+
+.ref-item {
+  break-inside: avoid;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.ref-item .ref-authors {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.ref-item .ref-title {
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.ref-item .ref-journal {
+  color: #999;
+  font-size: 12px;
+}
+
+.ref-item a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 12px;
+}
+.ref-item a:hover { text-decoration: underline; }
+
+/* Callout */
+.callout {
+  background: var(--accent-light);
+  border-left: 4px solid var(--accent);
+  padding: 16px 20px;
+  margin: 24px 0;
+  border-radius: 0 6px 6px 0;
+}
+
+.callout p {
+  color: var(--text);
+  margin: 0;
+  font-size: 14px;
+}
+
+.callout strong { color: var(--accent); }
+
+/* Legend */
+.legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  font-size: 12px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (max-width: 768px) {
+  .factor-card {
+    grid-template-columns: 28px 1fr;
+  }
+  .factor-evidence {
+    grid-column: 1 / -1;
+    text-align: left;
+  }
+  header h1 { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+<div class="page-container">
+
+<header>
+  <h1>Институциональные факторы листинговых режимов</h1>
+  <div class="subtitle">Верификация предварительного набора факторов по данным сравнительной академической литературы</div>
+  <div class="meta">
+    <span>Источник: Consensus AI — обзор 50 статей из 1050 идентифицированных</span>
+    <span>Дата: 04.03.2026</span>
+    <span>Контекст: доклад Банка России по режимам листинга</span>
+  </div>
+</header>
+
+<!-- SECTION 1: Summary -->
+<section>
+  <h2>1. Консенсус литературы</h2>
+  <p>Сравнительная академическая литература по листинговым режимам выделяет устойчивое ядро из 5 институциональных факторов, используемых практически во всех крупных cross-country исследованиях. Ещё 5 факторов используются как вторичные или контекстные переменные. 2–3 фактора находятся на переднем крае исследований (emerging).</p>
+
+  <div class="callout">
+    <p><strong>Ключевой вывод:</strong> Наш предварительный набор из 8 факторов покрывает ядро литературы. Однако литература указывает на потенциальные пробелы: качество регулятивной среды (шире, чем private enforcement) и политическая стабильность выделяются как самостоятельные факторы. Конкурентная структура площадок — наш фактор №8 — почти не операционализирован в академических работах (research gap).</p>
+  </div>
+</section>
+
+<!-- SECTION 2: Factor cards -->
+<section>
+  <h2>2. Факторы по силе академической поддержки</h2>
+
+  <div class="legend">
+    <div class="legend-item"><span class="badge badge-strong">Сильная</span> — ядро литературы, универсальное включение</div>
+    <div class="legend-item"><span class="badge badge-moderate">Умеренная</span> — используется регулярно, не универсально</div>
+    <div class="legend-item"><span class="badge badge-weak">Слабая</span> — редко операционализируется</div>
+    <div class="legend-item"><span class="badge badge-novel">Новая</span> — emerging area</div>
+  </div>
+
+  <div class="factors-grid">
+
+    <div class="factor-card">
+      <div class="factor-num">1</div>
+      <div class="factor-body">
+        <h4>Правовая семья (legal origin)</h4>
+        <div class="mechanism">Определяет базовую архитектуру investor protection, стандарты disclosure, механизмы enforcement. Common law → дисперсное владение, сильный private enforcement; civil law → концентрированное владение, кодифицированные нормы.</div>
+        <div class="refs">
+          <a href="https://doi.org/10.2139/ssrn.192549" target="_blank">La Porta et al., 1999</a> · 
+          <a href="https://doi.org/10.1016/j.jbankfin.2010.01.002" target="_blank">Engelen & Essen, 2010</a> · 
+          <a href="https://doi.org/10.2307/797515" target="_blank">Coffee & John, 2001</a> · 
+          <a href="https://doi.org/10.2139/ssrn.315840" target="_blank">Coffee, 2002</a> · 
+          <a href="https://doi.org/10.1016/s0020-7063(03)00019-0" target="_blank">Davis et al., 2003</a>
+        </div>
+      </div>
+      <div class="factor-evidence"><span class="badge badge-strong">Сильная</span></div>
+    </div>
+
+    <div class="factor-card">
+      <div class="factor-num">2</div>
+      <div class="factor-body">
+        <h4>Концентрация владения</h4>
+        <div class="mechanism">Дисперсное vs. концентрированное владение (конгломераты, госкомпании, семейные холдинги). Определяет спрос на публичность, мотивацию листинга, структуру free float, распределение private benefits of control.</div>
+        <div class="refs">
+          <a href="https://doi.org/10.2307/797515" target="_blank">Coffee & John, 2001</a> · 
+          <a href="https://doi.org/10.1057/jibs.2009.38" target="_blank">Boulton et al., 2007</a> · 
+          <a href="https://doi.org/10.1016/j.jbankfin.2007.12.030" target="_blank">Alavi et al., 2008</a> · 
+          <a href="https://doi.org/10.1111/jbfa.12552" target="_blank">Rojahn & Zechser, 2021</a>
+        </div>
+      </div>
+      <div class="factor-evidence"><span class="badge badge-strong">Сильная</span></div>
+    </div>
+
+    <div class="factor-card">
+      <div class="factor-num">3</div>
+      <div class="factor-body">
+        <h4>Investor protection и enforcement</h4>
+        <div class="mechanism">Два подфактора: (а) statutory investor protection — законодательная защита прав акционеров; (б) enforcement quality — включая private enforcement (коллективные иски, судебное взыскание) и public enforcement (санкции регулятора). Литература подчёркивает, что без enforcement формальные нормы не работают.</div>
+        <div class="refs">
+          <a href="https://doi.org/10.2139/ssrn.192549" target="_blank">La Porta et al., 1999</a> · 
+          <a href="https://doi.org/10.1016/j.jbankfin.2010.01.002" target="_blank">Engelen & Essen, 2010</a> · 
+          <a href="https://doi.org/10.1111/j.1911-3846.2012.01158.x" target="_blank">Shi et al., 2012</a> · 
+          <a href="https://doi.org/10.1016/j.jfineco.2004.02.001" target="_blank">Siegel, 2005</a> · 
+          <a href="https://doi.org/10.5465/amj.2011.0146" target="_blank">Bell et al., 2014</a>
+        </div>
+      </div>
+      <div class="factor-evidence"><span class="badge badge-strong">Сильная</span></div>
+    </div>
+
+    <div class="factor-card">
+      <div class="factor-num">4</div>
+      <div class="factor-body">
+        <h4>Качество регулятивной среды / rule of law</h4>
+        <div class="mechanism">Индексы World Bank / IMF: regulatory quality, rule of law, control of corruption, government effectiveness. Шире, чем private enforcement — включает общую предсказуемость и качество государственного управления. Модерирует экономический эффект ужесточения/смягчения листинговых требований.</div>
+        <div class="refs">
+          <a href="https://doi.org/10.1002/pa.2676" target="_blank">Wei et al., 2021</a> · 
+          <a href="https://doi.org/10.1016/j.bir.2019.12.003" target="_blank">Touil & Mamoghli, 2020</a> · 
+          <a href="https://doi.org/10.1016/j.bar.2024.101434" target="_blank">Zhu & Wang, 2024</a> · 
+          <a href="https://doi.org/10.1002/mde.3288" target="_blank">Kuzey et al., 2021</a>
+        </div>
+      </div>
+      <div class="factor-evidence"><span class="badge badge-strong">Сильная</span></div>
+    </div>
+
+    <div class="factor-card">
+      <div class="factor-num">5</div>
+      <div class="factor-body">
+        <h4>Глубина рынка капитала</h4>
+        <div class="mechanism">Капитализация / ВВП, число публичных компаний, объёмы торгов. Определяет, является ли листинг реальным инструментом привлечения капитала или формальным статусом. Стандартная контрольная или независимая переменная.</div>
+        <div class="refs">
+          <a href="https://doi.org/10.1111/0022-1082.25448" target="_blank">Pagano et al., 1995</a> · 
+          <a href="https://doi.org/10.1016/j.jbankfin.2010.01.002" target="_blank">Engelen & Essen, 2010</a> · 
+          <a href="https://doi.org/10.1108/sef-05-2016-0111" target="_blank">Ho & Iyke, 2017</a>
+        </div>
+      </div>
+      <div class="factor-evidence"><span class="badge badge-strong">Сильная</span></div>
+    </div>
+
+    <div class="factor-card">
+      <div class="factor-num">6</div>
+      <div class="factor-body">
+        <h4>Тип регулятора рынка ценных бумаг</h4>
+        <div class="mechanism">Центральный банк / отдельная комиссия / наднациональный + национальный (модель EU). Определяет институциональную логику: ЦБ → финансовая стабильность, комиссия → защита инвесторов и развитие рынка.</div>
+        <div class="refs">
+          <a href="https://doi.org/10.1016/j.mar.2016.07.006" target="_blank">Dai et al., 2016</a>
+        </div>
+      </div>
+      <div class="factor-evidence"><span class="badge badge-moderate">Умеренная</span></div>
+    </div>
+
+    <div class="factor-card">
+      <div class="factor-num">7</div>
+      <div class="factor-body">
+        <h4>Роль биржи как SRO</h4>
+        <div class="mechanism">Степень саморегуляторных полномочий биржи vs. государственное регулирование. Исторически определяет, кто устанавливает и применяет листинговые правила.</div>
+        <div class="refs">
+          <a href="https://doi.org/10.2307/797515" target="_blank">Coffee & John, 2001</a> · 
+          <a href="https://doi.org/10.1016/s0020-7063(03)00019-0" target="_blank">Davis et al., 2003</a>
+        </div>
+      </div>
+      <div class="factor-evidence"><span class="badge badge-moderate">Умеренная</span></div>
+    </div>
+
+    <div class="factor-card">
+      <div class="factor-num">8</div>
+      <div class="factor-body">
+        <h4>Политическая стабильность и governance</h4>
+        <div class="mechanism">Стабильность политической системы, эффективность государственного управления, контроль коррупции. Влияет на предсказуемость регуляторной среды и доверие инвесторов к институтам.</div>
+        <div class="refs">
+          <a href="https://doi.org/10.1002/pa.2676" target="_blank">Wei et al., 2021</a> · 
+          <a href="https://doi.org/10.1016/j.bir.2019.12.003" target="_blank">Touil & Mamoghli, 2020</a> · 
+          <a href="https://doi.org/10.1016/j.mulfin.2023.100784" target="_blank">Shabir et al., 2023</a>
+        </div>
+      </div>
+      <div class="factor-evidence"><span class="badge badge-moderate">Умеренная</span></div>
+    </div>
+
+    <div class="factor-card">
+      <div class="factor-num">9</div>
+      <div class="factor-body">
+        <h4>Структура инвесторской базы</h4>
+        <div class="mechanism">Доля институциональных инвесторов vs. розница. Влияет на стимулы к раскрытию информации, уровень мониторинга эмитентов, ценообразование на IPO.</div>
+        <div class="refs">
+          <a href="https://doi.org/10.7208/chicago/9780226237268.003.0005" target="_blank">Piotroski & Wong, 2012</a> · 
+          <a href="https://doi.org/10.1108/mf-07-2016-0187" target="_blank">Neupane & Neupane, 2017</a>
+        </div>
+      </div>
+      <div class="factor-evidence"><span class="badge badge-moderate">Умеренная</span></div>
+    </div>
+
+    <div class="factor-card">
+      <div class="factor-num">10</div>
+      <div class="factor-body">
+        <h4>Конкурентная структура площадок</h4>
+        <div class="mechanism">Монобиржевая среда vs. конкуренция бирж / MTF. Влияет на стандарты листинга через конкурентное давление (race to the top / bottom). Отмечено как research gap — крайне мало прямых операционализаций.</div>
+        <div class="refs">
+          <a href="https://doi.org/10.2139/ssrn.315840" target="_blank">Coffee, 2002</a> (обсуждает теоретически) · 
+          <a href="https://doi.org/10.2139/ssrn.40260" target="_blank">Huddart et al., 1998</a> (в модели)
+        </div>
+      </div>
+      <div class="factor-evidence"><span class="badge badge-weak">Слабая</span></div>
+    </div>
+
+    <div class="factor-card">
+      <div class="factor-num">11</div>
+      <div class="factor-body">
+        <h4>Свобода СМИ и конкуренция на товарных рынках</h4>
+        <div class="mechanism">Extra-legal institutions: СМИ как механизм disclosure enforcement, конкуренция на продуктовых рынках как стимул к прозрачности. Emerging area, особенно для developing markets.</div>
+        <div class="refs">
+          <a href="https://doi.org/10.1111/j.1911-3846.2012.01158.x" target="_blank">Shi et al., 2012</a>
+        </div>
+      </div>
+      <div class="factor-evidence"><span class="badge badge-novel">Новая</span></div>
+    </div>
+
+    <div class="factor-card">
+      <div class="factor-num">12</div>
+      <div class="factor-body">
+        <h4>Неформальные институты и элитные сети</h4>
+        <div class="mechanism">Роль социальных/политических элитных сетей в формировании рыночных институтов. Особенно значимо для emerging markets (Китай, Африка), где формальные правила менее определяющие.</div>
+        <div class="refs">
+          <a href="https://doi.org/10.1016/j.jwb.2014.04.006" target="_blank">Hearn, 2014</a> · 
+          <a href="https://doi.org/10.7208/chicago/9780226237268.003.0005" target="_blank">Piotroski & Wong, 2012</a>
+        </div>
+      </div>
+      <div class="factor-evidence"><span class="badge badge-novel">Новая</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 3: Heatmap -->
+<section>
+  <h2>3. Покрытие факторов по тематическим областям</h2>
+  <p>Количество исследований, использующих данный фактор при анализе соответствующей тематики (по данным обзора 50 статей).</p>
+
+  <div class="heatmap-container">
+    <table class="heatmap">
+      <thead>
+        <tr>
+          <th>Тематика / Outcome</th>
+          <th>Правовая семья</th>
+          <th>Концентрация владения</th>
+          <th>Investor protection</th>
+          <th>Неформальные институты</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Строгость листингового режима</td>
+          <td class="heat-high">12</td>
+          <td class="heat-high">10</td>
+          <td class="heat-high">10</td>
+          <td class="heat-low">2</td>
+        </tr>
+        <tr>
+          <td>IPO underpricing</td>
+          <td class="heat-mid">7</td>
+          <td class="heat-mid">6</td>
+          <td class="heat-high">8</td>
+          <td class="heat-low">1</td>
+        </tr>
+        <tr>
+          <td>Требования к раскрытию</td>
+          <td class="heat-high">8</td>
+          <td class="heat-mid">5</td>
+          <td class="heat-mid">7</td>
+          <td class="heat-low">2</td>
+        </tr>
+        <tr>
+          <td>Статус биржи как SRO</td>
+          <td class="heat-mid">4</td>
+          <td class="heat-low">1</td>
+          <td class="heat-low">2</td>
+          <td class="heat-gap">GAP</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SECTION 4: Our list vs literature -->
+<section>
+  <h2>4. Верификация нашего предварительного набора</h2>
+  <p>Сопоставление предварительного списка 8 факторов-кандидатов с результатами обзора литературы.</p>
+
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th style="width:30px">#</th>
+        <th>Наш фактор</th>
+        <th style="width:110px">Статус</th>
+        <th>Комментарий по литературе</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Правовая семья</td>
+        <td class="status-confirmed">Подтверждён</td>
+        <td>Ядро литературы. Универсальное включение начиная с La Porta et al. (1999).</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Тип регулятора</td>
+        <td class="status-partial">Подтверждён частично</td>
+        <td>Используется, но не универсально. Часто включается при региональном фокусе (Dai et al., 2016).</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Роль биржи как SRO</td>
+        <td class="status-partial">Подтверждён частично</td>
+        <td>Обсуждается в исторических работах (Coffee & John, 2001; Davis et al., 2003), но редко как самостоятельная переменная.</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Концентрация владения</td>
+        <td class="status-confirmed">Подтверждён</td>
+        <td>Ядро. Устойчиво значим в крупных эмпирических исследованиях (Boulton et al., 2007; Alavi et al., 2008).</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Глубина рынка капитала</td>
+        <td class="status-confirmed">Подтверждён</td>
+        <td>Стандартная переменная. Часто как контрольная, реже как основная независимая.</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Private enforcement</td>
+        <td class="status-partial">Требует расширения</td>
+        <td>Подтверждён, но литература шире: включает statutory investor protection + enforcement quality (public и private) + regulatory quality / rule of law. Рекомендуется либо расширить, либо разделить на два фактора.</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Структура инвесторской базы</td>
+        <td class="status-partial">Подтверждён как вторичный</td>
+        <td>Используется как control variable, не как headline factor (Piotroski & Wong, 2012; Neupane & Neupane, 2017).</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>Конкурентная структура площадок</td>
+        <td class="status-weak">Research gap</td>
+        <td>Почти не операционализирован в эмпирических работах. Обсуждается теоретически (Coffee, 2002; Huddart et al., 1998). Consensus прямо отмечает как пробел.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Факторы из литературы, отсутствующие в нашем списке</h3>
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th style="width:30px">#</th>
+        <th>Фактор</th>
+        <th style="width:110px">Поддержка</th>
+        <th>Решение</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>А</td>
+        <td>Качество регулятивной среды / rule of law (индексы WB)</td>
+        <td class="status-confirmed">Сильная</td>
+        <td>Рассмотреть включение. Может поглотить или дополнить наш фактор №6 (private enforcement).</td>
+      </tr>
+      <tr>
+        <td>Б</td>
+        <td>Политическая стабильность / government effectiveness</td>
+        <td class="status-partial">Умеренная</td>
+        <td>Значим для российского контекста (санкции, указные KPI). Рассмотреть включение.</td>
+      </tr>
+      <tr>
+        <td>В</td>
+        <td>Свобода СМИ / product market competition</td>
+        <td class="status-new">Emerging</td>
+        <td>Пока не включать — сложно операционализировать, мало эмпирики.</td>
+      </tr>
+      <tr>
+        <td>Г</td>
+        <td>Неформальные институты / элитные сети</td>
+        <td class="status-new">Emerging</td>
+        <td>Потенциально значим для emerging markets, но операционализация крайне сложна. Не включать на данном этапе.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- SECTION 5: References -->
+<section>
+  <h2>5. Источники</h2>
+  <p>Ключевые работы, на которых основан обзор (20 наиболее релевантных из 50 включённых).</p>
+
+  <div class="ref-list">
+    <div class="ref-item">
+      <span class="ref-authors">La Porta, R., De Silanes, F., Shleifer, A., & Vishny, R.</span> (1999). 
+      <span class="ref-title">Investor Protection and Corporate Valuation.</span> 
+      <span class="ref-journal">Chicago Booth: Fama-Miller Working Paper Series.</span>
+      <a href="https://doi.org/10.2139/ssrn.192549" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Coffee, C. J., & John, C.</span> (2001). 
+      <span class="ref-title">The Rise of Dispersed Ownership: The Roles of Law and the State in the Separation of Ownership and Control.</span> 
+      <span class="ref-journal">Yale Law Journal, 111, 1.</span>
+      <a href="https://doi.org/10.2307/797515" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Coffee, J.</span> (2002). 
+      <span class="ref-title">Racing Towards the Top?: The Impact of Cross-Listings and Stock Market Competition on International Corporate Governance.</span> 
+      <span class="ref-journal">Corporate Law: Securities Law eJournal.</span>
+      <a href="https://doi.org/10.2139/ssrn.315840" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Davis, L., Neal, L., & White, E.</span> (2003). 
+      <span class="ref-title">How it all began: the rise of listing requirements on the London, Berlin, Paris, and New York stock exchanges.</span> 
+      <span class="ref-journal">The International Journal of Accounting, 38, 117–143.</span>
+      <a href="https://doi.org/10.1016/s0020-7063(03)00019-0" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Siegel, J.</span> (2005). 
+      <span class="ref-title">Can foreign firms bond themselves effectively by renting U.S. securities laws.</span> 
+      <span class="ref-journal">Journal of Financial Economics, 75, 319–359.</span>
+      <a href="https://doi.org/10.1016/j.jfineco.2004.02.001" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Boulton, T., Smart, S., & Zutter, C.</span> (2007). 
+      <span class="ref-title">IPO underpricing and international corporate governance.</span> 
+      <span class="ref-journal">Journal of International Business Studies, 41, 206–222.</span>
+      <a href="https://doi.org/10.1057/jibs.2009.38" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Alavi, A., Pham, P., & Pham, T.</span> (2008). 
+      <span class="ref-title">Pre-IPO ownership structure and its impact on the IPO process.</span> 
+      <span class="ref-journal">Journal of Banking and Finance, 32, 2361–2375.</span>
+      <a href="https://doi.org/10.1016/j.jbankfin.2007.12.030" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Engelen, P., & Essen, M.</span> (2010). 
+      <span class="ref-title">Underpricing of IPOs: Firm-, issue- and country-specific characteristics.</span> 
+      <span class="ref-journal">Journal of Banking and Finance, 34, 1958–1969.</span>
+      <a href="https://doi.org/10.1016/j.jbankfin.2010.01.002" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Shi, C., Pukthuanthong, K., & Walker, T.</span> (2012). 
+      <span class="ref-title">Does Disclosure Regulation Work? Evidence from International IPO Markets.</span> 
+      <span class="ref-journal">Contemporary Accounting Research.</span>
+      <a href="https://doi.org/10.1111/j.1911-3846.2012.01158.x" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Piotroski, J., & Wong, T.</span> (2012). 
+      <span class="ref-title">Institutions and Information Environment of Chinese Listed Firms.</span> 
+      <a href="https://doi.org/10.7208/chicago/9780226237268.003.0005" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Bell, R., Filatotchev, I., & Aguilera, R.</span> (2014). 
+      <span class="ref-title">Corporate Governance and Investors' Perceptions of Foreign IPO Value: An Institutional Perspective.</span> 
+      <span class="ref-journal">Academy of Management Journal, 57, 301–320.</span>
+      <a href="https://doi.org/10.5465/amj.2011.0146" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Hearn, B.</span> (2014). 
+      <span class="ref-title">Institutional influences on board composition of international joint venture firms listing on emerging stock exchanges.</span> 
+      <span class="ref-journal">Journal of World Business, 50, 205–219.</span>
+      <a href="https://doi.org/10.1016/j.jwb.2014.04.006" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Pagano, M., Panetta, F., & Zingales, L.</span> (1995). 
+      <span class="ref-title">Why Do Companies Go Public? An Empirical Analysis.</span> 
+      <span class="ref-journal">Chicago Booth PCE: Entrepreneurship & Finance.</span>
+      <a href="https://doi.org/10.1111/0022-1082.25448" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Dai, N., Tan, Z., Tang, G., & Xiao, J.</span> (2016). 
+      <span class="ref-title">IPOs, Institutional Complexity, and Management Accounting in Hybrid Organisations.</span> 
+      <a href="https://doi.org/10.1016/j.mar.2016.07.006" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Ho, S., & Iyke, B.</span> (2017). 
+      <span class="ref-title">Determinants of stock market development: a review of the literature.</span> 
+      <span class="ref-journal">Studies in Economics and Finance, 34, 143–164.</span>
+      <a href="https://doi.org/10.1108/sef-05-2016-0111" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Neupane, S., & Neupane, B.</span> (2017). 
+      <span class="ref-title">Board structure and institutional ownership at the time of IPO.</span> 
+      <span class="ref-journal">Managerial Finance, 43, 950–965.</span>
+      <a href="https://doi.org/10.1108/mf-07-2016-0187" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Touil, M., & Mamoghli, C.</span> (2020). 
+      <span class="ref-title">Institutional environment and determinants of adjustment speed to the target capital structure in the MENA region.</span> 
+      <span class="ref-journal">Borsa Istanbul Review.</span>
+      <a href="https://doi.org/10.1016/j.bir.2019.12.003" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Kuzey, C., Uyar, A., Hamrouni, A., Kılıç, M., & Boussaada, R.</span> (2021). 
+      <span class="ref-title">The link between institutional quality, ethical behaviors of firms, and market regulations on stock market developments.</span> 
+      <span class="ref-journal">Managerial and Decision Economics.</span>
+      <a href="https://doi.org/10.1002/mde.3288" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Wei, H., Mohd‑Rashid, R., Mehmood, W., & Tajuddin, A.</span> (2021). 
+      <span class="ref-title">Institutional quality and initial public offering underpricing: Evidence from Hong Kong.</span> 
+      <span class="ref-journal">Journal of Public Affairs.</span>
+      <a href="https://doi.org/10.1002/pa.2676" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Zhu, N., & Wang, K.</span> (2024). 
+      <span class="ref-title">The Impact of Loosening Regulatory Requirements on Firm Innovation: Evidence from SEC Rule 12h-6.</span> 
+      <span class="ref-journal">The British Accounting Review.</span>
+      <a href="https://doi.org/10.1016/j.bar.2024.101434" target="_blank">DOI</a>
+    </div>
+    <div class="ref-item">
+      <span class="ref-authors">Huddart, S., Brunnermeier, M., & Hughes, J.</span> (1998). 
+      <span class="ref-title">Disclosure Requirements and Stock Exchange Listing Choice in an International Context.</span> 
+      <span class="ref-journal">European Economics eJournal.</span>
+      <a href="https://doi.org/10.2139/ssrn.40260" target="_blank">DOI</a>
+    </div>
+  </div>
+</section>
+
+</div>
+</body>
+</html>

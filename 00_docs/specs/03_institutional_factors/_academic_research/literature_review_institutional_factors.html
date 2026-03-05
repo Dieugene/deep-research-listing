@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Обзор литературы: институциональные факторы листинговых режимов</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf8f4;
+  --surface: #ffffff;
+  --surface-alt: #f3f0ea;
+  --text: #1c1917;
+  --text-2: #57534e;
+  --text-3: #a8a29e;
+  --accent: #9a3412;
+  --accent-2: #c2410c;
+  --accent-bg: #fff7ed;
+  --green: #166534;
+  --green-bg: #dcfce7;
+  --green-light: #f0fdf4;
+  --yellow: #854d0e;
+  --yellow-bg: #fef9c3;
+  --blue: #1e40af;
+  --blue-bg: #dbeafe;
+  --blue-light: #eff6ff;
+  --red: #991b1b;
+  --red-bg: #fee2e2;
+  --purple: #6b21a8;
+  --purple-bg: #f3e8ff;
+  --border: #e7e5e4;
+  --border-strong: #d6d3d1;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.08);
+  --radius: 8px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+/* ===== HERO ===== */
+.hero {
+  background: linear-gradient(135deg, #1c1917 0%, #292524 50%, #44403c 100%);
+  color: #fff;
+  padding: 64px 0 56px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 30% 20%, rgba(194,65,12,0.15) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 80%, rgba(30,64,175,0.1) 0%, transparent 50%);
+}
+.hero .container { position: relative; z-index: 1; }
+.hero h1 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 12px;
+  max-width: 720px;
+}
+.hero .lead {
+  font-size: 17px;
+  font-weight: 300;
+  color: #d6d3d1;
+  max-width: 640px;
+  margin-bottom: 28px;
+}
+.hero-meta {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  font-size: 13px; color: #a8a29e;
+}
+.hero-meta .tag {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+
+/* ===== SECTIONS ===== */
+.section { padding: 48px 0; }
+.section + .section { border-top: 1px solid var(--border); }
+
+.section-title {
+  font-family: 'Source Serif 4', serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text);
+  display: flex; align-items: center; gap: 12px;
+}
+.section-title .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-bg);
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+.section-desc {
+  color: var(--text-2);
+  font-size: 15px;
+  margin-bottom: 28px;
+  max-width: 720px;
+}
+
+/* ===== CONSENSUS METER ===== */
+.consensus-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  box-shadow: var(--shadow);
+  margin-bottom: 24px;
+}
+.consensus-question {
+  font-family: 'Source Serif 4', serif;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.consensus-bar-wrap {
+  margin-bottom: 12px;
+}
+.consensus-bar {
+  height: 36px;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  position: relative;
+}
+.consensus-bar .yes {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  width: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px; color: #fff;
+}
+.consensus-legend {
+  display: flex; gap: 20px; font-size: 13px; color: var(--text-2);
+}
+.consensus-legend span { display: flex; align-items: center; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.dot-yes { background: #22c55e; }
+.dot-possibly { background: #eab308; }
+.dot-mixed { background: #f97316; }
+.dot-no { background: #ef4444; }
+.consensus-n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 8px;
+}
+
+/* ===== PRISMA FLOW ===== */
+.prisma-flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+  margin: 24px 0;
+}
+.prisma-step {
+  text-align: center;
+  padding: 0 8px;
+  position: relative;
+}
+.prisma-box {
+  background: var(--surface);
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 20px 12px 16px;
+  position: relative;
+  z-index: 1;
+}
+.prisma-box.active { border-color: var(--accent); }
+.prisma-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-3);
+  margin-bottom: 4px;
+}
+.prisma-n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+}
+.prisma-box.active .prisma-n { color: var(--accent); }
+.prisma-desc {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+.prisma-arrow {
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: var(--text-3);
+  z-index: 2;
+}
+.prisma-removed {
+  font-size: 11px;
+  color: var(--red);
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+/* ===== FACTOR CARDS ===== */
+.tier-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 16px;
+  border-radius: 6px 6px 0 0;
+  margin-top: 24px;
+}
+.tier-core { background: var(--green-bg); color: var(--green); }
+.tier-secondary { background: var(--blue-bg); color: var(--blue); }
+.tier-novel { background: var(--purple-bg); color: var(--purple); }
+.tier-gap { background: var(--red-bg); color: var(--red); }
+
+.factor-grid { display: flex; flex-direction: column; gap: 2px; margin-bottom: 32px; }
+
+.f-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: start;
+  transition: background 0.15s;
+}
+.f-card:first-child { border-radius: 0 0 0 0; }
+.f-card:last-child { border-radius: 0 0 var(--radius) var(--radius); }
+.f-card:hover { background: #fefdfb; }
+
+.f-card h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.f-card .f-mech {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+.f-card .f-refs {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-3);
+}
+.f-card .f-refs a {
+  color: var(--accent-2);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+.f-card .f-refs a:hover { border-bottom-color: var(--accent-2); }
+
+.evidence-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.ev-strong { background: var(--green-bg); color: var(--green); }
+.ev-moderate { background: var(--yellow-bg); color: var(--yellow); }
+.ev-weak { background: var(--red-bg); color: var(--red); }
+.ev-emerging { background: var(--purple-bg); color: var(--purple); }
+
+/* ===== CLAIMS TABLE ===== */
+.claims-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  font-size: 13px;
+}
+.claims-table th {
+  background: #292524;
+  color: #e7e5e4;
+  font-weight: 500;
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+.claims-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.claims-table tr:last-child td { border-bottom: none; }
+.claims-table tr:hover td { background: #fefdfb; }
+
+.strength-bar {
+  display: flex; gap: 2px; align-items: center;
+}
+.strength-bar .pip {
+  width: 8px; height: 18px;
+  border-radius: 2px;
+  background: #e7e5e4;
+}
+.strength-bar .pip.filled-g { background: #22c55e; }
+.strength-bar .pip.filled-y { background: #eab308; }
+.strength-bar .pip.filled-r { background: #ef4444; }
+
+/* ===== HEATMAP ===== */
+.heatmap-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.heatmap {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.heatmap th {
+  padding: 12px 14px;
+  font-weight: 600;
+  font-size: 12px;
+  text-align: center;
+  color: var(--text-2);
+  border-bottom: 2px solid var(--border);
+  background: var(--surface-alt);
+}
+.heatmap th:first-child { text-align: left; min-width: 200px; }
+.heatmap td {
+  padding: 12px 14px;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.heatmap td:first-child {
+  text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--text);
+}
+.heatmap tr:last-child td { border-bottom: none; }
+
+.h-high { background: #dcfce7; color: #166534; }
+.h-mid { background: #fef3c7; color: #92400e; }
+.h-low { background: #fee2e2; color: #991b1b; }
+.h-gap { background: #f5f5f4; color: #d6d3d1; font-style: italic; font-weight: 400; font-size: 12px; font-family: 'DM Sans',sans-serif; }
+
+/* ===== TIMELINE ===== */
+.timeline-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+}
+.timeline-track {
+  position: relative;
+  height: 200px;
+  min-width: 700px;
+}
+.timeline-axis {
+  position: absolute;
+  bottom: 30px;
+  left: 40px;
+  right: 20px;
+  height: 2px;
+  background: var(--border-strong);
+}
+.timeline-tick {
+  position: absolute;
+  bottom: 0;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: var(--text-3);
+  font-family: 'JetBrains Mono', monospace;
+}
+.timeline-dot {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent-bg);
+  border: 2px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  cursor: default;
+  transition: transform 0.15s;
+  z-index: 1;
+}
+.timeline-dot:hover {
+  transform: scale(1.3);
+  z-index: 10;
+}
+.timeline-dot.major {
+  width: 34px; height: 34px;
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  font-size: 11px;
+}
+.timeline-dot .tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #292524;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  white-space: nowrap;
+  z-index: 100;
+}
+.timeline-dot:hover .tooltip { display: block; }
+
+/* ===== CONTRIBUTORS ===== */
+.contrib-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+.contrib-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.contrib-card .avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 16px;
+  flex-shrink: 0;
+}
+.contrib-card .avatar.author { background: var(--accent-bg); color: var(--accent); }
+.contrib-card .avatar.journal { background: var(--blue-bg); color: var(--blue); }
+.contrib-card .c-name { font-weight: 600; font-size: 14px; }
+.contrib-card .c-detail { font-size: 12px; color: var(--text-3); }
+
+/* ===== OPEN QUESTIONS ===== */
+.oq-card {
+  background: var(--blue-light);
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 12px;
+}
+.oq-card h4 { font-size: 14px; font-weight: 600; color: var(--blue); margin-bottom: 4px; }
+.oq-card p { font-size: 13px; color: var(--text-2); margin: 0; }
+
+/* ===== REFERENCES ===== */
+.ref-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ref-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+  display: grid;
+  grid-template-columns: 32px 1fr 60px 60px;
+  gap: 12px;
+  align-items: start;
+  font-size: 13px;
+  transition: border-color 0.15s;
+}
+.ref-row:hover { border-color: var(--accent); }
+.ref-idx {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-3);
+  padding-top: 2px;
+}
+.ref-body .ref-authors { font-weight: 600; color: var(--text); }
+.ref-body .ref-title { color: var(--text-2); }
+.ref-body .ref-journal { font-size: 12px; color: var(--text-3); font-style: italic; }
+.ref-body .ref-links { margin-top: 4px; }
+.ref-body .ref-links a {
+  font-size: 11px;
+  color: var(--accent-2);
+  text-decoration: none;
+  margin-right: 12px;
+  border-bottom: 1px dashed var(--accent-2);
+}
+.ref-body .ref-links a:hover { border-bottom-style: solid; }
+.ref-cit, .ref-q {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-align: right;
+  color: var(--text-3);
+  padding-top: 2px;
+}
+.ref-cit strong { color: var(--text); }
+
+/* ===== FOOTER ===== */
+.footer {
+  padding: 32px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 32px;
+  font-size: 12px;
+  color: var(--text-3);
+  text-align: center;
+  line-height: 1.8;
+}
+.footer a { color: var(--accent-2); text-decoration: none; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 24px; }
+  .prisma-flow { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .prisma-arrow { display: none; }
+  .ref-row { grid-template-columns: 1fr; }
+  .ref-cit, .ref-q { text-align: left; }
+  .f-card { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== HERO ========== -->
+<div class="hero">
+  <div class="container">
+    <h1>Институциональные факторы, определяющие межстрановые различия в листинговых режимах</h1>
+    <div class="lead">Обзор сравнительной академической литературы: какие характеристики институциональной среды используются для объяснения различий в требованиях к листингу и допуску ценных бумаг</div>
+    <div class="hero-meta">
+      <span class="tag">Consensus AI — Deep Research</span>
+      <span class="tag">22 источника</span>
+      <span class="tag">04 марта 2026</span>
+      <span class="tag">50 статей включено из 1 050 идентифицированных</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 1. CONSENSUS ========== -->
+<div class="section">
+<div class="container">
+  <div class="section-title"><span class="num">01</span> Консенсус</div>
+  <div class="section-desc">Ответ на центральный вопрос исследования.</div>
+
+  <div class="consensus-box">
+    <div class="consensus-question">Влияют ли институциональные факторы на требования к листингу на фондовых биржах?</div>
+    <div class="consensus-bar-wrap">
+      <div class="consensus-bar">
+        <div class="yes">Да — 100%</div>
+      </div>
+    </div>
+    <div class="consensus-legend">
+      <span><span class="dot dot-yes"></span> Да: 100%</span>
+      <span><span class="dot dot-possibly"></span> Возможно: 0%</span>
+      <span><span class="dot dot-mixed"></span> Смешанно: 0%</span>
+      <span><span class="dot dot-no"></span> Нет: 0%</span>
+    </div>
+    <div class="consensus-n">N = 5 статей с прямым ответом на вопрос</div>
+  </div>
+
+  <p style="color:var(--text-2); font-size:14px; max-width:720px;">Теоретические и эмпирические работы единодушны: институциональные факторы — правовая семья, сила защиты инвесторов, качество регулятивной среды и ограничения ликвидности — определяют как строгость, так и форму листинговых и дисклозерных требований, а также выбор эмитентами площадок для листинга.</p>
+</div>
+</div>
+
+<!-- ========== 2. METHODOLOGY ========== -->
+<div class="section">
+<div class="container">
+  <div class="section-title"><span class="num">02</span> Методология поиска</div>
+  <div class="section-desc">PRISMA-подобная воронка отбора статей. Поиск по базе 170+ млн научных публикаций (Semantic Scholar, PubMed).</div>
+
+  <div class="prisma-flow">
+    <div class="prisma-step">
+      <div class="prisma-box">
+        <div class="prisma-label">Идентификация</div>
+        <div class="prisma-n">1 050</div>
+        <div class="prisma-desc">Найдено по 8 поисковым запросам</div>
+      </div>
+      <span class="prisma-arrow">→</span>
+    </div>
+    <div class="prisma-step">
+      <div class="prisma-box">
+        <div class="prisma-label">Скрининг</div>
+        <div class="prisma-n">775</div>
+        <div class="prisma-desc">Удалены дубликаты и статьи без абстрактов</div>
+        <div class="prisma-removed">−275</div>
+      </div>
+      <span class="prisma-arrow">→</span>
+    </div>
+    <div class="prisma-step">
+      <div class="prisma-box">
+        <div class="prisma-label">Отбор</div>
+        <div class="prisma-n">420</div>
+        <div class="prisma-desc">Удалены статьи с низкой семантической релевантностью</div>
+        <div class="prisma-removed">−355</div>
+      </div>
+      <span class="prisma-arrow">→</span>
+    </div>
+    <div class="prisma-step">
+      <div class="prisma-box active">
+        <div class="prisma-label">Включены</div>
+        <div class="prisma-n">50</div>
+        <div class="prisma-desc">Топ-50 по качеству и релевантности</div>
+        <div class="prisma-removed">−370</div>
+      </div>
+    </div>
+  </div>
+
+  <p style="color:var(--text-3); font-size:12px; margin-top:8px;">8 уникальных поисковых запросов комбинировали ключевые термины: institutional determinants, listing requirements, cross-country, IPO regulation, legal origin, ownership concentration, securities listing standards, QCA.</p>
+</div>
+</div>
+
+<!-- ========== 3. FACTORS ========== -->
+<div class="section">
+<div class="container">
+  <div class="section-title"><span class="num">03</span> Выявленные институциональные факторы</div>
+  <div class="section-desc">Факторы ранжированы по частоте использования в сравнительных исследованиях и силе академической поддержки.</div>
+
+  <!-- CORE -->
+  <div class="tier-label tier-core">Ядро литературы — универсальное включение</div>
+  <div class="factor-grid">
+
+    <div class="f-card">
+      <div>
+        <h4>Правовая семья (legal origin)</h4>
+        <div class="f-mech">Определяет базовую архитектуру защиты инвесторов, стандарты раскрытия информации, механизмы правоприменения. Common law → дисперсное владение, развитый private enforcement; civil law → концентрированное владение, кодифицированные нормы. Формирует «спрос на бондинг» через листинг на более строгих площадках.</div>
+        <div class="f-refs">
+          <a href="https://doi.org/10.2139/ssrn.192549">La Porta et al., 1999</a> ·
+          <a href="https://doi.org/10.1016/j.jbankfin.2010.01.002">Engelen & Essen, 2010</a> ·
+          <a href="https://doi.org/10.2307/797515">Coffee & John, 2001</a> ·
+          <a href="https://doi.org/10.2139/ssrn.315840">Coffee, 2002</a> ·
+          <a href="https://doi.org/10.1016/s0020-7063(03)00019-0">Davis et al., 2003</a>
+        </div>
+      </div>
+      <div><span class="evidence-badge ev-strong">Сильная</span></div>
+    </div>
+
+    <div class="f-card">
+      <div>
+        <h4>Концентрация владения</h4>
+        <div class="f-mech">Дисперсное vs. концентрированное владение (конгломераты, госкомпании, семейные холдинги). Определяет спрос на публичность, мотивацию листинга, структуру free float. Фирмы с концентрированным владением чаще избегают строгих площадок, предпочитая сохранять private benefits of control.</div>
+        <div class="f-refs">
+          <a href="https://doi.org/10.2307/797515">Coffee & John, 2001</a> ·
+          <a href="https://doi.org/10.1057/jibs.2009.38">Boulton et al., 2007</a> ·
+          <a href="https://doi.org/10.1016/j.jbankfin.2007.12.030">Alavi et al., 2008</a> ·
+          <a href="https://doi.org/10.1111/jbfa.12552">Rojahn & Zechser, 2021</a>
+        </div>
+      </div>
+      <div><span class="evidence-badge ev-strong">Сильная</span></div>
+    </div>
+
+    <div class="f-card">
+      <div>
+        <h4>Защита инвесторов и enforcement</h4>
+        <div class="f-mech">Два подфактора: (а) statutory investor protection — законодательная защита прав акционеров; (б) enforcement quality — private enforcement (коллективные иски, судебное взыскание) и public enforcement (санкции регулятора). Без действенного enforcement формальные нормы не определяют реальное поведение. Ослабление требований к дерегистрации наиболее болезненно для фирм из юрисдикций со слабой защитой инвесторов.</div>
+        <div class="f-refs">
+          <a href="https://doi.org/10.2139/ssrn.192549">La Porta et al., 1999</a> ·
+          <a href="https://doi.org/10.1016/j.jbankfin.2010.01.002">Engelen & Essen, 2010</a> ·
+          <a href="https://doi.org/10.1111/j.1911-3846.2012.01158.x">Shi et al., 2012</a> ·
+          <a href="https://doi.org/10.1016/j.jfineco.2004.02.001">Siegel, 2005</a> ·
+          <a href="https://doi.org/10.5465/amj.2011.0146">Bell et al., 2014</a>
+        </div>
+      </div>
+      <div><span class="evidence-badge ev-strong">Сильная</span></div>
+    </div>
+
+    <div class="f-card">
+      <div>
+        <h4>Качество регулятивной среды / rule of law</h4>
+        <div class="f-mech">Индексы Всемирного банка / МВФ: regulatory quality, rule of law, control of corruption, government effectiveness. Шире, чем investor protection — включает общую предсказуемость и качество государственного управления. Модерирует экономический эффект ужесточения или смягчения листинговых обязательств.</div>
+        <div class="f-refs">
+          <a href="https://doi.org/10.1002/pa.2676">Wei et al., 2021</a> ·
+          <a href="https://doi.org/10.1016/j.bir.2019.12.003">Touil & Mamoghli, 2020</a> ·
+          <a href="https://doi.org/10.1016/j.bar.2024.101434">Zhu & Wang, 2024</a> ·
+          <a href="https://doi.org/10.1002/mde.3288">Kuzey et al., 2021</a>
+        </div>
+      </div>
+      <div><span class="evidence-badge ev-strong">Сильная</span></div>
+    </div>
+
+    <div class="f-card">
+      <div>
+        <h4>Глубина рынка капитала</h4>
+        <div class="f-mech">Капитализация / ВВП, число публичных компаний, объёмы торгов, доступность альтернативных источников финансирования. Определяет, является ли листинг реальным инструментом привлечения капитала или формальным статусом. Стандартная контрольная или независимая переменная в cross-country исследованиях.</div>
+        <div class="f-refs">
+          <a href="https://doi.org/10.1111/0022-1082.25448">Pagano et al., 1995</a> ·
+          <a href="https://doi.org/10.1016/j.jbankfin.2010.01.002">Engelen & Essen, 2010</a> ·
+          <a href="https://doi.org/10.1108/sef-05-2016-0111">Ho & Iyke, 2017</a>
+        </div>
+      </div>
+      <div><span class="evidence-badge ev-strong">Сильная</span></div>
+    </div>
+  </div>
+
+  <!-- SECONDARY -->
+  <div class="tier-label tier-secondary">Вторичные факторы — регулярное, но не универсальное использование</div>
+  <div class="factor-grid">
+    <div class="f-card">
+      <div>
+        <h4>Тип регулятора рынка ценных бумаг</h4>
+        <div class="f-mech">Центральный банк / отдельная комиссия / наднациональный + национальный (модель ЕС). Определяет институциональную логику принятия решений. Включается чаще при региональном фокусе исследования.</div>
+        <div class="f-refs"><a href="https://doi.org/10.1016/j.mar.2016.07.006">Dai et al., 2016</a></div>
+      </div>
+      <div><span class="evidence-badge ev-moderate">Умеренная</span></div>
+    </div>
+    <div class="f-card">
+      <div>
+        <h4>Роль биржи как СРО (саморегулируемой организации)</h4>
+        <div class="f-mech">Степень саморегуляторных полномочий биржи vs. государственное регулирование. Определяет, кто устанавливает и применяет листинговые правила. Исторически — ключевой механизм дифференциации NYSE от LSE.</div>
+        <div class="f-refs">
+          <a href="https://doi.org/10.2307/797515">Coffee & John, 2001</a> ·
+          <a href="https://doi.org/10.1016/s0020-7063(03)00019-0">Davis et al., 2003</a>
+        </div>
+      </div>
+      <div><span class="evidence-badge ev-moderate">Умеренная</span></div>
+    </div>
+    <div class="f-card">
+      <div>
+        <h4>Политическая стабильность и governance</h4>
+        <div class="f-mech">Стабильность политической системы, эффективность государственного управления, контроль коррупции. Влияет на предсказуемость регуляторной среды и доверие инвесторов к институтам. Используется наряду с индексами rule of law.</div>
+        <div class="f-refs">
+          <a href="https://doi.org/10.1002/pa.2676">Wei et al., 2021</a> ·
+          <a href="https://doi.org/10.1016/j.bir.2019.12.003">Touil & Mamoghli, 2020</a> ·
+          <a href="https://doi.org/10.1016/j.mulfin.2023.100784">Shabir et al., 2023</a>
+        </div>
+      </div>
+      <div><span class="evidence-badge ev-moderate">Умеренная</span></div>
+    </div>
+    <div class="f-card">
+      <div>
+        <h4>Структура инвесторской базы</h4>
+        <div class="f-mech">Доля институциональных инвесторов vs. розничных. Влияет на стимулы к раскрытию информации, уровень мониторинга эмитентов, механизмы ценообразования на IPO.</div>
+        <div class="f-refs">
+          <a href="https://doi.org/10.7208/chicago/9780226237268.003.0005">Piotroski & Wong, 2012</a> ·
+          <a href="https://doi.org/10.1108/mf-07-2016-0187">Neupane & Neupane, 2017</a>
+        </div>
+      </div>
+      <div><span class="evidence-badge ev-moderate">Умеренная</span></div>
+    </div>
+  </div>
+
+  <!-- NOVEL -->
+  <div class="tier-label tier-novel">Новые направления — emerging area</div>
+  <div class="factor-grid">
+    <div class="f-card">
+      <div>
+        <h4>Свобода СМИ и конкуренция на товарных рынках</h4>
+        <div class="f-mech">Extra-legal institutions: СМИ как механизм принуждения к раскрытию, конкуренция на продуктовых рынках как стимул к прозрачности. Прокси для институциональных механизмов вне формального правового поля.</div>
+        <div class="f-refs"><a href="https://doi.org/10.1111/j.1911-3846.2012.01158.x">Shi et al., 2012</a></div>
+      </div>
+      <div><span class="evidence-badge ev-emerging">Emerging</span></div>
+    </div>
+    <div class="f-card">
+      <div>
+        <h4>Неформальные институты и элитные сети</h4>
+        <div class="f-mech">Роль социальных и политических элитных сетей в формировании рыночных институтов. Особенно значимо для emerging markets (Китай, Африка), где формальные правила менее определяющие.</div>
+        <div class="f-refs">
+          <a href="https://doi.org/10.1016/j.jwb.2014.04.006">Hearn, 2014</a> ·
+          <a href="https://doi.org/10.7208/chicago/9780226237268.003.0005">Piotroski & Wong, 2012</a>
+        </div>
+      </div>
+      <div><span class="evidence-badge ev-emerging">Emerging</span></div>
+    </div>
+  </div>
+
+  <!-- GAP -->
+  <div class="tier-label tier-gap">Research gap — слабая представленность в литературе</div>
+  <div class="factor-grid">
+    <div class="f-card">
+      <div>
+        <h4>Конкурентная структура площадок (моно- vs. полибиржевая среда)</h4>
+        <div class="f-mech">Влияет на стандарты листинга через конкурентное давление (race to the top / bottom). Обсуждается теоретически, но практически не операционализирован как самостоятельная независимая переменная в эмпирических работах.</div>
+        <div class="f-refs">
+          <a href="https://doi.org/10.2139/ssrn.315840">Coffee, 2002</a> (теоретически) ·
+          <a href="https://doi.org/10.2139/ssrn.40260">Huddart et al., 1998</a> (в модели)
+        </div>
+      </div>
+      <div><span class="evidence-badge ev-weak">Слабая</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ========== 4. CLAIMS & EVIDENCE ========== -->
+<div class="section">
+<div class="container">
+  <div class="section-title"><span class="num">04</span> Утверждения и сила доказательств</div>
+  <div class="section-desc">Оценка поддержки каждого утверждения в рассмотренной литературе.</div>
+
+  <table class="claims-table">
+    <thead>
+      <tr>
+        <th style="width:35%">Утверждение</th>
+        <th style="width:100px">Сила</th>
+        <th>Обоснование</th>
+        <th style="width:25%">Ключевые работы</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Правовая семья — первичный детерминант в сравнительных исследованиях</td>
+        <td><div class="strength-bar"><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span></div><div style="font-size:11px;color:var(--green);margin-top:4px;font-weight:600">Сильная</div></td>
+        <td>Основа сравнительных финансовых исследований (La Porta framework); почти универсальное включение</td>
+        <td style="font-size:12px;color:var(--text-2)">La Porta et al., 1999; Engelen & Essen, 2010; Coffee & John, 2001</td>
+      </tr>
+      <tr>
+        <td>Концентрация владения объясняет различия в листинговых режимах</td>
+        <td><div class="strength-bar"><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span></div><div style="font-size:11px;color:var(--green);margin-top:4px;font-weight:600">Сильная</div></td>
+        <td>Устойчивая значимость в крупных эмпирических исследованиях с большими выборками</td>
+        <td style="font-size:12px;color:var(--text-2)">Boulton et al., 2007; Alavi et al., 2008</td>
+      </tr>
+      <tr>
+        <td>Investor protection / enforcement quality широко используется</td>
+        <td><div class="strength-bar"><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span></div><div style="font-size:11px;color:var(--green);margin-top:4px;font-weight:600">Сильная</div></td>
+        <td>Центральный элемент La Porta framework; воспроизведён во множестве контекстов</td>
+        <td style="font-size:12px;color:var(--text-2)">La Porta et al., 1999; Engelen & Essen, 2010</td>
+      </tr>
+      <tr>
+        <td>Индексы regulatory quality / rule of law добавляют объяснительную силу</td>
+        <td><div class="strength-bar"><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span><span class="pip filled-g"></span></div><div style="font-size:11px;color:var(--green);margin-top:4px;font-weight:600">Сильная</div></td>
+        <td>Часто включаются через индексы World Bank/IMF; робастные результаты</td>
+        <td style="font-size:12px;color:var(--text-2)">Wei et al., 2021; Touil & Mamoghli, 2020</td>
+      </tr>
+      <tr>
+        <td>Неформальные институты / свобода СМИ иногда используются</td>
+        <td><div class="strength-bar"><span class="pip filled-y"></span><span class="pip filled-y"></span><span class="pip filled-y"></span><span class="pip filled-y"></span><span class="pip filled-y"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span></div><div style="font-size:11px;color:var(--yellow);margin-top:4px;font-weight:600">Умеренная</div></td>
+        <td>Emerging area; лишь отдельные работы операционализируют эти переменные</td>
+        <td style="font-size:12px;color:var(--text-2)">Shi et al., 2012</td>
+      </tr>
+      <tr>
+        <td>Конкурентная структура площадок напрямую используется</td>
+        <td><div class="strength-bar"><span class="pip filled-r"></span><span class="pip filled-r"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span></div><div style="font-size:11px;color:var(--red);margin-top:4px;font-weight:600">Слабая</div></td>
+        <td>Не операционализирован как самостоятельная независимая переменная в эмпирических работах</td>
+        <td style="font-size:12px;color:var(--text-2)">—</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<!-- ========== 5. HEATMAP ========== -->
+<div class="section">
+<div class="container">
+  <div class="section-title"><span class="num">05</span> Покрытие: фактор × тематика</div>
+  <div class="section-desc">Количество исследований, использующих данный фактор при анализе соответствующей тематики (по данным обзора 50 статей).</div>
+
+  <div class="heatmap-wrap">
+    <table class="heatmap">
+      <thead><tr>
+        <th>Тематика / Outcome</th>
+        <th>Правовая семья</th>
+        <th>Концентрация владения</th>
+        <th>Investor protection</th>
+        <th>Неформальные институты / СМИ</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>Строгость листингового режима</td><td class="h-high">12</td><td class="h-high">10</td><td class="h-high">10</td><td class="h-low">2</td></tr>
+        <tr><td>IPO underpricing</td><td class="h-mid">7</td><td class="h-mid">6</td><td class="h-high">8</td><td class="h-low">1</td></tr>
+        <tr><td>Требования к раскрытию информации</td><td class="h-high">8</td><td class="h-mid">5</td><td class="h-mid">7</td><td class="h-low">2</td></tr>
+        <tr><td>Статус биржи как СРО</td><td class="h-mid">4</td><td class="h-low">1</td><td class="h-low">2</td><td class="h-gap">GAP</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ========== 6. TIMELINE ========== -->
+<div class="section">
+<div class="container">
+  <div class="section-title"><span class="num">06</span> Хронология ключевых публикаций</div>
+  <div class="section-desc">Временна́я карта включённых работ. Крупные точки — наиболее цитируемые работы (>400 цитирований).</div>
+
+  <div class="timeline-wrap">
+    <div class="timeline-track">
+      <!-- Axis -->
+      <div class="timeline-axis" style="bottom:30px;left:40px;right:20px;">
+        <div class="timeline-tick" style="left:0%">1995</div>
+        <div class="timeline-tick" style="left:16.7%">2000</div>
+        <div class="timeline-tick" style="left:33.3%">2005</div>
+        <div class="timeline-tick" style="left:50%">2010</div>
+        <div class="timeline-tick" style="left:66.7%">2015</div>
+        <div class="timeline-tick" style="left:83.3%">2020</div>
+        <div class="timeline-tick" style="left:100%">2025</div>
+      </div>
+
+      <!-- Dots: positioned by year. left% = (year - 1995) / 30 * 100 -->
+      <!-- Pagano 1995, cit 2068 -->
+      <div class="timeline-dot major" style="left:calc(40px + 0% * (100% - 60px));bottom:52px;">
+        <span>4</span>
+        <div class="tooltip">Pagano et al. (1995) — 2 068 цит.</div>
+      </div>
+      <!-- La Porta 1999, cit 4457 -->
+      <div class="timeline-dot major" style="left:calc(40px + 13.3% * (100% - 60px));bottom:85px;">
+        <span>17</span>
+        <div class="tooltip">La Porta et al. (1999) — 4 457 цит.</div>
+      </div>
+      <!-- Coffee&John 2001, cit 381 -->
+      <div class="timeline-dot" style="left:calc(40px + 20% * (100% - 60px));bottom:115px;">
+        <span>1</span>
+        <div class="tooltip">Coffee & John (2001) — 381 цит.</div>
+      </div>
+      <!-- Huddart 1998, not in CSV -->
+      <div class="timeline-dot" style="left:calc(40px + 10% * (100% - 60px));bottom:52px;">
+        <span>H</span>
+        <div class="tooltip">Huddart et al. (1998)</div>
+      </div>
+      <!-- Coffee 2002, cit 1053 -->
+      <div class="timeline-dot major" style="left:calc(40px + 23.3% * (100% - 60px));bottom:52px;">
+        <span>2</span>
+        <div class="tooltip">Coffee (2002) — 1 053 цит.</div>
+      </div>
+      <!-- Davis 2003 -->
+      <div class="timeline-dot" style="left:calc(40px + 26.7% * (100% - 60px));bottom:85px;">
+        <span>19</span>
+        <div class="tooltip">Davis et al. (2003) — 34 цит.</div>
+      </div>
+      <!-- Siegel 2005, cit 616 -->
+      <div class="timeline-dot major" style="left:calc(40px + 33.3% * (100% - 60px));bottom:52px;">
+        <span>3</span>
+        <div class="tooltip">Siegel (2005) — 616 цит.</div>
+      </div>
+      <!-- Boulton 2007 -->
+      <div class="timeline-dot" style="left:calc(40px + 40% * (100% - 60px));bottom:52px;">
+        <span>10</span>
+        <div class="tooltip">Boulton et al. (2007) — 217 цит.</div>
+      </div>
+      <!-- Alavi 2008 -->
+      <div class="timeline-dot" style="left:calc(40px + 43.3% * (100% - 60px));bottom:85px;">
+        <span>15</span>
+        <div class="tooltip">Alavi et al. (2008) — 70 цит.</div>
+      </div>
+      <!-- Engelen 2010 -->
+      <div class="timeline-dot" style="left:calc(40px + 50% * (100% - 60px));bottom:52px;">
+        <span>11</span>
+        <div class="tooltip">Engelen & Essen (2010) — 203 цит.</div>
+      </div>
+      <!-- Shi 2012 -->
+      <div class="timeline-dot" style="left:calc(40px + 56.7% * (100% - 60px));bottom:85px;">
+        <span>9</span>
+        <div class="tooltip">Shi et al. (2012) — 76 цит.</div>
+      </div>
+      <!-- Piotroski 2012 -->
+      <div class="timeline-dot" style="left:calc(40px + 56.7% * (100% - 60px));bottom:118px;">
+        <span>12</span>
+        <div class="tooltip">Piotroski & Wong (2012) — 280 цит.</div>
+      </div>
+      <!-- Bell 2014, cit 420 -->
+      <div class="timeline-dot major" style="left:calc(40px + 63.3% * (100% - 60px));bottom:52px;">
+        <span>13</span>
+        <div class="tooltip">Bell et al. (2014) — 420 цит.</div>
+      </div>
+      <!-- Hearn 2014 -->
+      <div class="timeline-dot" style="left:calc(40px + 63.3% * (100% - 60px));bottom:85px;">
+        <span>6</span>
+        <div class="tooltip">Hearn (2014) — 56 цит.</div>
+      </div>
+      <!-- Dai 2016 -->
+      <div class="timeline-dot" style="left:calc(40px + 70% * (100% - 60px));bottom:52px;">
+        <span>16</span>
+        <div class="tooltip">Dai et al. (2016) — 53 цит.</div>
+      </div>
+      <!-- Ho&Iyke 2017 -->
+      <div class="timeline-dot" style="left:calc(40px + 73.3% * (100% - 60px));bottom:85px;">
+        <span>Ho</span>
+        <div class="tooltip">Ho & Iyke (2017)</div>
+      </div>
+      <!-- Neupane 2017 -->
+      <div class="timeline-dot" style="left:calc(40px + 73.3% * (100% - 60px));bottom:118px;">
+        <span>14</span>
+        <div class="tooltip">Neupane & Neupane (2017) — 7 цит.</div>
+      </div>
+      <!-- Touil 2020 -->
+      <div class="timeline-dot" style="left:calc(40px + 83.3% * (100% - 60px));bottom:52px;">
+        <span>8</span>
+        <div class="tooltip">Touil & Mamoghli (2020) — 26 цит.</div>
+      </div>
+      <!-- Kuzey 2021 -->
+      <div class="timeline-dot" style="left:calc(40px + 86.7% * (100% - 60px));bottom:85px;">
+        <span>K</span>
+        <div class="tooltip">Kuzey et al. (2021)</div>
+      </div>
+      <!-- Wei 2021 -->
+      <div class="timeline-dot" style="left:calc(40px + 86.7% * (100% - 60px));bottom:118px;">
+        <span>7</span>
+        <div class="tooltip">Wei et al. (2021) — 13 цит.</div>
+      </div>
+      <!-- Rojahn 2021 -->
+      <div class="timeline-dot" style="left:calc(40px + 86.7% * (100% - 60px));bottom:150px;">
+        <span>18</span>
+        <div class="tooltip">Rojahn & Zechser (2021) — 3 цит.</div>
+      </div>
+      <!-- Shabir 2023 -->
+      <div class="timeline-dot" style="left:calc(40px + 93.3% * (100% - 60px));bottom:52px;">
+        <span>5</span>
+        <div class="tooltip">Shabir et al. (2023) — 79 цит.</div>
+      </div>
+      <!-- Zhu 2024 -->
+      <div class="timeline-dot" style="left:calc(40px + 96.7% * (100% - 60px));bottom:85px;">
+        <span>Z</span>
+        <div class="tooltip">Zhu & Wang (2024)</div>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--text-3);margin-top:8px;">Наведите на точку для подробностей. Крупные точки — работы с >400 цитированиями. Номера соответствуют порядку в списке источников.</p>
+</div>
+</div>
+
+<!-- ========== 7. TOP CONTRIBUTORS ========== -->
+<div class="section">
+<div class="container">
+  <div class="section-title"><span class="num">07</span> Ведущие авторы и журналы</div>
+  <div class="section-desc">Авторы и журналы, наиболее часто встречающиеся среди включённых работ.</div>
+
+  <div class="contrib-grid">
+    <div class="contrib-card">
+      <div class="avatar author">LP</div>
+      <div><div class="c-name">R. La Porta</div><div class="c-detail">La Porta et al. (1999) — 4 457 цит.</div></div>
+    </div>
+    <div class="contrib-card">
+      <div class="avatar author">CJ</div>
+      <div><div class="c-name">C. John Coffee</div><div class="c-detail">Coffee & John (2001); Coffee (2002) — 1 434 цит. суммарно</div></div>
+    </div>
+    <div class="contrib-card">
+      <div class="avatar author">IF</div>
+      <div><div class="c-name">I. Filatotchev</div><div class="c-detail">Bell et al. (2014) — 420 цит.</div></div>
+    </div>
+    <div class="contrib-card">
+      <div class="avatar journal">JFE</div>
+      <div><div class="c-name">Journal of Financial Economics</div><div class="c-detail">Siegel (2005) · Q1</div></div>
+    </div>
+    <div class="contrib-card">
+      <div class="avatar journal">JBF</div>
+      <div><div class="c-name">Journal of Banking and Finance</div><div class="c-detail">Engelen & Essen (2010); Alavi et al. (2008) · Q1</div></div>
+    </div>
+    <div class="contrib-card">
+      <div class="avatar journal">YLJ</div>
+      <div><div class="c-name">Yale Law Journal</div><div class="c-detail">Coffee & John (2001) · Q1</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ========== 8. OPEN QUESTIONS ========== -->
+<div class="section">
+<div class="container">
+  <div class="section-title"><span class="num">08</span> Открытые исследовательские вопросы</div>
+  <div class="section-desc">Направления, обозначенные как недостаточно изученные.</div>
+
+  <div class="oq-card">
+    <h4>Как неформальные институты (свобода СМИ, социальные сети) влияют на дизайн листинговых режимов?</h4>
+    <p>Эти факторы могут объяснять вариацию, не улавливаемую формальными правовыми/экономическими индикаторами — особенно на emerging markets.</p>
+  </div>
+  <div class="oq-card">
+    <h4>Каково влияние конкурентной структуры площадок на национальные стандарты листинга?</h4>
+    <p>Прямой анализ мог бы прояснить, влияет ли монобиржевая vs. полибиржевая среда на регуляторные результаты независимо от прочих факторов.</p>
+  </div>
+</div>
+</div>
+
+<!-- ========== 9. REFERENCES ========== -->
+<div class="section">
+<div class="container">
+  <div class="section-title"><span class="num">09</span> Полный список источников</div>
+  <div class="section-desc">Все 22 работы, цитируемые в обзоре. Сортировка по году публикации.</div>
+
+  <div style="display:grid;grid-template-columns:auto 1fr auto auto;gap:0;font-size:11px;font-weight:600;color:var(--text-3);padding:8px 16px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">
+    <div style="width:32px">#</div>
+    <div>Источник</div>
+    <div style="width:60px;text-align:right">Цит.</div>
+    <div style="width:60px;text-align:right">SJR</div>
+  </div>
+
+  <div class="ref-grid">
+
+    <div class="ref-row">
+      <div class="ref-idx">1</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Pagano, M., Panetta, F., & Zingales, L.</span> (1995). <span class="ref-title">Why Do Companies Go Public? An Empirical Analysis.</span></div>
+        <div class="ref-journal">Chicago Booth PCE: Entrepreneurship & Finance</div>
+        <div class="ref-links"><a href="https://doi.org/10.1111/0022-1082.25448">DOI</a> <a href="https://consensus.app/papers/why-do-companies-go-public-an-empirical-analysis-pagano-panetta/7e234b69d13950b1b94bb3cd29aa9e87/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>2 068</strong></div>
+      <div class="ref-q">—</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">2</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Huddart, S., Brunnermeier, M., & Hughes, J.</span> (1998). <span class="ref-title">Disclosure Requirements and Stock Exchange Listing Choice in an International Context.</span></div>
+        <div class="ref-journal">European Economics eJournal</div>
+        <div class="ref-links"><a href="https://doi.org/10.2139/ssrn.40260">DOI</a></div>
+      </div>
+      <div class="ref-cit">—</div>
+      <div class="ref-q">—</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">3</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">La Porta, R., De Silanes, F., Shleifer, A., & Vishny, R.</span> (1999). <span class="ref-title">Investor Protection and Corporate Valuation.</span></div>
+        <div class="ref-journal">Chicago Booth: Fama-Miller Working Paper Series</div>
+        <div class="ref-links"><a href="https://doi.org/10.2139/ssrn.192549">DOI</a> <a href="https://consensus.app/papers/investor-protection-and-corporate-valuation-la-porta-de-silanes/5d91a51c37f85e14983e39f9aee9a30e/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>4 457</strong></div>
+      <div class="ref-q">—</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">4</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Coffee, C. J., & John, C.</span> (2001). <span class="ref-title">The Rise of Dispersed Ownership: The Roles of Law and the State in the Separation of Ownership and Control.</span></div>
+        <div class="ref-journal">Yale Law Journal, 111, 1</div>
+        <div class="ref-links"><a href="https://doi.org/10.2307/797515">DOI</a> <a href="https://consensus.app/papers/the-rise-of-dispersed-ownership-the-roles-of-law-and-the-coffee-john/15e6193b7bff5bf0a3bf958badf65d5c/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>381</strong></div>
+      <div class="ref-q">Q1</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">5</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Coffee, J.</span> (2002). <span class="ref-title">Racing Towards the Top?: The Impact of Cross-Listings and Stock Market Competition on International Corporate Governance.</span></div>
+        <div class="ref-journal">Corporate Law: Securities Law eJournal</div>
+        <div class="ref-links"><a href="https://doi.org/10.2139/ssrn.315840">DOI</a> <a href="https://consensus.app/papers/racing-towards-the-top-the-impact-of-crosslistings-and-coffee/959b8f57c70c507da5f113616fb8dd0c/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>1 053</strong></div>
+      <div class="ref-q">—</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">6</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Davis, L., Neal, L., & White, E.</span> (2003). <span class="ref-title">How it all began: the rise of listing requirements on the London, Berlin, Paris, and New York stock exchanges.</span></div>
+        <div class="ref-journal">The International Journal of Accounting, 38, 117–143</div>
+        <div class="ref-links"><a href="https://doi.org/10.1016/s0020-7063(03)00019-0">DOI</a> <a href="https://consensus.app/papers/how-it-all-began-the-rise-of-listing-requirements-on-the-davis-davis/800aa7222cbe574ea557e340bcb7f45d/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>34</strong></div>
+      <div class="ref-q">—</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">7</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Siegel, J.</span> (2005). <span class="ref-title">Can foreign firms bond themselves effectively by renting U.S. securities laws.</span></div>
+        <div class="ref-journal">Journal of Financial Economics, 75, 319–359</div>
+        <div class="ref-links"><a href="https://doi.org/10.1016/j.jfineco.2004.02.001">DOI</a> <a href="https://consensus.app/papers/can-foreign-firms-bond-themselves-effectively-by-renting-siegel/a73a6e6ac7855547bdc6a6a5259e6ccc/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>616</strong></div>
+      <div class="ref-q">Q1</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">8</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Boulton, T., Smart, S., & Zutter, C.</span> (2007). <span class="ref-title">IPO underpricing and international corporate governance.</span></div>
+        <div class="ref-journal">Journal of International Business Studies, 41, 206–222</div>
+        <div class="ref-links"><a href="https://doi.org/10.1057/jibs.2009.38">DOI</a> <a href="https://consensus.app/papers/ipo-underpricing-and-international-corporate-governance-boulton-smart/a24a7b2dc4c55bb58be5a9e17b72b9a1/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>217</strong></div>
+      <div class="ref-q">Q1</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">9</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Alavi, A., Pham, P., & Pham, T.</span> (2008). <span class="ref-title">Pre-IPO ownership structure and its impact on the IPO process.</span></div>
+        <div class="ref-journal">Journal of Banking and Finance, 32, 2361–2375</div>
+        <div class="ref-links"><a href="https://doi.org/10.1016/j.jbankfin.2007.12.030">DOI</a> <a href="https://consensus.app/papers/preipo-ownership-structure-and-its-impact-on-the-ipo-alavi-pham/7c6f3fd0d89c5d50b460e0cbb2fa6504/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>70</strong></div>
+      <div class="ref-q">Q1</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">10</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Engelen, P., & Essen, M.</span> (2010). <span class="ref-title">Underpricing of IPOs: Firm-, issue- and country-specific characteristics.</span></div>
+        <div class="ref-journal">Journal of Banking and Finance, 34, 1958–1969</div>
+        <div class="ref-links"><a href="https://doi.org/10.1016/j.jbankfin.2010.01.002">DOI</a> <a href="https://consensus.app/papers/underpricing-of-ipos-firm-issue-and-countryspecific-engelen-essen/03f3316b6ec3577f86a1baa6856f2a2f/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>203</strong></div>
+      <div class="ref-q">Q1</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">11</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Shi, C., Pukthuanthong, K., & Walker, T.</span> (2012). <span class="ref-title">Does Disclosure Regulation Work? Evidence from International IPO Markets.</span></div>
+        <div class="ref-journal">Contemporary Accounting Research</div>
+        <div class="ref-links"><a href="https://doi.org/10.1111/j.1911-3846.2012.01158.x">DOI</a> <a href="https://consensus.app/papers/does-disclosure-regulation-work-evidence-from-shi-pukthuanthong/e3e91f2e40e15cdb9b389b34e92e4ee7/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>76</strong></div>
+      <div class="ref-q">—</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">12</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Piotroski, J., & Wong, T.</span> (2012). <span class="ref-title">Institutions and Information Environment of Chinese Listed Firms.</span></div>
+        <div class="ref-links"><a href="https://doi.org/10.7208/chicago/9780226237268.003.0005">DOI</a> <a href="https://consensus.app/papers/institutions-and-information-environment-of-chinese-piotroski-wong/e18d9f8e7d245ef3ae0dba2f58c1f4e8/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>280</strong></div>
+      <div class="ref-q">—</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">13</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Bell, R., Filatotchev, I., & Aguilera, R.</span> (2014). <span class="ref-title">Corporate Governance and Investors' Perceptions of Foreign IPO Value: An Institutional Perspective.</span></div>
+        <div class="ref-journal">Academy of Management Journal, 57, 301–320</div>
+        <div class="ref-links"><a href="https://doi.org/10.5465/amj.2011.0146">DOI</a> <a href="https://consensus.app/papers/corporate-governance-and-investors-perceptions-of-foreign-bell-filatotchev/ea2deca2cd285bc7adef0e64e5ee4e5f/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>420</strong></div>
+      <div class="ref-q">Q1</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">14</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Hearn, B.</span> (2014). <span class="ref-title">Institutional influences on board composition of international joint venture firms listing on emerging stock exchanges: Evidence from Africa.</span></div>
+        <div class="ref-journal">Journal of World Business, 50, 205–219</div>
+        <div class="ref-links"><a href="https://doi.org/10.1016/j.jwb.2014.04.006">DOI</a> <a href="https://consensus.app/papers/institutional-influences-on-board-composition-of-hearn/95ab28b39b7b5e3aac0b9b7ed3e5f48f/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>56</strong></div>
+      <div class="ref-q">Q1</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">15</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Dai, N., Tan, Z., Tang, G., & Xiao, J.</span> (2016). <span class="ref-title">IPOs, Institutional Complexity, and Management Accounting in Hybrid Organisations.</span></div>
+        <div class="ref-journal">Behavioral & Experimental Accounting eJournal</div>
+        <div class="ref-links"><a href="https://doi.org/10.1016/j.mar.2016.07.006">DOI</a> <a href="https://consensus.app/papers/ipos-institutional-complexity-and-management-accounting-dai-tan/68f1e13a73475ce8a7e4e32e6e51b381/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>53</strong></div>
+      <div class="ref-q">—</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">16</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Ho, S., & Iyke, B.</span> (2017). <span class="ref-title">Determinants of stock market development: a review of the literature.</span></div>
+        <div class="ref-journal">Studies in Economics and Finance, 34, 143–164</div>
+        <div class="ref-links"><a href="https://doi.org/10.1108/sef-05-2016-0111">DOI</a></div>
+      </div>
+      <div class="ref-cit">—</div>
+      <div class="ref-q">—</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">17</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Neupane, S., & Neupane, B.</span> (2017). <span class="ref-title">Board structure and institutional ownership at the time of IPO.</span></div>
+        <div class="ref-journal">Managerial Finance, 43, 950–965</div>
+        <div class="ref-links"><a href="https://doi.org/10.1108/mf-07-2016-0187">DOI</a> <a href="https://consensus.app/papers/board-structure-and-institutional-ownership-at-the-time-neupane-neupane/f5e9a5d71e1b533da84f6bdebeaee59e/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>7</strong></div>
+      <div class="ref-q">Q2</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">18</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Ole-Kristian, H.</span> (2019). <span class="ref-title">Bonding to the Improved Disclosure Environment in the US: Firms Listing Choices and their Capital Market Consequences.</span></div>
+        <div class="ref-links">—</div>
+      </div>
+      <div class="ref-cit">—</div>
+      <div class="ref-q">—</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">19</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Touil, M., & Mamoghli, C.</span> (2020). <span class="ref-title">Institutional environment and determinants of adjustment speed to the target capital structure in the MENA region.</span></div>
+        <div class="ref-journal">Borsa Istanbul Review</div>
+        <div class="ref-links"><a href="https://doi.org/10.1016/j.bir.2019.12.003">DOI</a> <a href="https://consensus.app/papers/institutional-environment-and-determinants-of-adjustment-touil-mamoghli/3d15ba2dc0005e0fb2b12ce34f52e21b/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>26</strong></div>
+      <div class="ref-q">Q1</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">20</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Kuzey, C., Uyar, A., Hamrouni, A., Kılıç, M., & Boussaada, R.</span> (2021). <span class="ref-title">The link between institutional quality, ethical behaviors of firms, and market regulations on stock market developments.</span></div>
+        <div class="ref-journal">Managerial and Decision Economics</div>
+        <div class="ref-links"><a href="https://doi.org/10.1002/mde.3288">DOI</a></div>
+      </div>
+      <div class="ref-cit">—</div>
+      <div class="ref-q">—</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">21</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Wei, H., Mohd‑Rashid, R., Mehmood, W., & Tajuddin, A.</span> (2021). <span class="ref-title">Institutional quality and initial public offering underpricing: Evidence from Hong Kong.</span></div>
+        <div class="ref-journal">Journal of Public Affairs</div>
+        <div class="ref-links"><a href="https://doi.org/10.1002/pa.2676">DOI</a> <a href="https://consensus.app/papers/institutional-quality-and-initial-public-offering-wei-mohdrashid/b6e6db3af1875d5180f6e5ed5eff7e2f/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>13</strong></div>
+      <div class="ref-q">Q1</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">22</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Rojahn, J., & Zechser, F.</span> (2021). <span class="ref-title">Ownership concentration, ownership identity and seasoned equity offerings probabilities: Evidence from Germany.</span></div>
+        <div class="ref-journal">Journal of Business Finance & Accounting</div>
+        <div class="ref-links"><a href="https://doi.org/10.1111/jbfa.12552">DOI</a> <a href="https://consensus.app/papers/ownership-concentration-ownership-identity-and-seasoned-rojahn-zechser/198b8b30f8825be9bd9743220759c857/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>3</strong></div>
+      <div class="ref-q">Q1</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">23</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Shabir, M., Jiang, P., Wang, W., & Işık, Ö.</span> (2023). <span class="ref-title">COVID-19 pandemic impact on banking sector: A cross-country analysis.</span></div>
+        <div class="ref-journal">Journal of Multinational Financial Management, 67</div>
+        <div class="ref-links"><a href="https://doi.org/10.1016/j.mulfin.2023.100784">DOI</a> <a href="https://consensus.app/papers/covid19-pandemic-impact-on-banking-sector-a-crosscountry-shabir-jiang/b3af1a26ca895b119e88de88e5cce3f9/">Consensus</a></div>
+      </div>
+      <div class="ref-cit"><strong>79</strong></div>
+      <div class="ref-q">Q1</div>
+    </div>
+
+    <div class="ref-row">
+      <div class="ref-idx">24</div>
+      <div class="ref-body">
+        <div><span class="ref-authors">Zhu, N., & Wang, K.</span> (2024). <span class="ref-title">The Impact of Loosening Regulatory Requirements on Firm Innovation: Evidence from SEC Rule 12h-6.</span></div>
+        <div class="ref-journal">The British Accounting Review</div>
+        <div class="ref-links"><a href="https://doi.org/10.1016/j.bar.2024.101434">DOI</a></div>
+      </div>
+      <div class="ref-cit">—</div>
+      <div class="ref-q">—</div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<div class="footer">
+  <div class="container">
+    Результаты получены с использованием <a href="https://consensus.app" target="_blank">Consensus AI</a> — поисковой системы по научным публикациям.<br>
+    © 2026 Consensus NLP, Inc. Использование в личных, некоммерческих целях. Дата исследования: 04 марта 2026.
+  </div>
+</div>
+
+</body>
+</html>

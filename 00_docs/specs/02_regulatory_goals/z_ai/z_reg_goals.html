@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Исследование регуляторных целей и проблем Банка России в сфере листинга</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --border-color: #dee2e6;
+            --header-bg: #f1f3f5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem 3rem;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 8px;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 2rem;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            margin-top: 2.5rem;
+            border-left: 5px solid var(--secondary-color);
+            padding-left: 0.8rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--secondary-color);
+            margin-top: 2rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        .meta-info {
+            background-color: #eef2f7;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.95rem;
+            overflow-x: auto;
+            display: block;
+        }
+
+        th, td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        thead th {
+            background-color: var(--header-bg);
+            font-weight: 600;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            white-space: nowrap;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .tag-strategic { background-color: #e3f2fd; color: #1565c0; }
+        .tag-operational { background-color: #fff3e0; color: #ef6c00; }
+        .tag-problem { background-color: #ffebee; color: #c62828; }
+        .tag-conflict { background-color: #f3e5f5; color: #7b1fa2; }
+
+        .conclusion-box {
+            background-color: #f0f4f8;
+            border: 1px solid #d1dce5;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .mermaid {
+            background-color: white;
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                margin: 1rem;
+            }
+            h1 { font-size: 1.5rem; }
+            h2 { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Постановка задачи: исследование регуляторных целей и проблем Банка России в сфере листинга</h1>
+    
+    <div class="meta-info">
+        <strong>Временной горизонт:</strong> 2022–2026 (акцент на 2024–2026)<br>
+        <strong>Дата подготовки:</strong> 04.03.2026<br>
+        <strong>Контекст:</strong> Жёсткая ДКП, санкционное давление, рост розничных инвесторов, политические установки на развитие рынка.
+    </div>
+
+    <h2>1. Реестр целей (Трек А)</h2>
+    <p>Артикулированные цели, приоритеты и установки в отношении рынка капитала и режима допуска/листинга ценных бумаг.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 3%">№</th>
+                <th style="width: 35%">Формулировка цели</th>
+                <th style="width: 20%">Источник</th>
+                <th style="width: 12%">Уровень</th>
+                <th style="width: 15%">Связь с листингом</th>
+                <th style="width: 15%">Горизонт</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Ц1</td>
+                <td>«Обеспечение роста капитализации фондового рынка не менее чем до 66% ВВП к 2030 году и до 75% ВВП к 2036 году»</td>
+                <td>Указ Президента РФ №309</td>
+                <td><span class="tag tag-strategic">Стратегическая</span></td>
+                <td>Прямая: требует массового IPO и поддержания листинга.</td>
+                <td>2030, 2036</td>
+            </tr>
+            <tr>
+                <td>Ц2</td>
+                <td>«Развитие современного финансового рынка для удовлетворения потребностей российской экономики в инвестициях для структурной трансформации»</td>
+                <td>ОНРФР 2026–2028</td>
+                <td><span class="tag tag-strategic">Стратегическая</span></td>
+                <td>Косвенная: листинг как канал привлечения инвестиций.</td>
+                <td>Среднесрочный</td>
+            </tr>
+            <tr>
+                <td>Ц3</td>
+                <td>«Укрепление доверия потребителя и инвестора к финансовому рынку через усиление его защищенности»</td>
+                <td>ОНРФР 2026–2028</td>
+                <td><span class="tag tag-strategic">Стратегическая</span></td>
+                <td>Прямая: стандарты листинга как инструмент защиты.</td>
+                <td>Среднесрочный</td>
+            </tr>
+            <tr>
+                <td>Ц4</td>
+                <td>«Повышение роли рынка капитала как источника финансирования бизнеса»</td>
+                <td>Проект ОНРФР 2025–2027</td>
+                <td><span class="tag tag-strategic">Стратегическая</span></td>
+                <td>Прямая: развитие IPO/SPO.</td>
+                <td>3 года</td>
+            </tr>
+            <tr>
+                <td>Ц5</td>
+                <td>«Трансформация сбережений в инвестиции через рынок капитала»</td>
+                <td>ОНРФР (Введение)</td>
+                <td><span class="tag tag-strategic">Стратегический принцип</span></td>
+                <td>Прямая: публичный статус и стандарты раскрытия.</td>
+                <td>Долгосрочный</td>
+            </tr>
+            <tr>
+                <td>Ц6</td>
+                <td>«Субсидирование долевого финансирования для выравнивания условий с кредитованием»</td>
+                <td>ОНРФР (Меры поддержки)</td>
+                <td><span class="tag tag-operational">Операционная</span></td>
+                <td>Прямая: стимулирование выхода на листинг.</td>
+                <td>Среднесрочный</td>
+            </tr>
+            <tr>
+                <td>Ц7</td>
+                <td>«Упрощение эмиссионных процедур и снижение издержек выхода на рынок»</td>
+                <td>Доклад ЦБ «Упрощение эмиссии»</td>
+                <td><span class="tag tag-operational">Операционная</span></td>
+                <td>Прямая: упрощение допуска к торгам.</td>
+                <td>2022–2026</td>
+            </tr>
+            <tr>
+                <td>Ц8</td>
+                <td>«Повышение прозрачности публичных размещений (аллокация, lock-up, прогнозы)»</td>
+                <td>ОНРФР (Раздел IPO)</td>
+                <td><span class="tag tag-operational">Операционная</span></td>
+                <td>Прямая: новые требования к IPO/листингу.</td>
+                <td>Среднесрочный</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="conclusion-box">
+        <strong>Ключевой вывод (Трек А):</strong> Цели формируют триединую конструкцию: <strong>1)</strong> Количественный рост капитализации/IPO (ответ на политический запрос), <strong>2)</strong> Трансформация сбережений в инвестиции (функциональная роль), <strong>3)</strong> Защита инвесторов (институциональное качество среды).
+    </div>
+
+    <h2>2. Реестр проблем (Трек Б)</h2>
+    <p>Проблемы текущего режима листинга, артикулированные регулятором, рынком и экспертами.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 3%">№</th>
+                <th style="width: 35%">Формулировка проблемы</th>
+                <th style="width: 18%">Источник</th>
+                <th style="width: 12%">Кто артикулирует</th>
+                <th style="width: 10%">Инструменты</th>
+                <th style="width: 10%">Фаза</th>
+                <th style="width: 12%">Консенсус</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>П1</td>
+                <td><strong>Низкая капитализация:</strong> ~24% ВВП вместо целевых 66%.</td>
+                <td>ОНРФР, РБК</td>
+                <td>ЦБ, Минфин</td>
+                <td>Все</td>
+                <td>Все</td>
+                <td>Широкий</td>
+            </tr>
+            <tr>
+                <td>П2</td>
+                <td><strong>Недостаточный объем IPO:</strong> мало крупных размещений, недостаточно для достижения целей.</td>
+                <td>ОНРФР, НАУФОР</td>
+                <td>ЦБ, НАУФОР</td>
+                <td>Акции</td>
+                <td>Допуск</td>
+                <td>Широкий</td>
+            </tr>
+            <tr>
+                <td>П3</td>
+                <td><strong>Низкий free float:</strong> манипулируемость рынка, низкая ликвидность.</td>
+                <td>Выступления ЦБ</td>
+                <td>ЦБ РФ</td>
+                <td>Акции</td>
+                <td>Поддержание</td>
+                <td>Широкий</td>
+            </tr>
+            <tr>
+                <td>П4</td>
+                <td><strong>Дисбаланс стоимости капитала:</strong> депозиты привлекательнее акций.</td>
+                <td>РБК, Сибур</td>
+                <td>Эмитенты</td>
+                <td>Акции</td>
+                <td>Допуск</td>
+                <td>Широкий</td>
+            </tr>
+            <tr>
+                <td>П5</td>
+                <td><strong>Качество эмитентов:</strong> слабое корпоративное управление и раскрытие.</td>
+                <td>ОНРФР</td>
+                <td>ЦБ РФ</td>
+                <td>Акции/Облигации</td>
+                <td>Допуск/Поддержание</td>
+                <td>Широкий</td>
+            </tr>
+            <tr>
+                <td>П6</td>
+                <td><strong>Риски для инвесторов в IPO:</strong> падение котировок после размещения.</td>
+                <td>BCS Express, РБК</td>
+                <td>Эксперты</td>
+                <td>Акции</td>
+                <td>Допуск</td>
+                <td>Широкий</td>
+            </tr>
+            <tr>
+                <td>П7</td>
+                <td><strong>Барьеры выхода:</strong> административные и новые регуляторные требования (аналитика, прогнозы).</td>
+                <td>НАУФОР, BCS</td>
+                <td>Участники рынка</td>
+                <td>Акции</td>
+                <td>Допуск</td>
+                <td>Спорный</td>
+            </tr>
+            <tr>
+                <td>П8</td>
+                <td><strong>Проблемы делистинга:</strong> защита миноритариев при выходе компании (кейс Polymetal).</td>
+                <td>Forbes, Суды</td>
+                <td>Инвесторы, Суды</td>
+                <td>Акции</td>
+                <td>Делистинг</td>
+                <td>Локальный</td>
+            </tr>
+            <tr>
+                <td>П9</td>
+                <td><strong>Санкционные риски:</strong> блокировка иностранных активов, проблемы учета.</td>
+                <td>Forbes, ЦБ</td>
+                <td>ЦБ, Инвесторы</td>
+                <td>Иностранные акции</td>
+                <td>Все</td>
+                <td>Широкий</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>3. Карта «Цели — Проблемы — Конфликты»</h2>
+    <p>Синтетический анализ взаимосвязей и противоречий в регулировании.</p>
+
+    <div class="mermaid">
+    mindmap
+      root((Регулирование листинга))
+        Цели
+          Рост капитализации и числа IPO
+          Трансформация сбережений
+          Защита инвесторов
+        Проблемы
+          Низкая капитализация
+          Высокие риски в IPO
+          Низкий free float
+          Слабое качество эмитентов
+          Барьеры для выхода
+          Проблемы делистинга
+          Санкционные ограничения
+        Конфликты
+          Доступность vs Защита
+          Упрощение vs Контроль
+          Стимулы vs Бюджет
+          Развитие vs Санкции
+    </div>
+
+    <h3>Основные конфликты</h3>
+    <ul>
+        <li><strong>Доступность IPO vs Защита инвесторов.</strong> Упрощение выхода (Ц7) конфликтует с ужесточением требований к прозрачности (Ц8). Решение проблем защиты (П6) через новые нормы создает новые барьеры (П7).</li>
+        <li><strong>Рост капитализации vs Качество эмитентов.</strong> Давление за количество IPO (Ц1) входит в противоречие с требованиями качества (П5). Риск «размывания» стандартов.</li>
+        <li><strong>Стимулы для эмитентов vs Фискальные ограничения.</strong> Инициативы по субсидированию IPO (Ц6) сталкиваются с сопротивлением министерств и бюджетными ограничениями (П4).</li>
+        <li><strong>Развитие рынка vs Санкционные ограничения.</strong> Стратегия развития (Ц2) наталкивается на технические и инфраструктурные барьеры (П9), сужающие инструментальную базу.</li>
+    </ul>
+
+    <h3>Слепые зоны</h3>
+    <p>Выявлены области, где артикулированные цели не покрывают существующие проблемы:</p>
+    <ul>
+        <li><strong>Продолжающийся листинг (Continuing obligations):</strong> Основной фокус — на допуске (IPO). Проблемы поддержания стандартов после выхода (П3, П5) проработаны слабее.</li>
+        <li><strong>Конфликт интересов биржи:</strong> Роль биржи как коммерческого оператора и регулятора листинга не обсуждается явно.</li>
+        <li><strong>Сегмент облигаций:</strong> Акцент на акциях (IPO) оставляет в тени проблемы облигационного рынка и структурированных продуктов.</li>
+    </ul>
+
+    <h2>4. Итоговые выводы для исследования</h2>
+    
+    <h3>Outcome variable (Переменная результата)</h3>
+    <p>Для конфигурационного анализа предложен комбинированный показатель:</p>
+    <div class="conclusion-box">
+        <strong>«Успешность рынка капитала» =</strong> (Объем IPO / Капитализация к ВВП) + (Индекс защиты инвесторов / Качество disclosure).
+    </div>
+
+    <h3>Приоритетные проблемы для поиска решений (Линдблом)</h3>
+    <ol>
+        <li>Недостаточный масштаб рынка IPO (П1, П2).</li>
+        <li>Высокие риски для розничных инвесторов (П6).</li>
+        <li>Низкий free float и ликвидность (П3).</li>
+        <li>Барьеры выхода для МСП (П7).</li>
+        <li>Процедуры делистинга и права миноритариев (П8).</li>
+        <li>Вовлечение «длинных денег» (П5).</li>
+    </ol>
+
+</div>
+
+<script>
+    mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+</script>
+
+</body>
+</html>

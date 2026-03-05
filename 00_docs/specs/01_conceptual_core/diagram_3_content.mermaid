@@ -1,0 +1,64 @@
+---
+title: "Концептуальное ядро v0 — Регулятивное содержание (Блок Д)"
+---
+graph TD
+    G01["Г01. Режим допуска<br/>(площадка × уровень × инструмент)"]
+
+    subgraph LIFECYCLE["Фазы жизненного цикла (Г07)"]
+        direction LR
+        LC1["Г07.1<br/>Первичный<br/>допуск"]
+        LC2["Г07.2<br/>Поддержание"]
+        LC3["Г07.3<br/>Приостановка"]
+        LC4["Г07.4<br/>Исключение"]
+    end
+
+    subgraph CONTENT["Типы регулятивного содержания (Блок Д)"]
+        D01["Д01. Требования<br/>(количественные /<br/>качественные)"]
+        D02["Д02. Процедуры"]
+        D03["Д03. Мониторинг<br/>и надзор"]
+        D04["Д04. Санкции и<br/>enforcement"]
+        D05["Д05. Раскрытие<br/>информации"]
+    end
+
+    D06["Д06. Регуляторное<br/>обоснование"]
+
+    V04["В04. Разделение:<br/>к эмитенту /<br/>к инструменту"]
+
+    G01 --> LIFECYCLE
+    G01 --> CONTENT
+
+    subgraph MATRIX["Матрица 4×5: каждая ячейка = исследовательский вопрос"]
+        M1["Г07.1 × Д01<br/>Пороги допуска"]
+        M2["Г07.1 × Д02<br/>Процедура допуска"]
+        M3["Г07.2 × Д01<br/>Пороги поддержания"]
+        M4["Г07.2 × Д03<br/>Кто проверяет"]
+        M5["Г07.4 × Д01<br/>Основания исключения"]
+        MDOTS["... 20 ячеек"]
+    end
+
+    LC1 --> M1
+    LC1 --> M2
+    LC2 --> M3
+    LC2 --> M4
+    LC4 --> M5
+    D01 --> M1
+    D02 --> M2
+    D01 --> M3
+    D03 --> M4
+    D01 --> M5
+
+    D06 -.->|сквозное<br/>измерение| MATRIX
+    V04 -.->|аналитическое<br/>деление внутри| D01
+
+    %% Стили
+    classDef phase fill:#e0e8f8,stroke:#4169e1,stroke-width:2px
+    classDef content fill:#d8e8d0,stroke:#5a7b4a,stroke-width:2px
+    classDef matrix fill:#f8f0e0,stroke:#b8860b,stroke-width:1px
+    classDef rationale fill:#f0d8f0,stroke:#8b008b,stroke-width:2px,stroke-dasharray:5 5
+    classDef regime fill:#f0e6d0,stroke:#b8860b,stroke-width:2px
+
+    class LC1,LC2,LC3,LC4 phase
+    class D01,D02,D03,D04,D05 content
+    class M1,M2,M3,M4,M5,MDOTS matrix
+    class D06 rationale
+    class G01 regime

@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Регуляторные цели и проблемы Банка России в сфере листинга (2022–2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF7;
+    --surface: #FFFFFF;
+    --text: #1A1A1A;
+    --text-secondary: #4A4A4A;
+    --text-muted: #7A7A7A;
+    --accent: #1B4F72;
+    --accent-light: #2980B9;
+    --accent-bg: #EBF5FB;
+    --border: #D5D8DC;
+    --border-light: #E8E8E4;
+    --warning: #935116;
+    --warning-bg: #FEF5E7;
+    --conflict: #78281F;
+    --conflict-bg: #FDEDEC;
+    --blind: #6C3483;
+    --blind-bg: #F4ECF7;
+    --table-header: #1B4F72;
+    --table-stripe: #F8F9F9;
+    --source-bg: #F0F3F4;
+    --kpi-red: #C0392B;
+    --kpi-yellow: #D4AC0D;
+    --kpi-green: #1E8449;
+    --serif: 'Merriweather', Georgia, serif;
+    --sans: 'Source Sans 3', 'Segoe UI', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- NAV --- */
+  .side-nav {
+    position: fixed;
+    top: 0; left: 0;
+    width: 280px;
+    height: 100vh;
+    background: #1B2631;
+    color: #D5D8DC;
+    padding: 2rem 1.25rem;
+    overflow-y: auto;
+    z-index: 100;
+    font-size: 13px;
+    border-right: 1px solid #2C3E50;
+  }
+  .side-nav::-webkit-scrollbar { width: 4px; }
+  .side-nav::-webkit-scrollbar-thumb { background: #4A6274; border-radius: 2px; }
+
+  .nav-title {
+    font-family: var(--serif);
+    font-size: 14px;
+    font-weight: 700;
+    color: #ECF0F1;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  .nav-subtitle {
+    font-size: 11px;
+    color: #7F8C8D;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #2C3E50;
+  }
+  .nav-section {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #5D6D7E;
+    margin: 1.25rem 0 0.5rem;
+  }
+  .side-nav a {
+    display: block;
+    color: #AEB6BF;
+    text-decoration: none;
+    padding: 4px 0 4px 12px;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    line-height: 1.5;
+  }
+  .side-nav a:hover {
+    color: #ECF0F1;
+    border-left-color: var(--accent-light);
+    background: rgba(255,255,255,0.03);
+  }
+
+  /* --- MAIN --- */
+  .main {
+    margin-left: 280px;
+    max-width: 900px;
+    padding: 3rem 3rem 6rem;
+  }
+
+  /* --- HEADER --- */
+  .doc-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 3px solid var(--accent);
+  }
+  .doc-header h1 {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.35;
+    margin-bottom: 0.75rem;
+  }
+  .doc-header .meta {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+  .doc-header .meta span {
+    margin-right: 1.5rem;
+  }
+
+  /* --- EXECUTIVE SUMMARY --- */
+  .exec-summary {
+    background: #0B2537;
+    color: #FFFFFF;
+    padding: 2rem 2.25rem;
+    border-radius: 4px;
+    margin-bottom: 3rem;
+    line-height: 1.75;
+  }
+  .exec-summary h2 {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #FFFFFF;
+  }
+  .exec-summary p { font-size: 15px; margin-bottom: 0.75rem; color: #E0E7EE; }
+  .exec-summary p:last-child { margin-bottom: 0; }
+  .exec-summary strong { color: #FFD666; font-weight: 700; }
+
+  /* --- SECTIONS --- */
+  h2 {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 2.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-light);
+  }
+  h3 {
+    font-family: var(--sans);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 1.75rem 0 0.75rem;
+  }
+  p {
+    margin-bottom: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  /* --- TABLES --- */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 1.25rem 0 1.75rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  thead th {
+    background: var(--table-header);
+    color: #FFFFFF;
+    font-weight: 600;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  thead th:first-child { border-radius: 4px 0 0 0; }
+  thead th:last-child { border-radius: 0 4px 0 0; }
+  tbody td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even) td { background: var(--table-stripe); }
+  tbody tr:hover td { background: var(--accent-bg); }
+
+  /* --- KPI BADGES --- */
+  .kpi-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .kpi-critical { background: #FADBD8; color: var(--kpi-red); }
+  .kpi-moderate { background: #FEF9E7; color: var(--kpi-yellow); }
+  .kpi-low { background: #D5F5E3; color: var(--kpi-green); }
+  .kpi-high { background: #FADBD8; color: var(--kpi-red); }
+
+  /* --- CALLOUT BOXES --- */
+  .callout {
+    padding: 1.25rem 1.5rem;
+    border-radius: 4px;
+    margin: 1.5rem 0;
+    border-left: 4px solid;
+    font-size: 14.5px;
+  }
+  .callout p { margin-bottom: 0.5rem; color: inherit; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout-conflict {
+    background: var(--conflict-bg);
+    border-color: var(--conflict);
+    color: #641E16;
+  }
+  .callout-blind {
+    background: var(--blind-bg);
+    border-color: var(--blind);
+    color: #4A235A;
+  }
+  .callout-info {
+    background: var(--accent-bg);
+    border-color: var(--accent-light);
+    color: #1A5276;
+  }
+  .callout-warning {
+    background: var(--warning-bg);
+    border-color: var(--warning);
+    color: #6E2C00;
+  }
+  .callout-title {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  /* --- SOURCE REFERENCES --- */
+  .source-ref {
+    font-size: 12px;
+    color: var(--accent-light);
+    vertical-align: super;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 1px;
+  }
+  .source-ref:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .sources-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border);
+  }
+  .sources-section h2 { border-bottom: none; }
+  .source-list {
+    list-style: none;
+    padding: 0;
+    font-size: 13.5px;
+  }
+  .source-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    gap: 10px;
+    line-height: 1.5;
+  }
+  .source-list li:last-child { border-bottom: none; }
+  .source-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent-light);
+    font-weight: 700;
+    min-width: 28px;
+    flex-shrink: 0;
+  }
+  .source-list a {
+    color: var(--accent-light);
+    text-decoration: none;
+    word-break: break-all;
+    font-size: 12px;
+  }
+  .source-list a:hover { text-decoration: underline; }
+  .source-desc {
+    color: var(--text-secondary);
+  }
+  .source-domain {
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  /* --- CONFLICT CARDS --- */
+  .conflict-grid {
+    display: grid;
+    gap: 1rem;
+    margin: 1.25rem 0;
+  }
+  .conflict-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.25rem 1.5rem;
+    border-left: 4px solid var(--conflict);
+  }
+  .conflict-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--conflict);
+    margin-bottom: 0.5rem;
+  }
+  .conflict-card p {
+    font-size: 14px;
+    margin-bottom: 0.4rem;
+  }
+  .conflict-card .tag {
+    display: inline-block;
+    font-size: 11px;
+    background: var(--conflict-bg);
+    color: var(--conflict);
+    padding: 1px 7px;
+    border-radius: 3px;
+    margin-right: 4px;
+    font-weight: 600;
+  }
+
+  /* --- OUTCOME VARIABLE BOX --- */
+  .outcome-box {
+    background: linear-gradient(135deg, #1B4F72 0%, #2C3E50 100%);
+    color: #ECF0F1;
+    padding: 2rem 2.25rem;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+  }
+  .outcome-box h3 {
+    color: #F9E79F;
+    margin-top: 0;
+    font-size: 16px;
+  }
+  .outcome-box p { color: #D5D8DC; font-size: 15px; }
+  .outcome-box strong { color: #F9E79F; }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 1100px) {
+    .side-nav { display: none; }
+    .main { margin-left: 0; padding: 2rem 1.5rem 4rem; }
+  }
+  @media print {
+    .side-nav { display: none; }
+    .main { margin-left: 0; max-width: 100%; padding: 1rem; }
+    .exec-summary, .outcome-box { background: #F0F0F0 !important; color: #000 !important; }
+    .exec-summary strong, .outcome-box strong, .outcome-box h3 { color: #000 !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="side-nav">
+  <div class="nav-title">Регуляторные цели и проблемы листинга</div>
+  <div class="nav-subtitle">Банк России, 2022–2026</div>
+
+  <div class="nav-section">Обзор</div>
+  <a href="#summary">Ключевые выводы</a>
+  <a href="#method">Методология</a>
+
+  <div class="nav-section">Цели</div>
+  <a href="#goals">Стратегические цели</a>
+  <a href="#kpi">Количественные KPI</a>
+  <a href="#topdown">Установки «сверху вниз»</a>
+  <a href="#balance">Баланс: эмитенты vs инвесторы</a>
+
+  <div class="nav-section">Проблемы</div>
+  <a href="#problems-regulator">Проблемы (регулятор)</a>
+  <a href="#problems-market">Проблемы (рынок)</a>
+  <a href="#sanctions">Влияние санкций</a>
+  <a href="#timeline">Хронология изменений</a>
+
+  <div class="nav-section">Синтез</div>
+  <a href="#conflicts">Конфликты целей</a>
+  <a href="#blind-spots">Слепые зоны</a>
+  <a href="#outcome">Outcome variable</a>
+  <a href="#jurisdictions">Юрисдикции для сравнения</a>
+
+  <div class="nav-section">Приложения</div>
+  <a href="#proposals">Предложения по реформам</a>
+  <a href="#sources">Источники</a>
+</nav>
+
+<main class="main">
+
+<!-- HEADER -->
+<header class="doc-header" id="top">
+  <h1>Регуляторные цели и проблемы Банка России в сфере листинга</h1>
+  <div class="meta">
+    <span>📅 04 марта 2026</span>
+    <span>📊 Предварительное исследование</span>
+    <span>🔍 Parallel AI Deep Research</span>
+  </div>
+</header>
+
+<!-- EXECUTIVE SUMMARY -->
+<div class="exec-summary" id="summary">
+  <h2>Ключевые выводы</h2>
+  <p>Российский рынок капитала находится в точке критического разрыва между <strong>амбициозными государственными KPI</strong> (капитализация 66% ВВП к 2030 году) и <strong>рыночной реальностью</strong> (24,1% ВВП на конец 2025). Разрыв в 2,7 раза за 4 года до дедлайна определяет всю регуляторную повестку.</p>
+  <p>Режим листинга оказывается в центре <strong>четырёх системных конфликтов</strong>: массовый выход эмитентов vs защита розницы; доступность для МСП vs качество рынка; коммерческие интересы биржи vs регуляторное качество; указные KPI vs рыночная реальность.</p>
+  <p>Выявлены <strong>три слепые зоны</strong>, не покрытые артикулированными целями: делистинг и защита миноритариев при выходе; continuing obligations; специфика листинга облигаций и фондов.</p>
+</div>
+
+<!-- METHODOLOGY -->
+<h2 id="method">Методология исследования</h2>
+<p>Исследование проведено по двум параллельным трекам с использованием Parallel AI Deep Research (процессор ultra):</p>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Трек</th><th>Фокус</th><th>Источники</th></tr></thead>
+  <tbody>
+    <tr><td><strong>А. Официальные документы</strong></td><td>Артикулированные цели, KPI, нормативные изменения</td><td>ОНРФР, Указы Президента, доклады ЦБ, выступления руководства</td></tr>
+    <tr><td><strong>Б. Экспертный дискурс</strong></td><td>Проблемы, критика, предложения по реформированию</td><td>НАУФОР, MOEX, деловые СМИ, аналитические публикации</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Временной горизонт: 2022–2026, с акцентом на 2024–2026 как период стабилизации повестки. Все утверждения атрибутированы к источникам (см. <a href="#sources">раздел «Источники»</a>).</p>
+
+<!-- ===== SECTION: GOALS ===== -->
+<h2 id="goals">1. Стратегические цели</h2>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th style="width:40px">#</th><th>Формулировка цели</th><th>Источник</th><th>Связь с листингом</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ц1</td>
+      <td>Развитие рынка капитала как источника финансирования бизнеса (замещение банковского кредита)</td>
+      <td>ОНРФР 2026-2028<a href="#src-5" class="source-ref">[5]</a> <a href="#src-7" class="source-ref">[7]</a></td>
+      <td><strong>Прямая</strong> — листинг = точка входа капитала в экономику</td>
+    </tr>
+    <tr>
+      <td>Ц2</td>
+      <td>Содействие структурной трансформации экономики (перенаправление капитала в приоритетные отрасли)</td>
+      <td>ОНРФР 2026-2028<a href="#src-7" class="source-ref">[7]</a></td>
+      <td><strong>Косвенная</strong> — через сегментацию (технологический сектор, МСП)</td>
+    </tr>
+    <tr>
+      <td>Ц3</td>
+      <td>Финансовый суверенитет (замещение выпавших иностранных инвестиций внутренним акционерным капиталом)</td>
+      <td>Указ Президента №309<a href="#src-4" class="source-ref">[4]</a>; ОНРФР</td>
+      <td><strong>Прямая</strong> — внутренний листинг как безальтернативный канал</td>
+    </tr>
+    <tr>
+      <td>Ц4</td>
+      <td>Повышение благосостояния граждан через инструменты финансового рынка</td>
+      <td>ОНРФР 2025-2027<a href="#src-10" class="source-ref">[10]</a></td>
+      <td><strong>Косвенная</strong> — граждане инвестируют в листингованные бумаги</td>
+    </tr>
+    <tr>
+      <td>Ц5</td>
+      <td>Технологический суверенитет (IPO для финансирования высокотехнологичных компаний)</td>
+      <td>Послание Президента 29.02.2024; программы МЭР<a href="#src-22" class="source-ref">[22]</a></td>
+      <td><strong>Прямая</strong> — спецрежим листинга для техкомпаний</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout-info">
+  <div class="callout-title">💡 Ключевое наблюдение</div>
+  <p>Цели эволюционировали от антикризисной адаптации (2022–2023) к активному использованию рынка для замещения банковского кредитования и внешнего долга. Листинг/IPO артикулируются как главный механизм привлечения «длинных денег» в экономику.</p>
+</div>
+
+<!-- KPI -->
+<h3 id="kpi">1.1. Количественные KPI</h3>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Метрика</th><th>Целевое значение</th><th>Факт (конец 2025)</th><th>Разрыв</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Капитализация рынка / ВВП</td>
+      <td>66% к 2030, 75% к 2036<a href="#src-3" class="source-ref">[3]</a><a href="#src-4" class="source-ref">[4]</a></td>
+      <td>24,1%<a href="#src-5" class="source-ref">[5]</a></td>
+      <td><span class="kpi-badge kpi-critical">Критический ×2,7</span></td>
+    </tr>
+    <tr>
+      <td>Объём облигаций в обращении</td>
+      <td>Удвоение к 2030</td>
+      <td>63,7 трлн руб. (30,2% ВВП)</td>
+      <td><span class="kpi-badge kpi-moderate">Умеренный</span></td>
+    </tr>
+    <tr>
+      <td>Доля долгосрочных сбережений</td>
+      <td>40% к 2030</td>
+      <td>37,1%</td>
+      <td><span class="kpi-badge kpi-low">Низкий</span></td>
+    </tr>
+    <tr>
+      <td>Фактическое участие НПФ в акциях</td>
+      <td>Лимит ~40%</td>
+      <td>7,4%</td>
+      <td><span class="kpi-badge kpi-high">Высокий</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout-warning">
+  <div class="callout-title">⚠️ Противоречие в источниках</div>
+  <p>Рост инвестиций к 2030 году: в стратегических документах указан на уровне 60%, в Послании Президента — 70%. Требуется официальная унификация KPI. Отдельный разрыв — НПФ: разрешённый лимит ~40%, фактическая аллокация 7,4%. Регуляторные послабления (снижение порога выпуска до 3 млрд) не конвертировались в реальные инвестиции.</p>
+</div>
+
+<!-- TOP-DOWN -->
+<h3 id="topdown">1.2. Установки «сверху вниз»</h3>
+<p><strong>Указ Президента №309 (май 2024)</strong> — задаёт жёсткий KPI: капитализация фондового рынка 66% ВВП к 2030 году<a href="#src-4" class="source-ref">[4]</a>. Это обязывающий документ, а не ориентир. Для его выполнения необходимы ежегодные новые размещения на сумму порядка 1 трлн рублей<a href="#src-1" class="source-ref">[1]</a> и/или массовый вывод крупных госкомпаний на биржу.</p>
+<p><strong>Послание Президента (29.02.2024)</strong> — поручение создать специальный режим IPO для высокотехнологичных компаний с компенсацией затрат на размещение.</p>
+
+<!-- BALANCE -->
+<h3 id="balance">1.3. Баланс: привлечение эмитентов vs защита инвесторов</h3>
+<p>В 2024–2026 маятник качнулся в сторону защиты розничных инвесторов:</p>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Мера</th><th>Дата</th><th>Содержание</th></tr></thead>
+  <tbody>
+    <tr><td>Ограничение доступа к иностранным бумагам</td><td>01.01.2025</td><td>Только квалифицированные инвесторы (кроме ЕАЭС)<a href="#src-13" class="source-ref">[13]</a></td></tr>
+    <tr><td>Повышение порога квалификации</td><td>02.2025</td><td>6 → 12 млн руб.</td></tr>
+    <tr><td>Повышение порога квалификации</td><td>01.01.2026</td><td>12 → 24 млн руб.<a href="#src-6" class="source-ref">[6]</a></td></tr>
+    <tr><td>IPO white paper</td><td>2025–2026</td><td>Раскрытие моделей справедливой стоимости при размещениях</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ===== SECTION: PROBLEMS ===== -->
+<h2 id="problems-regulator">2. Проблемы текущего режима: позиция регулятора</h2>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th style="width:40px">#</th><th>Проблема</th><th>Класс инструментов</th><th>Фаза ЖЦ</th></tr></thead>
+  <tbody>
+    <tr><td>ПА1</td><td>Недостаточная информационная прозрачность эмитентов, риски манипулирования рынком</td><td>Все (акцент — акции)</td><td>Поддержание</td></tr>
+    <tr><td>ПА2</td><td>Дефицит институционального спроса (НПФ факт 7,4% при лимите 40%)</td><td>Акции</td><td>Допуск (IPO)</td></tr>
+    <tr><td>ПА3</td><td>Уход иностранного капитала, необходимость опоры исключительно на внутренние ресурсы</td><td>Все</td><td>Все</td></tr>
+    <tr><td>ПА4</td><td>Инфраструктурные ИТ-риски (уход зарубежных поставщиков ПО и СУБД)</td><td>Все</td><td>Все</td></tr>
+    <tr><td>ПА5</td><td>Ограниченность банковского кредитования как источника финансирования в условиях высоких ставок</td><td>Все</td><td>Допуск</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="problems-market">3. Проблемы текущего режима: позиция рынка и экспертов</h2>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th style="width:40px">#</th><th>Проблема</th><th>Кто артикулирует</th><th>Консенсус</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>ПБ1</td>
+      <td><strong>Рассинхронизация free-float:</strong> ЦБ требует 5% для 2-го уровня, MOEX ввела льготу 1% до 06.2027<a href="#src-14" class="source-ref">[14]</a><a href="#src-15" class="source-ref">[15]</a> — регуляторный арбитраж</td>
+      <td>Аналитики, участники рынка</td>
+      <td><span class="kpi-badge kpi-critical">Широкий</span></td>
+    </tr>
+    <tr>
+      <td>ПБ2</td>
+      <td><strong>Пробел в ответственности организаторов IPO</strong> за содержание проспекта (модель best efforts). ЦБ планирует закрепить ответственность к 2026<a href="#src-16" class="source-ref">[16]</a>, НАУФОР категорически против</td>
+      <td>ЦБ vs НАУФОР</td>
+      <td><span class="kpi-badge kpi-high">Спорная</span></td>
+    </tr>
+    <tr>
+      <td>ПБ3</td>
+      <td><strong>Манипулятивная волатильность в 3-м эшелоне:</strong> 63 кейса pump-and-dump за 9 мес 2023 vs 12 за весь 2022 год</td>
+      <td>Регулятор, аналитики</td>
+      <td><span class="kpi-badge kpi-critical">Широкий</span></td>
+    </tr>
+    <tr>
+      <td>ПБ4</td>
+      <td><strong>Уязвимость миноритариев при делистинге:</strong> выкуп по нерепрезентативной средневзвешенной цене при длительных приостановках торгов<a href="#src-20" class="source-ref">[20]</a></td>
+      <td>Экспертное сообщество, розница</td>
+      <td><span class="kpi-badge kpi-critical">Широкий</span></td>
+    </tr>
+    <tr>
+      <td>ПБ5</td>
+      <td><strong>Отсутствие сегмента Growth</strong> для малых технологических компаний / МСП<a href="#src-22" class="source-ref">[22]</a></td>
+      <td>Эксперты, МЭР</td>
+      <td><span class="kpi-badge kpi-moderate">Умеренный</span></td>
+    </tr>
+    <tr>
+      <td>ПБ6</td>
+      <td><strong>Апгрейды уровней листинга</strong> без устойчивого подтверждения ликвидности<a href="#src-17" class="source-ref">[17]</a></td>
+      <td>Инвесторы</td>
+      <td><span class="kpi-badge kpi-moderate">Умеренный</span></td>
+    </tr>
+    <tr>
+      <td>ПБ7</td>
+      <td><strong>Конфликт интересов MOEX</strong> как коммерческой организации (комиссии) и квази-регулятора (качество отбора)<a href="#src-21" class="source-ref">[21]</a></td>
+      <td>Эксперты</td>
+      <td><span class="kpi-badge kpi-moderate">Умеренный</span></td>
+    </tr>
+    <tr>
+      <td>ПБ8</td>
+      <td><strong>ESG-облигации:</strong> высокие издержки верификации, отсутствие единого нацстандарта нефинансовой отчётности<a href="#src-23" class="source-ref">[23]</a></td>
+      <td>Эмитенты, МЭР</td>
+      <td><span class="kpi-badge kpi-low">Узкий</span></td>
+    </tr>
+    <tr>
+      <td>ПБ9</td>
+      <td><strong>Налог на купонный доход</strong> повышен с 15% до 20% с 2025 года<a href="#src-24" class="source-ref">[24]</a></td>
+      <td>Участники рынка</td>
+      <td><span class="kpi-badge kpi-critical">Широкий</span></td>
+    </tr>
+    <tr>
+      <td>ПБ10</td>
+      <td><strong>Санкционные последствия:</strong> заблокированные активы фондов, курсовые налоговые риски замещающих облигаций<a href="#src-18" class="source-ref">[18]</a><a href="#src-19" class="source-ref">[19]</a></td>
+      <td>Участники рынка, УК</td>
+      <td><span class="kpi-badge kpi-critical">Широкий</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- EVOLVING LISTING RULES -->
+<h3>3.1. Эволюция правил листинга MOEX</h3>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Параметр</th><th>Уровень 1</th><th>Уровень 2</th><th>Уровень 3</th></tr></thead>
+  <tbody>
+    <tr><td>Free-float, %</td><td>10% (допуск) / 7,5% (поддержание)</td><td>5% (ЦБ) vs 1% (льгота MOEX до 30.06.2027)</td><td>Не регламентировано</td></tr>
+    <tr><td>Free-float cap (абс.)</td><td>н/д</td><td>≥ 2 млрд руб. (обыкн.), ≥ 1 млрд (преф.)</td><td>н/д</td></tr>
+    <tr><td>Ликвидность (медианный оборот)</td><td>≥ 20 млн руб./день</td><td>≥ 3 млн руб./день</td><td>н/д</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:13px; color: var(--text-muted);">Источник: правила листинга MOEX с 01.11.2025<a href="#src-14" class="source-ref">[14]</a><a href="#src-15" class="source-ref">[15]</a></p>
+
+<!-- SANCTIONS -->
+<h2 id="sanctions">4. Влияние санкций на режим листинга</h2>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Мера / Проблема</th><th>НПА / Дата</th><th>Эффект</th><th>Остаточные риски</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Ограничение доступа к иностранным бумагам</td>
+      <td>Указание ЦБ №6885-У, 01.01.2025<a href="#src-12" class="source-ref">[12]</a></td>
+      <td>Доступ только для квалифицированных инвесторов (кроме ЕАЭС)</td>
+      <td>Сужение диверсификации для розницы, концентрация</td>
+    </tr>
+    <tr>
+      <td>Блокировка активов фондов</td>
+      <td>Решение ЦБ, 15.10.2023</td>
+      <td>Выделение заблокированных бумаг (>10%) в спец-ЗПИФы<a href="#src-18" class="source-ref">[18]</a></td>
+      <td>Сложности с оценкой СЧА, издержки УК</td>
+    </tr>
+    <tr>
+      <td>Замещение еврооблигаций</td>
+      <td>ФЗ о сохранении льгот, 25.01.2024<a href="#src-19" class="source-ref">[19]</a></td>
+      <td>Сохранение льготы на долгосрочное владение (ЛДВ)</td>
+      <td>Курсовые налоговые риски при погашении</td>
+    </tr>
+    <tr>
+      <td>Депозитарные мосты с дружественными юрисдикциями</td>
+      <td>Заявлены в ОНРФР</td>
+      <td>Пока не реализованы</td>
+      <td>Вторичные санкционные риски для партнёров</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- TIMELINE -->
+<h2 id="timeline">5. Хронология нормативных изменений (2022–2026)</h2>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Дата</th><th>Акт / Инициатива</th><th>Влияние на листинг</th></tr></thead>
+  <tbody>
+    <tr><td>2022–2023</td><td>Антикризисные меры ЦБ</td><td>Временные послабления по раскрытию информации и капитальному контролю<a href="#src-13" class="source-ref">[13]</a></td></tr>
+    <tr><td>Май–Июнь 2024</td><td>Указания ЦБ №6732-У, 6759-У</td><td>Упрощение участия НПФ в IPO; снижение мин. объёма выпуска до 3 млрд руб.</td></tr>
+    <tr><td>01.01.2025</td><td>Изменения в 39-ФЗ</td><td>Иностранные бумаги (кроме ЕАЭС) доступны только квалифицированным инвесторам<a href="#src-12" class="source-ref">[12]</a></td></tr>
+    <tr><td>10.02.2025</td><td>Указание ЦБ</td><td>Порог квалификации: 6 → 12 млн руб.</td></tr>
+    <tr><td>01.11.2025</td><td>Обновление правил листинга MOEX</td><td>Льготный free-float 1% для 2-го уровня до 30.06.2027<a href="#src-14" class="source-ref">[14]</a></td></tr>
+    <tr><td>01.01.2026</td><td>Указание ЦБ</td><td>Порог квалификации: 12 → 24 млн руб.<a href="#src-6" class="source-ref">[6]</a></td></tr>
+    <tr><td>10.02.2026</td><td>Информационное письмо ЦБ</td><td>Изменения в порядок допуска; усилена обязанность организатора торговли<a href="#src-11" class="source-ref">[11]</a></td></tr>
+    <tr><td>01.03.2026</td><td>Поправки в 39-ФЗ</td><td>Эмиссионные документы исключительно в электронной форме<a href="#src-8" class="source-ref">[8]</a></td></tr>
+    <tr><td>01.09.2026</td><td>Поправки в 39-ФЗ</td><td>Расширение полномочий ЦБ по учёту прав на иностранные ценные бумаги</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ===== SYNTHESIS ===== -->
+<h2 id="conflicts">6. Конфликты целей в российском контексте</h2>
+
+<div class="conflict-grid">
+
+  <div class="conflict-card">
+    <h4>Конфликт 1. Массовый выход эмитентов vs Защита розницы</h4>
+    <p><span class="tag">Ц1</span><span class="tag">Ц3</span> ↔ <span class="tag">Ц4</span></p>
+    <p>ЦБ ужесточает доступ к инструментам (порог квала: 6→24 млн), одновременно нуждаясь в розничном спросе для поглощения IPO. После ухода иностранцев розница = основная база спроса. Защита розницы сужает спрос, но отсутствие защиты создаёт политические риски.</p>
+    <p><strong>Связанные проблемы:</strong> ПБ2, ПБ3, ПА1</p>
+  </div>
+
+  <div class="conflict-card">
+    <h4>Конфликт 2. Доступность для МСП vs Качество рынка</h4>
+    <p><span class="tag">Ц2</span><span class="tag">Ц5</span> ↔ Качество</p>
+    <p>Рассинхронизация ЦБ и MOEX по free-float (5% vs 1%). Абсолютный порог 2 млрд руб. отсекает МСП даже при льготном 1%. 3-й эшелон уже демонстрирует проблемы качества (63 кейса pump-and-dump).</p>
+    <p><strong>Связанные проблемы:</strong> ПБ1, ПБ5, ПБ6</p>
+  </div>
+
+  <div class="conflict-card">
+    <h4>Конфликт 3. Коммерческие интересы биржи vs Регуляторное качество</h4>
+    <p>MOEX снижает барьеры для привлечения эмитентов (комиссионный доход), ЦБ настаивает на ужесточении. В монобиржевой среде конкуренция площадок не дисциплинирует биржу.</p>
+    <p><strong>Связанные проблемы:</strong> ПБ1, ПБ7</p>
+  </div>
+
+  <div class="conflict-card">
+    <h4>Конфликт 4. Указные KPI vs Рыночная реальность</h4>
+    <p>Разрыв в 2,7 раза (24,1% ВВП vs целевые 66%) за 4 года до дедлайна. Создаёт давление на «количество» в ущерб «качеству». Может вынудить форсировать приватизацию госкомпаний или снижать стандарты листинга.</p>
+    <p><strong>Связанные проблемы:</strong> Все проблемы допуска, ПА2</p>
+  </div>
+
+</div>
+
+<!-- BLIND SPOTS -->
+<h2 id="blind-spots">7. Слепые зоны</h2>
+<p>Проблемы, не покрытые ни одной артикулированной целью:</p>
+
+<div class="callout callout-blind">
+  <div class="callout-title">🔍 Делистинг</div>
+  <p>Ни одна из стратегических целей не покрывает проблематику выхода с рынка. Весь фокус — на входе (IPO, допуск). Проблемы защиты миноритариев при делистинге (ПБ4) и необоснованных апгрейдов (ПБ6) остаются без стратегической рамки.</p>
+</div>
+
+<div class="callout callout-blind">
+  <div class="callout-title">🔍 Поддержание листинга (continuing obligations)</div>
+  <p>Артикулируется только общая проблема «прозрачности» (ПА1), но нет структурированного подхода — что именно должен делать эмитент после допуска и как это контролируется.</p>
+</div>
+
+<div class="callout callout-blind">
+  <div class="callout-title">🔍 Облигации и фонды</div>
+  <p>Цели сфокусированы на акциях/IPO. Облигационный рынок упоминается через KPI (удвоение объёма), но специфика листинга облигаций (рейтинговые требования, ESG-верификация, налогообложение купонов) и фондов (БПИФы, ETF) не артикулирована как предмет регуляторного внимания.</p>
+</div>
+
+<!-- OUTCOME VARIABLE -->
+<h2 id="outcome">8. Outcome variable для конфигурационного анализа</h2>
+
+<div class="outcome-box">
+  <h3>Составная outcome variable (ответ на вопрос Рейгина)</h3>
+  <p><strong>Первичная:</strong> Способность режима листинга обеспечивать приток нового акционерного капитала (число и объём IPO/SPO, рост капитализации).</p>
+  <p><strong>Вторичная (ограничение):</strong> При сохранении адекватной защиты розничных инвесторов (отсутствие массовых потерь, низкий уровень манипуляций).</p>
+  <p style="margin-top:1rem; font-size:14px;">Обоснование: Указ №309 задаёт жёсткий количественный KPI (66% ВВП), что делает «приток капитала» безальтернативным результатом. Но политическая чувствительность потерь розничных инвесторов (= основная база спроса) требует учёта защитного компонента.</p>
+</div>
+
+<p>Для конфигурационного анализа это означает: искать конфигурации институциональных факторов, которые обеспечивают <strong>высокую активность первичного рынка</strong> при <strong>умеренных или низких случаях ущерба розничным инвесторам</strong>.</p>
+
+<!-- JURISDICTIONS -->
+<h3 id="jurisdictions">8.1. Приоритетные юрисдикции для сравнения</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Юрисдикция</th><th>Почему релевантна</th><th>Какие проблемы адресует</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Великобритания</strong> (LSE/AIM)</td><td>Реформа листинга 2024, сегмент Growth, институт Nomad</td><td>ПБ5, ПБ2</td></tr>
+    <tr><td><strong>Гонконг</strong> (HKEX)</td><td>Высокая доля розницы, жёсткий листинг, GEM-сегмент</td><td>Конфликт 1</td></tr>
+    <tr><td><strong>Китай</strong> (SSE/SZSE STAR/ChiNext)</td><td>Госрегулирование, IPO как инструмент промполитики</td><td>Ц2, Ц5</td></tr>
+    <tr><td><strong>Турция</strong> (BIST)</td><td>Emerging market под давлением, развитие внутреннего рынка</td><td>Структурная аналогия</td></tr>
+    <tr><td><strong>Индия</strong> (NSE/BSE)</td><td>Массовая розница, SME-сегмент, быстрый рост IPO</td><td>ПБ5, Конфликт 1</td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- PROPOSALS -->
+<h2 id="proposals">9. Предложения по реформированию (из экспертного дискурса)</h2>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Предложение</th><th>Инициатор</th><th>Решаемая проблема</th><th>Компромиссы</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Safe Harbor для организаторов IPO</td>
+      <td>НАУФОР</td>
+      <td>ПБ2 — ответственность за проспект<a href="#src-16" class="source-ref">[16]</a></td>
+      <td>Ограниченная ответственность при соблюдении стандартов DD. Риск: снижение защиты инвесторов</td>
+    </tr>
+    <tr>
+      <td>Стандартизация оферт при делистинге</td>
+      <td>Экспертное сообщество</td>
+      <td>ПБ4 — миноритарии<a href="#src-20" class="source-ref">[20]</a></td>
+      <td>Обязательный fairness opinion при длительных остановках торгов</td>
+    </tr>
+    <tr>
+      <td>Субсидирование ESG-верификации для МСП</td>
+      <td>Минэкономразвития / ЦБ</td>
+      <td>ПБ8 — издержки входа<a href="#src-23" class="source-ref">[23]</a></td>
+      <td>Гранты на верификацию зелёных/социальных облигаций</td>
+    </tr>
+    <tr>
+      <td>Модернизация ИИС</td>
+      <td>НАУФОР<a href="#src-25" class="source-ref">[25]</a></td>
+      <td>Привлечение длинных денег</td>
+      <td>Зачисление купонов на банковские счета инвесторов</td>
+    </tr>
+    <tr>
+      <td>Сегмент Growth с институтом авторизованных спонсоров</td>
+      <td>Эксперты (по модели LSE AIM)</td>
+      <td>ПБ5 — МТК<a href="#src-22" class="source-ref">[22]</a></td>
+      <td>Спонсор несёт комплаенс-сопровождение; требуется маркет-мейкинг</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ===== SOURCES ===== -->
+<div class="sources-section" id="sources">
+<h2>Источники</h2>
+<p style="font-size:13px; color:var(--text-muted); margin-bottom:1rem;">Нумерация сквозная. Источники получены в ходе Deep Research (Parallel AI, 04.03.2026) по двум трекам.</p>
+
+<ol class="source-list">
+  <li id="src-1"><span class="source-num">[1]</span>
+    <div><span class="source-desc">RAEX — «Ключи от капитализации: ставка, спрос и IPO» (2026)</span><br>
+    <a href="https://raexpert.ru/researches/ua/new_ipo_boom_2026/" target="_blank">raexpert.ru/researches/ua/new_ipo_boom_2026/</a></div>
+  </li>
+  <li id="src-2"><span class="source-num">[2]</span>
+    <div><span class="source-desc">«Не сразу всё утроилось» — о целевой капитализации рынка</span><br>
+    <a href="https://bosfera.ru/bo/ne-srazu-vse-utroilos" target="_blank">bosfera.ru/bo/ne-srazu-vse-utroilos</a></div>
+  </li>
+  <li id="src-3"><span class="source-num">[3]</span>
+    <div><span class="source-desc">НАУФОР — капитализация фондового рынка к 2030, IPO не менее 1,28 трлн руб. (24.12.2025)</span><br>
+    <a href="https://naufor.ru/tree.asp?n=30162" target="_blank">naufor.ru/tree.asp?n=30162</a></div>
+  </li>
+  <li id="src-4"><span class="source-num">[4]</span>
+    <div><span class="source-desc">Единый план Правительства РФ (на основе Указа Президента №309, май 2024)</span><br>
+    <a href="http://static.government.ru/media/files/ZsnFICpxWknEXeTfQdmcFHNei2FhcR0A.pdf" target="_blank">static.government.ru/.../ZsnFICpxWknEXeTfQdmcFHNei2FhcR0A.pdf</a></div>
+  </li>
+  <li id="src-5"><span class="source-num">[5]</span>
+    <div><span class="source-desc">Банк России — Основные направления развития финансового рынка 2026-2028</span><br>
+    <a href="https://www.cbr.ru/Content/Document/File/181362/onrfr_2026_2028.pdf" target="_blank">cbr.ru/.../onrfr_2026_2028.pdf</a></div>
+  </li>
+  <li id="src-6"><span class="source-num">[6]</span>
+    <div><span class="source-desc">Т-Инвестиции — изменения в статусе квалифицированного инвестора в 2026 году</span><br>
+    <a href="https://www.tbank.ru/invest/social/profile/T-Investments/d94591f2-e9a7-4801-869e-ce27e8d758aa/" target="_blank">tbank.ru/invest/...</a></div>
+  </li>
+  <li id="src-7"><span class="source-num">[7]</span>
+    <div><span class="source-desc">Банк России определил основные направления... (КонсультантПлюс, 16.09.2025)</span><br>
+    <a href="https://storage.consultant.ru/site20/202509/16/cb_160925-onrfr26-28.pdf" target="_blank">storage.consultant.ru/.../cb_160925-onrfr26-28.pdf</a></div>
+  </li>
+  <li id="src-8"><span class="source-num">[8]</span>
+    <div><span class="source-desc">Банк России — допуск финансовых инструментов (официальная страница)</span><br>
+    <a href="https://www.cbr.ru/issuers_corporate/admission_financial_instruments/" target="_blank">cbr.ru/issuers_corporate/admission_financial_instruments/</a></div>
+  </li>
+  <li id="src-9"><span class="source-num">[9]</span>
+    <div><span class="source-desc">НАУФОР — «Развитие российского рынка капитала 2025»</span><br>
+    <a href="https://naufor.ru/getfile.asp?id=19826" target="_blank">naufor.ru/getfile.asp?id=19826</a></div>
+  </li>
+  <li id="src-10"><span class="source-num">[10]</span>
+    <div><span class="source-desc">Основные направления повышения доступности... (Гарант, 23.01.2025)</span><br>
+    <a href="https://www.garant.ru/products/ipo/prime/doc/411106637/" target="_blank">garant.ru/.../411106637/</a></div>
+  </li>
+  <li id="src-11"><span class="source-num">[11]</span>
+    <div><span class="source-desc">Информационное письмо Банка России от 20 февраля 2026</span><br>
+    <a href="https://www.garant.ru/products/ipo/prime/doc/413647144/" target="_blank">garant.ru/.../413647144/</a></div>
+  </li>
+  <li id="src-12"><span class="source-num">[12]</span>
+    <div><span class="source-desc">КонсультантПлюс — ЦБ оградит неквалов от зарубежных бумаг с 2025</span><br>
+    <a href="https://www.consultant.ru/legalnews/26969/" target="_blank">consultant.ru/legalnews/26969/</a></div>
+  </li>
+  <li id="src-13"><span class="source-num">[13]</span>
+    <div><span class="source-desc">Антисанкционные меры 2022–2026 (Гарант)</span><br>
+    <a href="https://base.garant.ru/57750630/" target="_blank">base.garant.ru/57750630/</a></div>
+  </li>
+  <li id="src-14"><span class="source-num">[14]</span>
+    <div><span class="source-desc">Frank Media — Мосбиржа смягчит правила листинга</span><br>
+    <a href="https://frankmedia.ru/223736" target="_blank">frankmedia.ru/223736</a></div>
+  </li>
+  <li id="src-15"><span class="source-num">[15]</span>
+    <div><span class="source-desc">Альфа-Банк — МосБиржа смягчает правила: во 2-й эшелон попасть станет проще</span><br>
+    <a href="https://alfabank.ru/alfa-investor/t/mosbirzha-smyagchaet-pravila-vo-vtoroy-eshelon-popast-stanet-proshche/" target="_blank">alfabank.ru/alfa-investor/...</a></div>
+  </li>
+  <li id="src-16"><span class="source-num">[16]</span>
+    <div><span class="source-desc">Forbes — ЦБ планирует закрепить ответственность организаторов за обещания при IPO в 2026</span><br>
+    <a href="https://www.forbes.ru/investicii/551327-cb-planiruet-zakrepit-otvetstvennost-organizatorov-za-obesania-pri-ipo-v-2026-godu" target="_blank">forbes.ru/investicii/551327-...</a></div>
+  </li>
+  <li id="src-17"><span class="source-num">[17]</span>
+    <div><span class="source-desc">Московская Биржа — об изменении уровня листинга ценных бумаг (март 2026)</span><br>
+    <a href="https://www.moex.com/n98052" target="_blank">moex.com/n98052</a></div>
+  </li>
+  <li id="src-18"><span class="source-num">[18]</span>
+    <div><span class="source-desc">Ингосстрах Инвестиции — что происходит с фондами с заблокированными активами</span><br>
+    <a href="https://www.ingosinvest-am.ru/press-center/news/what-about-funds-with-blocked-assets" target="_blank">ingosinvest-am.ru/...</a></div>
+  </li>
+  <li id="src-19"><span class="source-num">[19]</span>
+    <div><span class="source-desc">Frank Media — Госдума приняла закон о сохранении налоговых льгот при замещении облигаций</span><br>
+    <a href="https://frankmedia.ru/152576" target="_blank">frankmedia.ru/152576</a></div>
+  </li>
+  <li id="src-20"><span class="source-num">[20]</span>
+    <div><span class="source-desc">БКС — 5 вопросов о делистинге: кто принимает решение и что делать инвестору</span><br>
+    <a href="https://bcs-express.ru/novosti-i-analitika/5-voprosov-o-delistinge-kto-prinimaet-reshenie-i-chto-delat-investoru" target="_blank">bcs-express.ru/...</a></div>
+  </li>
+  <li id="src-21"><span class="source-num">[21]</span>
+    <div><span class="source-desc">НАУФОР — полномочия саморегулируемых организаций (15.02.2025)</span><br>
+    <a href="http://naufor.ru/tree.asp?n=30955" target="_blank">naufor.ru/tree.asp?n=30955</a></div>
+  </li>
+  <li id="src-22"><span class="source-num">[22]</span>
+    <div><span class="source-desc">Минэкономразвития — МТК продолжат получать льготное финансирование в 2026</span><br>
+    <a href="https://economy.gov.ru/material/news/malye_tehnologicheskie_kompanii_prodolzhat_poluchat_lgotnoe_finansirovanie_v_2026_godu.html" target="_blank">economy.gov.ru/.../malye_tehnologicheskie_kompanii...</a></div>
+  </li>
+  <li id="src-23"><span class="source-num">[23]</span>
+    <div><span class="source-desc">КиберЛенинка — осуществление ESG-стратегий в условиях санкций</span><br>
+    <a href="https://cyberleninka.ru/article/n/osuschestvlenie-esg-strategiy-v-usloviyah-sanktsiy-opyt-irana-i-rekomendatsii-dlya-rossii" target="_blank">cyberleninka.ru/article/n/...</a></div>
+  </li>
+  <li id="src-24"><span class="source-num">[24]</span>
+    <div><span class="source-desc">Интерфакс — Госдума повысила ставку налога на купонный доход с 15% до 20%</span><br>
+    <a href="https://www.interfax.ru/business/987982" target="_blank">interfax.ru/business/987982</a></div>
+  </li>
+  <li id="src-25"><span class="source-num">[25]</span>
+    <div><span class="source-desc">НАУФОР — предложения по ИИС (14.02.2025)</span><br>
+    <a href="https://naufor.ru/tree.asp?n=30956" target="_blank">naufor.ru/tree.asp?n=30956</a></div>
+  </li>
+  <li id="src-26"><span class="source-num">[26]</span>
+    <div><span class="source-desc">The Moscow Times — Russian Stock Market Faces Uphill Battle to Hit Putin's 2030 Target (18.02.2026)</span><br>
+    <a href="https://www.themoscowtimes.com/2026/02/18/russian-stock-market-faces-uphill-battle-to-hit-putins-ambitious-2030-target-a91989" target="_blank">themoscowtimes.com/...</a></div>
+  </li>
+  <li id="src-27"><span class="source-num">[27]</span>
+    <div><span class="source-desc">Московская Биржа — правила листинга (действующая редакция)</span><br>
+    <a href="https://www.moex.com/ru/documents/257" target="_blank">moex.com/ru/documents/257</a></div>
+  </li>
+  <li id="src-28"><span class="source-num">[28]</span>
+    <div><span class="source-desc">Банк России — ОНРФР 2024-2026 (англ. версия)</span><br>
+    <a href="https://cbr.ru/Content/Document/File/160531/fm_development_programe_2024-2026.pdf" target="_blank">cbr.ru/.../fm_development_programe_2024-2026.pdf</a></div>
+  </li>
+</ol>
+</div>
+
+<div style="margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border-light); font-size:12px; color:var(--text-muted);">
+  <p>Документ подготовлен 04.03.2026 в рамках методологической подготовки сравнительного исследования подходов к листингу ценных бумаг. Исследование выполнено с использованием Parallel AI Deep Research (процессор ultra). Является рабочим материалом.</p>
+</div>
+
+</main>
+
+</body>
+</html>
