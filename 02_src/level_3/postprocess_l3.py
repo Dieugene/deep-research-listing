@@ -25,6 +25,7 @@ from pipeline.config import (
     LLM_FAST_MODEL,
     LEVEL3_V2_LOG_FILE,
     PILOT_VENUES,
+    INSTRUMENT_CLASSES,
     get_country_level2_dir,
     get_country_level3_dir,
 )
@@ -105,103 +106,25 @@ Return a mapping for ALL tier names listed above."""
 
 
 # ---------------------------------------------------------------------------
-# Core disaggregation
-# ---------------------------------------------------------------------------
-
-def _disaggregate_one(
-    raw_path: Path,
-    cells: list[dict],
-    venue_key: str,
-    name_ru: str,
-    instrument_class: str,
-    query_type: str,
-    llm: ChatOpenAI,
-) -> None:
-    """Disaggregate one raw Parallel result into per-cell files."""
-    raw_data = load_json(raw_path)
-    if raw_data is None:
-        logger.warning("Raw file not found: %s — skipping", raw_path)
-        return
-
-    content = raw_data.get("content", {})
-    if not isinstance(content, dict):
-        logger.warning("Unexpected content format in %s — skipping", raw_path)
-        return
-
-    tiers = content.get("tiers", [])
-    common_key = "common_requirements" if query_type == "3A" else (
-        "common_obligations" if query_type == "3B" else "common_monitoring"
-    )
-    common_data = content.get(common_key, {})
-
-    if not tiers:
-        logger.warning("No tiers found in %s — skipping", raw_path)
-        return
-
-    # Filter cells to this instrument_class
-    relevant_cells = _cells_for_instrument_class(cells, instrument_class)
-    if not relevant_cells:
-        logger.warning(
-            "No cells for instrument_class=%s in venue %s — skipping", instrument_class, venue_key
-        )
-        return
-
-    tier_names = [t.get("tier_name", f"tier_{i}") for i, t in enumerate(tiers)]
-
-    # Use LLM to map tier_names to cell_ids
-    mapping_prompt = _build_mapping_prompt(tier_names, relevant_cells, venue_key, instrument_class)
-    chain = llm.with_structured_output(TierMappingList, method="function_calling")
-    try:
-        mapping_result: TierMappingList = chain.invoke([HumanMessage(content=mapping_prompt)])
-        mappings = {m.tier_name: m.cell_id for m in mapping_result.mappings}
-    except Exception as exc:
-        logger.error("LLM mapping failed for %s: %s — using sequential fallback", raw_path.name, exc)
-        # Fallback: map sequentially by index
-        mappings = {}
-        for i, tier in enumerate(tiers):
-            if i < len(relevant_cells):
-                mappings[tier.get("tier_name", f"tier_{i}")] = relevant_cells[i].get("cell_id", f"cell_{i}")
-
-    # Save per-cell files
-    base_dir = get_country_level3_dir(name_ru, venue_key)
-    for tier_data in tiers:
-        tier_name = tier_data.get("tier_name", "")
-        cell_id = mappings.get(tier_name, "not_found")
-
-        if cell_id == "not_found":
-            logger.warning("No cell mapping for tier '%s' in %s — skipping", tier_name, raw_path.name)
-            continue
-
-        cell_dir = base_dir / cell_id
-        cell_dir.mkdir(parents=True, exist_ok=True)
-        out_path = cell_dir / f"{query_type}_raw.json"
-
-        # Combine tier data with common fields
-        combined_content = {**tier_data, f"{common_key}_common": common_data}
-        out_data = {
-            "cell_id": cell_id,
-            "venue_key": venue_key,
-            "instrument_class": instrument_class,
-            "query_type": query_type,
-            "tier_name_from_parallel": tier_name,
-            "retrieved_at": raw_data.get("retrieved_at", now_iso()),
-            "content": combined_content,
-        }
-        save_json(out_path, out_data)
-        logger.info("Saved cell result: %s", out_path)
-
-
-# ---------------------------------------------------------------------------
 # Main entry point
 # ---------------------------------------------------------------------------
 
 def postprocess_all_venues(state: dict) -> None:
     """
     Disaggregate all venue-level Parallel results into per-cell files.
-    Iterates all pilot venues, finds completed raw results, disaggregates.
+    Collects all mapping tasks upfront, sends a single chain.batch() call,
+    then saves per-cell files from the results.
     """
     llm = _get_llm(LLM_FAST_MODEL)
+    chain = llm.with_structured_output(TierMappingList, method="function_calling")
     logger.info("Starting L3 postprocessing (tier disaggregation)")
+
+    # --- Pass 1: collect all work items ---
+    # Each work_item: {
+    #   raw_path, venue_key, name_ru, instrument_class, query_type,
+    #   tiers, common_key, common_data, relevant_cells, mapping_prompt
+    # }
+    work_items = []
 
     for venue in PILOT_VENUES:
         venue_key = venue["venue_key"]
@@ -220,30 +143,134 @@ def postprocess_all_venues(state: dict) -> None:
             continue
 
         for raw_file in sorted(raw_dir.glob("*_raw.json")):
-            # Parse filename: {venue_key}_{instrument_class}_{query_type}_raw.json
-            stem = raw_file.stem  # e.g. LSE_Main_Market_equity_3A_raw → without extension
-            # Remove trailing _raw
+            stem = raw_file.stem
             if stem.endswith("_raw"):
                 stem = stem[:-4]
-            # Last part is query_type (3A/3B/3C), second-to-last is instrument_class
-            # venue_key may contain underscores, so split from right
-            parts = stem.rsplit("_", 2)
-            if len(parts) != 3:
+            query_type = stem.rsplit("_", 1)[1]
+            prefix = stem.rsplit("_", 1)[0]
+            instrument_class = None
+            for ic in sorted(INSTRUMENT_CLASSES, key=len, reverse=True):
+                if prefix.endswith(f"_{ic}"):
+                    instrument_class = ic
+                    break
+            if instrument_class is None:
                 logger.warning("Cannot parse filename %s — skipping", raw_file.name)
                 continue
-            _, instrument_class, query_type = parts
 
-            logger.info(
-                "Disaggregating %s / %s / %s", venue_key, instrument_class, query_type
+            raw_data = load_json(raw_file)
+            if raw_data is None:
+                logger.warning("Raw file not found: %s — skipping", raw_file)
+                continue
+
+            content = raw_data.get("content", {})
+            if not isinstance(content, dict):
+                logger.warning("Unexpected content format in %s — skipping", raw_file)
+                continue
+
+            tiers = content.get("tiers", [])
+            if not tiers:
+                logger.warning("No tiers found in %s — skipping", raw_file)
+                continue
+
+            common_key = (
+                "common_requirements" if query_type == "3A"
+                else "common_obligations" if query_type == "3B"
+                else "common_monitoring"
             )
-            _disaggregate_one(
-                raw_path=raw_file,
-                cells=cells,
-                venue_key=venue_key,
-                name_ru=name_ru,
-                instrument_class=instrument_class,
-                query_type=query_type,
-                llm=llm,
+            common_data = content.get(common_key, {})
+
+            relevant_cells = _cells_for_instrument_class(cells, instrument_class)
+            if not relevant_cells:
+                logger.warning(
+                    "No cells for instrument_class=%s in venue %s — skipping",
+                    instrument_class, venue_key,
+                )
+                continue
+
+            tier_names = [t.get("tier_name", f"tier_{i}") for i, t in enumerate(tiers)]
+            mapping_prompt = _build_mapping_prompt(tier_names, relevant_cells, venue_key, instrument_class)
+
+            work_items.append({
+                "raw_path": raw_file,
+                "raw_data": raw_data,
+                "venue_key": venue_key,
+                "name_ru": name_ru,
+                "instrument_class": instrument_class,
+                "query_type": query_type,
+                "tiers": tiers,
+                "common_key": common_key,
+                "common_data": common_data,
+                "relevant_cells": relevant_cells,
+                "mapping_prompt": mapping_prompt,
+            })
+
+    if not work_items:
+        logger.info("No raw files found to disaggregate.")
+        return
+
+    logger.info("Collected %d mapping tasks — running batch LLM call", len(work_items))
+
+    # --- Single batch call ---
+    prompts = [item["mapping_prompt"] for item in work_items]
+    batch_results = chain.batch(
+        [[HumanMessage(content=p)] for p in prompts],
+        config={"max_concurrency": 50},
+        return_exceptions=True,
+    )
+
+    # --- Pass 2: apply mappings and save per-cell files ---
+    for item, result in zip(work_items, batch_results):
+        venue_key = item["venue_key"]
+        name_ru = item["name_ru"]
+        instrument_class = item["instrument_class"]
+        query_type = item["query_type"]
+        tiers = item["tiers"]
+        common_key = item["common_key"]
+        common_data = item["common_data"]
+        relevant_cells = item["relevant_cells"]
+        raw_data = item["raw_data"]
+
+        if isinstance(result, Exception):
+            logger.error(
+                "LLM mapping failed for %s / %s / %s: %s — using sequential fallback",
+                venue_key, instrument_class, query_type, result,
             )
+            # Fallback: map by index
+            mappings = {
+                t.get("tier_name", f"tier_{i}"): relevant_cells[i].get("cell_id", f"cell_{i}")
+                for i, t in enumerate(tiers)
+                if i < len(relevant_cells)
+            }
+        else:
+            mappings = {m.tier_name: m.cell_id for m in result.mappings}
+
+        base_dir = get_country_level3_dir(name_ru, venue_key)
+        for tier_data in tiers:
+            tier_name = tier_data.get("tier_name", "")
+            cell_id = mappings.get(tier_name, "not_found")
+
+            if cell_id == "not_found":
+                logger.warning(
+                    "No cell mapping for tier '%s' in %s / %s — skipping",
+                    tier_name, venue_key, instrument_class,
+                )
+                continue
+
+            cell_dir = base_dir / cell_id
+            cell_dir.mkdir(parents=True, exist_ok=True)
+            out_path = cell_dir / f"{query_type}_raw.json"
+
+            combined_content = {**tier_data, f"{common_key}_common": common_data}
+            out_data = {
+                "cell_id": cell_id,
+                "venue_key": venue_key,
+                "instrument_class": instrument_class,
+                "query_type": query_type,
+                "tier_name_from_parallel": tier_name,
+                "retrieved_at": raw_data.get("retrieved_at", now_iso()),
+                "content": combined_content,
+            }
+            save_json(out_path, out_data)
+            logger.info("Saved cell result: %s", out_path)
 
     logger.info("L3 postprocessing complete.")

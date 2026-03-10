@@ -54,7 +54,7 @@ STATUS_ICON = {
     "n/a": "—",
 }
 
-QUERY_TYPES = ["3A", "3B", "3C", "3D"]
+QUERY_TYPES = ["3A", "3B", "3C"]
 
 # ---------------------------------------------------------------------------
 # Load data (cached per session to avoid re-reading on every widget interaction)
@@ -255,7 +255,6 @@ with tab_cells:
         rows = []
         for i, cell in enumerate(cells):
             cell_id = cell.get("cell_id", f"cell_{i}")
-            prompts = cell.get("prompts", {})
             row = {
                 "cell_id": cell_id,
                 "Уровень листинга": cell.get("tier", "—"),
@@ -263,13 +262,10 @@ with tab_cells:
                 "Вторичный": "Да" if cell.get("secondary_admission_applicable") else "Нет",
             }
             for qt in QUERY_TYPES:
-                if prompts.get(qt) is None:
-                    row[qt] = STATUS_ICON["n/a"]
-                else:
-                    status = get_l3_status(
-                        name_ru, venue_key, cell_id, qt, cell_index=i, state=state
-                    )
-                    row[qt] = STATUS_ICON[status]
+                status = get_l3_status(
+                    name_ru, venue_key, cell_id, qt, cell_index=i, state=state
+                )
+                row[qt] = STATUS_ICON[status]
             rows.append(row)
 
         status_df = pd.DataFrame(rows)
@@ -301,7 +297,6 @@ with tab_cells:
 
         selected_cell = cells[selected_idx]
         cell_id = selected_cell.get("cell_id", f"cell_{selected_idx}")
-        prompts = selected_cell.get("prompts", {})
 
         st.subheader(f"Ячейка: {cell_id}")
         meta_cols = st.columns(4)
@@ -318,10 +313,6 @@ with tab_cells:
         # L3 results per query type
         # ------------------------------------------------------------------
         for qt in QUERY_TYPES:
-            if prompts.get(qt) is None:
-                st.markdown(f"**{qt}** — {STATUS_ICON['n/a']} (не применимо для этой ячейки)")
-                continue
-
             status = get_l3_status(
                 name_ru, venue_key, cell_id, qt, cell_index=selected_idx, state=state
             )

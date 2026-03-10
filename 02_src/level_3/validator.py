@@ -57,23 +57,60 @@ class ValidationReport(BaseModel):
 # Completeness checklists by instrument class
 # ---------------------------------------------------------------------------
 
-_COMPLETENESS_CHECKLIST = {
-    "equity": [
+_COMPLETENESS_CHECKLIST: dict[tuple[str, str], list[str]] = {
+    ("equity", "3A"): [
         "free float", "market capitalisation", "financial history",
         "profitability/revenue test", "corporate governance", "sponsor/nomad",
         "prospectus/admission document", "lock-up periods",
     ],
-    "bond": [
+    ("equity", "3B"): [
+        "periodic reporting deadlines", "inside information disclosure",
+        "free float maintenance threshold", "corporate governance ongoing",
+        "controlling shareholder obligations", "suspension grounds",
+        "suspension procedure", "compulsory delisting grounds",
+        "voluntary delisting procedure", "shareholder approval for delisting",
+    ],
+    ("equity", "3C"): [
+        "monitoring body (exchange vs regulator)", "compliance review mechanisms",
+        "sponsor/nomad ongoing role", "exchange sanctions (types)",
+        "regulator sanctions (types)", "disciplinary procedure",
+        "publication of enforcement actions",
+    ],
+    ("bond", "3A"): [
         "minimum issue size", "issuer eligibility", "prospectus",
         "listing documentation", "disclosure requirements",
     ],
-    "fund": [
+    ("bond", "3B"): [
+        "periodic reporting", "price-sensitive disclosure",
+        "financial covenant monitoring", "event of default handling",
+        "suspension grounds", "redemption/cancellation procedure",
+    ],
+    ("bond", "3C"): [
+        "monitoring body", "trustee role", "event of default monitoring",
+        "enforcement actions",
+    ],
+    ("fund", "3A"): [
         "NAV/AUM requirements", "fund structure", "management company",
         "investment policy", "prospectus",
     ],
-    "depositary_receipt": [
+    ("fund", "3B"): [
+        "NAV reporting frequency", "portfolio disclosure",
+        "suspension of redemptions/trading", "termination/delisting procedure",
+    ],
+    ("fund", "3C"): [
+        "monitoring body", "management company oversight",
+        "fund suspension powers", "enforcement actions",
+    ],
+    ("depositary_receipt", "3A"): [
         "underlying security requirements", "depositary bank",
         "prospectus/listing document", "issuer eligibility",
+    ],
+    ("depositary_receipt", "3B"): [
+        "periodic reporting", "price-sensitive disclosure",
+        "suspension grounds", "cancellation procedure",
+    ],
+    ("depositary_receipt", "3C"): [
+        "monitoring body", "enforcement actions", "suspension powers",
     ],
 }
 
@@ -96,7 +133,7 @@ def _build_validation_prompt(
         for t in venue_card.get("tiers", [])
         if (t.get("tier_name_ru") or t.get("tier_name", "")) != tier_name
     ]
-    checklist = _COMPLETENESS_CHECKLIST.get(instrument_class, [])
+    checklist = _COMPLETENESS_CHECKLIST.get((instrument_class, query_type), [])
     checklist_str = "\n".join(f"  - {item}" for item in checklist)
     other_tiers_str = ", ".join(other_tiers) if other_tiers else "none"
 
@@ -113,21 +150,18 @@ RESEARCH RESULT (truncated to 3000 chars):
 
 Perform THREE checks:
 
-1. SCOPE CHECK: Does the result contain information about the correct venue, tier, and instrument class?
-   Are there references to other tiers/categories/venues that should not be here?
+1. SCOPE CHECK: Is the PRIMARY SUBJECT of each field the correct venue ({venue_key}), tier '{tier_name}', and instrument class {instrument_class}?
+   Comparative mentions of other venues/tiers are ACCEPTABLE (e.g., "unlike AIM, the Main Market requires...").
+   Flag scope_ok=false ONLY if a field's PRIMARY content describes requirements of a DIFFERENT venue or tier, rather than the target one.
    Answer: scope_ok=true/false, list any scope_issues found.
 
-2. COMPLETENESS CHECK for {instrument_class} {query_type} on {venue_key}:
-   Expected topics:
-{checklist_str}
-   Which are present? Which are missing?
-   Answer: completeness_score (0.0=none present, 1.0=all present), missing_topics list.
+{f"2. COMPLETENESS CHECK for {instrument_class} {query_type} on {venue_key}:{chr(10)}   Expected topics:{chr(10)}{checklist_str}{chr(10)}   Which are present? Which are missing?{chr(10)}   Answer: completeness_score (0.0=none present, 1.0=all present), missing_topics list." if checklist_str else f"2. COMPLETENESS CHECK: No checklist defined for {instrument_class} {query_type} — skip this check. Set completeness_score=1.0 and missing_topics=[]."}
 
 3. SOURCE CHECK: Do the cited rulebook chapters correspond to the tier '{tier_name}'?
    Flag any sources that appear to belong to a different tier/category (e.g., wrong UKLR category for UK listings).
    Answer: source_ok=true/false, list suspicious_sources.
 
-Set overall_flag=true if any check failed (scope_ok=false OR completeness_score < 0.5 OR source_ok=false).
+Set overall_flag=true if any check failed (scope_ok=false OR source_ok=false OR (completeness_score < 0.5 AND completeness checklist was defined for this query_type)).
 Add a brief notes field summarising the main issues."""
 
 
@@ -251,9 +285,16 @@ def _get_llm(model: str = LLM_FAST_MODEL) -> ChatOpenAI:
 # ---------------------------------------------------------------------------
 
 def validate_all_venues(state: dict) -> None:
-    """Run validation for all pilot venues."""
+    """Run validation for all pilot venues using a two-pass batch pattern."""
     llm = _get_llm(LLM_FAST_MODEL)
+    chain = llm.with_structured_output(ValidationReport, method="function_calling")
     logger.info("Starting L3 validation")
+
+    # ------------------------------------------------------------------
+    # Pass 1 — collect ALL work items across ALL venues
+    # ------------------------------------------------------------------
+    work_items = []
+    prompts = []
 
     for venue in PILOT_VENUES:
         venue_key = venue["venue_key"]
@@ -269,6 +310,72 @@ def validate_all_venues(state: dict) -> None:
         venue_card_path = get_country_level2_dir(name_ru, venue_key) / "venue_card.json"
         venue_card = load_json(venue_card_path) or {}
 
-        _validate_venue(venue_key, name_ru, cells, venue_card, llm)
+        for cell in cells:
+            cell_id = cell.get("cell_id", "")
+            cell_dir = get_country_level3_dir(name_ru, venue_key) / cell_id
+            for query_type in ("3A", "3B", "3C"):
+                result_path = cell_dir / f"{query_type}_raw.json"
+                if not result_path.exists():
+                    continue
+                cell_result = load_json(result_path) or {}
+                prompt = _build_validation_prompt(
+                    cell_result, cell, venue_card, venue_key, query_type
+                )
+                work_items.append(
+                    {
+                        "cell": cell,
+                        "query_type": query_type,
+                        "venue_key": venue_key,
+                        "name_ru": name_ru,
+                        "cell_dir": cell_dir,
+                        "prompt": prompt,
+                    }
+                )
+                prompts.append(prompt)
+
+    if not work_items:
+        logger.info("No result files found across all venues — skipping validation")
+        return
+
+    logger.info("Validating %d total cell/query_type pairs across all venues", len(work_items))
+
+    # ------------------------------------------------------------------
+    # Single chain.batch() call for all collected prompts
+    # ------------------------------------------------------------------
+    results = chain.batch(
+        [[HumanMessage(content=p)] for p in prompts],
+        config={"max_concurrency": 50},
+        return_exceptions=True,
+    )
+
+    # ------------------------------------------------------------------
+    # Pass 2 — save results
+    # ------------------------------------------------------------------
+    for item, result in zip(work_items, results):
+        cell = item["cell"]
+        query_type = item["query_type"]
+        cell_dir = item["cell_dir"]
+        cell_id = cell.get("cell_id", "")
+
+        if isinstance(result, Exception):
+            logger.error(
+                "Validation failed for %s %s: %s", cell_id, query_type, result
+            )
+            continue
+
+        report: ValidationReport = result
+        report.cell_id = cell_id
+        report.query_type = query_type
+
+        report_path = cell_dir / f"{query_type}_validation.json"
+        save_json(report_path, report.model_dump())
+
+        if report.overall_flag:
+            logger.warning(
+                "REVIEW NEEDED: %s %s — scope=%s completeness=%.2f source=%s",
+                cell_id, query_type, report.scope_ok, report.completeness_score, report.source_ok,
+            )
+        else:
+            logger.info("OK: %s %s (completeness=%.2f)", cell_id, query_type, report.completeness_score)
 
     logger.info("L3 validation complete.")
