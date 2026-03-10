@@ -152,6 +152,10 @@ def get_country_level3_dir(name_ru: str, venue_key: str) -> Path:
 LEVEL3_STATE_FILE = LOGS_DIR / "level3_state.json"
 LEVEL3_LOG_FILE = LOGS_DIR / f"level3_{_today}.log"
 
+LEVEL3_V2_STATE_FILE = LOGS_DIR / "level3_v2_state.json"
+LEVEL3_V2_LOG_FILE = LOGS_DIR / f"level3_v2_{_today}.log"
+PROMPTS_LEVEL3_V2_DIR = DATA_DIR / "prompts" / "level_3_v2"
+
 
 def load_exchanges() -> dict:
     """Load the full exchanges.json."""
