@@ -1,0 +1,99 @@
+graph TD
+    subgraph "Предварительный этап"
+        PRELOAD["Предзагрузка факторов<br/>(Ф1,Ф2,Ф4–Ф7,Ф10,Ф11)<br/>Ручная загрузка с сайтов"]
+    end
+
+    subgraph "Наднациональные рамки"
+        EU["EU: MiFID II, Prospectus Reg,<br/>Transparency Dir, Listing Act 2024"]
+        SUPRA_DYN["Другие рамки<br/>(при обнаружении)"]
+    end
+
+    subgraph "Уровень 1 — Юрисдикция (×47)"
+        L1A["1А. Архитектура допуска<br/>+ маппинг понятий<br/>(text, pro)"]
+        L1B["1Б. Институциональные факторы<br/>качественные: Ф3,Ф8,Ф9,Ф12<br/>(schema, core)"]
+        L1C["1В. Ландшафт площадок<br/>(schema, core)"]
+        L1_POST["LLM-постобработка:<br/>карточка юрисдикции,<br/>перечень площадок,<br/>перевод на русский"]
+    end
+
+    subgraph "Уровень 2 — Площадка (×65)"
+        L2A["2А. Детальная структура<br/>площадки<br/>(auto, core)"]
+        L2_POST["LLM-постобработка:<br/>карточка площадки,<br/>перечень ячеек,<br/>формирование промптов<br/>уровня 3 на языке площадки"]
+    end
+
+    subgraph "Уровень 3 — Ячейка (×~1000)"
+        L3A["3А. Первичный допуск<br/>требования, процедуры, раскрытие<br/>(schema, core)"]
+        L3B["3Б. Негативные аспекты<br/>поддержание, приостановка,<br/>исключение<br/>(schema, pro ↑)"]
+        L3C["3В. Мониторинг<br/>и enforcement<br/>(schema, pro ↑)"]
+        L3D["3Г. Вторичный допуск<br/>(где применимо)<br/>(schema, core)"]
+    end
+
+    subgraph "Пакетная постобработка"
+        BATCH["Приведение к словарю<br/>параметров (П01–П23+)<br/>Перевод на русский<br/>Типологизация конструкций<br/>Связки параметров<br/>Кандидаты на расширение"]
+    end
+
+    subgraph "Уровень 4 — Проблемный анализ (×47)"
+        L4A["4А. Регуляторные цели,<br/>связь с параметрами,<br/>обоснование калибровки<br/>(text, pro)"]
+        L4_POST["LLM-постобработка:<br/>блок Ж карточки юрисдикции,<br/>маппинг на проблемы РФ,<br/>перевод"]
+    end
+
+    subgraph "Кластеризация"
+        CLUSTER["Кластеризация юрисдикций<br/>по институциональным факторам"]
+    end
+
+    DB[("PostgreSQL")]
+
+    %% Зависимости
+    EU -->|"контекст для<br/>EU-юрисдикций"| L1A
+    L1A --> L1_POST
+    L1B --> L1_POST
+    L1C --> L1_POST
+    L1_POST -->|"обнаружена<br/>неизвестная рамка"| SUPRA_DYN
+    SUPRA_DYN -->|"сохраняется,<br/>ссылка при повторах"| L1A
+
+    L1_POST -->|"карточка юрисдикции,<br/>местные термины"| L2A
+    L2A --> L2_POST
+    L2_POST -->|"промпты на языке<br/>площадки"| L3A
+    L2_POST -->|"промпты на языке<br/>площадки"| L3B
+    L2_POST -->|"промпты на языке<br/>площадки"| L3C
+    L2_POST -->|"промпты,<br/>где применимо"| L3D
+
+    L3A --> BATCH
+    L3B --> BATCH
+    L3C --> BATCH
+    L3D --> BATCH
+
+    BATCH -->|"конкретные параметры<br/>для подстановки"| L4A
+    L4A --> L4_POST
+
+    %% Некритичные зависимости (пунктирные)
+    PRELOAD -.->|"верификация<br/>(опционально)"| L1B
+    PRELOAD -.->|"все 12 факторов"| CLUSTER
+    L1B -.->|"качественные<br/>факторы"| CLUSTER
+
+    %% Загрузка
+    L1_POST --> DB
+    L2_POST --> DB
+    BATCH --> DB
+    L4_POST --> DB
+    CLUSTER -.-> DB
+
+    %% Стилизация
+    classDef preload fill:#f9f0e0,stroke:#c9a840
+    classDef supra fill:#e0e8f9,stroke:#4070c0
+    classDef level1 fill:#e8f5e0,stroke:#40a040
+    classDef level2 fill:#e0f0f5,stroke:#40a0b0
+    classDef level3 fill:#f5e8e0,stroke:#c06040
+    classDef batch fill:#f0e0f5,stroke:#a040a0
+    classDef level4 fill:#f5f0e0,stroke:#b0a040
+    classDef cluster fill:#f0f0f0,stroke:#808080
+    classDef db fill:#e0e0e0,stroke:#606060
+
+    class PRELOAD preload
+    class EU,SUPRA_DYN supra
+    class L1A,L1B,L1C,L1_POST level1
+    class L2A,L2_POST level2
+    class L3A,L3B,L3C,L3D level3
+    class BATCH batch
+    class L4A,L4_POST level4
+    class CLUSTER cluster
+    class DB db
