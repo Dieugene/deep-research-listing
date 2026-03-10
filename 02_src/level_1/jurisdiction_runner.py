@@ -17,6 +17,10 @@ Usage:
     python -m level_1.jurisdiction_runner --poll-1c
     python -m level_1.jurisdiction_runner --run-all   # full run (default)
 """
+# RULE: Never truncate data passed to LLM prompts.
+# Truncation causes silent data loss and degrades output quality.
+# If a variable is too large, restructure the prompt or serialise
+# the data more compactly — do NOT slice it with [:N].
 import argparse
 import json
 import sys
@@ -128,9 +132,8 @@ def launch_all_1c(state: dict) -> None:
         if data_1a and isinstance(data_1a, dict):
             content_1a_str = data_1a.get("content", "")
             if content_1a_str:
-                # Use first 500 chars as context hint
-                regulator_ctx = f"refer to 1A research: {content_1a_str[:500]}"
-                market_types_ctx = f"refer to 1A research (venue types): {content_1a_str[:500]}"
+                regulator_ctx = f"refer to 1A research: {content_1a_str}"
+                market_types_ctx = f"refer to 1A research (venue types): {content_1a_str}"
 
         # 1C
         prompt_1c = build_prompt_1c(en, regulator_ctx, market_types_ctx)

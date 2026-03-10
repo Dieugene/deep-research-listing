@@ -116,6 +116,33 @@ _COMPLETENESS_CHECKLIST: dict[tuple[str, str], list[str]] = {
 
 
 # ---------------------------------------------------------------------------
+# Content serializer
+# ---------------------------------------------------------------------------
+
+def _serialize_content(content: dict) -> str:
+    """Serialize cell content to structured text, preserving all description+source pairs."""
+    lines = []
+    tier_name = content.get("tier_name", "")
+    if tier_name:
+        lines.append(f"Tier: {tier_name}\n")
+    for key, val in content.items():
+        if key == "tier_name":
+            continue
+        if isinstance(val, dict) and "description" in val:
+            lines.append(f"[{key}]")
+            lines.append(f"  description: {val.get('description', '')}")
+            lines.append(f"  source: {val.get('source', '')}")
+            lines.append("")
+        elif isinstance(val, dict):
+            lines.append(f"[{key}]: {json.dumps(val, ensure_ascii=False)}")
+            lines.append("")
+        elif val is not None:
+            lines.append(f"[{key}]: {val}")
+            lines.append("")
+    return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
 # Prompt builder
 # ---------------------------------------------------------------------------
 
@@ -137,7 +164,7 @@ def _build_validation_prompt(
     checklist_str = "\n".join(f"  - {item}" for item in checklist)
     other_tiers_str = ", ".join(other_tiers) if other_tiers else "none"
 
-    result_str = json.dumps(cell_result.get("content", {}), ensure_ascii=False, indent=2)[:3000]
+    result_str = _serialize_content(cell_result.get("content", {}))
 
     return f"""You are validating a research result for accuracy and completeness.
 
@@ -145,7 +172,7 @@ TARGET: cell_id={cell.get('cell_id')}, tier='{tier_name}', instrument_class={ins
 
 OTHER TIERS on this venue (data about these should NOT be in this result): {other_tiers_str}
 
-RESEARCH RESULT (truncated to 3000 chars):
+RESEARCH RESULT:
 {result_str}
 
 Perform THREE checks:
