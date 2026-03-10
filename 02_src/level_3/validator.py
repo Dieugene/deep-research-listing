@@ -49,7 +49,7 @@ class ValidationReport(BaseModel):
     missing_topics: list[str]
     source_ok: bool
     suspicious_sources: list[str]
-    overall_flag: bool  # True = needs review
+    validation_status: str  # "green" | "yellow" | "red"
     notes: str
 
 
@@ -188,8 +188,7 @@ Perform THREE checks:
    Flag any sources that appear to belong to a different tier/category (e.g., wrong UKLR category for UK listings).
    Answer: source_ok=true/false, list suspicious_sources.
 
-Set overall_flag=true if any check failed (scope_ok=false OR source_ok=false OR (completeness_score < 0.5 AND completeness checklist was defined for this query_type)).
-Add a brief notes field summarising the main issues."""
+Add a brief notes field summarising the main issues found (or "all checks passed" if none)."""
 
 
 # ---------------------------------------------------------------------------
@@ -378,6 +377,7 @@ def validate_all_venues(state: dict) -> None:
     # ------------------------------------------------------------------
     # Pass 2 — save results
     # ------------------------------------------------------------------
+    counts = {"green": 0, "yellow": 0, "red": 0}
     for item, result in zip(work_items, results):
         cell = item["cell"]
         query_type = item["query_type"]
@@ -394,15 +394,32 @@ def validate_all_venues(state: dict) -> None:
         report.cell_id = cell_id
         report.query_type = query_type
 
+        if not report.scope_ok or report.completeness_score < 0.5:
+            report.validation_status = "red"
+        elif not report.source_ok:
+            report.validation_status = "yellow"
+        else:
+            report.validation_status = "green"
+
+        counts[report.validation_status] += 1
+
         report_path = cell_dir / f"{query_type}_validation.json"
         save_json(report_path, report.model_dump())
 
-        if report.overall_flag:
+        if report.validation_status == "red":
             logger.warning(
-                "REVIEW NEEDED: %s %s — scope=%s completeness=%.2f source=%s",
+                "RED: %s %s — scope=%s completeness=%.2f source=%s",
                 cell_id, query_type, report.scope_ok, report.completeness_score, report.source_ok,
             )
+        elif report.validation_status == "yellow":
+            logger.info(
+                "YELLOW: %s %s — source unverified (completeness=%.2f)",
+                cell_id, query_type, report.completeness_score,
+            )
         else:
-            logger.info("OK: %s %s (completeness=%.2f)", cell_id, query_type, report.completeness_score)
+            logger.info("GREEN: %s %s (completeness=%.2f)", cell_id, query_type, report.completeness_score)
 
-    logger.info("L3 validation complete.")
+    logger.info(
+        "L3 validation complete. GREEN: %d, YELLOW: %d, RED: %d (of %d total)",
+        counts["green"], counts["yellow"], counts["red"], len(work_items),
+    )
