@@ -149,12 +149,23 @@ def get_country_level3_dir(name_ru: str, venue_key: str) -> Path:
     return COUNTRIES_DIR / name_ru / "level_3" / venue_key
 
 
+def get_country_level4_dir(name_ru: str) -> Path:
+    """Return path to level_4 data dir for a jurisdiction."""
+    return COUNTRIES_DIR / name_ru / "level_4"
+
+
 LEVEL3_STATE_FILE = LOGS_DIR / "level3_state.json"
 LEVEL3_LOG_FILE = LOGS_DIR / f"level3_{_today}.log"
 
 LEVEL3_V2_STATE_FILE = LOGS_DIR / "level3_v2_state.json"
 LEVEL3_V2_LOG_FILE = LOGS_DIR / f"level3_v2_{_today}.log"
 PROMPTS_LEVEL3_V2_DIR = DATA_DIR / "prompts" / "level_3_v2"
+
+PHASE2_STATE_FILE = LOGS_DIR / "phase2_state.json"
+PHASE2_LOG_FILE = LOGS_DIR / f"phase2_{_today}.log"
+
+LEVEL4_STATE_FILE = LOGS_DIR / "level4_state.json"
+LEVEL4_LOG_FILE = LOGS_DIR / f"level4_{_today}.log"
 
 
 def load_exchanges() -> dict:

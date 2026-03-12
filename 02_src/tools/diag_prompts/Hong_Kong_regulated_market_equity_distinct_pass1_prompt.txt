@@ -1,0 +1,152 @@
+You are analyzing the admission parameter framework for a group of venues
+within the same jurisdiction, market type, and instrument class.
+
+JURISDICTION: Гонконг
+MARKET TYPE: regulated_market
+INSTRUMENT CLASS: equity
+ADMISSION PATH TYPE: distinct
+VENUES/CELLS IN THIS GROUP:
+  - cell_id: HK_HKEX_Main_Board_chapter_19c_secondary_listing_equity | venue: HKEX_Main_Board | tier: Chapter 19C Secondary Listing of Overseas Issuers | data available: ['3A', '3B', '3C']
+
+RESEARCH DATA FROM ALL CELLS IN THIS GROUP:
+=== Cell: HK_HKEX_Main_Board_chapter_19c_secondary_listing_equity | Query: 3A ===
+Tier: Chapter 19C Secondary Listing of Overseas Issuers
+
+[secondary_admission]
+  description: Scope: Sets additional requirements, modifications or exceptions for overseas issuers seeking or having a secondary listing in Hong Kong (Rule 19C.02 / 19C.02A scope statements depending on version). Listing on the issuer’s primary exchange must have been granted before Hong Kong listing (Rule 19C.02A(2)); the Exchange may refuse listing under specified circumstances (Rule 19C.02A(1)). Overseas issuers must appoint/maintain an authorised service recipient in Hong Kong and comply with Hong Kong securities registration requirements (Rules 19.05(2)–(5) applied via 19C.02A(3)–(4)). Eligibility/qualification thresholds (without WVR): Two alternative criteria in Rule 19C.05A: Criteria A: Track record of good regulatory compliance ≥ 5 full financial years on a Qualifying Exchange (or any Recognised Stock Exchange for non-Greater China issuers without WVR and without Greater China centre of gravity) and expected market capitalisation ≥ HK$3,000,000,000 at listing. Criteria B: Track record of good regulatory compliance ≥ 2 full financial years on a Qualifying Exchange and expected market capitalisation ≥ HK$10,000,000,000 at listing. A waiver of the track record may be granted if the applicant is well-established and has much larger market capitalisation than HK$10,000,000,000. Eligibility/qualification thresholds (with WVR): If the issuer has a WVR structure, it must meet: (i) track record of good regulatory compliance ≥ 2 full financial years on a Qualifying Exchange (Rule 19C.04); and (ii) either expected market capitalisation ≥ HK$40,000,000,000 at listing or expected market capitalisation ≥ HK$10,000,000,000 with revenue ≥ HK$1,000,000,000 for the most recent audited financial year (Rule 19C.05). Shareholder protection: Appendix 3/13 shareholder protection standards are modified for Non-Greater China Issuers and Grandfathered Greater China Issuers; they must ensure equivalent shareholder protections specified in Rule 19C.07 and demonstrate how their domestic laws and constitutional documents provide them (Rules 19C.06–19C.09). Ongoing compliance with these standards is required (Rule 19C.09).
+  source: Chapter 19C (Overseas Issuers version) PDF — Rules 19C.02A(1)–(4), 19C.04–19C.05, 19C.05A; Chapter 19C (Qualifying Issuers version) PDF — Rules 19C.06–19C.10 concerning shareholder protection standards.
+
+[instrument_requirements]
+  description: Public float and distribution: Many Main Board listing and continuing obligations are automatically waived for secondary listings (see ‘special_regimes’ below). Specifically, Rule 19C.11 (Overseas Issuers version) lists automatic waivers including Rule 8.08(1) (public float), Rule 8.08A, and certain market capitalisation sub-rules for offers outside the Exchange’s markets. Accordingly, standard float/distribution tests of Rule 8.08 do not apply to secondary listings under the automatic waiver list, unless and until migration of trading occurs (see ‘restrictions_and_lock_ups’ and 19C.13). Class/issuer market cap minima in Hong Kong: Where applicable (e.g., class size thresholds for the Hong Kong tranche), Rule 8.09(3) (HK$50,000,000 per class) and Rule 8.09(4) (HK$10,000,000 for options/warrants) may be waived for issues outside HK markets per 19C.11; but the Exchange may still expect adequate spread in Hong Kong to support trading.
+  source: Rule 19C.11 (Overseas Issuers version) — list of rules not applying to secondary listings including 8.08(1), 8.08A, 8.09(4) (limited to issues outside the Exchange’s markets) and 8.18.
+
+[eligibility_requirements]
+  description: Track record/market cap/revenue: As set out in admission_overview (Rules 19C.04–19C.05A). Authorised representative and Hong Kong service of process: Must appoint a person in Hong Kong to accept service of process/notices (Rule 19.05(2)); must comply with securities registration (Rules 19.05(3)–(5)) — applied via Rule 19C.02A(3)–(4). Financial reporting standards: 19C contains provisions on acceptable GAAP for secondary listings and circumstances requiring reconciliation/adoption of HKFRS/IFRS on delisting from primary jurisdiction (19C.16 et seq.); US GAAP reconciliation requirement applies to first financial year commencing on or after 1 January 2022 for US-listed secondary issuers (note under 19C.16 excerpt).
+  source: Chapter 19C (Overseas Issuers version) PDF — Rules 19C.02A(3)–(4), 19C.15–19C.16 sections on accounts and GAAP notes.
+
+[admission_overview]
+  description: Scope: Sets additional requirements, modifications or exceptions for overseas issuers seeking or having a secondary listing in Hong Kong (Rule 19C.02 / 19C.02A scope statements depending on version). Listing on the issuer’s primary exchange must have been granted before Hong Kong listing (Rule 19C.02A(2)); the Exchange may refuse listing under specified circumstances (Rule 19C.02A(1)). Overseas issuers must appoint/maintain an authorised service recipient in Hong Kong and comply with Hong Kong securities registration requirements (Rules 19.05(2)–(5) applied via 19C.02A(3)–(4)). Eligibility/qualification thresholds (without WVR): Two alternative criteria in Rule 19C.05A: Criteria A: Track record of good regulatory compliance ≥ 5 full financial years on a Qualifying Exchange (or any Recognised Stock Exchange for non-Greater China issuers without WVR and without Greater China centre of gravity) and expected market capitalisation ≥ HK$3,000,000,000 at listing. Criteria B: Track record of good regulatory compliance ≥ 2 full financial years on a Qualifying Exchange and expected market capitalisation ≥ HK$10,000,000,000 at listing. A waiver of the track record may be granted if the applicant is well-established and has much larger market capitalisation than HK$10,000,000,000. Eligibility/qualification thresholds (with WVR): If the issuer has a WVR structure, it must meet: (i) track record of good regulatory compliance ≥ 2 full financial years on a Qualifying Exchange (Rule 19C.04); and (ii) either expected market capitalisation ≥ HK$40,000,000,000 at listing or expected market capitalisation ≥ HK$10,000,000,000 with revenue ≥ HK$1,000,000,000 for the most recent audited financial year (Rule 19C.05). Shareholder protection: Appendix 3/13 shareholder protection standards are modified for Non-Greater China Issuers and Grandfathered Greater China Issuers; they must ensure equivalent shareholder protections specified in Rule 19C.07 and demonstrate how their domestic laws and constitutional documents provide them (Rules 19C.06–19C.09). Ongoing compliance with these standards is required (Rule 19C.09).
+  source: Chapter 19C (Overseas Issuers version) PDF — Rules 19C.02A(1)–(4), 19C.04–19C.05, 19C.05A; Chapter 19C (Qualifying Issuers version) PDF — Rules 19C.06–19C.10 concerning shareholder protection standards.
+
+[additional_findings]
+  description: Automatic waiver schedule: HKEX publishes an ‘Automatic Waivers for Secondary Listings in Hong Kong’ table mapping the standard Listing Rules waived under the 19C regime and the historical JPS route; this aligns with the rule-based waivers in 19C.11 and provides a consolidated reference for practitioners.
+  source: HKEX Automatic Waivers for Secondary Listings PDF table.
+
+[special_regimes]
+  description: WVR for secondary listings: Additional exceptions for certain secondary listed issuers with WVR structures — Rules 8A.07–8A.36, 8A.43 and 8A.44 do not apply to Non-Greater China Issuers or Grandfathered Greater China Issuers seeking/with a secondary listing (Rule 19C.12 in the ‘Qualifying Issuers’ version); Chapter 8A.45 similarly states Rules 8A.04–8A.06 do not apply to a Qualifying Issuer with WVR seeking secondary listing under 19C.
+  source: Chapter 19C (Qualifying Issuers version) PDF — Rule 19C.12; Chapter 8A ‘Entire Section’ — Rule 8A.45.
+
+[procedure_and_timeline]
+  description: Primary exchange listing must already be granted (Rule 19C.02A(2)). Listing application to HKEX proceeds under Chapter 19C with modified documentation: references in Chapter 9 to ‘directors’ should be read as ‘members of the overseas issuer’s governing body’ (Rule 19C.09B(1)); core listing document disclosures must include summaries of waivers/exemptions and differences in shareholder rights, directors’ powers, buy-out obligations and taxes; for depositary receipts, key depositary terms must be summarized (Rule 19C.10A(7)). An ongoing Company Information Sheet must be published and updated (Rules 19C.24–19C.25).
+  source: Chapter 19C (Overseas Issuers version) PDF — Rules 19C.02A(2), 19C.09B(1), 19C.10–19C.10A, 19C.24–19C.25.
+
+[restrictions_and_lock_ups]
+  description: Automatic waivers for secondary listings: Numerous continuing obligations and restrictions are dis-applied, including controlling shareholder lock-up (Rule 10.07) and 6-month post-listing issuance restrictions (Rule 10.08), as listed in Rule 19C.11 (Overseas Issuers version). Migration of trading: If the majority of trading (≥55% of total worldwide dollar trading volume over the most recent financial year) in a secondary listed issuer’s shares migrates to HKEX’s markets on a permanent basis, the issuer will be regarded as having a dual-primary listing; the automatic waivers cease after a 12-month grace period (Rule 19C.13 and Notes 1–2), with a 3-year grandfathering for continuing transactions in place at the notice date (Note 3). If the issuer ceases to be listed on its primary Recognised Stock Exchange, HKEX will regard it as having a primary listing in Hong Kong and the waivers also cease, with limited exemptions for pre-existing continuing transactions (Rule 19C.13A and note).
+  source: Chapter 19C (Overseas Issuers version) PDF — Rules 19C.11, 19C.13 (Notes 1–3), 19C.13A and related notes.
+
+[sponsor_and_infrastructure]
+  description: Automatic waivers (Rule 19C.11) dis-apply many Chapter 3/committee/secretary requirements (e.g., audit/remuneration/nomination committee, company secretary qualification, model code) to secondary listed overseas issuers. Sponsor appointment is not expressly required under 19C; instead, the issuer must provide a Company Information Sheet and enhanced disclosures (Rules 19C.10A–19C.25).
+  source: Rule 19C.11 (Overseas Issuers version) — list of non-applicable rules includes various Chapter 3 series; Rules 19C.10–19C.10B and 19C.24–19C.25 on listing document disclosures and Company Information Sheet.
+
+[disclosure_at_admission]
+  description: Listing document must prominently disclose unusual governance provisions specific to the issuer (Rule 19C.10); must include specified summaries of waivers/exemptions, differences in shareholders’ rights and protections, tax disclosures, and DR terms (Rule 19C.10A(7)). Overseas issuers that are US ‘Foreign Private Issuers’ must disclose US exemptions they enjoy (Rule 19C.10A(8)). A separate Company Information Sheet containing those differences must be published and kept updated (Rules 19C.24–19C.25).
+  source: Chapter 19C (Overseas Issuers version) PDF — Rules 19C.10, 19C.10A(7)–(8), 19C.24–19C.25.
+
+[common_requirements_common]
+  description: Incorporation and regulatory cooperation: Issuer must be duly incorporated and in conformity with home law (Rule 8.02). For issuers (and places of central management/control) outside Hong Kong, both statutory securities regulators must be full signatories to the IOSCO MMOU (Rule 8.02A) unless a specific waiver is granted (Rule 8.02B). Recent financial information: Latest period in accountants’ report not more than 6 months before the listing document date (Rule 8.06). Suitability: The Exchange has absolute discretion; issuer and business must be suitable for listing (Rules 8.01, 8.04; Rule 2.04 discretionary powers referenced). Working capital statement: Required in listing document (Rule 8.21A) except for certain regulated banks/insurers under Rule 8.21A(2); for Biotech (Rule 18A.03(4)) and Mineral Companies (Rules 18.03(4)–(5)), the working capital statement must cover 125% of needs for at least 12 months. Free transferability and CCASS eligibility: Securities must be freely transferable (Rule 8.13) and be CCASS-eligible from day one (Rule 8.13A), and remain so. Public float and distribution: Standard float/distribution rules (Rule 8.08) and class/issuer/public float market cap minima (Rule 8.09) apply to all primary listings; for secondary listings under 19C, these may be waived under Rule 19C.11 as specified. Disclosure baseline: Rule 11.07 overriding disclosure principle applies to listing documents; special chapter-specific disclosure requirements apply for WVR, Biotech, Mineral, SPAC, etc. Corporate governance committees/officers: Chapter 3 requirements on audit/remuneration/nomination committees, INEDs (including accounting expertise), company secretary qualifications, and audit committees apply to primary listings; many are waived for secondary listings under Rule 19C.11.
+  source: Chapter 8 PDF (Rules 8.02–8.06, 8.13–8.13A, 8.21A, 8.08–8.09); Chapter 11 (Rule 11.07); Chapter 3A and Chapter 3 extracts; Chapter 18/18A/18B extracts for special regimes.
+
+
+=== Cell: HK_HKEX_Main_Board_chapter_19c_secondary_listing_equity | Query: 3B ===
+Tier: Chapter 19C Secondary Listing of Overseas Issuers
+
+[delisting_compulsory]: {"grace_period": {"description": "The general 18-month continuous suspension period for compulsory delisting under Rule 6.01A(1) applies. Specific remedial periods may be set by the Exchange under Rule 6.10.", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_2233_VER10.pdf"}, "procedure": {"description": "The procedures for compulsory delisting under Rules 6.01, 6.01A, and 6.10 apply to secondary listed issuers. The Exchange may issue a delisting notice with a remedial period or delist immediately in exceptional circumstances. Decision authority rests with the Exchange, subject to Listing Review procedures.", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_2233_VER10.pdf"}, "grounds": {"description": "Chapter 6 grounds for suspension and delisting apply, including insufficient operations (Rule 13.24) and lack of suitability for listing (Rule 6.01). Some Chapter 13 triggers (e.g., 13.49/13.50) are inapplicable where waived for secondary listings.", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_2233_VER10.pdf"}, "disclosure": {"description": "Exchange announcements under Rules 6.10/6.10A apply. Issuers must continue quarterly updates (Rule 13.24A) and inside information disclosures during any remedial period.", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_2233_VER10.pdf"}, "shareholder_protection": {"description": "No shareholder vote on compulsory delisting. Protection arises through disclosure and resumption guidance. If delisting follows a successful compulsory acquisition/privatisation, Rule 6.15 applies.", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_2233_VER10.pdf"}}
+
+[continuing_obligations]: {"periodic_reporting": {"description": "Many Main Board continuing obligations, including Rules 13.48(2) and 13.49 (results preliminary announcements), are automatically waived for secondary listed overseas issuers under Rule 19C.11. Issuers remain subject to home-market requirements.", "source": "https://en-rules.hkex.com.hk/rulebook/19c11"}, "compliance_confirmation": {"description": "Appendix 14 (CG Code) is automatically waived for secondary listed overseas issuers under Rule 19C.11. Issuers remain subject to home-market requirements.", "source": "https://en-rules.hkex.com.hk/rulebook/19c11"}, "quantitative_thresholds": {"description": "Rule 8.08(1) public float at listing and Rules 13.32A to 13.32G (ongoing public float) are automatically waived for secondary listed overseas issuers under Rule 19C.11. However, Rule 13.24 (sufficiency of operations/assets) still applies.", "source": "https://en-rules.hkex.com.hk/rulebook/19c11"}, "qualitative_obligations": {"description": "Rules 3.21 to 3.23 (audit committee), 3.25 to 3.27A (remuneration/nomination committee), 3.28 (company secretary qualifications), and Appendix 27 (ESG) are automatically waived for secondary listed overseas issuers under Rule 19C.11. Directors still must provide contact/personal particulars under Rule 3.20 and sign undertakings where specified. Issuers remain subject to home-market requirements. Upon migration to deemed dual-primary listing under Rule 19C.13 or deemed primary listing under Rule 19C.13A, these waivers cease to apply.", "source": "https://en-rules.hkex.com.hk/rulebook/19c11"}}
+
+[additional_findings]
+  description: Automatic exceptions from Main Board continuing obligations (Rule 19C.11): Numerous rules do not apply to secondary listed overseas issuers, including but not limited to: Rules 3.21–3.23 (audit committee), 3.25–3.27A (remuneration/nomination committee), 3.28 (company secretary qualifications), Chapter 7, Rule 8.08(1) public float at listing, numerous Chapter 13 continuing obligations (e.g., 13.11–13.22, 13.25A, many meeting/circular rules), 13.48(2), 13.49 (results prelim announcements), Chapters 14/14A (notifiable/connected transactions), Appendix 14 (CG Code), Appendix 16 (financial information), Appendix 27 (ESG) and others as itemised in Rule 19C.11. Directors still must provide contact/personal particulars under Rule 3.20 and sign undertakings where specified. Common waivers: Exchange may grant additional waivers from specified procedural rules (Rule 19C.11B) and, case‑by‑case, other rules (Rule 19C.11C) if dual compliance would be unduly burdensome or unnecessary and investor interests are safeguarded (Rule 19C.11A principles). Continuing obligations that still apply: Unless expressly waived, the Exchange Listing Rules apply (Rule 19C Scope). Examples typically still applying include Rule 13.24 (sufficient operations/assets) and Chapter 6 suspension/delisting framework. Statutory inside information obligations under Part XIVA SFO continue to apply. Migration/deemed primary listing triggers: Majority trading migration to HK (Rule 19C.13): If 55% or more of the total worldwide trading volume (by dollar value) of the issuer’s listed shares over the most recent financial year takes place on HKEX markets, the Exchange will regard the issuer as having a dual‑primary listing; automatic/common waivers in Rules 19C.11/11A/11B/11C cease to apply. Grace period: 12 months from the Exchange’s written notice to comply with applicable Listing Rules. Cessation of overseas primary listing (Rule 19C.13A): If shares (or DRs) cease to be listed on the recognised overseas exchange of primary listing, the Exchange will regard the issuer as having a primary listing in Hong Kong; waivers under Rules 19C.11 etc. cease to apply. Limited 3‑year exemptions may apply to continuing transactions entered before notification of expected involuntary delisting.
+  source: https://en-rules.hkex.com.hk/rulebook/19c11
+
+[suspension]: {"procedure": {"description": "The procedures for suspension under Rules 6.02–6.08 apply to secondary listed issuers. The issuer may request a trading halt/suspension, or the Exchange can impose it. The power to direct resumption is subject to review.", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_2233_VER10.pdf"}, "grounds": {"description": "Chapter 6 grounds for suspension apply, including insufficient operations (Rule 13.24) and lack of suitability for listing (Rule 6.01). Some Chapter 13 triggers (e.g., 13.49/13.50) are inapplicable where waived for secondary listings.", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_2233_VER10.pdf"}, "duration_limits": {"description": "The duration limits for suspension, including the 18-month continuous suspension period before compulsory delisting under Rule 6.01A(1), apply to secondary listed issuers.", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_2233_VER10.pdf"}, "disclosure": {"description": "Disclosure requirements when suspension is imposed, including initial announcements and ongoing quarterly updates under Rule 13.24A, apply to secondary listed issuers.", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_2233_VER10.pdf"}}
+
+[delisting_voluntary]: {"procedure": {"description": "An issuer whose primary listing is on another stock exchange and which has a secondary listing on the Exchange may not voluntarily withdraw its secondary listing unless: (1) it has complied with all relevant laws/rules of primary listing jurisdiction and incorporation; and (2) it has given its shareholders at least 3 months’ prior notice of the proposed withdrawal (Rule 6.16).", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_2233_VER10.pdf"}, "conditions": {"description": "Must (i) comply with all relevant laws/rules of primary listing jurisdiction and incorporation; and (ii) give at least 3 months’ prior notice by announcement (Rule 6.16).", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_2233_VER10.pdf"}, "shareholder_approval": {"description": "Shareholder approval requirements are governed by the laws and rules of the primary listing jurisdiction and incorporation, as well as the notice requirements under Rule 6.16.", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_2233_VER10.pdf"}}
+
+[terminology]: {"suspension_local_term": "‘trading halt’ and ‘suspension of trading’; resumption; ‘cancellation of listing’; ‘withdrawal of listing’.", "delisting_local_term": "‘cancellation of listing’ and ‘withdrawal of listing’.", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_2233_VER10.pdf"}
+
+[common_obligations_common]
+  description: Chapter 6 framework on trading halts, suspensions, resumption and cancellation of listing (Rules 6.01–6.10A) applies in Hong Kong to all classes of equity listed on HKEX, subject to any specific waivers for secondary listings. Inside information disclosure under Part XIVA SFO (SFC Guidelines) applies to all listed issuers on HKEX (primary and secondary). During any suspension, quarterly updates under Rule 13.24A and compliance with continuing obligations still applicable to the issuer (GL95‑18).
+  source: https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_2233_VER10.pdf
+
+
+=== Cell: HK_HKEX_Main_Board_chapter_19c_secondary_listing_equity | Query: 3C ===
+Tier: Chapter 19C Secondary Listing of Overseas Issuers
+
+[additional_findings]
+  description: Chapter 19C sets out specific qualifications and conditions for secondary listings, but ongoing monitoring generally aligns with Main Board standards except for specific reporting waivers [20].
+  source: https://en-rules.hkex.com.hk/rulebook/chapter-19c-secondary-listings-overseas-issuers
+
+[sanctions]: {"regulator_sanctions": {"description": "Same as standard equity tier [16, 18].", "source": "https://www.elegislation.gov.hk/hk/cap571!en/s384?_lang=sc"}, "disciplinary_procedure": {"description": "Same as standard equity tier [2].", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_1977_VER20.pdf"}, "exchange_sanctions": {"description": "Same as standard equity tier [2].", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_1977_VER20.pdf"}, "publication_of_actions": {"description": "Same as standard equity tier [2, 3].", "source": "https://www.hkex.com.hk/-/media/HKEX-Market/Listing/Rules-and-Guidance/Disciplinary-and-Enforcement/Disciplinary-Procedures-and-Enforcement-Guidance-Materials/enf_sanctions.pdf"}}
+
+[monitoring_regime]: {"issuer_reporting_to_exchange": {"description": "Issuers may apply for a waiver from Rule 13.25B (Monthly Return) if they have a partial exemption from SFO Part XV, comply strictly with Rule 13.25A, or are subject to similar overseas laws [5, 9].", "source": "https://en-rules.hkex.com.hk/rulebook/1325b"}, "mechanisms": {"description": "Same as standard equity tier [1].", "source": "https://www.hkex.com.hk/Services/Rules-and-Forms-and-Fees/HKEX-Rule-Enforcement-and-Disciplinary/HKEX-Rule-Enforcement?sc_lang=en"}, "sponsor_role": {"description": "Same as standard equity tier [11, 12].", "source": "https://en-rules.hkex.com.hk/rulebook/3a19"}, "responsible_body": {"description": "Same as standard equity tier [2].", "source": "https://en-rules.hkex.com.hk/sites/default/files/net_file_store/HKEX4476_1977_VER20.pdf"}}
+
+[enforcement_practice]: {"general_approach": {"description": "Same as standard equity tier [1].", "source": "https://www.hkex.com.hk/Services/Rules-and-Forms-and-Fees/HKEX-Rule-Enforcement-and-Disciplinary/HKEX-Rule-Enforcement?sc_lang=en"}, "recent_examples": {"description": "Same as standard equity tier [1].", "source": "https://www.hkex.com.hk/Services/Rules-and-Forms-and-Fees/HKEX-Rule-Enforcement-and-Disciplinary/HKEX-Rule-Enforcement?sc_lang=en"}}
+
+[common_monitoring_common]
+  description: HKEX employs a Rule Enforcement Framework consisting of prevention (education and communication), detection (market surveillance, self-reporting, and the Annual Attestation and Inspection Programme), and correction (rectification and disciplinary action) [1]. The Annual Attestation and Inspection Programme, introduced in 2017, requires participants to complete an annual questionnaire to attest compliance, which HKEX uses to assess risk profiles and conduct follow-up enquiries or on-site inspections [1].
+  source: https://www.hkex.com.hk/Services/Rules-and-Forms-and-Fees/HKEX-Rule-Enforcement-and-Disciplinary/HKEX-Rule-Enforcement?sc_lang=en
+
+
+---
+TASK: Extract the COMMON parameter framework for this group.
+
+PARAMETER CHECKLIST for equity:
+  П01: Free float / Public float / Shares in public hands
+  П02: Minimum market capitalization
+  П03: Minimum number of shareholders / holders
+  П04: Minimum share price / Bid price
+  П05: Minimum shares outstanding
+  П06: Minimum trading volume
+  П07: Track record / Operating history / Financial history
+  П08: Profit / Earnings test
+  П09: Net tangible assets / Shareholders' equity
+  П10: Revenue requirement
+  П11: Working capital requirement
+  П12: Corporate governance standards
+  П13: Auditor / Accounting standards
+  П14: Sponsor / Nomad / Listing agent
+  П15: Market maker / Liquidity provider
+  П16: Prospectus / Admission document
+  П17: Lock-up / Lock-in period
+  П18: Escrow restrictions
+
+For each parameter in the checklist:
+- If the parameter APPLIES to this group: describe its structure using the
+  6-question template below. Where parameter VALUES differ between venues
+  or tiers within the group — note the range, but focus on STRUCTURAL
+  description.
+- If the parameter does NOT APPLY: status="not_applicable" with brief note.
+- If data does not contain information: status="data_not_found".
+
+PARAMETER DESCRIPTION TEMPLATE (answer all 6 for each found parameter):
+1. WHAT IS ESTABLISHED? Numeric threshold, qualitative criterion, or combination.
+   In what units (%, count, monetary amount). If monetary — in what currency.
+2. HOW IS IT CALCULATED? What is included, what is excluded. Who verifies.
+3. ARE THERE ALTERNATIVES? Either/or options.
+4. DOES IT VARY? By company size, tier, issuer type, sub-class (e.g. professional vs retail),
+   market maker presence.
+5. IS IT LINKED TO OTHER PARAMETERS? Bundles, dependencies.
+6. SOURCE. Specific rule, section, chapter.
+
+LIFECYCLE PHASES — for each found parameter, specify which phase the value applies to:
+- ADMISSION: threshold for initial admission
+- CONTINUING: threshold for maintaining listing
+- REMOVAL: threshold triggering suspension or delisting
+If values differ by phase — describe each separately.
+
+UNKNOWN PARAMETERS:
+If you find admission requirements not matching any checklist parameter — report them
+as additional_parameters with the same 6-question description. Set parameter_id to
+"ADDITIONAL_1", "ADDITIONAL_2", etc.
+
+Set group_id="Hong_Kong_regulated_market_equity_distinct" and instrument_class="equity" in your response.

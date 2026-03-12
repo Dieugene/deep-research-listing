@@ -1,0 +1,171 @@
+You are analyzing the admission parameter framework for a group of venues
+within the same jurisdiction, market type, and instrument class.
+
+JURISDICTION: Великобритания
+MARKET TYPE: regulated_market
+INSTRUMENT CLASS: equity
+ADMISSION PATH TYPE: distinct
+VENUES/CELLS IN THIS GROUP:
+  - cell_id: GB_LSE_Main_Market_equity_shares_international_co_equity | venue: LSE_Main_Market | tier: Equity Shares (International Commercial Companies Secondary Listing) | data available: ['3A', '3B', '3C']
+  - cell_id: GB_Aquis_Stock_Exchange_equity_shares_international_co_equity | venue: Aquis_Stock_Exchange | tier: Equity Shares – International Commercial Companies Secondary Listing (UKLR 14) | data available: ['3C']
+
+RESEARCH DATA FROM ALL CELLS IN THIS GROUP:
+=== Cell: GB_LSE_Main_Market_equity_shares_international_co_equity | Query: 3A ===
+Tier: Equity Shares (International Commercial Companies Secondary Listing)
+
+[secondary_admission]
+  description: Qualifying Home Listing: Must have a primary listing on a "suitable exchange" and be in the same class as those shares (UKLR 14.2.6R). Central Management: Must be situated in the country of incorporation or the country of the qualifying home listing (UKLR 14.2.4R).
+  source: 
+
+[instrument_requirements]
+  description: Free Float: 10% in public hands (UKLR 14.2.2R), consistent with ESCC.
+  source: 
+
+[eligibility_requirements]
+  description: Waivers: Most ESCC-specific requirements (like the independence from controlling shareholders test and the mandatory sponsor regime for further transactions) are modified or do not apply.
+  source: 
+
+[admission_overview]
+  description: not applicable
+  source: 
+
+[additional_findings]
+  description: not applicable
+  source: 
+
+[special_regimes]
+  description: not applicable
+  source: 
+
+[procedure_and_timeline]
+  description: Early Notification: For new applicants, early engagement with the FCA and LSE is required. Provisional Submission: Form 1 and draft prospectus submitted to LSE at least 10 business days before the application is considered (LSE ADS Schedule 1, Part A). Formal Application: Final Form 1 and approved prospectus submitted by 12:00, 2 business days before admission (LSE ADS Schedule 1, Part B). Admission Effective: Becomes effective when the LSE announces it via a Regulatory Information Service (RIS) (usually at 08:00 on the day of admission).
+  source: https://docs.londonstockexchange.com/sites/default/files/documents/admission-and-disclosure-standards.pdf
+
+[restrictions_and_lock_ups]
+  description: Regulatory Lock-up: Shares subject to a lock-up of >180 days are excluded from the 10% free float calculation (UKLR 5.5.3R(2)). Contractual Lock-ups: Typically required by sponsors/underwriters for directors and major shareholders (often 12 months), but these are not mandated by the UKLR beyond the free float impact.
+  source: https://handbook.fca.org.uk/handbook/UKLR/5/5.html
+
+[sponsor_and_infrastructure]
+  description: Sponsor: Required only at the point of admission (UKLR 4.2). Sponsor Role: The sponsor must confirm to the FCA that the applicant has satisfied all listing requirements and that directors understand their obligations (UKLR 4.3). Market Maker: For LSE admission, at least one registered market maker is required to provide two-way prices (LSE ADS Schedule 1, Guidance).
+  source: 
+
+[disclosure_at_admission]
+  description: not applicable
+  source: 
+
+[common_requirements_common]
+  description: Admission to Trading: Securities must be admitted to trading on a regulated market for listed securities (UKLR 3.2.3R). Transferability: Shares must be freely transferable, fully paid, and free from liens (UKLR 3.2.4R). Prospectus: A prospectus must be approved by the FCA and published in accordance with the Prospectus Regulation Rules (PRR) (UKLR 3.2.10R). Market Capitalisation: Minimum expected aggregate market value at admission is 30 million for shares (UKLR 3.2.7R). The FCA may modify this if an adequate market exists (UKLR 3.2.8R). LSE Procedure: Submission of Form 1 (provisional 10 business days before, formal 2 business days before admission) (LSE ADS Schedule 1).
+  source: https://handbook.fca.org.uk/handbook/UKLR/3/2.html
+
+
+=== Cell: GB_LSE_Main_Market_equity_shares_international_co_equity | Query: 3B ===
+Tier: Equity Shares (International Commercial Companies Secondary Listing)
+
+[delisting_compulsory]: {"grace_period": {"description": "Not explicitly detailed, but the issuer must notify the FCA \"as early as possible\" if its home listing is suspended or cancelled, implying a period for discussion.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "procedure": {"description": "The issuer must notify the FCA \"as early as possible\" if its home listing is suspended or cancelled to discuss whether a suspension, restoration or cancellation of listing under UKLR 21 is appropriate.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "grounds": {"description": "The issuer must notify the FCA \"as early as possible\" if its home listing is suspended or cancelled (UKLR 14.3.4R). This would likely trigger a review for compulsory delisting by the FCA.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "disclosure": {"description": "Not explicitly detailed, but the issuer must notify the FCA \"as early as possible\" if its home listing is suspended or cancelled.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "shareholder_protection": {"description": "Relies on home market protections.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}}
+
+[continuing_obligations]: {"periodic_reporting": {"description": "Primarily follows the rules of the home jurisdiction, but the issuer must still comply with DTR 4, 5, and 6 (UKLR 14.3.10G) unless exemptions apply.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "compliance_confirmation": {"description": "Relies on home country rules for corporate governance.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "quantitative_thresholds": {"description": "Free Float: Minimum 10% in public hands (UKLR 14.2.2R).", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "qualitative_obligations": {"description": "Inside Information: Subject to UK MAR Article 17. ESG: Must comply with TCFD and diversity reporting (UKLR 14.3.11R). No Shareholder Votes: Generally does not require shareholder votes for significant transactions or reverse takeovers under UK rules, relying instead on home market protections.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}}
+
+[additional_findings]
+  description: No sponsor is generally required.
+  source: FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21.
+
+[suspension]: {"procedure": {"description": "The issuer must notify the FCA \"as early as possible\" if its home listing is suspended (UKLR 14.3.4R).", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "grounds": {"description": "Suspension of the home listing is a key ground for potential suspension on the LSE.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "duration_limits": {"description": "Not explicitly detailed.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "disclosure": {"description": "The issuer must notify the FCA \"as early as possible\" if its home listing is suspended.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}}
+
+[delisting_voluntary]: {"procedure": {"description": "The issuer must notify a RIS and provide at least 20 business days notice (UKLR 21.2.17R).", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "conditions": {"description": "Does NOT require a shareholder vote under UKLR.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "shareholder_approval": {"description": "Does NOT require a shareholder vote under UKLR.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}}
+
+[terminology]: {"suspension_local_term": "Suspension of listing (FCA) / Suspension of trading (LSE)", "delisting_local_term": "Cancellation of listing (FCA) / Cancellation of admission to trading (LSE)", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}
+
+[common_obligations_common]
+  description: Inside Information: All issuers on the Main Market are subject to UK MAR, requiring immediate disclosure of inside information. RIS Announcement: All major updates (financials, board changes, suspension/delisting) must be disseminated via an FCA-approved Regulatory Information Service. LSE Fees: All issuers must pay annual listing/admission fees; failure to pay is a ground for cancellation (ADS 4.11).
+  source: FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21.
+
+
+=== Cell: GB_LSE_Main_Market_equity_shares_international_co_equity | Query: 3C ===
+Tier: Equity Shares (International Commercial Companies Secondary Listing)
+
+[additional_findings]
+  description: 
+  source: 
+
+[sanctions]: {"regulator_sanctions": {"description": "Identical to the ESCC tier: FCA can impose unlimited fines, public censure, or suspend/cancel the listing under FSMA s.91.", "source": "FSMA s.91; FCA Handbook"}, "disciplinary_procedure": {"description": "Same FCA disciplinary procedure as ESCC – investigation, warning, decision, final notice, with appeal to Upper Tribunal.", "source": "FCA Enforcement Guide; DEPP"}, "exchange_sanctions": {"description": "LSE may apply the same range of sanctions – censures, fines (up to £100k or unlimited), trading suspension, or cancellation under ADS.", "source": "LSE Admission and Disclosure Standards"}, "publication_of_actions": {"description": "Sanctions are published on the LSE’s public registers and the FCA’s sanctions database, consistent with the ESCC tier.", "source": "LSE ADS; FCA public sanctions register"}}
+
+[monitoring_regime]: {"issuer_reporting_to_exchange": {"description": "Issuers must comply with their home‑exchange rules but also notify the LSE of any change to the home listing status (UKLR 14.3.4R) and adhere to DTR 4, DTR 5 and UK MAR.", "source": "UKLR 14.3.4R; FCA Handbook DTR 4 & 5"}, "mechanisms": {"description": "The FCA monitors compliance with DTR 4/5 and UK MAR; the LSE monitors compliance with ADS Section 4 through its surveillance systems.", "source": "FCA Handbook; LSE ADS"}, "sponsor_role": {"description": "Not required for ongoing monitoring or transactions; a sponsor is only needed at the point of initial admission (UKLR 24.3).", "source": "UKLR 24.3"}, "responsible_body": {"description": "FCA oversees market abuse and DTR compliance; LSE oversees ADS compliance and overall market supervision.", "source": "FCA Handbook; LSE ADS"}}
+
+[enforcement_practice]: {"general_approach": {"description": "Enforcement mirrors the ESCC tier: FCA focuses on integrity of the secondary market and timely replication of home‑market disclosures; LSE uses its surveillance and disciplinary mechanisms as required.", "source": "FCA Enforcement Policy; LSE ADS"}, "recent_examples": {"description": "Enforcement actions have targeted secondary‑listed issuers for delayed disclosure of home‑market information and breaches of UK MAR, though specific case names were not detailed in the source material.", "source": "FCA monitoring reports"}}
+
+[common_monitoring_common]
+  description: All equity issuers on the Main Market are subject to overarching transparency and market integrity rules. Responsible bodies are the FCA’s Primary Market Monitoring team and the LSE’s Market Supervision team. UK MAR applies to all tiers, requiring prompt disclosure of inside information (Article 17) and PDMR transaction notifications (Article 19). DTR 4 mandates annual reports within 4 months and half‑yearly reports within 3 months. DTR 5 sets major shareholding notification thresholds (3%/1% increments for UK issuers; 5‑75% steps for non‑UK issuers). LSE Admission and Disclosure Standards rule 4.4 requires issuers to supply any information the Exchange reasonably requests without delay.
+  source: LSE Admission and Disclosure Standards (ADS); FCA Handbook (UKLR, DTR, UK MAR)
+
+
+=== Cell: GB_Aquis_Stock_Exchange_equity_shares_international_co_equity | Query: 3C ===
+Tier: Equity Shares – International Commercial Companies Secondary Listing (UKLR 14)
+
+[additional_findings]
+  description: No additional findings beyond the general framework apply to this secondary‑listing tier.
+  source: AQSE Disciplinary Procedures (Dec 2022)
+
+[sanctions]: {"regulator_sanctions": {"description": "The FCA applies the same powers as for the primary equity tier: fines, licence revocation, criminal referral, civil proceedings, and the ability to suspend or cancel the listing under UKLR 14, DTR and UK MAR.", "source": "FCA supervisory role described in AQSE documentation"}, "disciplinary_procedure": {"description": "Identical to the primary equity tier: initiation, investigation, Warning Notice, 10‑day referral to Disciplinary Committee, hearing, Decision Notice, and appeal to Appeals Committee within 10 days; civil standard of proof.", "source": "AQSE Disciplinary Procedures (Dec 2022)"}, "exchange_sanctions": {"description": "Same sanctions as for the primary tier: private reprimand, public censure (named/unnamed), financial penalty, withdrawal of securities from trading; payment deadlines and suspension/exclusion triggers identical.", "source": "AQSE Disciplinary Procedures (Dec 2022)"}, "publication_of_actions": {"description": "AQSE publishes disciplinary proceedings, decisions or summaries except when no sanction or only a private reprimand is imposed; market notices used for trading suspensions/halts.", "source": "AQSE Disciplinary Procedures (Dec 2022)"}}
+
+[monitoring_regime]: {"issuer_reporting_to_exchange": {"description": "AQSE may compel the same information and verification obligations as for the primary tier, governed also by the AQSE Main Market Admission and Disclosure Standards.", "source": "AQSE Disciplinary Procedures (Dec 2022) and document library"}, "mechanisms": {"description": "Same surveillance, investigatory, record‑keeping and trade‑control mechanisms as described for the primary tier.", "source": "AQSE Trading Rules (Dec 2020) and Disciplinary Procedures (Dec 2022)"}, "sponsor_role": {"description": "Not applicable; AQSE does not require a sponsor for secondary listings on the Main Market.", "source": "AQSE Rules & Regulations portal"}, "responsible_body": {"description": "AQSE Regulation is responsible for monitoring; the FCA retains oversight of UKLR 14 obligations and can instruct suspensions.", "source": "AQSE Rules & Regulations portal"}}
+
+[enforcement_practice]: {"general_approach": {"description": "Identical to the primary equity tier – civil standard of proof, factor‑based sanctioning, alignment with FCA guidance.", "source": "AQSE Disciplinary Procedures (Dec 2022)"}, "recent_examples": {"description": "No specific recent cases identified; enforcement approach mirrors that of the primary equity tier.", "source": "AQSE Disciplinary Procedures (Dec 2022)"}}
+
+[common_monitoring_common]
+  description: AQSE operates a UK Regulated Market (Main Market) for securities admitted to the UK Official List. The exchange monitors issuer conduct through trading surveillance, investigative powers (including information requests with or without notice and verification), record‑keeping for at least six years, and a disciplinary framework that involves the Regulation Department, Primary Markets Approval Committee, a Disciplinary Committee and an Appeals Committee. AQSE can impose sanctions such as private reprimands, public censures, financial penalties and withdrawal of securities from trading, and may suspend or cancel trades to preserve market integrity. The FCA retains responsibility for Official List admission and ongoing UK Listing Rules, Disclosure Guidance and Transparency Rules and Market Abuse Regulation supervision, and can instruct AQSE to suspend trading.
+  source: AQSE Rules & Regulations portal; AQSE Disciplinary & Appeals Procedure (Dec 2022); AQSE Trading Rules (Dec 2020)
+
+
+---
+TASK: Extract the COMMON parameter framework for this group.
+
+PARAMETER CHECKLIST for equity:
+  П01: Free float / Public float / Shares in public hands
+  П02: Minimum market capitalization
+  П03: Minimum number of shareholders / holders
+  П04: Minimum share price / Bid price
+  П05: Minimum shares outstanding
+  П06: Minimum trading volume
+  П07: Track record / Operating history / Financial history
+  П08: Profit / Earnings test
+  П09: Net tangible assets / Shareholders' equity
+  П10: Revenue requirement
+  П11: Working capital requirement
+  П12: Corporate governance standards
+  П13: Auditor / Accounting standards
+  П14: Sponsor / Nomad / Listing agent
+  П15: Market maker / Liquidity provider
+  П16: Prospectus / Admission document
+  П17: Lock-up / Lock-in period
+  П18: Escrow restrictions
+
+For each parameter in the checklist:
+- If the parameter APPLIES to this group: describe its structure using the
+  6-question template below. Where parameter VALUES differ between venues
+  or tiers within the group — note the range, but focus on STRUCTURAL
+  description.
+- If the parameter does NOT APPLY: status="not_applicable" with brief note.
+- If data does not contain information: status="data_not_found".
+
+PARAMETER DESCRIPTION TEMPLATE (answer all 6 for each found parameter):
+1. WHAT IS ESTABLISHED? Numeric threshold, qualitative criterion, or combination.
+   In what units (%, count, monetary amount). If monetary — in what currency.
+2. HOW IS IT CALCULATED? What is included, what is excluded. Who verifies.
+3. ARE THERE ALTERNATIVES? Either/or options.
+4. DOES IT VARY? By company size, tier, issuer type, sub-class (e.g. professional vs retail),
+   market maker presence.
+5. IS IT LINKED TO OTHER PARAMETERS? Bundles, dependencies.
+6. SOURCE. Specific rule, section, chapter.
+
+LIFECYCLE PHASES — for each found parameter, specify which phase the value applies to:
+- ADMISSION: threshold for initial admission
+- CONTINUING: threshold for maintaining listing
+- REMOVAL: threshold triggering suspension or delisting
+If values differ by phase — describe each separately.
+
+UNKNOWN PARAMETERS:
+If you find admission requirements not matching any checklist parameter — report them
+as additional_parameters with the same 6-question description. Set parameter_id to
+"ADDITIONAL_1", "ADDITIONAL_2", etc.
+
+Set group_id="United_Kingdom_regulated_market_equity_distinct" and instrument_class="equity" in your response.

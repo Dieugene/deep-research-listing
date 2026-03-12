@@ -98,3 +98,52 @@ def load_l3_result(
         if result is not None:
             return result
     return None
+
+
+def load_pass2_data(name_ru: str, venue_key: str, cell_id: str) -> dict | None:
+    """
+    Load pass2 data for a cell.
+    Prefers pass2_ru.json (translated); falls back to pass2.json (English).
+    Returns the full dict or None if not found.
+    """
+    base = get_country_level3_dir(name_ru, venue_key) / cell_id
+    for filename in ["pass2_ru.json", "pass2.json"]:
+        data = load_json(base / filename)
+        if data is not None:
+            return data
+    return None
+
+
+def load_cell_validation_status(name_ru: str, venue_key: str, cell_id: str) -> str:
+    """
+    Compute aggregate validation status for a cell from 3A/3B/3C validation files.
+    Returns "green" | "yellow" | "red" | "unknown".
+    Aggregation rule: worst-case — if any RED → "red", if any YELLOW → "yellow", else "green".
+    """
+    base = get_country_level3_dir(name_ru, venue_key) / cell_id
+    statuses: list[str] = []
+    for qt in ["3A", "3B", "3C"]:
+        val = load_json(base / f"{qt}_validation.json")
+        if val:
+            statuses.append(val.get("validation_status", "unknown").lower())
+    if not statuses:
+        return "unknown"
+    if "red" in statuses:
+        return "red"
+    if "yellow" in statuses:
+        return "yellow"
+    if all(s == "green" for s in statuses):
+        return "green"
+    return "unknown"
+
+
+def load_level4_data(name_ru: str) -> dict | None:
+    """Load level4.json for a jurisdiction."""
+    from pipeline.config import get_country_level4_dir
+    return load_json(get_country_level4_dir(name_ru) / "level4.json")
+
+
+def load_level4_validation(name_ru: str) -> dict | None:
+    """Load level4_validation.json for a jurisdiction."""
+    from pipeline.config import get_country_level4_dir
+    return load_json(get_country_level4_dir(name_ru) / "level4_validation.json")

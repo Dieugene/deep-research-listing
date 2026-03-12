@@ -21,6 +21,10 @@ from viewer.data_loader import (
     load_l3_result,
     load_level3_state,
     load_venue_card,
+    load_pass2_data,
+    load_cell_validation_status,
+    load_level4_data,
+    load_level4_validation,
 )
 
 # ---------------------------------------------------------------------------
@@ -140,6 +144,92 @@ with tab_jurisdiction:
 
         with st.expander("Полный JSON (jurisdiction_card)"):
             st.json(jurisdiction_card, expanded=False)
+
+        # Level 4: Regulatory objectives
+        st.divider()
+        level4_data = load_level4_data(name_ru)
+        level4_val = load_level4_validation(name_ru)
+
+        _L4_VAL_ICONS = {"green": "🟢", "yellow": "🟡", "red": "🔴", "unknown": "⬜"}
+        l4_status = (level4_val or {}).get("validation_status", "unknown")
+        l4_icon = _L4_VAL_ICONS.get(l4_status, "⬜")
+
+        st.subheader(f"{l4_icon} Регуляторные цели и обоснования")
+
+        if not level4_data:
+            st.info("level4.json не найден — Level 4 не выполнен для данной юрисдикции.")
+        else:
+            # Problems
+            problems = level4_data.get("problems", [])
+            with st.expander(f"Проблемы ({len(problems)})", expanded=False):
+                if not problems:
+                    st.caption("Не найдено")
+                for p in problems:
+                    st.markdown(f"**{p.get('description_ru') or p.get('description', '?')}**")
+                    cols = st.columns(3)
+                    cols[0].caption(f"Кто: {p.get('articulated_by', '—')}")
+                    cols[1].caption(f"Период: {p.get('period', '—')}")
+                    cols[2].caption(f"Источник: {p.get('source', '—')}")
+                    st.divider()
+
+            # Contradictions
+            contradictions = level4_data.get("contradictions", [])
+            with st.expander(f"Противоречия целей ({len(contradictions)})", expanded=False):
+                if not contradictions:
+                    st.caption("Не найдено")
+                for c in contradictions:
+                    st.markdown(f"**{c.get('objective_a', '?')}** ↔ **{c.get('objective_b', '?')}**")
+                    resolution = c.get('resolution_ru') or c.get('resolution', '')
+                    if resolution:
+                        st.write(resolution)
+                    cols = st.columns(2)
+                    cols[0].caption(f"Период: {c.get('period', '—')}")
+                    cols[1].caption(f"Источник: {c.get('source', '—')}")
+                    st.divider()
+
+            # Parameters as tools
+            params_tools = level4_data.get("parameters_as_tools", [])
+            with st.expander(f"Параметры как инструменты политики ({len(params_tools)})", expanded=False):
+                if not params_tools:
+                    st.caption("Не найдено")
+                for pt in params_tools:
+                    desc_ru = pt.get('parameter_description_ru') or pt.get('parameter_description', '?')
+                    st.markdown(f"**{desc_ru}**")
+                    problem = pt.get('problem_addressed', '')
+                    if problem:
+                        st.write(f"Проблема: {problem}")
+                    debate = pt.get('calibration_debate', '')
+                    if debate:
+                        st.caption(f"Дискуссия о калибровке: {debate}")
+                    cols = st.columns(2)
+                    cols[0].caption(f"Период: {pt.get('period', '—')}")
+                    cols[1].caption(f"Источник: {pt.get('source', '—')}")
+                    st.divider()
+
+            # Reforms
+            reforms = level4_data.get("reforms", [])
+            with st.expander(f"Реформы ({len(reforms)})", expanded=False):
+                if not reforms:
+                    st.caption("Не найдено")
+                for r in reforms:
+                    st.markdown(f"**{r.get('description_ru') or r.get('description', '?')}**")
+                    driver = r.get('driver', '')
+                    if driver:
+                        st.write(f"Драйвер: {driver}")
+                    opposition = r.get('opposition', '')
+                    if opposition:
+                        st.caption(f"Оппозиция: {opposition}")
+                    cols = st.columns(2)
+                    cols[0].caption(f"Год: {r.get('year', '—')}")
+                    cols[1].caption(f"Источник: {r.get('source', '—')}")
+                    st.divider()
+
+            # Sources summary
+            sources = level4_data.get("sources_summary", [])
+            if sources:
+                with st.expander(f"Источники ({len(sources)})", expanded=False):
+                    for s in sources:
+                        st.markdown(f"- {s}")
 
 
 # ===========================================================================
@@ -341,3 +431,116 @@ with tab_cells:
                 st.markdown(f"{icon} **{qt}** — в очереди / выполняется")
             else:
                 st.markdown(f"{icon} **{qt}** — не запущено")
+
+        st.divider()
+        st.subheader("Параметры (Pass 2)")
+
+        # Load pass2 data and validation status
+        pass2_data = load_pass2_data(name_ru, venue_key, cell_id)
+        val_status = load_cell_validation_status(name_ru, venue_key, cell_id)
+
+        # Validation status indicator
+        _VAL_COLORS = {"green": "🟢", "yellow": "🟡", "red": "🔴", "unknown": "⬜"}
+        val_icon = _VAL_COLORS.get(val_status, "⬜")
+        if val_status == "yellow":
+            st.caption(f"{val_icon} Статус данных: источники не верифицированы")
+        elif val_status == "red":
+            st.caption(f"{val_icon} Статус данных: данные не получены")
+        elif val_status == "green":
+            st.caption(f"{val_icon} Статус данных: верифицировано")
+        else:
+            st.caption(f"{val_icon} Статус данных: неизвестен")
+
+        if not pass2_data:
+            if val_status == "red":
+                st.warning("Данные для этой ячейки не были получены (RED).")
+            else:
+                st.info("pass2.json не найден — ячейка ещё не обработана.")
+        else:
+            param_values = pass2_data.get("parameter_values", [])
+
+            if not param_values:
+                st.info("Нет параметров в pass2.json")
+            else:
+                # Filters
+                filter_cols = st.columns(3)
+
+                all_statuses = sorted(set(pv.get("status", "not_found") for pv in param_values))
+                all_phases = sorted(set(pv.get("lifecycle_phase", "") for pv in param_values if pv.get("lifecycle_phase")))
+
+                status_filter = filter_cols[0].selectbox(
+                    "Статус", ["все"] + all_statuses, key=f"status_filter_{cell_id}"
+                )
+                phase_filter = filter_cols[1].selectbox(
+                    "Фаза ЖЦ", ["все"] + all_phases, key=f"phase_filter_{cell_id}"
+                )
+
+                # Apply filters
+                filtered = [
+                    pv for pv in param_values
+                    if (status_filter == "все" or pv.get("status") == status_filter)
+                    and (phase_filter == "все" or pv.get("lifecycle_phase") == phase_filter)
+                ]
+
+                # Status icon for parameter
+                def _param_status_icon(status: str) -> str:
+                    return {"found": "✅", "not_applicable": "⬜", "not_found": "❌"}.get(status, "❓")
+
+                # Separate standard params (П-prefix) from CANDIDATE_XX and ADDITIONAL_X
+                standard_params = [p for p in filtered if p.get("parameter_id", "").startswith(("П", "П-D"))]
+                candidate_params = [p for p in filtered if p.get("parameter_id", "").startswith("CANDIDATE")]
+                other_params = [p for p in filtered if p not in standard_params and p not in candidate_params]
+
+                st.caption(f"Показано: {len(filtered)} из {len(param_values)} параметров")
+
+                def _render_param_block(pv_list: list[dict]) -> None:
+                    for pv in pv_list:
+                        param_id = pv.get("parameter_id", "?")
+                        param_name = pv.get("parameter_name", "")
+                        status = pv.get("status", "not_found")
+                        phase = pv.get("lifecycle_phase", "")
+                        value = pv.get("value", "")
+                        icon = _param_status_icon(status)
+
+                        # Header: ID | name | value (truncated) | phase | status icon
+                        header = f"{icon} **{param_id}** — {param_name}"
+                        if phase:
+                            header += f" `{phase}`"
+
+                        with st.expander(header, expanded=False):
+                            if value:
+                                st.markdown(f"**Значение:** {value}")
+
+                            methodology = pv.get("calculation_methodology", "")
+                            if methodology:
+                                st.markdown(f"**Методика расчёта:** {methodology}")
+
+                            alternatives = pv.get("alternatives", "")
+                            if alternatives:
+                                st.markdown(f"**Альтернативы:** {alternatives}")
+
+                            variations = pv.get("variations", "")
+                            if variations:
+                                st.markdown(f"**Вариации:** {variations}")
+
+                            linkages = pv.get("linkages", [])
+                            if linkages:
+                                st.markdown(f"**Связки:** {', '.join(linkages)}")
+
+                            source = pv.get("source", "")
+                            if source:
+                                st.markdown(f"**Источник:** `{source}`")
+
+                            note = pv.get("note", "")
+                            if note:
+                                st.caption(f"Примечание: {note}")
+
+                            if pv.get("drill_down_applied"):
+                                st.caption("🔍 Применена доразведка (3P)")
+
+                _render_param_block(standard_params + other_params)
+
+                if candidate_params:
+                    st.divider()
+                    st.caption("**Параметры вне словаря (кандидаты)**")
+                    _render_param_block(candidate_params)

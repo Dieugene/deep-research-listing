@@ -1,0 +1,210 @@
+You are analyzing the admission parameter framework for a group of venues
+within the same jurisdiction, market type, and instrument class.
+
+JURISDICTION: Великобритания
+MARKET TYPE: regulated_market
+INSTRUMENT CLASS: equity
+ADMISSION PATH TYPE: standard
+VENUES/CELLS IN THIS GROUP:
+  - cell_id: GB_LSE_Main_Market_equity_shares_commercial_compa_equity | venue: LSE_Main_Market | tier: Equity Shares (Commercial Companies) | data available: ['3A', '3B', '3C']
+  - cell_id: GB_LSE_Main_Market_equity_shares_transition_equity | venue: LSE_Main_Market | tier: Equity Shares (Transition) | data available: ['3A']
+  - cell_id: GB_Aquis_Stock_Exchange_equity | venue: Aquis_Stock_Exchange | tier: (no listing tiers — flat structure) | data available: ['3C']
+
+RESEARCH DATA FROM ALL CELLS IN THIS GROUP:
+=== Cell: GB_LSE_Main_Market_equity_shares_commercial_compa_equity | Query: 3A ===
+Tier: Equity Shares (Commercial Companies)
+
+[secondary_admission]
+  description: not applicable
+  source: 
+
+[instrument_requirements]
+  description: Free Float: At least 10% of shares must be in "public hands" at admission (UKLR 5.5.2R). Public Hands Definition: Excludes shares held by directors, connected persons, trustees of employee schemes, persons with board nomination rights, or those in the same group/acting in concert with ≥5% interest. Also excludes shares subject to a lock-up >180 days (UKLR 5.5.3R).
+  source: https://handbook.fca.org.uk/handbook/UKLR/5/5.html
+
+[eligibility_requirements]
+  description: Financial History: No requirement for a 3-year revenue-earning track record or historical financial information representing 75% of the business (removed in 2024 reforms). Working Capital: No requirement for a "clean" (unqualified) working capital statement at admission; however, disclosure of working capital is still required in the prospectus. Independence: Must demonstrate the ability to carry on its main activity independently from any controlling shareholder (UKLR 5.3.1R).
+  source: https://www.skadden.com/insights/publications/2024/07/new-uk-listing-rules-come-into-force
+
+[admission_overview]
+  description: A single-category regime focused on disclosure rather than rigid eligibility "gateways" like track records.
+  source: 
+
+[additional_findings]
+  description: not applicable
+  source: 
+
+[special_regimes]
+  description: Dual-Class Share Structures (DCSS): Allowed via "specified weighted voting rights shares." WVR Holders: Must be directors, employees, or natural person investors (or their controlled entities) at the time of IPO (UKLR 5.4.5R). WVR Sunset: 10-year limit for non-natural person holders; no mandatory sunset for natural persons (directors). WVR Restrictions: Weighted votes cannot be used for certain matters, including approving a reverse takeover, delisting, or the election of independent directors (UKLR 6.2.27R, 5.4.5R(4)).
+  source: https://handbook.fca.org.uk/handbook/uklr5/uklr5s4
+
+[procedure_and_timeline]
+  description: Early Notification: For new applicants, early engagement with the FCA and LSE is required. Provisional Submission: Form 1 and draft prospectus submitted to LSE at least 10 business days before the application is considered (LSE ADS Schedule 1, Part A). Formal Application: Final Form 1 and approved prospectus submitted by 12:00, 2 business days before admission (LSE ADS Schedule 1, Part B). Admission Effective: Becomes effective when the LSE announces it via a Regulatory Information Service (RIS) (usually at 08:00 on the day of admission).
+  source: https://docs.londonstockexchange.com/sites/default/files/documents/admission-and-disclosure-standards.pdf
+
+[restrictions_and_lock_ups]
+  description: Regulatory Lock-up: Shares subject to a lock-up of >180 days are excluded from the 10% free float calculation (UKLR 5.5.3R(2)). Contractual Lock-ups: Typically required by sponsors/underwriters for directors and major shareholders (often 12 months), but these are not mandated by the UKLR beyond the free float impact.
+  source: https://handbook.fca.org.uk/handbook/UKLR/5/5.html
+
+[sponsor_and_infrastructure]
+  description: Sponsor: Mandatory for new applicants at IPO to provide an eligibility declaration to the FCA (UKLR 4.2). Sponsor Role: The sponsor must confirm to the FCA that the applicant has satisfied all listing requirements and that directors understand their obligations (UKLR 4.3). Market Maker: For LSE admission, at least one registered market maker is required to provide two-way prices (LSE ADS Schedule 1, Guidance).
+  source: 
+
+[disclosure_at_admission]
+  description: Full prospectus required.
+  source: 
+
+[common_requirements_common]
+  description: Admission to Trading: Securities must be admitted to trading on a regulated market for listed securities (UKLR 3.2.3R). Transferability: Shares must be freely transferable, fully paid, and free from liens (UKLR 3.2.4R). Prospectus: A prospectus must be approved by the FCA and published in accordance with the Prospectus Regulation Rules (PRR) (UKLR 3.2.10R). Market Capitalisation: Minimum expected aggregate market value at admission is 30 million for shares (UKLR 3.2.7R). The FCA may modify this if an adequate market exists (UKLR 3.2.8R). LSE Procedure: Submission of Form 1 (provisional 10 business days before, formal 2 business days before admission) (LSE ADS Schedule 1).
+  source: https://handbook.fca.org.uk/handbook/UKLR/3/2.html
+
+
+=== Cell: GB_LSE_Main_Market_equity_shares_commercial_compa_equity | Query: 3B ===
+Tier: Equity Shares (Commercial Companies)
+
+[delisting_compulsory]: {"grace_period": {"description": "The FCA may allow a \"reasonable time\" to restore the free float if it falls below 10%.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "procedure": {"description": "The FCA notifies the issuer of the compulsory delisting. The LSE then cancels admission to trading following the FCA's cancellation of listing.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "grounds": {"description": "Grounds for compulsory delisting include prolonged suspension (greater than 6 months), failure to maintain the 10% free float, or failure to comply with continuing obligations.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "disclosure": {"description": "Not specified in the provided text, but generally, such actions would require announcement via a Regulatory Information Service (RIS).", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "shareholder_protection": {"description": "Not explicitly detailed for compulsory delisting, but the FCA's role is to protect investors.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}}
+
+[continuing_obligations]: {"periodic_reporting": {"description": "Annual Financial Report: Must be published within 4 months of the financial year-end (DTR 4.1.3R). Must include audited financial statements, a management report, and a responsibility statement. Half-yearly Financial Report: Must be published within 3 months of the end of the first six months of the financial year (DTR 4.2.2R). Accounting Standards: UK-adopted IFRS (or equivalent for overseas issuers).", "source": "FCA Handbook, Disclosure Guidance and Transparency Rules (DTR) 4, 5, 6, 7."}, "compliance_confirmation": {"description": "Issuers must submit an annual compliance confirmation regarding the UK Corporate Governance Code on a \"comply or explain\" basis (DTR 7.2; UKLR 6.2.13G).", "source": "FCA Handbook, Disclosure Guidance and Transparency Rules (DTR) 4, 5, 6, 7."}, "quantitative_thresholds": {"description": "Shares in Public Hands (Free Float): A minimum of 10% of the shares must remain in public hands at all times (UKLR 6.2.3R). The FCA may allow a \"reasonable time\" to restore this if it falls below 10% (UKLR 21.2.2G).", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "qualitative_obligations": {"description": "Inside Information: Must disclose inside information \"as soon as possible\" under UK MAR Article 17. Significant Transactions: Shareholder approval is required for Reverse Takeovers (UKLR 7). The 2024 reform removed the requirement for shareholder votes on \"Class 1\" transactions (now \"Significant Transactions\" requiring only an announcement at the 25% threshold). Related Party Transactions (RPTs): Transactions ≥ 5% require an announcement and a fair and reasonable opinion from a sponsor, but no shareholder vote (UKLR 8). ESG Disclosure: Must include climate-related financial disclosures (TCFD) and board diversity disclosures in the annual report (UKLR 6.2.15R).", "source": "FCA Handbook, Disclosure Guidance and Transparency Rules (DTR) 4, 5, 6, 7."}}
+
+[additional_findings]
+  description: Sponsor is required for certain events.
+  source: FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21.
+
+[suspension]: {"procedure": {"description": "Suspension can be initiated by the FCA or at the issuer's request. The issuer must continue to comply with all listing rules during suspension (UKLR 21.1.1R). The LSE will ordinarily suspend trading if the listing is suspended (ADS 4.12).", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "grounds": {"description": "The FCA may suspend listing if the smooth operation of the market is jeopardized or to protect investors (UKLR 21.1.1R). Specific grounds include failure to publish financial information, inability to assess financial position, or suspension on another venue (UKLR 21.1.2G).", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "duration_limits": {"description": "Not explicitly detailed, but prolonged suspension (>6 months) is a ground for compulsory delisting.", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "disclosure": {"description": "Suspension and restoration must be announced via a Regulatory Information Service (RIS).", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}}
+
+[delisting_voluntary]: {"procedure": {"description": "At least 20 business days notice following the shareholder vote (UKLR 21.2.8R(1)(c)).", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "conditions": {"description": "No vote is required for takeovers where the offeror has acquired 75% of voting rights (UKLR 21.2.11R) or in cases of precarious financial position (UKLR 21.2.9R).", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}, "shareholder_approval": {"description": "Requires a 75% majority vote in a general meeting (UKLR 21.2.8R). If a controlling shareholder exists, the resolution must also be approved by a majority of independent shareholders (UKLR 21.2.8R(2)(b)).", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}}
+
+[terminology]: {"suspension_local_term": "Suspension of listing (FCA) / Suspension of trading (LSE)", "delisting_local_term": "Cancellation of listing (FCA) / Cancellation of admission to trading (LSE)", "source": "FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21."}
+
+[common_obligations_common]
+  description: Inside Information: All issuers on the Main Market are subject to UK MAR, requiring immediate disclosure of inside information. RIS Announcement: All major updates (financials, board changes, suspension/delisting) must be disseminated via an FCA-approved Regulatory Information Service. LSE Fees: All issuers must pay annual listing/admission fees; failure to pay is a ground for cancellation (ADS 4.11).
+  source: FCA Handbook, UK Listing Rules (UKLR) Chapters 6, 14, 21.
+
+
+=== Cell: GB_LSE_Main_Market_equity_shares_commercial_compa_equity | Query: 3C ===
+Tier: Equity Shares (Commercial Companies)
+
+[additional_findings]
+  description: 
+  source: 
+
+[sanctions]: {"regulator_sanctions": {"description": "The FCA can impose unlimited financial penalties under FSMA s.91, issue public censures, or suspend/cancel a listing where a breach of the Listing Rules is identified.", "source": "Financial Services and Markets Act 2000 (FSMA) s.91; FCA Handbook"}, "disciplinary_procedure": {"description": "The FCA follows the Enforcement Guide and the Disciplinary Enforcement Procedures and Penalties (DEPP). The process proceeds from investigation to a warning notice, then a decision notice, and finally a final notice. Issuers may appeal to the Upper Tribunal (Tax and Chancery Chamber).", "source": "FCA Handbook – Enforcement Guide; DEPP"}, "exchange_sanctions": {"description": "The LSE may issue private or public censures, levy fines (up to £100,000 per breach by the Executive Panel and unlimited by the Disciplinary Committee), suspend trading, or cancel admission under ADS sections 4 and 5.", "source": "LSE Admission and Disclosure Standards (ADS)"}, "publication_of_actions": {"description": "The LSE publishes censures and fines on its website and within the ADS public registers. FCA sanctions are published on the FCA website and in the FCA‑approved sanctions database.", "source": "LSE ADS; FCA public sanctions register"}}
+
+[monitoring_regime]: {"issuer_reporting_to_exchange": {"description": "Issuers must notify the FCA without delay of any breach of continuing obligations (UKLR 6.2.35R) and must provide any information the Exchange reasonably requires without delay (ADS rule 4.4).", "source": "FCA Handbook UKLR 6.2.35R; LSE ADS"}, "mechanisms": {"description": "Monitoring is performed via the FCA’s Primary Market Monitoring surveillance systems, LSE market surveillance tools, periodic filing reviews, ad‑hoc disclosure checks, and on‑site inspections where required.", "source": "FCA Handbook – Market Monitoring; LSE ADS"}, "sponsor_role": {"description": "A sponsor is mandatory for significant transactions (≥25% on any class test), related‑party transactions, and further issuances requiring a prospectus. The sponsor provides assurance to the FCA that the issuer understands its obligations.", "source": "UKLR 4.2, 24.2"}, "responsible_body": {"description": "Ongoing monitoring is jointly handled by the FCA’s Primary Market Monitoring team and the LSE’s Market Supervision team.", "source": "FCA Handbook; LSE ADS"}}
+
+[enforcement_practice]: {"general_approach": {"description": "The FCA has adopted a proactive, assertive stance focusing on timely disclosure and accurate financial reporting. The LSE typically issues private warnings for technical breaches and escalates serious matters to its Disciplinary Committee.", "source": "FCA Enforcement Policy; LSE ADS"}, "recent_examples": {"description": "Carillion plc (2022) – FCA public censure for misleading the market. Glencore (2022) – FCA enforcement for market abuse and transparency failures. Sirius Real Estate (2024) – FCA monitoring of compliance with the new Significant Transactions regime. LSE private actions (e.g., Case 2023/01) – LSE executive panel findings on failures to notify corporate action timetables.", "source": "FCA press releases; LSE disciplinary panel reports"}}
+
+[common_monitoring_common]
+  description: All equity issuers on the Main Market are subject to overarching transparency and market integrity rules. Responsible bodies are the FCA’s Primary Market Monitoring team and the LSE’s Market Supervision team. UK MAR applies to all tiers, requiring prompt disclosure of inside information (Article 17) and PDMR transaction notifications (Article 19). DTR 4 mandates annual reports within 4 months and half‑yearly reports within 3 months. DTR 5 sets major shareholding notification thresholds (3%/1% increments for UK issuers; 5‑75% steps for non‑UK issuers). LSE Admission and Disclosure Standards rule 4.4 requires issuers to supply any information the Exchange reasonably requests without delay.
+  source: LSE Admission and Disclosure Standards (ADS); FCA Handbook (UKLR, DTR, UK MAR)
+
+
+=== Cell: GB_LSE_Main_Market_equity_shares_transition_equity | Query: 3A ===
+[instrument_requirements]
+  description: Instrument-level obligations for the Transition category primarily involve maintaining the integrity of the security's trading status. Key requirements include: (1) Corporate Actions: Issuers must notify the LSE Corporate Actions Team in advance of any timetable for actions affecting holder rights (ADS 4.7) and follow the specific timetables in ADS Schedule 3. (2) Depositary Receipts: Ongoing quarterly reporting of the number of securities outstanding is required (ADS 4.6). (3) Free Float: While new ESCC rules have specific thresholds, Transition issuers must generally maintain the eligibility and free float levels that applied at their original admission, monitored via the Exchange's general powers (ADS Section 2). (4) Suspension/Cancellation: Trading is typically suspended if the FCA listing is suspended (ADS 4.12). Cancellation requires 20 business days' notice (ADS 4.18).
+  source: LSE Admission & Disclosure Standards (ADS) Section 4, Schedule 3; FCA UKLR 22
+
+[eligibility_requirements]
+  description: The Equity Shares (Transition) category is closed to new admissions. Eligibility is restricted to: (1) Companies that held a 'Standard Listing (Shares)' prior to July 29, 2024, which were automatically mapped to this category. (2) 'In-flight' applicants who applied for a Standard Listing before July 29, 2024, and are admitted before July 29, 2025. Issuers must continue to comply with UKLR 22 and relevant LSE Admission & Disclosure Standards to maintain eligibility. It is not available to companies eligible for the International Commercial Companies Secondary Listing, Shell Companies, or Non-Equity categories.
+  source: FCA Handbook Glossary; LSE UK Capital Market Reforms FAQs
+
+[admission_overview]
+  description: The UK admission architecture requires two separate approvals: (1) The FCA (Competent Authority) decides on the official listing on the Official List under FSMA Part VI. (2) The LSE (Recognised Investment Exchange) decides on the admission to trading under its Admission & Disclosure Standards (ADS). For the Transition category, issuers were automatically mapped from the old Standard Listing segment. While closed to new applicants, existing issuers must follow ADS Section 3 for any further issues of shares, which requires notification and potentially a prospectus under the POATRs/PRM regime if thresholds are met.
+  source: LSE ADS Section 1-4; FCA UKLR Glossary; LSE FAQs
+
+[procedure_and_timeline]
+  description: For issuers in the Transition category: (1) Further Issuances: Must follow ADS Section 3, requiring application to the LSE and FCA. (2) Migration to ESCC: This is an elective, issuer-driven process. Issuers must follow the transfer process in UKLR and LSE ADS 4.2A, which involves an application and potentially a 20-business day notice period. (3) Cancellation: Requires 20 business days' prior written notice to the LSE (ADS 4.18). (4) Sunset: There is currently no universal sunset date or deadline for companies to leave the Transition category; it remains open for legacy issuers indefinitely according to current FCA/LSE guidance.
+  source: LSE ADS 4.18, 4.2A; LSE FAQs
+
+[restrictions_and_lock_ups]
+  description: Transition issuers are subject to the UK Market Abuse Regulation (UK MAR), which includes restrictions on trading during 'closed periods' (typically 30 days before financial results) and requirements for PDMR (Persons Discharging Managerial Responsibilities) notifications. Grandfathered features, such as legacy dual-class share structures or weighted voting rights (WVR), may be restricted or terminated if the issuer undergoes a material transaction or seeks migration to the ESCC category. Specific lock-up requirements for secondary issuances are generally governed by individual underwriting agreements rather than exchange-wide rules for this legacy category.
+  source: UK MAR; LSE FAQs; FCA UKLR 22
+
+[sponsor_and_infrastructure]
+  description: Transition issuers have different sponsor requirements than the new ESCC category. Under the legacy rules preserved by UKLR 22 and LSE ADS, a sponsor (or 'Key Adviser' in certain LSE segments) is typically required for: (1) Reverse takeovers. (2) Related party transactions (depending on materiality thresholds). (3) Further issuances requiring a prospectus. (4) Applications to transfer to the ESCC category. The LSE ADS (Annex 3 and Schedule 5) defines the responsibilities of Key Advisers for specific segments like the High Growth Segment (HGS).
+  source: LSE ADS Annex 3, Schedule 5; FCA UKLR 22
+
+[disclosure_at_admission]
+  description: For further issuances by Transition issuers after January 19, 2026: (1) POATRs/PRM: Issuers must comply with the new Public Offers and Admissions to Trading Regulations. A prospectus is required for admissions to a regulated market unless an exemption applies (e.g., for issues representing less than a certain percentage of existing shares). (2) ADS 3.6: Issuers must notify the LSE of further issues and provide necessary documentation. (3) Disclosure Labelling: While no specific 'Transition' watermark is mandated for all documents, announcements must clearly state the listing category to ensure market clarity.
+  source: FCA PS25/9 (POATRs); LSE ADS 3.6; FCA UKLR 22
+
+[additional_findings]
+  description: Key additional points: (1) Two-Gate Enforcement: The FCA cancels the 'listing' on the Official List, while the LSE cancels the 'admission to trading.' These are distinct legal acts with different notice requirements. (2) Information Provision: ADS 4.4-4.5 grants the LSE broad powers to require any information from the issuer to ensure market integrity. (3) Class Tests: Transition issuers remain subject to the class tests (Assets, Profits, Consideration, Gross Capital) set out in ADS Annex 1 and 2 for determining if a transaction is 'notifiable' or requires shareholder approval, preserving the thresholds from the legacy Standard Listing regime.
+  source: LSE ADS 4.4, 4.17, Annex 1 & 2
+
+[special_regimes]
+  description: The Equity Shares (Transition) category acts as a 'closed' legacy regime. Its primary purpose is to allow companies to maintain their existing listing requirements without immediately adopting the more stringent or different rules of the new ESCC category. Special features include: (1) Grandfathering of capital structures (e.g., WVR) that might not meet ESCC standards. (2) Retention of the 'Standard Listing' level of continuing obligations (UKLR 22). (3) A pathway for elective migration to ESCC, which requires meeting all ESCC eligibility criteria at the time of transfer.
+  source: LSE FAQs; FCA UKLR 22; FCA Glossary
+
+
+=== Cell: GB_Aquis_Stock_Exchange_equity | Query: 3C ===
+Tier: equity (AQSE Main Market – equity on the UK Official List)
+
+[additional_findings]
+  description: AQSE retains authority over a former issuer for one year after it ceases to be an issuer for disciplinary purposes.
+  source: AQSE Disciplinary Procedures (Dec 2022)
+
+[sanctions]: {"regulator_sanctions": {"description": "The FCA, as the listing authority, can impose fines, revoke licences, refer matters to criminal prosecution or commence civil proceedings under UK Listing Rules, DTR and UK MAR. It can also suspend or cancel a listing.", "source": "FCA supervisory role described in AQSE documentation"}, "disciplinary_procedure": {"description": "Initiation by the Regulation Department; investigation; issuance of a Warning Notice; issuer has 10 business days to refer to the Disciplinary Committee; hearing; Decision Notice; right to appeal to the Appeals Committee within 10 business days on limited grounds; civil standard of proof applies throughout.", "source": "AQSE Disciplinary Procedures (Dec 2022)"}, "exchange_sanctions": {"description": "Private reprimand; public censure (named or unnamed); financial penalty; withdrawal of the issuer’s securities from AQSE trading. Failure to pay a penalty within 20 business days may lead to suspension of AQSE facilities, and a further 10 days of non‑payment may result in permanent exclusion.", "source": "AQSE Disciplinary Procedures (Dec 2022)"}, "publication_of_actions": {"description": "AQSE may publish that disciplinary proceedings or appeals have been instigated and may publish part or all of written decisions (or a summary), except where no sanction or only a private reprimand is imposed. Market Notices are used for operational actions such as suspensions or halts.", "source": "AQSE Disciplinary Procedures (Dec 2022)"}}
+
+[monitoring_regime]: {"issuer_reporting_to_exchange": {"description": "AQSE can require issuers to provide information or assistance (with or without prior notice), including transaction details, documents, emails, agreements, trade instructions and telephone transcripts, and may require verification of that information. Non‑compliance is itself a breach.", "source": "AQSE Disciplinary Procedures (Dec 2022)"}, "mechanisms": {"description": "Both reactive and proactive monitoring: market/trading surveillance systems; investigatory powers to request and verify information; record‑keeping of investigations for at least six years; ability to suspend, halt or cancel trades; and power to delete quotes to preserve market orderliness.", "source": "AQSE Trading Rules (Dec 2020) and Disciplinary Procedures (Dec 2022)"}, "sponsor_role": {"description": "Not applicable at exchange level for AQSE Main Market issuers; AQSE does not require a nominated adviser or sponsor for these listings.", "source": "AQSE Rules & Regulations portal"}, "responsible_body": {"description": "Primary responsibility lies with AQSE Regulation (exchange surveillance and disciplinary team). The FCA remains responsible for Official List obligations, DTR and UK MAR supervision and may direct AQSE to suspend trading.", "source": "AQSE Rules & Regulations portal"}}
+
+[enforcement_practice]: {"general_approach": {"description": "AQSE follows a civil standard of proof, uses a proactive/reactive mix of surveillance and investigations, considers factors such as seriousness, market impact, benefit gained, systemic weaknesses and issuer cooperation, and aligns its enforcement priorities with FCA guidance.", "source": "AQSE Disciplinary Procedures (Dec 2022)"}, "recent_examples": {"description": "No specific issuer cases from 2021‑2026 were identified in the extracted sources; however, the framework for publishing disciplinary decisions and market notices is described in the documentation.", "source": "AQSE Disciplinary Procedures (Dec 2022)"}}
+
+[common_monitoring_common]
+  description: AQSE operates a UK Regulated Market (Main Market) for securities admitted to the UK Official List. The exchange monitors issuer conduct through trading surveillance, investigative powers (including information requests with or without notice and verification), record‑keeping for at least six years, and a disciplinary framework that involves the Regulation Department, Primary Markets Approval Committee, a Disciplinary Committee and an Appeals Committee. AQSE can impose sanctions such as private reprimands, public censures, financial penalties and withdrawal of securities from trading, and may suspend or cancel trades to preserve market integrity. The FCA retains responsibility for Official List admission and ongoing UK Listing Rules, Disclosure Guidance and Transparency Rules and Market Abuse Regulation supervision, and can instruct AQSE to suspend trading.
+  source: AQSE Rules & Regulations portal; AQSE Disciplinary & Appeals Procedure (Dec 2022); AQSE Trading Rules (Dec 2020)
+
+
+---
+TASK: Extract the COMMON parameter framework for this group.
+
+PARAMETER CHECKLIST for equity:
+  П01: Free float / Public float / Shares in public hands
+  П02: Minimum market capitalization
+  П03: Minimum number of shareholders / holders
+  П04: Minimum share price / Bid price
+  П05: Minimum shares outstanding
+  П06: Minimum trading volume
+  П07: Track record / Operating history / Financial history
+  П08: Profit / Earnings test
+  П09: Net tangible assets / Shareholders' equity
+  П10: Revenue requirement
+  П11: Working capital requirement
+  П12: Corporate governance standards
+  П13: Auditor / Accounting standards
+  П14: Sponsor / Nomad / Listing agent
+  П15: Market maker / Liquidity provider
+  П16: Prospectus / Admission document
+  П17: Lock-up / Lock-in period
+  П18: Escrow restrictions
+
+For each parameter in the checklist:
+- If the parameter APPLIES to this group: describe its structure using the
+  6-question template below. Where parameter VALUES differ between venues
+  or tiers within the group — note the range, but focus on STRUCTURAL
+  description.
+- If the parameter does NOT APPLY: status="not_applicable" with brief note.
+- If data does not contain information: status="data_not_found".
+
+PARAMETER DESCRIPTION TEMPLATE (answer all 6 for each found parameter):
+1. WHAT IS ESTABLISHED? Numeric threshold, qualitative criterion, or combination.
+   In what units (%, count, monetary amount). If monetary — in what currency.
+2. HOW IS IT CALCULATED? What is included, what is excluded. Who verifies.
+3. ARE THERE ALTERNATIVES? Either/or options.
+4. DOES IT VARY? By company size, tier, issuer type, sub-class (e.g. professional vs retail),
+   market maker presence.
+5. IS IT LINKED TO OTHER PARAMETERS? Bundles, dependencies.
+6. SOURCE. Specific rule, section, chapter.
+
+LIFECYCLE PHASES — for each found parameter, specify which phase the value applies to:
+- ADMISSION: threshold for initial admission
+- CONTINUING: threshold for maintaining listing
+- REMOVAL: threshold triggering suspension or delisting
+If values differ by phase — describe each separately.
+
+UNKNOWN PARAMETERS:
+If you find admission requirements not matching any checklist parameter — report them
+as additional_parameters with the same 6-question description. Set parameter_id to
+"ADDITIONAL_1", "ADDITIONAL_2", etc.
+
+Set group_id="United_Kingdom_regulated_market_equity_standard" and instrument_class="equity" in your response.
