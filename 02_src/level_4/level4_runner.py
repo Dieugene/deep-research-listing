@@ -237,7 +237,7 @@ def _get_jurisdiction_prompt_data(name_ru: str) -> Optional[dict]:
 # Step 1: Launch Parallel API tasks + poll
 # ---------------------------------------------------------------------------
 
-def run_level4_parallel() -> None:
+def run_level4_parallel(jurisdictions: list = None) -> None:
     """
     For each pilot jurisdiction: launch Parallel API deep research task (text output, pro).
     Launch all tasks first, then poll all concurrently.
@@ -255,7 +255,7 @@ def run_level4_parallel() -> None:
 
     # Pass 1: launch all tasks
     seen_name_ru: set[str] = set()
-    for jur in PILOT_JURISDICTIONS:
+    for jur in (jurisdictions or PILOT_JURISDICTIONS):
         name_ru = jur["name_ru"]
         if name_ru in seen_name_ru:
             continue
@@ -415,7 +415,7 @@ Report text:
 """
 
 
-def run_level4_postprocess(llm: ChatOpenAI) -> None:
+def run_level4_postprocess(llm: ChatOpenAI, jurisdictions: list = None) -> None:
     """
     For each jurisdiction with 4A_raw.json: run LLM structured extraction + translation.
     Saves level4.json.
@@ -426,7 +426,7 @@ def run_level4_postprocess(llm: ChatOpenAI) -> None:
     work_items: list[dict] = []
 
     seen_name_ru: set[str] = set()
-    for jur in PILOT_JURISDICTIONS:
+    for jur in (jurisdictions or PILOT_JURISDICTIONS):
         name_ru = jur["name_ru"]
         if name_ru in seen_name_ru:
             continue
@@ -511,7 +511,7 @@ def run_level4_postprocess(llm: ChatOpenAI) -> None:
 # Step 3: Validation → level4_validation.json
 # ---------------------------------------------------------------------------
 
-def run_level4_validate() -> None:
+def run_level4_validate(jurisdictions: list = None) -> None:
     """
     Validate level4.json for each jurisdiction.
     Saves level4_validation.json.
@@ -525,7 +525,7 @@ def run_level4_validate() -> None:
     logger.info("Starting Level 4 validation")
 
     seen_name_ru: set[str] = set()
-    for jur in PILOT_JURISDICTIONS:
+    for jur in (jurisdictions or PILOT_JURISDICTIONS):
         name_ru = jur["name_ru"]
         if name_ru in seen_name_ru:
             continue
@@ -588,13 +588,13 @@ def run_level4_validate() -> None:
 # Run all steps
 # ---------------------------------------------------------------------------
 
-def run_level4_all(llm: ChatOpenAI) -> None:
+def run_level4_all(llm: ChatOpenAI, jurisdictions: list = None) -> None:
     """Run all Level 4 steps: parallel → postprocess → validate."""
     logger.info("========== Level 4 Start ==========")
     logger.info("--- Step 1: Parallel API research ---")
-    run_level4_parallel()
+    run_level4_parallel(jurisdictions=jurisdictions)
     logger.info("--- Step 2: LLM post-processing ---")
-    run_level4_postprocess(llm=llm)
+    run_level4_postprocess(llm=llm, jurisdictions=jurisdictions)
     logger.info("--- Step 3: Validation ---")
-    run_level4_validate()
+    run_level4_validate(jurisdictions=jurisdictions)
     logger.info("========== Level 4 Complete ==========")

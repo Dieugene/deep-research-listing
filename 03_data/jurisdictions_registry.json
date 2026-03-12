@@ -1,0 +1,338 @@
+[
+  {
+    "name_ru": "Австралия",
+    "name_en": "Australia",
+    "market_group": "DM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Австрия",
+    "name_en": "Austria",
+    "market_group": "DM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Бельгия",
+    "name_en": "Belgium",
+    "market_group": "DM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Канада",
+    "name_en": "Canada",
+    "market_group": "DM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Дания",
+    "name_en": "Denmark",
+    "market_group": "DM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Финляндия",
+    "name_en": "Finland",
+    "market_group": "DM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Франция",
+    "name_en": "France",
+    "market_group": "DM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Германия",
+    "name_en": "Germany",
+    "market_group": "DM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Гонконг",
+    "name_en": "Hong Kong",
+    "market_group": "DM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Ирландия",
+    "name_en": "Ireland",
+    "market_group": "DM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Израиль",
+    "name_en": "Israel",
+    "market_group": "DM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Италия",
+    "name_en": "Italy",
+    "market_group": "DM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Япония",
+    "name_en": "Japan",
+    "market_group": "DM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Нидерланды",
+    "name_en": "Netherlands",
+    "market_group": "DM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Новая_Зеландия",
+    "name_en": "New Zealand",
+    "market_group": "DM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Норвегия",
+    "name_en": "Norway",
+    "market_group": "DM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Португалия",
+    "name_en": "Portugal",
+    "market_group": "DM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Сингапур",
+    "name_en": "Singapore",
+    "market_group": "DM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Испания",
+    "name_en": "Spain",
+    "market_group": "DM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Швеция",
+    "name_en": "Sweden",
+    "market_group": "DM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Швейцария",
+    "name_en": "Switzerland",
+    "market_group": "DM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Великобритания",
+    "name_en": "United Kingdom",
+    "market_group": "DM",
+    "eu_member": false,
+    "eu_note": "Note: UK left the EU in January 2020. Include references to retained EU law where relevant."
+  },
+  {
+    "name_ru": "США",
+    "name_en": "United States",
+    "market_group": "DM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Бразилия",
+    "name_en": "Brazil",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Чили",
+    "name_en": "Chile",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Китай",
+    "name_en": "China",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Колумбия",
+    "name_en": "Colombia",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Чехия",
+    "name_en": "Czech Republic",
+    "market_group": "EM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Египет",
+    "name_en": "Egypt",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Греция",
+    "name_en": "Greece",
+    "market_group": "EM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Венгрия",
+    "name_en": "Hungary",
+    "market_group": "EM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Индия",
+    "name_en": "India",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Индонезия",
+    "name_en": "Indonesia",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Кувейт",
+    "name_en": "Kuwait",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Малайзия",
+    "name_en": "Malaysia",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Мексика",
+    "name_en": "Mexico",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Перу",
+    "name_en": "Peru",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Филиппины",
+    "name_en": "Philippines",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Польша",
+    "name_en": "Poland",
+    "market_group": "EM",
+    "eu_member": true,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Катар",
+    "name_en": "Qatar",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Саудовская_Аравия",
+    "name_en": "Saudi Arabia",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "ЮАР",
+    "name_en": "South Africa",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Южная_Корея",
+    "name_en": "South Korea",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Тайвань",
+    "name_en": "Taiwan",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Таиланд",
+    "name_en": "Thailand",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Турция",
+    "name_en": "Turkey",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "ОАЭ",
+    "name_en": "United Arab Emirates",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  },
+  {
+    "name_ru": "Россия",
+    "name_en": "Russia",
+    "market_group": "EM",
+    "eu_member": false,
+    "eu_note": null
+  }
+]

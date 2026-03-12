@@ -569,14 +569,14 @@ def _get_instrument_classes_for_venue(venue_card: dict) -> list[str]:
     return seen
 
 
-def _build_task_list() -> list[dict]:
+def _build_task_list(venues: list = None) -> list[dict]:
     """
     Build flat list of task descriptors: venue × instrument_class × query_type.
     Each entry: {task_key, venue_key, name_ru, instrument_class, query_type,
                  venue_card, jurisdiction_card}
     """
     tasks = []
-    for venue in PILOT_VENUES:
+    for venue in (venues or PILOT_VENUES):
         venue_key = venue["venue_key"]
         name_ru = venue["name_ru"]
 
@@ -655,9 +655,9 @@ def save_state(state: dict) -> None:
 # Build and save prompts
 # ---------------------------------------------------------------------------
 
-def build_and_save_all_prompts(state: dict) -> None:
+def build_and_save_all_prompts(state: dict, venues: list = None) -> None:
     """Build prompts algorithmically and save to PROMPTS_LEVEL3_V2_DIR. Store paths in state."""
-    task_list = _build_task_list()
+    task_list = _build_task_list(venues)
     logger.info("Building prompts for %d tasks", len(task_list))
     PROMPTS_LEVEL3_V2_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -696,9 +696,9 @@ def build_and_save_all_prompts(state: dict) -> None:
 # Launch and poll
 # ---------------------------------------------------------------------------
 
-def launch_all_venues(state: dict) -> None:
+def launch_all_venues(state: dict, venues: list = None) -> None:
     """Launch Parallel L3 tasks for all venue × instrument_class combinations."""
-    task_list = _build_task_list()
+    task_list = _build_task_list(venues)
     logger.info(
         "Launching %d Parallel tasks (venue × instrument_class × query_type)", len(task_list)
     )
@@ -730,9 +730,9 @@ def launch_all_venues(state: dict) -> None:
     logger.info("All venue-level L3 tasks launched.")
 
 
-def poll_all_venues(state: dict) -> dict:
+def poll_all_venues(state: dict, venues: list = None) -> dict:
     """Poll all venue-level L3 tasks until complete."""
-    task_list = _build_task_list()
+    task_list = _build_task_list(venues)
     tasks_to_poll = []
 
     for item in task_list:

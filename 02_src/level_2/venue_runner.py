@@ -91,9 +91,9 @@ def _make_save_fn(venue: dict):
 # Launch / poll helpers
 # ---------------------------------------------------------------------------
 
-def launch_all_2a(state: dict) -> None:
+def launch_all_2a(state: dict, venues: list = None) -> None:
     """Launch 2A Parallel tasks for all PILOT_VENUES."""
-    for venue in PILOT_VENUES:
+    for venue in (venues or PILOT_VENUES):
         venue_key = venue["venue_key"]
         task_key = _task_key(venue_key)
 
@@ -123,10 +123,10 @@ def launch_all_2a(state: dict) -> None:
     logger.info("All 2A tasks launched.")
 
 
-def poll_all_2a(state: dict) -> dict:
+def poll_all_2a(state: dict, venues: list = None) -> dict:
     """Poll all 2A tasks until complete. Returns {task_key: content_or_None}."""
     tasks = []
-    for venue in PILOT_VENUES:
+    for venue in (venues or PILOT_VENUES):
         venue_key = venue["venue_key"]
         task_key = _task_key(venue_key)
         if task_key in state["tasks"]:

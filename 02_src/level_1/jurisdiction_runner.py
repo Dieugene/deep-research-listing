@@ -96,9 +96,9 @@ def _save_fn_1c(juris_ru: str, juris_en: str):
 # Launch helpers
 # ---------------------------------------------------------------------------
 
-def launch_all_1a(state: dict) -> None:
+def launch_all_1a(state: dict, jurisdictions: list = None) -> None:
     """Launch 1A tasks for all pilot jurisdictions."""
-    for j in PILOT_JURISDICTIONS:
+    for j in (jurisdictions or PILOT_JURISDICTIONS):
         en = j["name_en"]
         ru = j["name_ru"]
         eu_note = j.get("eu_note")
@@ -115,12 +115,12 @@ def launch_all_1a(state: dict) -> None:
     save_state(state)
 
 
-def launch_all_1c(state: dict) -> None:
+def launch_all_1c(state: dict, jurisdictions: list = None) -> None:
     """
     Launch 1C tasks for all pilot jurisdictions.
     Uses 1A result if available to inject regulator/market context.
     """
-    for j in PILOT_JURISDICTIONS:
+    for j in (jurisdictions or PILOT_JURISDICTIONS):
         en = j["name_en"]
         ru = j["name_ru"]
 
@@ -152,10 +152,10 @@ def launch_all_1c(state: dict) -> None:
 # Poll helpers
 # ---------------------------------------------------------------------------
 
-def poll_all_1a(state: dict) -> dict:
+def poll_all_1a(state: dict, jurisdictions: list = None) -> dict:
     """Poll all 1A tasks. Returns {task_key: content_or_None}."""
     tasks = []
-    for j in PILOT_JURISDICTIONS:
+    for j in (jurisdictions or PILOT_JURISDICTIONS):
         ru = j["name_ru"]
         en = j["name_en"]
         key = _key(ru, "1A")
@@ -164,10 +164,10 @@ def poll_all_1a(state: dict) -> dict:
     return poll_all(tasks, state)
 
 
-def poll_all_1c(state: dict) -> dict:
+def poll_all_1c(state: dict, jurisdictions: list = None) -> dict:
     """Poll all 1C tasks."""
     tasks = []
-    for j in PILOT_JURISDICTIONS:
+    for j in (jurisdictions or PILOT_JURISDICTIONS):
         ru = j["name_ru"]
         en = j["name_en"]
         key = _key(ru, "1C")

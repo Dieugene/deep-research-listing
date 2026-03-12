@@ -1263,9 +1263,9 @@ def process_venue(venue: dict, cells_only: bool = False) -> bool:
     return True
 
 
-def process_all(cells_only: bool = False) -> dict:
+def process_all(cells_only: bool = False, venues: list = None) -> dict:
     """
-    Run postprocessing for all PILOT_VENUES.
+    Run postprocessing for all PILOT_VENUES (or a provided venues list).
 
     Phase 1a: Load disk inputs for all venues (no LLM).
     Phase 1b: Batch VenueCard extraction for venues without a cached card.
@@ -1273,13 +1273,16 @@ def process_all(cells_only: bool = False) -> dict:
     Phase 3:  Save cells_list.json for each venue.
 
     cells_only=True: skip L3 generation, use for L2 structure validation.
+    venues: optional list of venue config dicts; defaults to PILOT_VENUES.
     """
     venues_data: list[dict] = []
     failed: list[str] = []
 
+    _venues = venues if venues is not None else PILOT_VENUES
+
     # --- Phase 1a: load inputs for all venues ---
     loaded: list[dict] = []
-    for venue in PILOT_VENUES:
+    for venue in _venues:
         inp = _load_venue_inputs(venue)
         if inp is None:
             failed.append(venue["venue_key"])

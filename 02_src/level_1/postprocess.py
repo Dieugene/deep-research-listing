@@ -106,10 +106,10 @@ def process_jurisdiction(juris_en: str, juris_ru: str) -> bool:
     return True
 
 
-def process_all():
+def process_all(jurisdictions: list = None):
     """Run postprocessing for all pilot jurisdictions."""
     results = {}
-    for j in PILOT_JURISDICTIONS:
+    for j in (jurisdictions or PILOT_JURISDICTIONS):
         ok = process_jurisdiction(j["name_en"], j["name_ru"])
         results[j["name_ru"]] = "done" if ok else "skipped/failed"
 

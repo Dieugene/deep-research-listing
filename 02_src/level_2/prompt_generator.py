@@ -190,7 +190,7 @@ def generate_prompt_for_venue(venue: dict) -> str:
     return generated_prompt
 
 
-def generate_all_prompts() -> dict[str, str]:
+def generate_all_prompts(venues: list = None) -> dict[str, str]:
     """
     Generate 2A prompts for all PILOT_VENUES using llm.batch() for parallelism.
     Saves each prompt to 03_data/prompts/level_2/{venue_key}_prompt.txt.
@@ -203,7 +203,7 @@ def generate_all_prompts() -> dict[str, str]:
     venues_to_generate = []
     meta_prompts = []
 
-    for venue in PILOT_VENUES:
+    for venue in (venues or PILOT_VENUES):
         venue_key = venue["venue_key"]
         prompt_path = PROMPTS_LEVEL2_DIR / f"{venue_key}_prompt.txt"
         if prompt_path.exists():
