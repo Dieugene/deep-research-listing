@@ -366,7 +366,7 @@ def _build_pass2_prompt(
     # Framework parameters (found only)
     framework_parts = []
     for param in pass1_result.parameters:
-        if param.status == "found":
+        if param.status in ("found", "applicable"):
             framework_parts.append(
                 f"{param.parameter_id}: {param.parameter_name}\n{param.description}"
             )
@@ -434,14 +434,18 @@ def form_groups(state: dict) -> dict:
     """
     groups: dict = {}
 
-    for venue in PILOT_VENUES:
+    # Discover all venues dynamically from venues_list.json files
+    from pipeline.registry import discover_all_venues, load_jurisdictions
+    all_jurisdictions = load_jurisdictions()
+    all_venues = discover_all_venues(all_jurisdictions, COUNTRIES_DIR)
+
+    for venue in all_venues:
         venue_key = venue["venue_key"]
         name_ru = venue["name_ru"]
         market_type = venue["market_type"]
 
-        # Look up English name for ASCII group_id
-        jur_config = JURISDICTION_BY_RU.get(name_ru, {})
-        name_en = jur_config.get("name_en", name_ru)
+        # English name is directly available from discovery
+        name_en = venue.get("name_en", name_ru)
 
         cells_path = get_country_level2_dir(name_ru, venue_key) / "cells_list.json"
         cells_data = load_json(cells_path)
@@ -543,14 +547,11 @@ def run_pass1(state: dict) -> None:
     # Collect all group directories across all jurisdictions
     work_items = []
 
-    # Deduplicate by name_ru — multiple venues share the same jurisdiction _groups dir
-    seen_name_ru: set[str] = set()
-    for venue in PILOT_VENUES:
-        name_ru = venue["name_ru"]
-        if name_ru in seen_name_ru:
+    for country_dir in sorted(COUNTRIES_DIR.iterdir()):
+        if not country_dir.is_dir():
             continue
-        seen_name_ru.add(name_ru)
-        groups_base = COUNTRIES_DIR / name_ru / "level_3" / "_groups"
+        name_ru = country_dir.name
+        groups_base = country_dir / "level_3" / "_groups"
         if not groups_base.exists():
             continue
         for group_dir in sorted(groups_base.iterdir()):
@@ -689,14 +690,11 @@ def run_pass2(state: dict) -> None:
 
     work_items = []
 
-    # Deduplicate by name_ru — multiple venues share the same jurisdiction _groups dir
-    seen_name_ru: set[str] = set()
-    for venue in PILOT_VENUES:
-        name_ru = venue["name_ru"]
-        if name_ru in seen_name_ru:
+    for country_dir in sorted(COUNTRIES_DIR.iterdir()):
+        if not country_dir.is_dir():
             continue
-        seen_name_ru.add(name_ru)
-        groups_base = COUNTRIES_DIR / name_ru / "level_3" / "_groups"
+        name_ru = country_dir.name
+        groups_base = country_dir / "level_3" / "_groups"
         if not groups_base.exists():
             continue
         for group_dir in sorted(groups_base.iterdir()):
@@ -1280,13 +1278,11 @@ def run_3p_classify(groups: dict, data_root: Path, llm: ChatOpenAI) -> None:
     # Collect work items
     work_items: list[dict] = []
 
-    seen_name_ru: set[str] = set()
-    for venue in PILOT_VENUES:
-        name_ru = venue["name_ru"]
-        if name_ru in seen_name_ru:
+    for country_dir in sorted(COUNTRIES_DIR.iterdir()):
+        if not country_dir.is_dir():
             continue
-        seen_name_ru.add(name_ru)
-        groups_base = COUNTRIES_DIR / name_ru / "level_3" / "_groups"
+        name_ru = country_dir.name
+        groups_base = country_dir / "level_3" / "_groups"
         if not groups_base.exists():
             continue
 
@@ -1493,13 +1489,11 @@ def run_3p_execute(groups: dict, data_root: Path) -> None:
     tasks_to_poll: list[tuple[str, Any]] = []
 
     # Pass 1: launch all tasks (idempotent — already-launched groups are skipped by launch_task)
-    seen_name_ru: set[str] = set()
-    for venue in PILOT_VENUES:
-        name_ru = venue["name_ru"]
-        if name_ru in seen_name_ru:
+    for country_dir in sorted(COUNTRIES_DIR.iterdir()):
+        if not country_dir.is_dir():
             continue
-        seen_name_ru.add(name_ru)
-        groups_base = COUNTRIES_DIR / name_ru / "level_3" / "_groups"
+        name_ru = country_dir.name
+        groups_base = country_dir / "level_3" / "_groups"
         if not groups_base.exists():
             continue
 
@@ -1712,13 +1706,11 @@ def run_new_pass2(state: dict, llm: ChatOpenAI) -> None:
 
     work_items: list[dict] = []
 
-    seen_name_ru: set[str] = set()
-    for venue in PILOT_VENUES:
-        name_ru = venue["name_ru"]
-        if name_ru in seen_name_ru:
+    for country_dir in sorted(COUNTRIES_DIR.iterdir()):
+        if not country_dir.is_dir():
             continue
-        seen_name_ru.add(name_ru)
-        groups_base = COUNTRIES_DIR / name_ru / "level_3" / "_groups"
+        name_ru = country_dir.name
+        groups_base = country_dir / "level_3" / "_groups"
         if not groups_base.exists():
             continue
 
@@ -1926,37 +1918,42 @@ def run_pass2_translate(llm: ChatOpenAI) -> None:
 
     work_items: list[dict] = []
 
-    for venue in PILOT_VENUES:
-        name_ru = venue["name_ru"]
-        venue_key = venue["venue_key"]
-        level3_dir = get_country_level3_dir(name_ru, venue_key)
-        if not level3_dir.exists():
+    for country_dir in sorted(COUNTRIES_DIR.iterdir()):
+        if not country_dir.is_dir():
             continue
-
-        for cell_dir in sorted(level3_dir.iterdir()):
-            if not cell_dir.is_dir():
+        level3_base = country_dir / "level_3"
+        if not level3_base.exists():
+            continue
+        for level3_dir in sorted(level3_base.iterdir()):
+            if not level3_dir.is_dir():
                 continue
-            pass2_path = cell_dir / "pass2.json"
-            pass2_ru_path = cell_dir / "pass2_ru.json"
-
-            if not pass2_path.exists():
-                continue
-
-            if pass2_ru_path.exists():
-                logger.info("[SKIP] pass2_ru.json already exists for %s", cell_dir.name)
+            if level3_dir.name == "_groups":
                 continue
 
-            pass2_data = load_json(pass2_path)
-            if not pass2_data:
-                logger.warning("pass2.json empty for %s — skipping", cell_dir.name)
-                continue
+            for cell_dir in sorted(level3_dir.iterdir()):
+                if not cell_dir.is_dir():
+                    continue
+                pass2_path = cell_dir / "pass2.json"
+                pass2_ru_path = cell_dir / "pass2_ru.json"
 
-            work_items.append({
-                "cell_id": cell_dir.name,
-                "pass2_ru_path": pass2_ru_path,
-                "pass2_data": pass2_data,
-                "prompt": _build_translate_prompt(pass2_data),
-            })
+                if not pass2_path.exists():
+                    continue
+
+                if pass2_ru_path.exists():
+                    logger.info("[SKIP] pass2_ru.json already exists for %s", cell_dir.name)
+                    continue
+
+                pass2_data = load_json(pass2_path)
+                if not pass2_data:
+                    logger.warning("pass2.json empty for %s — skipping", cell_dir.name)
+                    continue
+
+                work_items.append({
+                    "cell_id": cell_dir.name,
+                    "pass2_ru_path": pass2_ru_path,
+                    "pass2_data": pass2_data,
+                    "prompt": _build_translate_prompt(pass2_data),
+                })
 
     if not work_items:
         logger.info("No cells need translation — all done or no pass2.json found")

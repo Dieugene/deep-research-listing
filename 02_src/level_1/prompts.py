@@ -276,9 +276,8 @@ SCHEMA_1C = {
 PROMPT_1C_TEMPLATE = """\
 Provide an overview of all securities trading venues in {jurisdiction}.
 
-Context from regulatory research:
-- Regulator: {regulator_context}
-- Market types: {market_types_context}
+Context from regulatory research (1A):
+{regulatory_context}
 
 DEFINITIONS — use these when classifying entities:
 
@@ -362,6 +361,45 @@ Examples of modifiers:
 Do NOT list modifiers as separate venues, tiers, or segments in your output.
 List them in the regime_modifiers array of the venue they belong to.
 
+SCOPE RESTRICTION — Venue identification:
+Include ONLY venues that meet ALL of the following:
+
+1. DOMICILED in {jurisdiction} — operated by an entity registered
+   and regulated in this jurisdiction. Do NOT include foreign venues
+   mentioned in cross-listing or market access agreements (e.g., if
+   Singapore has a cross-listing arrangement with Tokyo, Tokyo Stock
+   Exchange is NOT a Singapore venue).
+
+2. ADMITS TRADITIONAL SECURITIES to trading — at least one of:
+   equities (shares), bonds (debt instruments), investment funds
+   (ETF, closed-end funds, REIT), depositary receipts.
+
+3. HAS FORMAL ADMISSION PROCEDURES — a defined process by which
+   an issuer or instrument is admitted to trading, with published
+   rules/criteria. Trading platforms without admission procedures
+   are not venues for this research.
+
+4. CURRENTLY OPERATIONAL — the venue holds a valid license/recognition
+   and is actively operating as of the research date. Do not include
+   venues that have ceased operations or lost their license.
+
+EXCLUDE specifically:
+- Cryptocurrency / digital asset exchanges
+- Commodity-only or derivatives-only exchanges
+- Energy trading platforms
+- OTC platforms without formal admission rules
+- Crowdfunding platforms
+- Systematic internalisers, dark pools, and other execution venues
+  without issuer-facing admission procedures
+- Primary dealer systems that handle ONLY government debt auctions
+  with no secondary market trading
+
+INCLUDE with a note:
+- Multi-asset exchanges that handle both securities and other products —
+  include, but identify only the securities-relevant segments.
+- Venues in the process of launching or recently licensed — include
+  with a note on operational status.
+
 For each market operator and its venues, provide:
 1. Operator name
 2. For each venue operated:
@@ -386,12 +424,10 @@ Jurisdiction: {jurisdiction}"""
 
 def build_prompt_1c(
     jurisdiction: str,
-    regulator_context: str = "to be determined",
-    market_types_context: str = "to be determined",
+    regulatory_context: str = "to be determined",
 ) -> str:
     """Build the 1C prompt for a given jurisdiction."""
     return PROMPT_1C_TEMPLATE.format(
         jurisdiction=jurisdiction,
-        regulator_context=regulator_context,
-        market_types_context=market_types_context,
+        regulatory_context=regulatory_context,
     )

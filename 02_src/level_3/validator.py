@@ -27,6 +27,7 @@ from pipeline.config import (
     LLM_FAST_MODEL,
     LEVEL3_V2_LOG_FILE,
     PILOT_VENUES,
+    COUNTRIES_DIR,
     get_country_level2_dir,
     get_country_level3_dir,
 )
@@ -322,7 +323,10 @@ def validate_all_venues(state: dict) -> None:
     work_items = []
     prompts = []
 
-    for venue in PILOT_VENUES:
+    from pipeline.registry import discover_all_venues, load_jurisdictions
+    _all_venues = discover_all_venues(load_jurisdictions(), COUNTRIES_DIR)
+
+    for venue in _all_venues:
         venue_key = venue["venue_key"]
         name_ru = venue["name_ru"]
 

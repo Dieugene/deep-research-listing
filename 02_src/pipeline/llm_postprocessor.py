@@ -11,7 +11,7 @@ from typing import Optional
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from pipeline.config import LLM_SMART_MODEL, LLM_FAST_MODEL
 from pipeline.logging_setup import get_logger
@@ -41,6 +41,11 @@ class VenueRef(BaseModel):
     tiers: list[str]
 
 
+class ExcludedVenueRef(BaseModel):
+    name: str
+    reason: str
+
+
 class JurisdictionCard(BaseModel):
     jurisdiction: str
     jurisdiction_ru: str
@@ -53,6 +58,7 @@ class JurisdictionCard(BaseModel):
     market_types: list[str]
     key_terms_mapping: Optional[dict[str, str]] = None
     venues: list[VenueRef]
+    excluded_venues: list[ExcludedVenueRef] = Field(default_factory=list)
     supranational_flag: bool
     supranational_framework: Optional[str] = None
     notes: str
@@ -102,7 +108,21 @@ Below are three research outputs:
 Your tasks:
 1. Create a structured jurisdiction card combining all three sources.
 2. Translate key descriptive fields to Russian (jurisdiction_ru, admission_architecture_ru).
-3. Extract a list of venues for further research (Level 2) — include name_english, name_local, type, and tiers.
+3. Extract a list of venues for further research (Level 2). BEFORE including any venue, verify ALL four conditions:
+
+   VERIFICATION CHECKS — include a venue ONLY if it passes all four:
+   1. DOMICILED in {jurisdiction_en} — operated by an entity registered and regulated
+      in this jurisdiction. Foreign venues mentioned in cross-listing context → EXCLUDE.
+   2. ADMITS at least one of: equities, bonds, investment funds (ETF/REIT/closed-end), or
+      depositary receipts. Crypto/commodity/derivatives-only venues → EXCLUDE.
+   3. HAS FORMAL ADMISSION PROCEDURES — a defined process for admitting issuers/instruments
+      with published rules. Execution venues / dark pools / SIs without issuer admission → EXCLUDE.
+   4. CURRENTLY OPERATIONAL — valid license, actively operating. Ceased or revoked → EXCLUDE.
+
+   For each venue that passes: include in `venues` with name_english, name_local, type, tiers.
+   For each venue that FAILS any check: include in `excluded_venues` with name and reason
+   (e.g., "excluded: foreign venue, cross-listing reference" or
+   "excluded: no formal admission procedures (dark pool)").
 4. Set supranational_flag=true ONLY if a supranational legislative framework directly governs listing/admission to trading requirements in this jurisdiction (e.g., EU Prospectus Regulation, MiFID II for EU member states). Do NOT set supranational_flag=true for: cross-border investor access schemes (Stock Connect, Bond Connect, etc.); mutual recognition arrangements for investment products; international standards (IOSCO principles) that are not binding legislation; any arrangement that affects who can invest, not what is required for listing. If such a supranational framework exists, name it in supranational_framework.
 5. Fill key_terms_mapping with local official terms mapped to their English equivalents (at least 5-10 key terms).
 6. Be precise about legal_family (common law / civil law / mixed / other).

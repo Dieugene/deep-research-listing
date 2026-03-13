@@ -17,6 +17,9 @@ _BACKEND_DIR = Path(__file__).resolve().parent
 if str(_BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(_BACKEND_DIR))
 
+from dotenv import load_dotenv
+load_dotenv()  # loads .env from the backend directory (or any parent dir)
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 

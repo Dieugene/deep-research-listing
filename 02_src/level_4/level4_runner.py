@@ -32,8 +32,6 @@ from pipeline.config import (
     LEVEL4_STATE_FILE,
     LEVEL4_LOG_FILE,
     PILOT_JURISDICTIONS,
-    PILOT_VENUES,
-    VENUE_BY_KEY,
     get_country_level1_dir,
     get_country_level4_dir,
 )
@@ -196,7 +194,7 @@ Precision: year or period (e.g., "2015–2018", "post-GFC", "following the 2024 
 # Prompt data extraction from jurisdiction_card
 # ---------------------------------------------------------------------------
 
-def _get_jurisdiction_prompt_data(name_ru: str) -> Optional[dict]:
+def _get_jurisdiction_prompt_data(name_ru: str, name_en: str) -> Optional[dict]:
     """
     Load jurisdiction_card and extract data needed for prompt.
     Returns dict with keys: jurisdiction_en, regulator_name, regulator_type,
@@ -207,21 +205,12 @@ def _get_jurisdiction_prompt_data(name_ru: str) -> Optional[dict]:
         logger.warning("No jurisdiction_card.json for %s", name_ru)
         return None
 
-    # Jurisdiction English name — look up from PILOT_JURISDICTIONS by name_ru
-    jur_config = next((j for j in PILOT_JURISDICTIONS if j["name_ru"] == name_ru), None)
-    if not jur_config:
-        logger.warning("No PILOT_JURISDICTIONS entry for %s", name_ru)
-        return None
+    jurisdiction_en = name_en
 
-    jurisdiction_en = jur_config["name_en"]
-
-    # Venue names from PILOT_VENUES filtered by jurisdiction
-    pilot_venue_keys = jur_config.get("venues", [])
-    venue_names = [
-        VENUE_BY_KEY[vk]["venue_name_english"]
-        for vk in pilot_venue_keys
-        if vk in VENUE_BY_KEY
-    ]
+    # Venue names from venues_list.json
+    venues_list_path = get_country_level1_dir(name_ru) / "venues_list.json"
+    venues_data = load_json(venues_list_path) or {}
+    venue_names = [v["name_english"] for v in venues_data.get("venues", [])]
 
     return {
         "jurisdiction_en": jurisdiction_en,
@@ -269,7 +258,7 @@ def run_level4_parallel(jurisdictions: list = None) -> None:
             skipped += 1
             continue
 
-        prompt_data = _get_jurisdiction_prompt_data(name_ru)
+        prompt_data = _get_jurisdiction_prompt_data(name_ru, name_en=jur["name_en"])
         if not prompt_data:
             logger.warning("[SKIP] Could not build prompt for %s", name_ru)
             skipped += 1

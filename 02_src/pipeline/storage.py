@@ -57,12 +57,17 @@ def save_raw_query(path: Path, jurisdiction: str, query: str, content: str) -> d
     return data
 
 
-def save_prompt(prompts_dir: Path, name: str, prompt: str) -> None:
-    """Save a prompt string for reproducibility."""
+def save_prompt(prompts_dir: Path, name: str, prompt: str, schema=None) -> None:
+    """Save a prompt string and optional output schema for reproducibility."""
     ensure_dir(prompts_dir)
     path = prompts_dir / f"{name}.txt"
     with open(path, "w", encoding="utf-8") as f:
         f.write(prompt)
+    if schema is not None:
+        import json as _json
+        schema_path = prompts_dir / f"{name}_schema.json"
+        with open(schema_path, "w", encoding="utf-8") as f:
+            _json.dump(schema, f, ensure_ascii=False, indent=2)
 
 
 def now_iso() -> str:

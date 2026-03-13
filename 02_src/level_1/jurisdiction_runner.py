@@ -1,14 +1,16 @@
 """
-Level 1: Run queries 1A, 1C for pilot jurisdictions.
+Level 1: Run queries 1A, 1B, 1C for pilot jurisdictions.
 
-1B (institutional factors) is now imported from a pre-collected MD file
-via import_institutional.py — not run as a Parallel query.
+1B (institutional factors) runs via Parallel API (same as 1A and 1C).
+Skips jurisdictions that already have 1B_institutional.json on disk.
 
 Execution flow:
-  1. Launch 1A for all 3 jurisdictions in parallel (non-blocking launch)
+  1. Launch 1A for all jurisdictions in parallel (non-blocking launch)
   2. Poll all 1A tasks until done
-  3. For each jurisdiction: launch 1C (with 1A context)
-  4. Poll all 1C tasks until done
+  3. Launch 1B for all jurisdictions (skip if file already exists)
+  4. Poll all 1B tasks until done
+  5. For each jurisdiction: launch 1C (with 1A context)
+  6. Poll all 1C tasks until done
 
 Usage:
     python -m level_1.jurisdiction_runner --launch-1a
@@ -42,8 +44,8 @@ from pipeline.parallel_runner import (
 )
 from pipeline.logging_setup import get_logger
 from level_1.prompts import (
-    build_prompt_1a, build_prompt_1c,
-    SCHEMA_1C,
+    build_prompt_1a, build_prompt_1b, build_prompt_1c,
+    SCHEMA_1B, SCHEMA_1C,
 )
 
 logger = get_logger("jurisdiction_runner")
@@ -92,6 +94,24 @@ def _save_fn_1c(juris_ru: str, juris_en: str):
     return fn
 
 
+def _save_fn_1b(juris_ru: str, juris_en: str):
+    def fn(content) -> Path:
+        d = get_country_level1_dir(juris_ru)
+        path = d / "1B_institutional.json"
+        if isinstance(content, dict):
+            data = {"jurisdiction": juris_en, **content, "retrieved_at": now_iso()}
+        else:
+            data = {
+                "jurisdiction": juris_en,
+                "query": "1B",
+                "content": str(content),
+                "retrieved_at": now_iso(),
+            }
+        save_json(path, data)
+        return path
+    return fn
+
+
 # ---------------------------------------------------------------------------
 # Launch helpers
 # ---------------------------------------------------------------------------
@@ -115,6 +135,34 @@ def launch_all_1a(state: dict, jurisdictions: list = None) -> None:
     save_state(state)
 
 
+def launch_all_1b(state: dict, jurisdictions: list = None) -> None:
+    """
+    Launch 1B tasks for all jurisdictions via Parallel API.
+    Skips if 1B_institutional.json already exists on disk (idempotent for pilot data).
+    """
+    for j in (jurisdictions or PILOT_JURISDICTIONS):
+        en = j["name_en"]
+        ru = j["name_ru"]
+
+        # Skip if already collected (e.g. pilot jurisdictions with imported data)
+        existing = get_country_level1_dir(ru) / "1B_institutional.json"
+        if existing.exists():
+            logger.info("1B already exists for %s — skipping launch", ru)
+            continue
+
+        prompt = build_prompt_1b(en)
+        save_prompt(PROMPTS_DIR, f"1B_{ru}", prompt, schema=SCHEMA_1B)
+
+        task_key = _key(ru, "1B")
+        launch_task(
+            task_key=task_key,
+            prompt=prompt,
+            output_schema=SCHEMA_1B,
+            state=state,
+        )
+    save_state(state)
+
+
 def launch_all_1c(state: dict, jurisdictions: list = None) -> None:
     """
     Launch 1C tasks for all pilot jurisdictions.
@@ -127,17 +175,15 @@ def launch_all_1c(state: dict, jurisdictions: list = None) -> None:
         # Try to read 1A result for context injection into 1C
         path_1a = get_country_level1_dir(ru) / "1A_architecture.json"
         data_1a = load_json(path_1a)
-        regulator_ctx = "see regulatory architecture research"
-        market_types_ctx = "see regulatory architecture research"
+        regulatory_ctx = "see regulatory architecture research"
         if data_1a and isinstance(data_1a, dict):
             content_1a_str = data_1a.get("content", "")
             if content_1a_str:
-                regulator_ctx = f"refer to 1A research: {content_1a_str}"
-                market_types_ctx = f"refer to 1A research (venue types): {content_1a_str}"
+                regulatory_ctx = f"Regulatory architecture research (1A):\n{content_1a_str}"
 
         # 1C
-        prompt_1c = build_prompt_1c(en, regulator_ctx, market_types_ctx)
-        save_prompt(PROMPTS_DIR, f"1C_{ru}", prompt_1c)
+        prompt_1c = build_prompt_1c(en, regulatory_ctx)
+        save_prompt(PROMPTS_DIR, f"1C_{ru}", prompt_1c, schema=SCHEMA_1C)
         launch_task(
             task_key=_key(ru, "1C"),
             prompt=prompt_1c,
@@ -164,6 +210,18 @@ def poll_all_1a(state: dict, jurisdictions: list = None) -> dict:
     return poll_all(tasks, state)
 
 
+def poll_all_1b(state: dict, jurisdictions: list = None) -> dict:
+    """Poll all 1B tasks."""
+    tasks = []
+    for j in (jurisdictions or PILOT_JURISDICTIONS):
+        ru = j["name_ru"]
+        en = j["name_en"]
+        key = _key(ru, "1B")
+        if key in state["tasks"]:
+            tasks.append((key, _save_fn_1b(ru, en)))
+    return poll_all(tasks, state)
+
+
 def poll_all_1c(state: dict, jurisdictions: list = None) -> dict:
     """Poll all 1C tasks."""
     tasks = []
@@ -181,7 +239,7 @@ def poll_all_1c(state: dict, jurisdictions: list = None) -> dict:
 # ---------------------------------------------------------------------------
 
 def run_all():
-    """Full Level 1 jurisdiction research run (1A + 1C only; 1B is imported)."""
+    """Full Level 1 jurisdiction research run (1A + 1B + 1C)."""
     state = load_state()
 
     logger.info("=== Step 1: Launching 1A for all jurisdictions ===")
@@ -190,10 +248,16 @@ def run_all():
     logger.info("=== Step 2: Polling 1A until all done ===")
     poll_all_1a(state)
 
-    logger.info("=== Step 3: Launching 1C for all jurisdictions ===")
+    logger.info("=== Step 3: Launching 1B for all jurisdictions ===")
+    launch_all_1b(state)
+
+    logger.info("=== Step 4: Polling 1B until all done ===")
+    poll_all_1b(state)
+
+    logger.info("=== Step 5: Launching 1C for all jurisdictions ===")
     launch_all_1c(state)
 
-    logger.info("=== Step 4: Polling 1C until all done ===")
+    logger.info("=== Step 6: Polling 1C until all done ===")
     poll_all_1c(state)
 
     logger.info("=== Level 1 jurisdiction queries complete ===")
@@ -204,6 +268,8 @@ if __name__ == "__main__":
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--launch-1a", action="store_true")
     group.add_argument("--poll-1a", action="store_true")
+    group.add_argument("--launch-1b", action="store_true")
+    group.add_argument("--poll-1b", action="store_true")
     group.add_argument("--launch-1c", action="store_true")
     group.add_argument("--poll-1c", action="store_true")
     group.add_argument("--run-all", action="store_true", default=True)
@@ -215,6 +281,10 @@ if __name__ == "__main__":
         launch_all_1a(state)
     elif args.poll_1a:
         poll_all_1a(state)
+    elif args.launch_1b:
+        launch_all_1b(state)
+    elif args.poll_1b:
+        poll_all_1b(state)
     elif args.launch_1c:
         launch_all_1c(state)
     elif args.poll_1c:

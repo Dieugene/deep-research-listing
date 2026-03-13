@@ -54,9 +54,6 @@ PIPELINE_LOG_FILE = LOGS_DIR / f"pipeline_{_today}.log"
 
 logger = get_logger("run_pipeline", PIPELINE_LOG_FILE)
 
-# Jurisdictions for which pre-collected 1B data exists
-_PILOT_1B_JURISDICTIONS = {"Великобритания", "Гонконг", "Россия"}
-
 # Ordered level names for --from-level logic
 LEVEL_ORDER = ["1", "2", "3", "phase2", "4"]
 
@@ -148,9 +145,9 @@ def run_level1(jurisdictions: list[dict]) -> None:
     from level_1.eu_framework import run_full as run_eu
     from level_1.jurisdiction_runner import (
         launch_all_1a, poll_all_1a,
+        launch_all_1b, poll_all_1b,
         launch_all_1c, poll_all_1c,
     )
-    from level_1.import_institutional import import_all as import_institutional
     from level_1.postprocess import process_all as process_all_l1
 
     # --- EU Framework (only if supranational/eu.json does not yet exist) ---
@@ -169,24 +166,19 @@ def run_level1(jurisdictions: list[dict]) -> None:
     logger.info("--- L1 Step 3: Poll 1A ---")
     poll_all_1a(state, jurisdictions=jurisdictions)
 
-    # 1B: only for pilot jurisdictions with pre-collected data
-    pilot_1b = [j for j in jurisdictions if j["name_ru"] in _PILOT_1B_JURISDICTIONS]
-    if pilot_1b:
-        logger.info(
-            "--- L1 Step 4: Import institutional (1B) for %s ---",
-            [j["name_ru"] for j in pilot_1b],
-        )
-        import_institutional()
-    else:
-        logger.info("--- L1 Step 4: No 1B data available for this batch — skipping ---")
+    logger.info("--- L1 Step 4: Launch 1B ---")
+    launch_all_1b(state, jurisdictions=jurisdictions)
 
-    logger.info("--- L1 Step 5: Launch 1C ---")
+    logger.info("--- L1 Step 5: Poll 1B ---")
+    poll_all_1b(state, jurisdictions=jurisdictions)
+
+    logger.info("--- L1 Step 6: Launch 1C ---")
     launch_all_1c(state, jurisdictions=jurisdictions)
 
-    logger.info("--- L1 Step 6: Poll 1C ---")
+    logger.info("--- L1 Step 7: Poll 1C ---")
     poll_all_1c(state, jurisdictions=jurisdictions)
 
-    logger.info("--- L1 Step 7: Postprocess ---")
+    logger.info("--- L1 Step 8: Postprocess ---")
     process_all_l1(jurisdictions=jurisdictions)
 
     logger.info("========== Level 1 Complete ==========")
@@ -345,6 +337,74 @@ def discover_venues(jurisdictions: list[dict]) -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
+# Venue review (control point B)
+# ---------------------------------------------------------------------------
+
+def _print_venue_review(jurisdictions: list, venues: list) -> None:
+    """
+    Print a venue review report comparing discovered venues with exchanges.json reference.
+    Reads venues_list.json and jurisdiction_card.json directly per jurisdiction.
+    """
+    import json as _json
+    from pipeline.config import DATA_DIR, get_country_level1_dir
+
+    # Load exchanges.json reference
+    exchanges_path = DATA_DIR.parent / "03_data" / "exchanges.json"
+    reference = {}
+    if exchanges_path.exists():
+        raw = _json.loads(exchanges_path.read_text(encoding="utf-8"))
+        for group in raw.values():  # DM / EM
+            for juris_ru, venues_dict in group.items():
+                reference[juris_ru] = list(venues_dict.keys())
+
+    logger.info("=" * 60)
+    logger.info("VENUE REVIEW — compare before proceeding to L2")
+    logger.info("=" * 60)
+
+    for j in jurisdictions:
+        ru = j["name_ru"]
+        l1_dir = get_country_level1_dir(ru)
+
+        # Read discovered venues from venues_list.json
+        venues_path = l1_dir / "venues_list.json"
+        discovered = []
+        if venues_path.exists():
+            data = _json.loads(venues_path.read_text(encoding="utf-8"))
+            discovered = [v.get("name_english", "?") for v in data.get("venues", [])]
+
+        # Read excluded venues from jurisdiction_card.json
+        excluded = []
+        card_path = l1_dir / "jurisdiction_card.json"
+        if card_path.exists():
+            card = _json.loads(card_path.read_text(encoding="utf-8"))
+            excluded = card.get("excluded_venues", [])
+
+        ref = reference.get(ru, [])
+
+        logger.info("")
+        logger.info("  Jurisdiction: %s", ru)
+        logger.info("  Discovered (%d venues):", len(discovered))
+        for v in discovered:
+            logger.info("    + %s", v)
+
+        logger.info("  Reference exchanges.json (%d operators):", len(ref))
+        for r in ref:
+            logger.info("    * %s", r)
+
+        if excluded:
+            logger.info("  Excluded by postprocessor (%d):", len(excluded))
+            for e in excluded:
+                logger.info("    - %s  [%s]", e.get("name", "?"), e.get("reason", ""))
+
+    logger.info("")
+    logger.info("=" * 60)
+    logger.info("Pipeline STOPPED after L1 (--stop-after-l1 flag).")
+    logger.info("Review venues above, then continue with:")
+    logger.info("  python run_pipeline.py --from-level 2 --jurisdictions <...>")
+    logger.info("=" * 60)
+
+
+# ---------------------------------------------------------------------------
 # Main orchestration
 # ---------------------------------------------------------------------------
 
@@ -416,6 +476,13 @@ def main() -> None:
         help="Phase 2 mode: basic (pass1+pass2) or extended (pass1+3p+pass2-new) [default: basic]",
     )
 
+    parser.add_argument(
+        "--stop-after-l1",
+        action="store_true",
+        help="Stop after Level 1 venue discovery and print venue review report. "
+             "Use --from-level 2 to continue after review.",
+    )
+
     args = parser.parse_args()
 
     # ---- Resolve jurisdiction list ----
@@ -432,6 +499,10 @@ def main() -> None:
     # Always discover from disk so we pick up whatever L1 produced.
     # If L1 was skipped we still attempt discovery (data may already exist).
     venues = discover_venues(jurisdictions)
+
+    if args.stop_after_l1:
+        _print_venue_review(jurisdictions, venues)
+        return
 
     # ---- Level 2 ----
     if _should_run("2", args.from_level, args.only_level):
