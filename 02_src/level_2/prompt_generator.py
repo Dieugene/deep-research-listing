@@ -20,7 +20,7 @@ load_dotenv(dotenv_path=Path(__file__).resolve().parents[2] / ".env")
 from langchain_openai import ChatOpenAI
 
 from pipeline.config import (
-    LLM_SMART_MODEL,
+    LLM_FAST_MODEL,
     PILOT_VENUES,
     PROMPTS_LEVEL2_DIR,
     get_country_level1_dir,
@@ -34,7 +34,7 @@ logger = get_logger("prompt_generator", LEVEL2_LOG_FILE)
 
 def _get_llm() -> ChatOpenAI:
     return ChatOpenAI(
-        model=LLM_SMART_MODEL,
+        model=LLM_FAST_MODEL,
         api_key=os.environ["OPENAI_API_KEY"],
         temperature=0,
     )

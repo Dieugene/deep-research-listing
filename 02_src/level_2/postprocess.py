@@ -32,6 +32,7 @@ from pydantic import BaseModel
 
 from pipeline.config import (
     LLM_SMART_MODEL,
+    LLM_FAST_MODEL,
     PILOT_VENUES,
     PROMPTS_LEVEL3_DIR,
     get_country_level1_dir,
@@ -131,9 +132,9 @@ class VenueCard(BaseModel):
 # LLM helpers
 # ---------------------------------------------------------------------------
 
-def _get_llm() -> ChatOpenAI:
+def _get_llm(model: str = LLM_SMART_MODEL) -> ChatOpenAI:
     return ChatOpenAI(
-        model=LLM_SMART_MODEL,
+        model=model,
         api_key=os.environ["OPENAI_API_KEY"],
         temperature=0,
         request_timeout=120,
@@ -757,7 +758,7 @@ def generate_all_level3_prompts(venues_data: list[dict]) -> None:
     Idempotent: skips any prompt file that already exists on disk.
     Uses llm.batch() with max_concurrency=50 for parallel execution.
     """
-    llm = _get_llm()
+    llm = _get_llm(LLM_FAST_MODEL)
 
     # ------------------------------------------------------------------
     # Build a flat list of (messages_str, save_path, cell_id, query_type)
