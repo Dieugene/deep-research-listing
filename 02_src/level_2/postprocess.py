@@ -136,6 +136,7 @@ def _get_llm() -> ChatOpenAI:
         model=LLM_SMART_MODEL,
         api_key=os.environ["OPENAI_API_KEY"],
         temperature=0,
+        request_timeout=120,
     )
 
 
@@ -898,7 +899,7 @@ def generate_all_level3_prompts(venues_data: list[dict]) -> None:
         if not remaining_messages:
             break
         inputs = [msg for _, msg in remaining_messages]
-        raw = llm.batch(inputs, config={"max_concurrency": 50}, return_exceptions=True)
+        raw = llm.batch(inputs, config={"max_concurrency": 20}, return_exceptions=True)
         still_failing = []
         for (orig_idx, msg), result in zip(remaining_messages, raw):
             if isinstance(result, Exception):
