@@ -1,0 +1,95 @@
+:root {
+  /* Dark theme (showcase / landing) */
+  --bg-dark: #080E1C;
+  --bg-dark-secondary: #0D1628;
+  --bg-dark-card: #111D35;
+  --bg-dark-elevated: #162040;
+  --accent-primary: #2563EB;
+  --accent-blue: #3B82F6;
+  --accent-blue-light: #60A5FA;
+  --accent-teal: #06b6d4;
+  --accent-gold: #f59e0b;
+  --accent-coral: #f87171;
+  --accent-bg: rgba(59, 130, 246, 0.1);
+  --text-on-dark: #E2E8F4;
+  --text-mid-dark: #9AABC8;
+  --text-muted-dark: #6B7A99;
+
+  /* Light theme (work pages) */
+  --bg-light: #F7F8FA;
+  --bg-white: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-subtle: #F0F2F7;
+  --bg-muted: #E4E8F2;
+  --text-primary: #111827;
+  --text-secondary: #4B5563;
+  --text-muted: #9CA3AF;
+  --border: rgba(0, 0, 0, 0.11);
+  --border-subtle: #e2e8f0;
+  --border-default: #cbd5e1;
+  --border-strong: rgba(0, 0, 0, 0.18);
+
+  /* Accent light theme */
+  --accent-light-bg: rgba(37, 99, 235, 0.06);
+  --accent-light-bg2: rgba(37, 99, 235, 0.12);
+
+  /* Status colors */
+  --green: #059669;
+  --green-bg: rgba(5, 150, 105, 0.07);
+  --green-border: rgba(5, 150, 105, 0.2);
+  --orange: #D97706;
+  --orange-bg: rgba(217, 119, 6, 0.07);
+
+  /* Validation */
+  --validation-green: #059669;
+  --validation-yellow: #D97706;
+  --validation-red: #dc2626;
+  --validation-unknown: #9CA3AF;
+
+  /* Matrix — fill statuses */
+  --matrix-filled-high: #1e40af;
+  --matrix-filled-med: #3b82f6;
+  --matrix-filled-low: #93c5fd;
+  --matrix-empty: #e2e8f0;
+  --matrix-na-bg: #f1f5f9;
+  --matrix-na-stripe: #e2e8f0;
+
+  /* Typography */
+  --font-ui: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-heading: 'Newsreader', Georgia, serif;
+
+  /* NavBar */
+  --navbar-height: 56px;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  /* Z-index layers */
+  --z-navbar: 100;
+  --z-panel: 200;
+  --z-modal: 300;
+  --z-tooltip: 400;
+}

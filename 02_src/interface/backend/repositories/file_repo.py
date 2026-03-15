@@ -24,6 +24,7 @@ from pathlib import Path
 from typing import Any
 
 from core.config import COUNTRIES_DIR
+from core.jurisdiction_meta import JURISDICTION_ISO_CODES, JURISDICTION_MARKET_TYPE
 from core.labels import (
     CONTENT_TYPE_LABELS,
     INSTRUMENT_CLASS_LABELS,
@@ -202,9 +203,11 @@ class FileDataRepository:
 
             name_en: str = name_ru  # fallback
             legal_family: str | None = None
+            listing_authority: str | None = None
             if card:
                 name_en = card.get("jurisdiction", card.get("name_en", name_ru))
                 legal_family = card.get("legal_family")
+                listing_authority = card.get("listing_authority")
 
             venue_keys = _list_venue_keys(name_ru)
             venue_count = len(venue_keys)
@@ -216,6 +219,13 @@ class FileDataRepository:
 
             has_level4 = (jdir / "level_4" / "level4.json").exists()
 
+            if has_full_data:
+                data_status = "full"
+            elif venue_count > 0:
+                data_status = "partial"
+            else:
+                data_status = "empty"
+
             result.append(
                 JurisdictionSummary(
                     name_ru=name_ru,
@@ -224,6 +234,10 @@ class FileDataRepository:
                     venue_count=venue_count,
                     has_level4=has_level4,
                     has_full_data=has_full_data,
+                    iso_code=JURISDICTION_ISO_CODES.get(name_ru),
+                    market_type=JURISDICTION_MARKET_TYPE.get(name_ru),
+                    data_status=data_status,
+                    listing_authority=listing_authority,
                 )
             )
         return sorted(result, key=lambda j: j.name_ru)
@@ -280,6 +294,17 @@ class FileDataRepository:
                 validation_status=val_status,
             )
 
+        venue_keys_for_status = _list_venue_keys(name_ru)
+        has_level3 = (jdir / "level_3").exists()
+        has_level1 = (jdir / "level_1" / "jurisdiction_card.json").exists()
+        has_full_data = has_level1 and bool(venue_keys_for_status) and has_level3
+        if has_full_data:
+            data_status = "full"
+        elif bool(venue_keys_for_status):
+            data_status = "partial"
+        else:
+            data_status = "empty"
+
         return JurisdictionCard(
             name_ru=name_ru,
             name_en=card.get("jurisdiction", card.get("name_en", name_ru)),
@@ -289,6 +314,8 @@ class FileDataRepository:
             admission_architecture=card.get("admission_architecture"),
             admission_architecture_ru=card.get("admission_architecture_ru"),
             listing_authority=card.get("listing_authority"),
+            iso_code=JURISDICTION_ISO_CODES.get(name_ru),
+            data_status=data_status,
             market_types=card.get("market_types", []),
             key_terms_mapping=card.get("key_terms_mapping", {}),
             supranational_flag=card.get("supranational_flag", False),

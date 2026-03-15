@@ -1,0 +1,23 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.darkLayout {
+  background-color: var(--bg-dark);
+  color: var(--text-on-dark);
+}
+
+.lightLayout {
+  background-color: var(--bg-light);
+  color: var(--text-primary);
+}
+
+.main {
+  flex: 1;
+}
+
+.mainLight {
+  padding-top: 64px; /* navbar height */
+}

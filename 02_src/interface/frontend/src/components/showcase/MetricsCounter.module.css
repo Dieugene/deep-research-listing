@@ -1,0 +1,30 @@
+.counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.number {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.value {
+  display: inline-block;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: var(--text-muted-dark);
+  text-align: center;
+  max-width: 160px;
+  line-height: 1.4;
+}

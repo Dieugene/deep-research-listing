@@ -1,0 +1,530 @@
+/* ── Page layout ─────────────────────────────────────────────────────────── */
+
+.page {
+  background: var(--bg-light);
+  min-height: 100%;
+  padding-bottom: 80px;
+}
+
+/* ── Page header ─────────────────────────────────────────────────────────── */
+
+.pageHeader {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 22px 40px 24px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  animation: fadeInUp 0.35s ease both;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 34px;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+/* ── Stats strip ─────────────────────────────────────────────────────────── */
+
+.statsStrip {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  animation: fadeInUp 0.35s 0.05s ease both;
+}
+
+.statPill {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 10px 18px;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.statPillAccent {
+  background: var(--accent-light-bg);
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+.statVal {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.statPillAccent .statVal {
+  color: var(--accent-primary);
+}
+
+.statLabel {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ── Filter bar ──────────────────────────────────────────────────────────── */
+
+.filterBar {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px 16px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.35s 0.08s ease both;
+}
+
+.filterSearchWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.filterSearch {
+  height: 34px;
+  padding: 0 12px 0 32px;
+  background: var(--bg-white);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: var(--font-ui);
+  outline: none;
+  width: 220px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.filterSearch:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.filterSearch::placeholder {
+  color: var(--text-muted);
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  font-size: 13px;
+}
+
+.filterSep {
+  width: 1px;
+  height: 28px;
+  background: var(--border);
+  flex-shrink: 0;
+  margin: 3px 0;
+}
+
+.filterGroup {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 3px;
+}
+
+.filterBtn {
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  transition: color var(--transition-fast), background var(--transition-fast);
+  white-space: nowrap;
+}
+
+.filterBtn:hover {
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.filterBtnActive {
+  background: var(--bg-white);
+  color: var(--accent-primary);
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Table wrapper ───────────────────────────────────────────────────────── */
+
+.tableWrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+  animation: fadeInUp 0.35s 0.12s ease both;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  background: var(--bg-white);
+}
+
+/* ── Table head ──────────────────────────────────────────────────────────── */
+
+.th {
+  padding: 10px 16px;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 400;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--bg-subtle);
+  transition: color var(--transition-fast);
+}
+
+.th:hover {
+  color: var(--text-secondary);
+}
+
+.thSorted {
+  color: var(--accent-primary);
+}
+
+.thCenter {
+  text-align: center;
+}
+
+.sortArrow {
+  display: inline-block;
+  margin-left: 4px;
+  opacity: 0.5;
+  font-size: 9px;
+}
+
+.sortArrowActive {
+  opacity: 1;
+}
+
+/* ── Table body ──────────────────────────────────────────────────────────── */
+
+.row {
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-white);
+  transition: background var(--transition-fast);
+  cursor: pointer;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row:hover {
+  background: #fafbff;
+}
+
+.rowNoData {
+  cursor: default;
+}
+
+.rowNoData:hover {
+  background: var(--bg-white);
+}
+
+.rowNoData .td {
+  opacity: 0.55;
+}
+
+.td {
+  padding: 12px 16px;
+  font-size: 13.5px;
+  vertical-align: middle;
+}
+
+.tdCenter {
+  text-align: center;
+}
+
+/* ── Jurisdiction cell ───────────────────────────────────────────────────── */
+
+.jurCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.jurFlag {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-subtle);
+}
+
+.jurName {
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 1px;
+}
+
+.jurSub {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* ── Legal family chip ───────────────────────────────────────────────────── */
+
+.legalChip {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  white-space: nowrap;
+  text-transform: lowercase;
+}
+
+/* ── Market badges ───────────────────────────────────────────────────────── */
+
+.marketBadge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.marketDm {
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid var(--green-border);
+}
+
+.marketEm {
+  background: var(--orange-bg);
+  color: var(--orange);
+  border: 1px solid rgba(217, 119, 6, 0.2);
+}
+
+/* ── Authority / regulator ───────────────────────────────────────────────── */
+
+.authority {
+  font-size: 13px;
+  color: var(--text-secondary);
+  max-width: 200px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* ── Venue count ─────────────────────────────────────────────────────────── */
+
+.venuesVal {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.venuesValZero {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ── Data status ─────────────────────────────────────────────────────────── */
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+}
+
+.status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.statusFull {
+  color: var(--green);
+}
+
+.statusFull::before {
+  background: var(--green);
+}
+
+.statusPartial {
+  color: var(--orange);
+}
+
+.statusPartial::before {
+  background: var(--orange);
+}
+
+.statusEmpty {
+  color: var(--text-muted);
+}
+
+.statusEmpty::before {
+  background: var(--bg-muted);
+  border: 1px solid var(--border-strong);
+}
+
+/* ── Dash placeholder ────────────────────────────────────────────────────── */
+
+.dash {
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+}
+
+/* ── Empty state ─────────────────────────────────────────────────────────── */
+
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+
+.emptyIcon {
+  font-size: 24px;
+  opacity: 0.3;
+  margin-bottom: 8px;
+}
+
+.emptyState p {
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+/* ── Pagination ──────────────────────────────────────────────────────────── */
+
+.paginationCell {
+  padding: 0 !important;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--bg-light);
+  border-top: 1px solid var(--border);
+}
+
+.pageInfo {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.pageBtns {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.pageBtn {
+  height: 28px;
+  min-width: 28px;
+  padding: 0 8px;
+  border-radius: 5px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-white);
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+  font-family: var(--font-ui);
+}
+
+.pageBtn:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-primary);
+}
+
+.pageBtnActive {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: #fff;
+}
+
+.pageBtnActive:hover {
+  color: #fff;
+}
+
+.pageBtn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.pageEllipsis {
+  padding: 0 4px;
+  color: var(--text-muted);
+  font-size: 12px;
+  align-self: center;
+}
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

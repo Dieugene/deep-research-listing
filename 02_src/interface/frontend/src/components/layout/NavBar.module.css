@@ -1,0 +1,256 @@
+/* ── NavBar shell ─────────────────────────────────────── */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--navbar-height);
+  z-index: var(--z-navbar);
+  transition: background-color var(--transition-base), border-color var(--transition-base);
+}
+
+/* Dark variant — landing / hero page */
+.dark {
+  background: rgba(8, 14, 28, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Light variant — inner work pages */
+.light {
+  background: rgba(255, 255, 255, 0.93);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Inner container ──────────────────────────────────── */
+
+.inner {
+  padding: 0 48px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Logo ─────────────────────────────────────────────── */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logoMark {
+  width: 30px;
+  height: 30px;
+  background: var(--accent-primary);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  flex-shrink: 0;
+}
+
+.logoText {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.dark .logoText {
+  color: var(--text-on-dark);
+}
+
+.light .logoText {
+  color: var(--text-primary);
+}
+
+/* ── Nav links ────────────────────────────────────────── */
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  font-weight: 400;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Dark link states */
+.dark .link {
+  color: var(--text-mid-dark);
+}
+
+.dark .link:hover {
+  color: var(--text-on-dark);
+  background: rgba(255, 255, 255, 0.05);
+  text-decoration: none;
+}
+
+.dark .link.active {
+  color: var(--text-on-dark);
+  background: rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+}
+
+/* Light link states */
+.light .link {
+  color: var(--text-secondary);
+}
+
+.light .link:hover {
+  color: var(--text-primary);
+  background: var(--bg-subtle);
+  text-decoration: none;
+}
+
+.light .link.active {
+  color: var(--accent-primary);
+  background: var(--accent-light-bg);
+  font-weight: 500;
+}
+
+/* ── Inactive / coming-soon nav items ─────────────────── */
+
+.inactiveLink {
+  cursor: default;
+}
+
+.dark .inactiveLink {
+  color: var(--text-muted-dark) !important;
+}
+
+.dark .inactiveLink:hover {
+  background-color: transparent !important;
+  color: var(--text-muted-dark) !important;
+}
+
+.light .inactiveLink {
+  color: var(--text-muted) !important;
+}
+
+.light .inactiveLink:hover {
+  background-color: transparent !important;
+  color: var(--text-muted) !important;
+}
+
+/* ── Dropdown ─────────────────────────────────────────── */
+
+.dropdownItem {
+  position: relative;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% - 2px);
+  left: 0;
+  min-width: 180px;
+  border-radius: 8px;
+  padding: 8px 4px 4px;
+  display: none;
+  flex-direction: column;
+  z-index: calc(var(--z-navbar) + 1);
+}
+
+.dropdownItem:hover .dropdownMenu {
+  display: flex;
+}
+
+.dark .dropdownMenu {
+  background: rgba(8, 14, 28, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.light .dropdownMenu {
+  background: #fff;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.dropdownLink {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 400;
+  text-decoration: none;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.dark .dropdownLink {
+  color: var(--text-mid-dark);
+}
+
+.dark .dropdownLink:hover {
+  color: var(--text-on-dark);
+  background: rgba(255, 255, 255, 0.06);
+  text-decoration: none;
+}
+
+.light .dropdownLink {
+  color: var(--text-secondary);
+}
+
+.light .dropdownLink:hover {
+  color: var(--text-primary);
+  background: var(--bg-subtle);
+  text-decoration: none;
+}
+
+/* Chevron icon in dropdown trigger */
+.dropdownChevron {
+  width: 10px;
+  height: 10px;
+  opacity: 0.5;
+  transition: transform var(--transition-fast);
+}
+
+.dropdownItem:hover .dropdownChevron {
+  transform: rotate(180deg);
+  opacity: 0.8;
+}
+
+/* ── SOON badge ───────────────────────────────────────── */
+
+.navBadge {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+.dark .navBadge {
+  color: var(--text-muted-dark);
+  background: var(--bg-dark-card);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.light .navBadge {
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+}

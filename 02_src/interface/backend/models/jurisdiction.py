@@ -15,6 +15,10 @@ class JurisdictionSummary(BaseModel):
     venue_count: int
     has_level4: bool
     has_full_data: bool  # True if L1 + L2 + L3 all exist
+    iso_code: str | None = None          # ISO 3166-1 alpha-2, e.g. "GB", "HK"
+    market_type: str | None = None       # MSCI classification: "DM" | "EM"
+    data_status: str = "empty"           # "full" | "partial" | "empty"
+    listing_authority: str | None = None  # e.g. "FCA", "SFC", "ASIC"
 
 
 class VenueInJurisdiction(BaseModel):
@@ -48,10 +52,13 @@ class JurisdictionCard(BaseModel):
     admission_architecture: str | None
     admission_architecture_ru: str | None
     listing_authority: str | None
+    iso_code: str | None = None           # ISO 3166-1 alpha-2, e.g. "GB", "HK"
+    data_status: str = "empty"            # "full" | "partial" | "empty"
     market_types: list[str]
     key_terms_mapping: dict
     supranational_flag: bool
     supranational_framework: str | None
     notes: str | None
+    notes_ru: str | None = None
     venues: list[VenueInJurisdiction]
     level4: Level4Data | None
