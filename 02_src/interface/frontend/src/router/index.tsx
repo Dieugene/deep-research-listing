@@ -4,9 +4,11 @@ import HomePage from '../pages/HomePage'
 import JurisdictionsPage from '../pages/JurisdictionsPage'
 import JurisdictionPage from '../pages/JurisdictionPage'
 import VenuePage from '../pages/VenuePage'
+import CellDetailPage from '../pages/CellDetailPage'
 import MatrixPage from '../pages/MatrixPage'
 import ParametersPage from '../pages/ParametersPage'
 import ParameterPage from '../pages/ParameterPage'
+import InstrumentsPage from '../pages/InstrumentsPage'
 import NotFoundPage from '../pages/NotFoundPage'
 
 export const router = createBrowserRouter([
@@ -17,10 +19,12 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: 'jurisdictions', element: <JurisdictionsPage /> },
       { path: 'jurisdictions/:nameRu', element: <JurisdictionPage /> },
+      { path: 'venues/:venueKey/:cellId', element: <CellDetailPage /> },
       { path: 'venues/:venueKey', element: <VenuePage /> },
       { path: 'venues/:venueKey/matrix/:cellId', element: <MatrixPage /> },
       { path: 'parameters', element: <ParametersPage /> },
       { path: 'parameters/:parameterId', element: <ParameterPage /> },
+      { path: 'instruments', element: <InstrumentsPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

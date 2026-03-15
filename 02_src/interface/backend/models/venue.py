@@ -38,4 +38,5 @@ class VenueCard(BaseModel):
     instrument_coverage: list[dict]
     notes: str | None
     notes_ru: str | None
+    sources: list[dict] | None = None
     cells: list[CellInVenue]

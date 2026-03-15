@@ -39,6 +39,7 @@ class Level4Data(BaseModel):
     parameters_as_tools: list[dict]
     reforms: list[dict]
     validation_status: str
+    sources: list[dict] | None = None
 
 
 class JurisdictionCard(BaseModel):
@@ -60,5 +61,6 @@ class JurisdictionCard(BaseModel):
     supranational_framework: str | None
     notes: str | None
     notes_ru: str | None = None
+    sources: list[dict] | None = None
     venues: list[VenueInJurisdiction]
     level4: Level4Data | None

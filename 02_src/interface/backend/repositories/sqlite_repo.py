@@ -40,6 +40,7 @@ from models.jurisdiction import (
     Level4Data,
     VenueInJurisdiction,
 )
+from models.instrument import InstrumentComparison, InstrumentRegime, InstrumentSummary
 from models.parameter import (
     CellParameters,
     ParameterComparison,
@@ -273,6 +274,7 @@ class SQLiteDataRepository:
                 parameters_as_tools=l4.get("parameters_as_tools", []),
                 reforms=l4.get("reforms", []),
                 validation_status=val_status,
+                sources=l4.get("sources"),
             )
 
         venue_keys_for_status = self._list_venue_keys(name_ru)
@@ -304,6 +306,7 @@ class SQLiteDataRepository:
             supranational_framework=card.get("supranational_framework"),
             notes=card.get("notes"),
             notes_ru=card.get("notes_ru"),
+            sources=card.get("sources"),
             venues=venues_in_card,
             level4=level4_data,
         )
@@ -374,6 +377,7 @@ class SQLiteDataRepository:
             instrument_coverage=vc.get("instrument_coverage", []),
             notes=vc.get("notes"),
             notes_ru=vc.get("notes_ru"),
+            sources=vc.get("sources"),
             cells=cells_in_venue,
         )
 
@@ -765,4 +769,144 @@ class SQLiteDataRepository:
             parameter_id=parameter_id,
             parameter_name=param_name,
             entries=entries,
+        )
+
+    # ------------------------------------------------------------------
+    # Instruments — summary and comparison
+    # ------------------------------------------------------------------
+
+    def get_instrument_summaries(self) -> list[InstrumentSummary]:
+        """Return summary stats for each instrument class across all venues."""
+        from collections import defaultdict
+        from repositories.file_repo import INSTRUMENT_CLASS_LABELS, INSTRUMENT_ORDER
+
+        instrument_params: dict[str, dict[str, tuple[str, int]]] = defaultdict(dict)
+        instrument_counts: dict[str, int] = defaultdict(int)
+
+        for name_ru in self._list_jurisdiction_names():
+            for venue_key in self._list_venue_keys(name_ru):
+                cells = self._load_cells_list(name_ru, venue_key)
+                for cell in cells:
+                    ik = cell.get("instrument_class_key", "")
+                    if not ik:
+                        continue
+                    cell_id = cell.get("cell_id", "")
+                    pass2 = self._load_pass2(name_ru, venue_key, cell_id)
+                    if not pass2 or not pass2.get("parameter_values"):
+                        continue
+                    instrument_counts[ik] += 1
+                    for pv in pass2["parameter_values"]:
+                        if pv.get("status") != "found":
+                            continue
+                        pid = pv.get("parameter_id", "")
+                        pname = pv.get("parameter_name", "")
+                        if pid:
+                            prev = instrument_params[ik].get(pid, (pname, 0))
+                            instrument_params[ik][pid] = (pname, prev[1] + 1)
+
+        result = []
+        for ik in INSTRUMENT_ORDER:
+            if ik not in instrument_counts and ik not in instrument_params:
+                continue
+            params_sorted = sorted(
+                instrument_params.get(ik, {}).items(),
+                key=lambda x: -x[1][1]
+            )[:5]
+            top_params = [
+                ParameterSummary(
+                    parameter_id=pid,
+                    parameter_name=name,
+                    occurrence_count=count,
+                )
+                for pid, (name, count) in params_sorted
+            ]
+            result.append(InstrumentSummary(
+                instrument_class_key=ik,
+                instrument_class_label=INSTRUMENT_CLASS_LABELS.get(ik, ik),
+                regime_count=instrument_counts.get(ik, 0),
+                top_parameters=top_params,
+            ))
+        return result
+
+    def get_instrument_comparison(
+        self, instrument_class_key: str, phase_key: str
+    ) -> InstrumentComparison:
+        """Return all regimes for an instrument class with parameter values for given phase."""
+        from repositories.file_repo import INSTRUMENT_CLASS_LABELS, PHASE_LABELS
+
+        regimes: list[InstrumentRegime] = []
+        param_counts: dict[str, tuple[str, int]] = {}
+
+        for name_ru in self._list_jurisdiction_names():
+            jcard = self._load(f"{name_ru}/level_1/jurisdiction_card.json")
+            legal_family = jcard.get("legal_family") if jcard else None
+
+            for venue_key in self._list_venue_keys(name_ru):
+                vcard = self._load(f"{name_ru}/level_2/{venue_key}/venue_card.json")
+                if not vcard:
+                    continue
+                venue_name = vcard.get("venue_name_english") or venue_key
+                raw_vtype = vcard.get("venue_type", "")
+                venue_type = raw_vtype  # keep as-is; label mapping optional
+
+                cells = self._load_cells_list(name_ru, venue_key)
+                for cell in cells:
+                    if cell.get("instrument_class_key") != instrument_class_key:
+                        continue
+                    cell_id = cell.get("cell_id", "")
+                    tier = cell.get("tier", "")
+
+                    pass2 = self._load_pass2(name_ru, venue_key, cell_id)
+                    if not pass2:
+                        continue
+
+                    param_values: dict[str, str] = {}
+                    for pv in pass2.get("parameter_values", []):
+                        if pv.get("lifecycle_phase_key") != phase_key:
+                            continue
+                        if pv.get("status") != "found":
+                            continue
+                        pid = pv.get("parameter_id", "")
+                        pname = pv.get("parameter_name", "")
+                        val = str(pv.get("value", ""))
+                        if pid:
+                            param_values[pid] = val
+                            prev = param_counts.get(pid, (pname, 0))
+                            param_counts[pid] = (pname, prev[1] + 1)
+
+                    validation_status = self._cell_validation_status(
+                        name_ru, venue_key, cell_id
+                    )
+                    regimes.append(InstrumentRegime(
+                        cell_id=cell_id,
+                        venue_key=venue_key,
+                        venue_name=venue_name,
+                        venue_type=venue_type,
+                        jurisdiction_ru=name_ru,
+                        legal_family=legal_family,
+                        tier=tier,
+                        validation_status=validation_status,
+                        parameter_values=param_values,
+                    ))
+
+        parameters = [
+            ParameterSummary(
+                parameter_id=pid,
+                parameter_name=name,
+                occurrence_count=count,
+            )
+            for pid, (name, count) in sorted(
+                param_counts.items(), key=lambda x: -x[1][1]
+            )
+        ]
+
+        return InstrumentComparison(
+            instrument_class_key=instrument_class_key,
+            instrument_class_label=INSTRUMENT_CLASS_LABELS.get(
+                instrument_class_key, instrument_class_key
+            ),
+            phase_key=phase_key,
+            phase_label=PHASE_LABELS.get(phase_key, phase_key),
+            parameters=parameters,
+            regimes=regimes,
         )

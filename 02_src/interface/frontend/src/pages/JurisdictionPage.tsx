@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { fetchJurisdiction } from '../api/jurisdictions'
-import type { JurisdictionCard, Level4Item } from '../api/types'
+import type { JurisdictionCard, Level4Item, SourceCitation } from '../api/types'
 import LoadingState from '../components/common/LoadingState'
 import ErrorState from '../components/common/ErrorState'
 import styles from './JurisdictionPage.module.css'
@@ -10,7 +10,7 @@ import styles from './JurisdictionPage.module.css'
 // Types
 // ──────────────────────────────────────────────────────────────
 
-type TabKey = 'jurisdiction' | 'analysis' | 'terms'
+type TabKey = 'jurisdiction' | 'analysis' | 'terms' | 'sources'
 type ViewMode = 'timeline' | 'list'
 type EventType = 'problem' | 'contradiction' | 'parameter' | 'reform'
 
@@ -1106,6 +1106,109 @@ function JurisdictionTab({ data }: { data: JurisdictionCard }) {
 }
 
 // ──────────────────────────────────────────────────────────────
+// Sources tab
+// ──────────────────────────────────────────────────────────────
+
+function SourcesTab({ sources }: { sources: SourceCitation[] }) {
+  const [expanded, setExpanded] = React.useState(false)
+  const PREVIEW = 15
+  const shown = expanded ? sources : sources.slice(0, PREVIEW)
+
+  function getDisplay(src: SourceCitation): { label: string; href: string } {
+    const label = src.title || (() => { try { return new URL(src.url).hostname } catch { return src.url } })()
+    return { label, href: src.url }
+  }
+
+  return (
+    <div style={{ maxWidth: '720px' }}>
+      <div style={{
+        background: 'var(--bg2)', border: '1px solid var(--border)',
+        borderRadius: 'var(--radius-lg)', overflow: 'hidden'
+      }}>
+        <div style={{
+          padding: '10px 16px', background: 'var(--bg3)',
+          borderBottom: '1px solid var(--border)',
+          display: 'flex', alignItems: 'center', gap: '10px'
+        }}>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>
+            Источники
+          </span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', background: 'var(--bg2)', border: '1px solid var(--border-strong)', borderRadius: '8px', padding: '1px 7px', color: 'var(--text-secondary)' }}>
+            {sources.length}
+          </span>
+        </div>
+        <div>
+          {shown.map((src, i) => {
+            const { label, href } = getDisplay(src)
+            return (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'baseline', gap: '12px',
+                padding: '9px 16px', borderBottom: i < shown.length - 1 ? '1px solid var(--border)' : 'none',
+                fontSize: '13px'
+              }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-muted)', flexShrink: 0, width: '24px', textAlign: 'right' }}>{i + 1}</span>
+                <span style={{ flex: 1, color: 'var(--text-secondary)', lineHeight: 1.55 }}>{label}</span>
+                <a href={href} target="_blank" rel="noopener noreferrer"
+                  style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--accent)', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                  {(() => { try { return new URL(href).hostname } catch { return '↗' } })()} ↗
+                </a>
+              </div>
+            )
+          })}
+        </div>
+        {sources.length > PREVIEW && (
+          <div style={{ padding: '8px 16px', borderTop: '1px solid var(--border)', background: 'var(--bg3)' }}>
+            <button
+              onClick={() => setExpanded(!expanded)}
+              style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--accent)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+            >
+              {expanded ? 'Свернуть' : `Показать все ${sources.length}`}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function L4SourcesSection({ sources }: { sources: SourceCitation[] }) {
+  const [expanded, setExpanded] = React.useState(false)
+  const PREVIEW = 5
+  const shown = expanded ? sources : sources.slice(0, PREVIEW)
+
+  return (
+    <div style={{ maxWidth: '720px' }}>
+      <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '10px' }}>
+        Источники анализа · {sources.length}
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        {shown.map((src, i) => {
+          const label = src.title || (() => { try { return new URL(src.url).hostname } catch { return src.url } })()
+          return (
+            <div key={i} style={{ display: 'flex', alignItems: 'baseline', gap: '10px', fontSize: '12.5px' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-muted)', width: '20px', textAlign: 'right', flexShrink: 0 }}>{i + 1}</span>
+              <span style={{ flex: 1, color: 'var(--text-secondary)' }}>{label}</span>
+              <a href={src.url} target="_blank" rel="noopener noreferrer"
+                style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--accent)', whiteSpace: 'nowrap', flexShrink: 0 }}>
+                {(() => { try { return new URL(src.url).hostname } catch { return '↗' } })()} ↗
+              </a>
+            </div>
+          )
+        })}
+      </div>
+      {sources.length > PREVIEW && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          style={{ marginTop: '8px', fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--accent)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+        >
+          {expanded ? 'Свернуть' : `Показать ещё ${sources.length - PREVIEW}`}
+        </button>
+      )}
+    </div>
+  )
+}
+
+// ──────────────────────────────────────────────────────────────
 // Main page
 // ──────────────────────────────────────────────────────────────
 
@@ -1117,7 +1220,7 @@ export default function JurisdictionPage() {
 
   const [activeTab, setActiveTab] = useState<TabKey>(() => {
     const hash = window.location.hash.slice(1)
-    if (hash === 'analysis' || hash === 'terms') return hash as TabKey
+    if (hash === 'analysis' || hash === 'terms' || hash === 'sources') return hash as TabKey
     return 'jurisdiction'
   })
   const [viewMode, setViewMode] = useState<ViewMode>('timeline')
@@ -1167,6 +1270,8 @@ export default function JurisdictionPage() {
   if (!data) return <ErrorState message="Юрисдикция не найдена" />
 
   const termsCount = Object.keys(data.key_terms_mapping).length
+  const sourcesCount = data.sources?.length ?? 0
+  const l4SourcesCount = data.level4?.sources?.length ?? 0
 
   return (
     <div className={styles.page}>
@@ -1231,6 +1336,15 @@ export default function JurisdictionPage() {
             >
               Термины
               <span className={styles.tabCount}>{termsCount}</span>
+            </button>
+          )}
+          {sourcesCount > 0 && (
+            <button
+              className={`${styles.tab} ${activeTab === 'sources' ? styles.tabActive : ''}`}
+              onClick={() => { setActiveTab('sources'); window.location.hash = 'sources' }}
+            >
+              Источники
+              <span className={styles.tabCount}>{sourcesCount}</span>
             </button>
           )}
         </div>
@@ -1330,6 +1444,13 @@ export default function JurisdictionPage() {
                     />
                   </div>
                 )}
+
+                {/* Источники анализа */}
+                {l4SourcesCount > 0 && data.level4?.sources && (
+                  <div style={{ marginTop: '32px' }}>
+                    <L4SourcesSection sources={data.level4.sources} />
+                  </div>
+                )}
               </>
             )}
           </>
@@ -1338,6 +1459,11 @@ export default function JurisdictionPage() {
         {/* ═══ TAB: ТЕРМИНЫ ═══ */}
         {activeTab === 'terms' && (
           <TermsTab mapping={data.key_terms_mapping} />
+        )}
+
+        {/* ═══ TAB: ИСТОЧНИКИ ═══ */}
+        {activeTab === 'sources' && (
+          <SourcesTab sources={data.sources ?? []} />
         )}
       </div>
 

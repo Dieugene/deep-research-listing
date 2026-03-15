@@ -25,6 +25,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from core.config import CORS_ORIGINS
 from routers import cells, jurisdictions, parameters, venues
+from routers.instruments import router as instruments_router
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -65,6 +66,7 @@ app.include_router(jurisdictions.router, prefix="/api")
 app.include_router(venues.router, prefix="/api")
 app.include_router(cells.router, prefix="/api")
 app.include_router(parameters.router, prefix="/api")
+app.include_router(instruments_router, prefix="/api")
 
 
 # ---------------------------------------------------------------------------

@@ -9,6 +9,7 @@ from models.jurisdiction import JurisdictionSummary, JurisdictionCard
 from models.venue import VenueCard
 from models.cell import MatrixView, CellContent
 from models.parameter import CellParameters, ParameterSummary, ParameterComparison
+from models.instrument import InstrumentSummary, InstrumentComparison
 
 
 class DataRepository(Protocol):
@@ -35,3 +36,9 @@ class DataRepository(Protocol):
     def get_parameter_comparison(
         self, parameter_id: str
     ) -> ParameterComparison | None: ...
+
+    def get_instrument_summaries(self) -> list[InstrumentSummary]: ...
+
+    def get_instrument_comparison(
+        self, instrument_class_key: str, phase_key: str
+    ) -> InstrumentComparison: ...

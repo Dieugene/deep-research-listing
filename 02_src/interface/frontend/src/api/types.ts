@@ -5,6 +5,12 @@
 export type ValidationStatus = 'green' | 'yellow' | 'red' | 'unknown'
 export type MatrixCellStatus = 'filled' | 'not_filled' | 'not_applicable'
 
+export interface SourceCitation {
+  url: string
+  title: string
+  field?: string
+}
+
 // ---- Jurisdictions ----
 
 export interface JurisdictionSummary {
@@ -43,6 +49,7 @@ export interface Level4Data {
   parameters_as_tools: Level4Item[]
   reforms: Level4Item[]
   validation_status: string
+  sources?: SourceCitation[] | null
 }
 
 export interface JurisdictionCard {
@@ -62,6 +69,7 @@ export interface JurisdictionCard {
   supranational_framework: string | null
   notes: string | null
   notes_ru: string | null
+  sources?: SourceCitation[] | null
   venues: VenueInJurisdiction[]
   level4: Level4Data | null
 }
@@ -96,6 +104,7 @@ export interface VenueCard {
   instrument_coverage: Record<string, unknown>[]
   notes: string | null
   notes_ru: string | null
+  sources?: SourceCitation[] | null
   cells: CellInVenue[]
 }
 
@@ -203,4 +212,34 @@ export interface ParameterComparison {
   parameter_id: string
   parameter_name: string
   entries: ParameterComparisonEntry[]
+}
+
+// ---- Instruments ----
+
+export interface InstrumentSummary {
+  instrument_class_key: string
+  instrument_class_label: string
+  regime_count: number
+  top_parameters: ParameterSummary[]
+}
+
+export interface InstrumentRegime {
+  cell_id: string
+  venue_key: string
+  venue_name: string
+  venue_type: string
+  jurisdiction_ru: string
+  legal_family: string | null
+  tier: string
+  validation_status: 'green' | 'yellow' | 'red' | 'unknown'
+  parameter_values: Record<string, string>  // parameter_id → value
+}
+
+export interface InstrumentComparison {
+  instrument_class_key: string
+  instrument_class_label: string
+  phase_key: string
+  phase_label: string
+  parameters: ParameterSummary[]
+  regimes: InstrumentRegime[]
 }

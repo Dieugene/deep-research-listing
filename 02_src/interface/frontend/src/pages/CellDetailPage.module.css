@@ -1,0 +1,411 @@
+/* ─── PAGE SHELL ─────────────────────────────────── */
+.page {
+  padding: var(--space-xl) var(--space-xl) var(--space-2xl);
+  background: var(--bg-light);
+  min-height: calc(100vh - 64px);
+}
+
+/* ─── BREADCRUMB ─────────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.875rem;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-lg);
+}
+
+.breadcrumb a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: var(--accent-primary);
+  text-decoration: underline;
+}
+
+.breadcrumbSep {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+/* ─── HEADER ─────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.cellTitle {
+  font-size: 1.625rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin: 0 0 4px;
+}
+
+.cellSub {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.headerRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+}
+
+/* ─── VALIDATION BADGE (inline) ─────────────────── */
+.validBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ─── VIEW TOGGLE ────────────────────────────────── */
+.viewToggle {
+  display: flex;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 2px;
+}
+
+.viewBtn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: all 0.15s;
+  font-family: var(--font-ui);
+  white-space: nowrap;
+}
+
+.viewBtn:hover {
+  color: var(--text-primary);
+}
+
+.viewBtnActive {
+  background: var(--bg-white);
+  color: var(--accent-primary);
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* ─── PHASE TABS ─────────────────────────────────── */
+.phaseTabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.phaseTab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+  font-family: var(--font-ui);
+}
+
+.phaseTab:hover {
+  color: var(--text-primary);
+}
+
+.phaseTabActive {
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
+  font-weight: 500;
+}
+
+.phaseTabDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ─── PHASE CONTENT ──────────────────────────────── */
+.phaseContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* ─── SECTION CARD ───────────────────────────────── */
+.sectionCard {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.sectionHd {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.sectionBody {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.sectionText {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  font-weight: 300;
+  margin: 0;
+}
+
+.sectionSources {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border);
+}
+
+.srcItem {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.srcLink {
+  font-size: 0.75rem;
+  color: var(--accent-primary);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.srcLink:hover {
+  text-decoration: underline;
+}
+
+/* ─── PARAMETER STRIP ────────────────────────────── */
+.paramStrip {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.paramRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  padding: 9px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.paramRow:last-child {
+  border-bottom: none;
+}
+
+.paramCode {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  background: var(--bg-light);
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  padding: 1px 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.paramName {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.paramValue {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.paramSrc {
+  font-size: 0.6875rem;
+  color: var(--accent-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.paramSrc:hover {
+  text-decoration: underline;
+}
+
+/* ─── EMPTY PHASE ─────────────────────────────────── */
+.emptyPhase {
+  padding: var(--space-xl) var(--space-lg);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  font-style: italic;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+/* ─── MATRIX VIEW ────────────────────────────────── */
+.matrixWrap {
+  overflow-x: auto;
+}
+
+.matrixTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-size: 0.875rem;
+}
+
+.matrixTh {
+  padding: 10px 14px;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 500;
+  background: var(--bg-light);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.matrixTh:first-child {
+  min-width: 140px;
+}
+
+.matrixTd {
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.matrixTable tbody tr:last-child .matrixTd {
+  border-bottom: none;
+}
+
+.matrixTable tbody tr:hover .matrixTd {
+  background: var(--bg-light);
+}
+
+.matrixCell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+}
+
+.matrixCellClickable {
+  cursor: pointer;
+}
+
+.matrixCellClickable:hover .matrixDotFilled {
+  opacity: 0.75;
+  transform: scale(1.15);
+}
+
+.matrixDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.matrixDotFilled {
+  background: var(--accent-primary);
+}
+
+.matrixDotEmpty {
+  background: transparent;
+  border: 1.5px solid var(--border-strong);
+}
+
+.matrixNa {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.matrixVol {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .page {
+    padding: var(--space-md) var(--space-md) var(--space-xl);
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .headerRight {
+    align-items: flex-start;
+  }
+
+  .phaseTabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 2px;
+  }
+}

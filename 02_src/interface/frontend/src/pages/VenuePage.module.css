@@ -1,21 +1,20 @@
+/* ─── PAGE SHELL ─────────────────────────────────────────── */
 .page {
-  padding: var(--space-xl) var(--space-xl) var(--space-2xl);
-}
-
-.inner {
-  max-width: 1400px;
+  max-width: 1280px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xl);
+  padding: 0 40px 64px;
+  min-height: 100vh;
 }
 
-/* Breadcrumb */
+/* ─── BREADCRUMB ─────────────────────────────────────────── */
 .breadcrumb {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
-  font-size: 0.875rem;
+  gap: 6px;
+  padding: 18px 0 0;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
 }
 
 .breadcrumb a {
@@ -25,159 +24,492 @@
 
 .breadcrumb a:hover {
   color: var(--accent-primary);
-  text-decoration: underline;
 }
 
-.sep {
-  color: var(--text-muted);
-  font-size: 0.75rem;
+.breadcrumbSep {
+  color: var(--border-strong);
+  font-size: 11px;
 }
 
-/* Header */
+/* ─── HEADER ─────────────────────────────────────────────── */
 .header {
+  padding: 28px 0 4px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: 6px;
 }
 
-.headerInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.headerTop {
+.titleRow {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: 12px;
   flex-wrap: wrap;
 }
 
-.title {
-  font-size: 1.75rem;
-  font-weight: 700;
+.venueName {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
   color: var(--text-primary);
+  margin: 0;
 }
 
-.typeBadge {
-  padding: 4px 10px;
-  background: rgba(59, 130, 246, 0.08);
+.venueTypeBadge {
+  padding: 4px 11px;
+  background: var(--accent-light-bg);
   color: var(--accent-primary);
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid var(--accent-light-bg2);
   border-radius: 999px;
-  font-size: 0.8125rem;
+  font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.nameLocal {
-  font-size: 0.9375rem;
-  color: var(--text-secondary);
-}
-
-.nameEn {
-  font-size: 0.875rem;
+.venueSub {
+  font-size: 14px;
   color: var(--text-muted);
+  margin: 0;
+  font-family: var(--font-mono);
+  letter-spacing: 0.01em;
 }
 
-/* Meta row */
-.meta {
+/* ─── META BAR ───────────────────────────────────────────── */
+.metaBar {
   display: flex;
-  align-items: center;
-  gap: var(--space-xl);
+  align-items: stretch;
+  gap: 0;
   flex-wrap: wrap;
-  padding: var(--space-md) var(--space-lg);
+  margin: 20px 0 0;
   background: var(--bg-white);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
+  overflow: hidden;
 }
 
 .metaItem {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
+  padding: 12px 20px;
+  border-right: 1px solid var(--border);
+  flex: 0 0 auto;
+}
+
+.metaItem:last-child {
+  border-right: none;
 }
 
 .metaLabel {
-  font-size: 0.6875rem;
+  font-size: 10.5px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: var(--text-muted);
   font-weight: 600;
+  font-family: var(--font-mono);
+  white-space: nowrap;
 }
 
 .metaValue {
-  font-size: 0.9375rem;
+  font-size: 14px;
   color: var(--text-primary);
   font-weight: 500;
+  white-space: nowrap;
+}
+
+.metaValueSub {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 400;
 }
 
 .metaLink {
-  font-size: 0.9375rem;
+  font-size: 14px;
   color: var(--accent-primary);
   font-weight: 500;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .metaLink:hover {
   text-decoration: underline;
 }
 
-.regimeBadge {
-  padding: 3px 10px;
-  background: rgba(245, 158, 11, 0.1);
+.metaBadge {
+  display: inline-block;
+  padding: 2px 9px;
+  background: rgba(245, 158, 11, 0.08);
   color: var(--accent-gold);
-  border: 1px solid rgba(245, 158, 11, 0.25);
+  border: 1px solid rgba(245, 158, 11, 0.22);
   border-radius: 999px;
-  font-size: 0.75rem;
+  font-size: 12px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
-/* Notes */
-.notes {
-  background: var(--bg-white);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--accent-teal);
-  border-radius: var(--radius-md);
-  padding: var(--space-md) var(--space-lg);
-  font-size: 0.875rem;
+/* ─── NOTES ──────────────────────────────────────────────── */
+.notesSection {
+  margin-top: 24px;
+  padding-left: 16px;
+  border-left: 3px solid var(--accent-teal);
+}
+
+.notesDivider {
+  display: none;
+}
+
+.notesLabel {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--accent-teal);
+  font-weight: 600;
+  font-family: var(--font-mono);
+  display: block;
+  margin-bottom: 5px;
+}
+
+.notesText {
+  font-size: 14px;
   color: var(--text-secondary);
   line-height: 1.65;
+  font-style: italic;
+  margin: 0;
 }
 
-/* Cells section */
-.cellsSection {
+/* ─── INSTRUMENT TABS ────────────────────────────────────── */
+.instrTabs {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 32px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: var(--navbar-height);
+  background: var(--bg-light);
+  z-index: 10;
+  padding-bottom: 0;
 }
 
-.cellsHeader {
+.instrTabsInner {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+  overflow-x: auto;
+}
+
+.instrTab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 16px 11px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.instrTab:hover {
+  color: var(--text-secondary);
+}
+
+.instrTabActive {
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
+}
+
+.instrTabCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 5px;
+  background: var(--bg-subtle);
+  border-radius: 999px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.instrTabActive .instrTabCount {
+  background: var(--accent-light-bg);
+  color: var(--accent-primary);
+}
+
+.instrTabsTotal {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  white-space: nowrap;
+  padding-bottom: 12px;
+  flex-shrink: 0;
+}
+
+/* ─── CELL CARDS GRID ────────────────────────────────────── */
+.cellsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.cellCard {
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+}
+
+.cellCard:hover {
+  border-color: var(--accent-primary);
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.08);
+}
+
+.cellCardHd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cellTierName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cellArrow {
+  font-size: 14px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+
+.cellCard:hover .cellArrow {
+  color: var(--accent-primary);
+  transform: translateX(2px);
+}
+
+/* ─── VALIDATION BADGE ───────────────────────────────────── */
+.validBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.validDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+
+.validGreen {
+  background: var(--green-bg);
+  color: var(--validation-green);
+  border: 1px solid var(--green-border);
+}
+
+.validGreen .validDot {
+  background: var(--validation-green);
+}
+
+.validYellow {
+  background: var(--orange-bg);
+  color: var(--validation-yellow);
+  border: 1px solid rgba(217, 119, 6, 0.2);
+}
+
+.validYellow .validDot {
+  background: var(--validation-yellow);
+}
+
+.validRed {
+  background: rgba(220, 38, 38, 0.07);
+  color: var(--validation-red);
+  border: 1px solid rgba(220, 38, 38, 0.18);
+}
+
+.validRed .validDot {
+  background: var(--validation-red);
+}
+
+.validUnknown {
+  background: var(--bg-subtle);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.validUnknown .validDot {
+  background: var(--validation-unknown);
+}
+
+/* ─── CELL BODY COLUMNS ──────────────────────────────────── */
+.cellBody {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.cellCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 4px;
 }
 
-.cellsTitle {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.cellCount {
-  font-size: 0.75rem;
+.cellColLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  font-weight: 600;
   font-family: var(--font-mono);
-  background: var(--bg-light);
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  padding: 2px 7px;
-  border-radius: 999px;
+  text-align: center;
 }
 
-.cellsHint {
-  font-size: 0.875rem;
+.cellColCheck {
+  font-size: 15px;
+  color: var(--validation-green);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cellColDash {
+  font-size: 15px;
+  color: var(--border-default);
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* ─── EMPTY STATE ────────────────────────────────────────── */
+.emptyInstr {
+  margin-top: 32px;
+  padding: 40px 24px;
+  text-align: center;
+  font-size: 14px;
   color: var(--text-muted);
+  background: var(--bg-white);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+}
+
+/* ─── SOURCES ────────────────────────────────────────────── */
+.sourcesSection {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.sourcesSectionTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+  margin: 0 0 14px;
+}
+
+.sourcesList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sourceItem {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13.5px;
+}
+
+.sourceNum {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  min-width: 18px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.sourceLabel {
+  color: var(--text-secondary);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sourceLink {
+  font-size: 12px;
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.sourceLink:hover {
+  text-decoration: underline;
+}
+
+.sourcesToggle {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  color: var(--accent-primary);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 0;
+  font-family: var(--font-ui);
+}
+
+.sourcesToggle:hover {
+  text-decoration: underline;
+}
+
+/* ─── NO DATA ────────────────────────────────────────────── */
+.noData {
+  margin-top: 48px;
+  padding: 48px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
 }
