@@ -3,8 +3,8 @@ Level 1 full pipeline orchestrator.
 
 Executes in the correct order:
   1. EU Framework
-  2. 1A for UK, HK, Russia (parallel launch, then poll)
-  3. Import institutional factors (1B) from pre-collected MD file
+  2. 1A for all jurisdictions (parallel launch, then poll)
+  3. 1B for all jurisdictions via Parallel API (launch, then poll)
   4. 1C for all jurisdictions (parallel launch, then poll; uses 1A context)
   5. LLM postprocessing for all jurisdictions
 
@@ -14,14 +14,15 @@ Usage:
     python -m level_1.run_level1 [--step STEP]
 
     Where STEP is one of:
-      eu                   - Run EU framework only
-      launch-1a            - Launch 1A tasks only
-      poll-1a              - Poll 1A tasks until done
-      import-institutional - Import 1B from MD file (replaces Parallel 1B)
-      launch-1c            - Launch 1C tasks
-      poll-1c              - Poll 1C tasks
-      postprocess          - Run LLM postprocessing
-      all (default)        - Run all steps sequentially
+      eu          - Run EU framework only
+      launch-1a   - Launch 1A tasks only
+      poll-1a     - Poll 1A tasks until done
+      launch-1b   - Launch 1B tasks via Parallel API
+      poll-1b     - Poll 1B tasks until done
+      launch-1c   - Launch 1C tasks
+      poll-1c     - Poll 1C tasks
+      postprocess - Run LLM postprocessing
+      all (default) - Run all steps sequentially
 """
 import argparse
 import sys
@@ -38,9 +39,9 @@ from pipeline.parallel_runner import load_state
 from level_1.eu_framework import run_full as run_eu
 from level_1.jurisdiction_runner import (
     launch_all_1a, poll_all_1a,
+    launch_all_1b, poll_all_1b,
     launch_all_1c, poll_all_1c,
 )
-from level_1.import_institutional import import_all as import_institutional
 from level_1.postprocess import process_all
 
 logger = get_logger("run_level1")
@@ -50,7 +51,8 @@ STEPS = [
     "eu",
     "launch-1a",
     "poll-1a",
-    "import-institutional",
+    "launch-1b",
+    "poll-1b",
     "launch-1c",
     "poll-1c",
     "postprocess",
@@ -72,16 +74,19 @@ def run_all():
     logger.info("--- Step 3: Poll 1A until complete ---")
     poll_all_1a(state)
 
-    logger.info("--- Step 4: Import institutional factors (1B) from MD ---")
-    import_institutional()
+    logger.info("--- Step 4: Launch 1B for all jurisdictions ---")
+    launch_all_1b(state)
 
-    logger.info("--- Step 5: Launch 1C for all jurisdictions ---")
+    logger.info("--- Step 5: Poll 1B until complete ---")
+    poll_all_1b(state)
+
+    logger.info("--- Step 6: Launch 1C for all jurisdictions ---")
     launch_all_1c(state)
 
-    logger.info("--- Step 6: Poll 1C until complete ---")
+    logger.info("--- Step 7: Poll 1C until complete ---")
     poll_all_1c(state)
 
-    logger.info("--- Step 7: LLM postprocessing ---")
+    logger.info("--- Step 8: LLM postprocessing ---")
     process_all()
 
     logger.info("========== Level 1 Pipeline Complete ==========")
@@ -107,8 +112,10 @@ if __name__ == "__main__":
         launch_all_1a(state)
     elif args.step == "poll-1a":
         poll_all_1a(state)
-    elif args.step == "import-institutional":
-        import_institutional()
+    elif args.step == "launch-1b":
+        launch_all_1b(state)
+    elif args.step == "poll-1b":
+        poll_all_1b(state)
     elif args.step == "launch-1c":
         launch_all_1c(state)
     elif args.step == "poll-1c":
