@@ -1110,63 +1110,78 @@ function JurisdictionTab({ data }: { data: JurisdictionCard }) {
 // ──────────────────────────────────────────────────────────────
 
 function SourcesTab({ sources }: { sources: SourceCitation[] }) {
-  const [expanded, setExpanded] = React.useState(false)
-  const PREVIEW = 15
-  const shown = expanded ? sources : sources.slice(0, PREVIEW)
+  const [search, setSearch] = useState('')
+  const [showAll, setShowAll] = useState(false)
+  const INITIAL_SHOW = 15
 
-  function getDisplay(src: SourceCitation): { label: string; href: string } {
-    const label = src.title || (() => { try { return new URL(src.url).hostname } catch { return src.url } })()
-    return { label, href: src.url }
+  const filtered = sources.filter(s => {
+    if (!search) return true
+    const q = search.toLowerCase()
+    return (s.title || '').toLowerCase().includes(q) || s.url.toLowerCase().includes(q)
+  })
+
+  const displayed = showAll ? filtered : filtered.slice(0, INITIAL_SHOW)
+
+  function getHostname(url: string): string {
+    try { return new URL(url).hostname } catch { return url }
   }
 
   return (
-    <div style={{ maxWidth: '720px' }}>
-      <div style={{
-        background: 'var(--bg2)', border: '1px solid var(--border)',
-        borderRadius: 'var(--radius-lg)', overflow: 'hidden'
-      }}>
-        <div style={{
-          padding: '10px 16px', background: 'var(--bg3)',
-          borderBottom: '1px solid var(--border)',
-          display: 'flex', alignItems: 'center', gap: '10px'
-        }}>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>
-            Источники
-          </span>
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', background: 'var(--bg2)', border: '1px solid var(--border-strong)', borderRadius: '8px', padding: '1px 7px', color: 'var(--text-secondary)' }}>
-            {sources.length}
-          </span>
+    <div className={styles.sourcesTab}>
+      {/* Search and controls */}
+      <div className={styles.sourcesTabHeader}>
+        <div className={styles.sourcesSearch}>
+          <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="9" cy="9" r="6" />
+            <line x1="14" y1="14" x2="19" y2="19" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Поиск по названию или домену..."
+            value={search}
+            onChange={e => { setSearch(e.target.value); setShowAll(false) }}
+          />
         </div>
-        <div>
-          {shown.map((src, i) => {
-            const { label, href } = getDisplay(src)
-            return (
-              <div key={i} style={{
-                display: 'flex', alignItems: 'baseline', gap: '12px',
-                padding: '9px 16px', borderBottom: i < shown.length - 1 ? '1px solid var(--border)' : 'none',
-                fontSize: '13px'
-              }}>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-muted)', flexShrink: 0, width: '24px', textAlign: 'right' }}>{i + 1}</span>
-                <span style={{ flex: 1, color: 'var(--text-secondary)', lineHeight: 1.55 }}>{label}</span>
-                <a href={href} target="_blank" rel="noopener noreferrer"
-                  style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--accent)', whiteSpace: 'nowrap', flexShrink: 0 }}>
-                  {(() => { try { return new URL(href).hostname } catch { return '↗' } })()} ↗
-                </a>
-              </div>
-            )
-          })}
+        <div className={styles.sourcesTypeFilter}>
+          <span className={styles.sourcesFilterNote}>Фильтр по типу · появится позже</span>
         </div>
-        {sources.length > PREVIEW && (
-          <div style={{ padding: '8px 16px', borderTop: '1px solid var(--border)', background: 'var(--bg3)' }}>
-            <button
-              onClick={() => setExpanded(!expanded)}
-              style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--accent)', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
-            >
-              {expanded ? 'Свернуть' : `Показать все ${sources.length}`}
-            </button>
-          </div>
+      </div>
+
+      {/* Source list */}
+      <div className={styles.sourcesListCard}>
+        {displayed.length === 0 ? (
+          <div className={styles.sourcesEmpty}>Ничего не найдено</div>
+        ) : (
+          displayed.map((s, i) => (
+            <div key={s.url} className={styles.sourceItemRow}>
+              <span className={styles.srcRowNum}>{i + 1}</span>
+              <span className={styles.srcRowTitle}>{s.title || getHostname(s.url)}</span>
+              <a
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.srcRowLink}
+              >
+                {getHostname(s.url)} ↗
+              </a>
+            </div>
+          ))
         )}
       </div>
+
+      {/* Show more / count */}
+      {filtered.length > INITIAL_SHOW && (
+        <div className={styles.sourcesShowMore}>
+          <span className={styles.sourcesCount}>
+            показано {displayed.length} из {filtered.length}
+          </span>
+          {!showAll && (
+            <button className={styles.showAllBtn} onClick={() => setShowAll(true)}>
+              показать все
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }

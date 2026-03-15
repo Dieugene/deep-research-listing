@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { fetchInstrumentSummaries, fetchInstrumentComparison } from '../api/instruments'
-import type { InstrumentSummary, InstrumentComparison, InstrumentRegime } from '../api/types'
-import LoadingState from '../components/common/LoadingState'
+import type { InstrumentSummary, InstrumentComparison } from '../api/types'
 import styles from './InstrumentsPage.module.css'
 
 // ── Constants ──────────────────────────────────────────────────────────────────
@@ -12,25 +11,72 @@ const INSTR_ORDER = ['equity', 'bond', 'fund', 'depositary_receipt']
 const PHASES = [
   { key: 'admission', label: 'Допуск' },
   { key: 'continuing', label: 'Поддержание' },
+  { key: 'suspension', label: 'Приостановка' },
   { key: 'delisting', label: 'Исключение' },
 ]
 
-const STATUS_COLORS: Record<string, string> = {
-  green: '#059669',
-  yellow: '#D97706',
-  red: '#DC2626',
-  unknown: '#9CA3AF',
-}
-
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
-function ValidationDot({ status }: { status: InstrumentRegime['validation_status'] }) {
+function emojiForInstr(key: string): string {
+  const map: Record<string, string> = {
+    equity: '📈',
+    bond: '📋',
+    fund: '🏦',
+    depositary_receipt: '🌐',
+  }
+  return map[key] ?? '📄'
+}
+
+function flagEmoji(jurisdiction_ru: string): string {
+  const flags: Record<string, string> = {
+    'Великобритания': '🇬🇧',
+    'Гонконг': '🇭🇰',
+    'Сингапур': '🇸🇬',
+    'Германия': '🇩🇪',
+    'Франция': '🇫🇷',
+    'Австралия': '🇦🇺',
+    'Россия': '🇷🇺',
+  }
+  return flags[jurisdiction_ru] ?? '🌐'
+}
+
+function phaseColor(key: string): string {
+  const colors: Record<string, string> = {
+    admission: '#3B82F6',
+    continuing: '#10B981',
+    suspension: '#F59E0B',
+    delisting: '#F87171',
+  }
+  return colors[key] ?? '#9CA3AF'
+}
+
+function StatusDot({ status }: { status: string }) {
+  const colors: Record<string, string> = {
+    green: 'var(--green)',
+    yellow: 'var(--yellow)',
+    red: 'var(--red)',
+    unknown: 'var(--text-dim)',
+  }
   return (
     <span
-      className={styles.regimeDot}
-      style={{ background: STATUS_COLORS[status] ?? STATUS_COLORS.unknown }}
-      title={status}
+      style={{
+        width: 6,
+        height: 6,
+        borderRadius: '50%',
+        background: colors[status] ?? 'var(--text-dim)',
+        display: 'inline-block',
+        flexShrink: 0,
+      }}
     />
+  )
+}
+
+function SearchIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="9" cy="9" r="6" />
+      <line x1="14" y1="14" x2="19" y2="19" />
+    </svg>
   )
 }
 
@@ -41,76 +87,60 @@ export default function InstrumentsPage() {
   const activeInstr = searchParams.get('instr') ?? 'equity'
   const activePhase = searchParams.get('phase') ?? 'admission'
 
+  // Session state (not in URL)
+  const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set())
+  const [activeParams, setActiveParams] = useState<Set<string>>(new Set())
+  const [legalFamily, setLegalFamily] = useState('')
+  const [venueType, setVenueType] = useState('')
+  const [search, setSearch] = useState('')
+
   const [summaries, setSummaries] = useState<InstrumentSummary[]>([])
   const [comparison, setComparison] = useState<InstrumentComparison | null>(null)
-  const [loadingSummaries, setLoadingSummaries] = useState(true)
-  const [loadingComparison, setLoadingComparison] = useState(true)
 
-  const [selectedRegimes, setSelectedRegimes] = useState<Set<string>>(new Set())
-  const [visibleParams, setVisibleParams] = useState<Set<string>>(new Set())
-  const [filterLegal, setFilterLegal] = useState<string>('all')
-  const [filterType, setFilterType] = useState<string>('all')
-  const [searchQuery, setSearchQuery] = useState('')
+  const instrStripRef = useRef<HTMLDivElement>(null)
+
+  // ── Sticky shadow via IntersectionObserver ──────────────────────────────────
+  useEffect(() => {
+    const wrap = instrStripRef.current
+    if (!wrap) return
+    const sentinel = document.createElement('div')
+    sentinel.style.cssText =
+      'height:1px;margin-top:-1px;pointer-events:none;position:absolute;top:56px;left:0;right:0'
+    document.body.appendChild(sentinel)
+    const observer = new IntersectionObserver(
+      ([e]) => wrap.classList.toggle('stuck', e.intersectionRatio < 1),
+      { threshold: [1], rootMargin: '-57px 0px 0px 0px' },
+    )
+    observer.observe(sentinel)
+    return () => {
+      observer.disconnect()
+      sentinel.remove()
+    }
+  }, [])
 
   // ── Fetch summaries on mount ─────────────────────────────────────────────────
   useEffect(() => {
-    setLoadingSummaries(true)
     fetchInstrumentSummaries()
       .then(setSummaries)
       .catch(() => setSummaries([]))
-      .finally(() => setLoadingSummaries(false))
   }, [])
 
   // ── Fetch comparison on instr/phase change ────────────────────────────────────
   useEffect(() => {
-    setLoadingComparison(true)
+    setComparison(null)
     fetchInstrumentComparison(activeInstr, activePhase)
       .then(data => {
         setComparison(data)
-        const first3 = new Set(data.regimes.slice(0, 3).map(r => r.cell_id))
-        setSelectedRegimes(first3)
-        const top5 = new Set(data.parameters.slice(0, 5).map(p => p.parameter_id))
-        setVisibleParams(top5)
+        // Auto-select first 3 regimes and first 3 params
+        const first3Ids = new Set(data.regimes.slice(0, 3).map(r => r.cell_id))
+        setCheckedIds(first3Ids)
+        const first3Params = new Set(data.parameters.slice(0, 3).map(p => p.parameter_id))
+        setActiveParams(first3Params)
       })
       .catch(() => setComparison(null))
-      .finally(() => setLoadingComparison(false))
   }, [activeInstr, activePhase])
 
-  // ── Reset filters when instrument changes ─────────────────────────────────────
-  const prevInstrRef = { current: activeInstr }
-  useEffect(() => {
-    if (prevInstrRef.current !== activeInstr) {
-      setFilterLegal('all')
-      setFilterType('all')
-      setSearchQuery('')
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeInstr])
-
-  // ── Derived: unique venue types ───────────────────────────────────────────────
-  const uniqueVenueTypes = useMemo(() => {
-    if (!comparison) return []
-    return Array.from(new Set(comparison.regimes.map(r => r.venue_type))).sort()
-  }, [comparison])
-
-  // ── Filtered regimes ──────────────────────────────────────────────────────────
-  const filteredRegimes = useMemo(() => {
-    if (!comparison) return []
-    return comparison.regimes.filter(r => {
-      if (filterLegal !== 'all' && r.legal_family?.toLowerCase() !== filterLegal) return false
-      if (filterType !== 'all' && r.venue_type !== filterType) return false
-      if (searchQuery) {
-        const q = searchQuery.toLowerCase()
-        return (
-          r.venue_name.toLowerCase().includes(q) ||
-          r.jurisdiction_ru.toLowerCase().includes(q)
-        )
-      }
-      return true
-    })
-  }, [comparison, filterLegal, filterType, searchQuery])
-
-  // ── Ordered summaries ─────────────────────────────────────────────────────────
+  // ── Derived ────────────────────────────────────────────────────────────────────
   const orderedSummaries = useMemo(() => {
     if (!summaries.length) return []
     return [...summaries].sort(
@@ -120,32 +150,68 @@ export default function InstrumentsPage() {
     )
   }, [summaries])
 
-  // ── Visible parameters list (ordered by comparison.parameters) ────────────────
-  const visibleParamList = useMemo(() => {
-    if (!comparison) return []
-    return comparison.parameters.filter(p => visibleParams.has(p.parameter_id))
-  }, [comparison, visibleParams])
+  const activeInstrLabel = useMemo(() => {
+    return (
+      summaries.find(s => s.instrument_class_key === activeInstr)
+        ?.instrument_class_label ?? activeInstr
+    )
+  }, [summaries, activeInstr])
 
-  // ── Selected regime objects (ordered) ────────────────────────────────────────
-  const selectedRegimeObjects = useMemo(() => {
+  const activePhaseName = useMemo(() => {
+    return PHASES.find(p => p.key === activePhase)?.label ?? activePhase
+  }, [activePhase])
+
+  const uniqueLegalFamilies = useMemo(() => {
     if (!comparison) return []
-    return comparison.regimes.filter(r => selectedRegimes.has(r.cell_id))
-  }, [comparison, selectedRegimes])
+    return Array.from(
+      new Set(comparison.regimes.map(r => r.legal_family).filter(Boolean) as string[]),
+    ).sort()
+  }, [comparison])
+
+  const filteredRegimes = useMemo(() => {
+    if (!comparison) return []
+    return comparison.regimes.filter(r => {
+      if (legalFamily && r.legal_family !== legalFamily) return false
+      if (venueType && r.venue_type !== venueType) return false
+      if (
+        search &&
+        !r.venue_name.toLowerCase().includes(search.toLowerCase()) &&
+        !r.jurisdiction_ru.toLowerCase().includes(search.toLowerCase())
+      )
+        return false
+      return true
+    })
+  }, [comparison, legalFamily, venueType, search])
+
+  const checkedRegimes = useMemo(
+    () => filteredRegimes.filter(r => checkedIds.has(r.cell_id)),
+    [filteredRegimes, checkedIds],
+  )
+
+  const availableParams = useMemo(
+    () => comparison?.parameters ?? [],
+    [comparison],
+  )
+
+  const selectedParams = useMemo(
+    () => availableParams.filter(p => activeParams.has(p.parameter_id)),
+    [availableParams, activeParams],
+  )
 
   // ── Handlers ──────────────────────────────────────────────────────────────────
 
-  function handleSelectInstr(key: string) {
+  function selectInstr(key: string) {
     setSearchParams(prev => {
       const next = new URLSearchParams(prev)
       next.set('instr', key)
       return next
     })
-    setFilterLegal('all')
-    setFilterType('all')
-    setSearchQuery('')
+    setLegalFamily('')
+    setVenueType('')
+    setSearch('')
   }
 
-  function handleSelectPhase(key: string) {
+  function selectPhase(key: string) {
     setSearchParams(
       prev => {
         const next = new URLSearchParams(prev)
@@ -157,294 +223,273 @@ export default function InstrumentsPage() {
   }
 
   function toggleRegime(cellId: string) {
-    setSelectedRegimes(prev => {
+    setCheckedIds(prev => {
       const next = new Set(prev)
-      if (next.has(cellId)) {
-        next.delete(cellId)
-      } else {
-        next.add(cellId)
-      }
+      if (next.has(cellId)) next.delete(cellId)
+      else next.add(cellId)
       return next
     })
   }
 
   function toggleParam(parameterId: string) {
-    setVisibleParams(prev => {
+    setActiveParams(prev => {
       const next = new Set(prev)
-      if (next.has(parameterId)) {
-        next.delete(parameterId)
-      } else {
-        next.add(parameterId)
-      }
+      if (next.has(parameterId)) next.delete(parameterId)
+      else next.add(parameterId)
       return next
     })
-  }
-
-  function toggleAllParams() {
-    if (!comparison) return
-    const allIds = comparison.parameters.map(p => p.parameter_id)
-    if (allIds.every(id => visibleParams.has(id))) {
-      setVisibleParams(new Set())
-    } else {
-      setVisibleParams(new Set(allIds))
-    }
   }
 
   // ── Render ────────────────────────────────────────────────────────────────────
 
   return (
-    <div className={styles.page}>
-      {/* Page header */}
-      <div className={styles.pageHeader}>
-        <h1 className={styles.pageTitle}>По инструментам</h1>
-        <p className={styles.pageSub}>Сравнение листинговых режимов</p>
-      </div>
-
-      {/* Instrument strip */}
-      <div className={styles.instrStrip}>
-        <div className={styles.instrStripInner}>
-          {loadingSummaries
+    <>
+      {/* Instrument cards strip — sticky at top:56px */}
+      <div className={styles.instrStripWrap} ref={instrStripRef}>
+        <div className={styles.instrStrip}>
+          {orderedSummaries.length === 0
             ? INSTR_ORDER.map(key => (
-                <div key={key} className={styles.instrCard} style={{ opacity: 0.4 }} />
+                <div key={key} className={`${styles.icard} ${styles.skeleton}`} style={{ minHeight: 96 }} />
               ))
             : orderedSummaries.map(s => (
-                <button
+                <div
                   key={s.instrument_class_key}
-                  className={`${styles.instrCard}${
-                    activeInstr === s.instrument_class_key ? ' ' + styles.instrCardActive : ''
-                  }`}
-                  onClick={() => handleSelectInstr(s.instrument_class_key)}
-                  type="button"
+                  className={`${styles.icard}${activeInstr === s.instrument_class_key ? ' ' + styles.icardActive : ''}`}
+                  onClick={() => selectInstr(s.instrument_class_key)}
                 >
-                  <div className={styles.instrCardName}>{s.instrument_class_label}</div>
-                  <div className={styles.instrCardStats}>
-                    <div className={styles.instrCardStat}>
-                      <span className={styles.instrCardStatVal}>{s.regime_count}</span>
-                      <span className={styles.instrCardStatLabel}>режимов</span>
+                  <div className={styles.icardTop}>
+                    <div className={styles.icardName}>{s.instrument_class_label}</div>
+                    <div className={styles.icardIcon}>{emojiForInstr(s.instrument_class_key)}</div>
+                  </div>
+                  <div className={styles.icardStats}>
+                    <div className={styles.icardStat}>
+                      <div className={styles.icardStatVal}>{s.jurisdiction_count ?? '—'}</div>
+                      <div className={styles.icardStatLbl}>юрисдикций</div>
+                    </div>
+                    <div className={styles.icardStat}>
+                      <div className={styles.icardStatVal}>{s.regime_count}</div>
+                      <div className={styles.icardStatLbl}>режима</div>
                     </div>
                   </div>
-                  {s.top_parameters.length > 0 && (
-                    <div className={styles.instrCardParams}>
-                      {s.top_parameters.slice(0, 3).map(p => (
-                        <span key={p.parameter_id} className={styles.instrCardParam}>
-                          {p.parameter_name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </button>
+                  <div className={styles.icardParams}>
+                    {s.top_parameters.slice(0, 3).map(p => (
+                      <span key={p.parameter_id} className={styles.icardParam}>
+                        {p.parameter_id} {p.parameter_name}
+                      </span>
+                    ))}
+                    {s.top_parameters.length > 3 && (
+                      <span className={styles.icardParam}>+{s.top_parameters.length - 3}</span>
+                    )}
+                  </div>
+                </div>
               ))}
         </div>
       </div>
 
-      {/* Phase strip */}
-      <div className={styles.phaseStrip}>
-        {PHASES.map(ph => (
-          <button
-            key={ph.key}
-            className={`${styles.phaseBtn}${
-              activePhase === ph.key ? ' ' + styles.phaseBtnActive : ''
-            }`}
-            onClick={() => handleSelectPhase(ph.key)}
-            type="button"
-          >
-            {ph.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Main layout */}
-      <div className={styles.mainLayout}>
+      {/* Main content layout */}
+      <div className={styles.mainWrap}>
         {/* Left panel */}
         <div className={styles.leftPanel}>
-          <div className={styles.leftHeader}>Фильтры</div>
-
-          {/* Legal family filter */}
-          <div className={styles.filterGroup}>
-            <div className={styles.filterLabel}>Правовая семья</div>
-            <div className={styles.filterBtns}>
-              {['all', 'common law', 'civil law', 'mixed'].map(v => (
+          {/* Legal family + venue type filters */}
+          <div className={styles.panelSection}>
+            <div className={styles.panelLabel}>Правовая семья</div>
+            <div className={styles.filterRow}>
+              <button
+                className={`${styles.filterChip}${legalFamily === '' ? ' ' + styles.filterChipActive : ''}`}
+                onClick={() => setLegalFamily('')}
+              >
+                Все
+              </button>
+              {uniqueLegalFamilies.map(f => (
                 <button
-                  key={v}
-                  type="button"
-                  className={`${styles.filterBtn}${
-                    filterLegal === v ? ' ' + styles.filterBtnActive : ''
-                  }`}
-                  onClick={() => setFilterLegal(v)}
+                  key={f}
+                  className={`${styles.filterChip}${legalFamily === f ? ' ' + styles.filterChipActive : ''}`}
+                  onClick={() => setLegalFamily(f)}
                 >
-                  {v === 'all' ? 'Все' : v}
+                  {f}
                 </button>
               ))}
             </div>
-          </div>
 
-          {/* Venue type filter */}
-          {uniqueVenueTypes.length > 0 && (
-            <div className={styles.filterGroup}>
-              <div className={styles.filterLabel}>Тип площадки</div>
-              <div className={styles.filterBtns}>
-                <button
-                  type="button"
-                  className={`${styles.filterBtn}${
-                    filterType === 'all' ? ' ' + styles.filterBtnActive : ''
-                  }`}
-                  onClick={() => setFilterType('all')}
-                >
-                  Все
-                </button>
-                {uniqueVenueTypes.map(vt => (
-                  <button
-                    key={vt}
-                    type="button"
-                    className={`${styles.filterBtn}${
-                      filterType === vt ? ' ' + styles.filterBtnActive : ''
-                    }`}
-                    onClick={() => setFilterType(vt)}
-                  >
-                    {vt}
-                  </button>
-                ))}
-              </div>
+            <div className={styles.panelLabel} style={{ marginTop: 8 }}>Тип площадки</div>
+            <div className={styles.filterRow}>
+              <button
+                className={`${styles.filterChip}${venueType === '' ? ' ' + styles.filterChipActive : ''}`}
+                onClick={() => setVenueType('')}
+              >
+                Все
+              </button>
+              <button
+                className={`${styles.filterChip}${venueType === 'regulated_market' ? ' ' + styles.filterChipActive : ''}`}
+                onClick={() => setVenueType('regulated_market')}
+              >
+                Regulated
+              </button>
+              <button
+                className={`${styles.filterChip}${venueType === 'mtf' ? ' ' + styles.filterChipActive : ''}`}
+                onClick={() => setVenueType('mtf')}
+              >
+                MTF
+              </button>
+              <button
+                className={`${styles.filterChip}${venueType === 'exchange' ? ' ' + styles.filterChipActive : ''}`}
+                onClick={() => setVenueType('exchange')}
+              >
+                Биржа
+              </button>
             </div>
-          )}
-
-          {/* Search */}
-          <input
-            className={styles.searchInput}
-            type="text"
-            placeholder="Поиск режима..."
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-          />
-
-          {/* Regimes list */}
-          <div className={styles.regimesHeader}>
-            <span>Листинговые режимы</span>
-          </div>
-          <div className={styles.regimesCount}>
-            Выбрано: {selectedRegimes.size} из {filteredRegimes.length}
           </div>
 
-          <div className={styles.regimeList}>
-            {filteredRegimes.map(r => (
-              <label key={r.cell_id} className={styles.regimeItem}>
-                <input
-                  type="checkbox"
-                  className={styles.regimeCheck}
-                  checked={selectedRegimes.has(r.cell_id)}
-                  onChange={() => toggleRegime(r.cell_id)}
-                />
-                <ValidationDot status={r.validation_status} />
-                <div className={styles.regimeInfo}>
-                  <div className={styles.regimeName}>{r.venue_name}</div>
-                  <div className={styles.regimeMeta}>
-                    {r.tier} — {r.jurisdiction_ru} · {r.venue_type}
+          {/* Venue list with checkboxes */}
+          <div className={`${styles.panelSection}`} style={{ flex: 1 }}>
+            <div className={styles.panelLabel}>Листинговые режимы</div>
+
+            <div className={styles.panelSearch}>
+              <SearchIcon />
+              <input
+                type="text"
+                placeholder="Поиск площадки..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+            </div>
+
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-dim)', padding: '0 2px', marginBottom: '8px' }}>
+              Выбрано: <strong style={{ color: 'var(--accent)' }}>{checkedIds.size}</strong> из {filteredRegimes.length}
+            </div>
+
+            <div className={styles.venueList}>
+              {filteredRegimes.map(regime => (
+                <div
+                  key={regime.cell_id}
+                  className={`${styles.venueItem}${checkedIds.has(regime.cell_id) ? ' ' + styles.venueItemChecked : ''}`}
+                  onClick={() => toggleRegime(regime.cell_id)}
+                >
+                  <div className={styles.venueCb}>
+                    {checkedIds.has(regime.cell_id) && (
+                      <span className={styles.venueCbCheck}>✓</span>
+                    )}
                   </div>
+                  <div className={styles.venueInfo}>
+                    <span className={styles.venueName}>
+                      {flagEmoji(regime.jurisdiction_ru)} {regime.venue_name}
+                    </span>
+                    <span className={styles.venueTierName}>{regime.tier}</span>
+                    <span className={styles.venueJur}>
+                      {regime.jurisdiction_ru} · {regime.venue_type}
+                    </span>
+                  </div>
+                  <StatusDot status={regime.validation_status} />
                 </div>
-              </label>
-            ))}
-            {filteredRegimes.length === 0 && !loadingComparison && (
-              <div className={styles.regimesCount} style={{ paddingTop: 8 }}>
-                Нет режимов по выбранным фильтрам
-              </div>
-            )}
+              ))}
+              {filteredRegimes.length === 0 && comparison !== null && (
+                <div style={{ fontSize: 12, color: 'var(--text-dim)', padding: '12px 4px' }}>
+                  Нет режимов по выбранным фильтрам
+                </div>
+              )}
+              {comparison === null && (
+                <>
+                  {[1, 2, 3, 4, 5].map(i => (
+                    <div key={i} className={styles.skeleton} style={{ height: 52, borderRadius: 8, marginBottom: 2 }} />
+                  ))}
+                </>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Right area */}
         <div className={styles.rightArea}>
-          {loadingComparison ? (
-            <div className={styles.loadingWrap}>
-              <LoadingState message="Загрузка данных сравнения..." />
+          {/* Phase strip */}
+          <div className={styles.phaseStrip}>
+            {PHASES.map(p => (
+              <button
+                key={p.key}
+                className={`${styles.phaseTabBtn}${activePhase === p.key ? ' ' + styles.phaseTabBtnActive : ''}`}
+                onClick={() => selectPhase(p.key)}
+              >
+                <span className={styles.ptDot} style={{ background: phaseColor(p.key) }} />
+                {p.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Table header */}
+          <div className={styles.tableHeader}>
+            <div className={styles.tableHeaderLeft}>
+              <span className={styles.tableTitle}>
+                {activeInstrLabel} — {activePhaseName}
+              </span>
+              <span className={styles.tableCount}>{checkedRegimes.length} режима</span>
+            </div>
+            <div className={styles.paramCols}>
+              {availableParams.map(p => (
+                <button
+                  key={p.parameter_id}
+                  className={`${styles.paramColBtn}${activeParams.has(p.parameter_id) ? ' ' + styles.paramColBtnActive : ''}`}
+                  onClick={() => toggleParam(p.parameter_id)}
+                >
+                  <span style={{ fontSize: '9px', opacity: 0.7 }}>{p.parameter_id}</span>{' '}
+                  {p.parameter_name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Comparison table */}
+          {checkedRegimes.length === 0 ? (
+            <div className={styles.emptyState}>
+              <div className={styles.emptyStateIcon}>⬜</div>
+              <div className={styles.emptyStateTitle}>Нет выбранных режимов</div>
+              <div className={styles.emptyStateSub}>Отметьте листинговые режимы в панели слева</div>
             </div>
           ) : (
-            <>
-              {/* Parameter selector */}
-              {comparison && comparison.parameters.length > 0 && (
-                <div className={styles.paramSelector}>
-                  <button
-                    type="button"
-                    className={`${styles.paramBtn}${
-                      comparison.parameters.every(p => visibleParams.has(p.parameter_id))
-                        ? ' ' + styles.paramBtnActive
-                        : ''
-                    }`}
-                    onClick={toggleAllParams}
-                  >
-                    Все параметры
-                  </button>
-                  {comparison.parameters.map(p => (
-                    <button
-                      key={p.parameter_id}
-                      type="button"
-                      className={`${styles.paramBtn}${
-                        visibleParams.has(p.parameter_id) ? ' ' + styles.paramBtnActive : ''
-                      }`}
-                      onClick={() => toggleParam(p.parameter_id)}
-                      title={p.parameter_name}
-                    >
-                      {p.parameter_id}
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              {/* Comparison table */}
-              {selectedRegimeObjects.length === 0 ? (
-                <div className={styles.emptyState}>
-                  <div className={styles.emptyStateTitle}>Выберите режимы слева</div>
-                  <div className={styles.emptyStateSub}>
-                    Отметьте одну или несколько площадок для сравнения параметров
-                  </div>
-                </div>
-              ) : (
-                <div className={styles.tableWrap}>
-                  <table className={styles.compTable}>
-                    <thead>
-                      <tr>
-                        <th className={`${styles.compTh} ${styles.compThFirst}`}>
-                          Листинговый режим
-                        </th>
-                        {visibleParamList.map(p => (
-                          <th key={p.parameter_id} className={styles.compTh} title={p.parameter_name}>
-                            {p.parameter_id}
-                            <br />
-                            <span style={{ fontFamily: 'var(--font-ui)', fontSize: 10, textTransform: 'none', letterSpacing: 0, fontWeight: 400, color: 'var(--text-secondary)', display: 'block', marginTop: 2 }}>
-                              {p.parameter_name}
+            <div className={styles.cmpTableWrap}>
+              <table className={styles.cmpTable}>
+                <thead>
+                  <tr>
+                    <th>Листинговый режим</th>
+                    {selectedParams.map(p => (
+                      <th key={p.parameter_id}>
+                        {p.parameter_id}
+                        <br />
+                        <span>{p.parameter_name}</span>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {checkedRegimes.map(regime => (
+                    <tr className={styles.dataRow} key={regime.cell_id}>
+                      <td>
+                        <span className={styles.cellVenue}>
+                          {flagEmoji(regime.jurisdiction_ru)} {regime.venue_name}
+                        </span>
+                        <span className={styles.cellTier}>{regime.tier}</span>
+                        <span className={styles.cellJur}>
+                          <StatusDot status={regime.validation_status} />
+                          {regime.jurisdiction_ru} · {regime.venue_type}
+                        </span>
+                      </td>
+                      {selectedParams.map(p => (
+                        <td key={p.parameter_id}>
+                          {regime.parameter_values[p.parameter_id] ? (
+                            <span className={styles.cellVal}>
+                              {regime.parameter_values[p.parameter_id]}
                             </span>
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {selectedRegimeObjects.map(r => (
-                        <tr key={r.cell_id}>
-                          <td className={`${styles.compTd} ${styles.compTdFirst}`}>
-                            <div style={{ fontWeight: 500, color: 'var(--text-primary)', marginBottom: 2 }}>
-                              <ValidationDot status={r.validation_status} />
-                              {r.venue_name}
-                            </div>
-                            <div style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                              {r.tier} · {r.jurisdiction_ru}
-                            </div>
-                          </td>
-                          {visibleParamList.map(p => (
-                            <td key={p.parameter_id} className={styles.compTd}>
-                              {r.parameter_values[p.parameter_id] ?? (
-                                <span className={styles.compTdEmpty}>—</span>
-                              )}
-                            </td>
-                          ))}
-                        </tr>
+                          ) : (
+                            <span className={styles.cellNa}>—</span>
+                          )}
+                        </td>
                       ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>
-    </div>
+    </>
   )
 }

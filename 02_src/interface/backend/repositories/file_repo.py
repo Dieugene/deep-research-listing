@@ -56,7 +56,7 @@ from models.parameter import (
     ParameterSummary,
     ParameterValue,
 )
-from models.venue import CellInVenue, VenueCard
+from models.venue import CellInVenue, ParamPill, VenueCard
 
 logger = logging.getLogger(__name__)
 
@@ -342,6 +342,52 @@ class FileDataRepository:
     # Venues
     # ------------------------------------------------------------------
 
+    def _get_cell_param_pills(
+        self, name_ru: str, venue_key: str, cell_id: str
+    ) -> tuple[list[ParamPill], list[ParamPill], list[ParamPill]]:
+        """
+        Returns (params_admission, params_maintenance, params_enforcement) as lists of ParamPill.
+        Loads pass2_ru.json first, falls back to pass2.json.
+        Each list contains at most 3 pills.
+        """
+        pass2 = _load_pass2(name_ru, venue_key, cell_id)
+        if not pass2:
+            return [], [], []
+
+        # Support both "parameter_values" and "parameters" key names
+        params = pass2.get("parameter_values", [])
+        if not params and "parameters" in pass2:
+            params = pass2["parameters"]
+
+        adm: list[ParamPill] = []
+        maint: list[ParamPill] = []
+        enf: list[ParamPill] = []
+
+        for p in params:
+            # Accept various field names for status
+            status = p.get("status", p.get("validation_status", ""))
+            if status not in ("found", "Найдено", "extracted"):
+                continue
+
+            phase = p.get("lifecycle_phase_key", p.get("lifecycle_phase", p.get("phase", "")))
+            code = str(p.get("param_id", p.get("parameter_id", p.get("id", ""))))
+            label = str(p.get("param_label_ru", p.get("param_label", p.get("parameter_name", p.get("label", "")))))
+            value = str(p.get("value", p.get("param_value", "")))
+
+            if not value or value in ("N/A", "—", "-", "null", "None"):
+                continue
+
+            pill = ParamPill(code=code, label=label, value=value)
+
+            if phase == "admission":
+                adm.append(pill)
+            elif phase == "continuing":
+                maint.append(pill)
+            elif phase in ("suspension", "delisting", "enforcement"):
+                enf.append(pill)
+
+        return adm[:3], maint[:3], enf[:3]
+
     def get_venue(self, venue_key: str) -> VenueCard | None:
         # Find the jurisdiction for this venue_key by scanning directories
         name_ru = self._find_jurisdiction_for_venue(venue_key)
@@ -372,6 +418,8 @@ class FileDataRepository:
 
             val_status = _cell_validation_status(name_ru, venue_key, cid)
 
+            p_adm, p_maint, p_enf = self._get_cell_param_pills(name_ru, venue_key, cid)
+
             cells_in_venue.append(
                 CellInVenue(
                     cell_id=cid,
@@ -383,6 +431,9 @@ class FileDataRepository:
                     has_enforcement_data=has_3c,
                     has_parameters=has_params,
                     validation_status=val_status,
+                    params_admission=p_adm,
+                    params_maintenance=p_maint,
+                    params_enforcement=p_enf,
                 )
             )
 
@@ -549,24 +600,31 @@ class FileDataRepository:
         iclass = (cell_meta or {}).get("instrument_class", "")
         tier = (cell_meta or {}).get("tier", "")
 
+        citations_3a = raw_3a.get("citations", []) if raw_3a else []
+        citations_3b = raw_3b.get("citations", []) if raw_3b else []
+        citations_3c = raw_3c.get("citations", []) if raw_3c else []
+
         phases: list[PhaseContent] = [
             self._build_phase_content(
                 "admission",
                 "Первичный допуск",
                 raw_3a,
                 _load_l3_validation(name_ru, venue_key, cell_id, "3A"),
+                citations_3a,
             ),
             self._build_phase_content(
                 "maintenance",
                 "Поддержание, приостановка и исключение",
                 raw_3b,
                 _load_l3_validation(name_ru, venue_key, cell_id, "3B"),
+                citations_3b,
             ),
             self._build_phase_content(
                 "enforcement",
                 "Мониторинг и надзор",
                 raw_3c,
                 _load_l3_validation(name_ru, venue_key, cell_id, "3C"),
+                citations_3c,
             ),
         ]
 
@@ -585,6 +643,7 @@ class FileDataRepository:
         phase_label: str,
         raw: dict | None,
         validation: dict | None,
+        raw_citations: list[dict] | None = None,
     ) -> PhaseContent:
         val_status = "unknown"
         if validation:
@@ -601,6 +660,7 @@ class FileDataRepository:
             )
 
         content_dict = raw.get("content", {})
+        all_citations: list[dict] = raw_citations if raw_citations is not None else []
         sections: list[ContentSection] = []
 
         for key, value in content_dict.items():
@@ -611,12 +671,15 @@ class FileDataRepository:
                 continue
             source = value.get("source") or None
             section_label = SECTION_LABELS.get(key, key)
+            # Filter citations whose "field" matches this section key
+            section_citations = [c for c in all_citations if isinstance(c, dict) and c.get("field") == key]
             sections.append(
                 ContentSection(
                     section_key=key,
                     section_label=section_label,
                     text=description,
                     source=source,
+                    citations=section_citations,
                 )
             )
 
@@ -793,6 +856,8 @@ class FileDataRepository:
         from collections import defaultdict
         instrument_params: dict[str, dict[str, tuple[str, int]]] = defaultdict(dict)
         instrument_counts: dict[str, int] = defaultdict(int)
+        # Track unique jurisdictions per instrument class
+        instrument_jurisdictions: dict[str, set[str]] = defaultdict(set)
 
         for jdir in _list_jurisdiction_dirs():
             name_ru = jdir.name
@@ -807,6 +872,7 @@ class FileDataRepository:
                     if not pass2 or not pass2.get("parameter_values"):
                         continue
                     instrument_counts[ik] += 1
+                    instrument_jurisdictions[ik].add(name_ru)
                     for pv in pass2["parameter_values"]:
                         if pv.get("status") != "found":
                             continue
@@ -836,6 +902,7 @@ class FileDataRepository:
                 instrument_class_key=ik,
                 instrument_class_label=INSTRUMENT_CLASS_LABELS.get(ik, ik),
                 regime_count=instrument_counts.get(ik, 0),
+                jurisdiction_count=len(instrument_jurisdictions.get(ik, set())),
                 top_parameters=top_params,
             ))
         return result

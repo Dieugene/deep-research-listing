@@ -76,6 +76,12 @@ export interface JurisdictionCard {
 
 // ---- Venues ----
 
+export interface ParamPill {
+  code: string    // e.g. "П01"
+  label: string   // parameter label
+  value: string   // actual value
+}
+
 export interface CellInVenue {
   cell_id: string
   tier: string
@@ -86,6 +92,9 @@ export interface CellInVenue {
   has_enforcement_data: boolean
   has_parameters: boolean
   validation_status: ValidationStatus
+  params_admission: ParamPill[]
+  params_maintenance: ParamPill[]
+  params_enforcement: ParamPill[]
 }
 
 export interface VenueCard {
@@ -142,6 +151,7 @@ export interface ContentSection {
   section_label: string
   text: string
   source: string | null
+  citations?: SourceCitation[]  // populated from raw file citations
 }
 
 export interface PhaseContent {
@@ -220,6 +230,7 @@ export interface InstrumentSummary {
   instrument_class_key: string
   instrument_class_label: string
   regime_count: number
+  jurisdiction_count: number
   top_parameters: ParameterSummary[]
 }
 

@@ -14,6 +14,7 @@ class InstrumentSummary(BaseModel):
     instrument_class_key: str        # "equity", "bond", "fund", "depositary_receipt"
     instrument_class_label: str      # "Акции", "Облигации", "Фонды", "Депозитарные расписки"
     regime_count: int                # total number of listing regimes with parameters
+    jurisdiction_count: int = 0      # count of unique jurisdictions having this instrument
     top_parameters: list[ParameterSummary]   # top 5 by occurrence in this instrument
 
 

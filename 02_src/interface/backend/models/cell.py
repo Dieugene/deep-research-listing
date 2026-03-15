@@ -46,6 +46,7 @@ class ContentSection(BaseModel):
     section_label: str
     text: str
     source: str | None = None
+    citations: list[dict] = []  # [{url, title, field?}] — filtered from raw file's citations array
 
 
 class PhaseContent(BaseModel):

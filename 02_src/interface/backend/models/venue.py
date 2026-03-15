@@ -6,6 +6,15 @@ from __future__ import annotations
 from pydantic import BaseModel, ConfigDict
 
 
+class ParamPill(BaseModel):
+    """A compact parameter display pill for the venue card UI."""
+    model_config = ConfigDict(populate_by_name=True)
+
+    code: str    # param_id, e.g. "П01"
+    label: str   # param_label_ru or param_label
+    value: str   # actual value string
+
+
 class CellInVenue(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
@@ -18,6 +27,9 @@ class CellInVenue(BaseModel):
     has_enforcement_data: bool
     has_parameters: bool
     validation_status: str       # from ValidationStatus enum values
+    params_admission: list[ParamPill] = []    # top 3 from pass2, phase=admission, status=found
+    params_maintenance: list[ParamPill] = []  # top 3 from pass2, phase=continuing, status=found
+    params_enforcement: list[ParamPill] = []  # top 3 from pass2, phase=suspension OR delisting, status=found
 
 
 class VenueCard(BaseModel):
