@@ -194,14 +194,59 @@ const display = source.title || new URL(source.url).hostname;
 
 ## Покрытие данных (текущее состояние)
 
-| Уровень | Файл | Поле | Статус |
-|---------|------|------|--------|
-| L1 | `jurisdiction_card.json` | `sources` | UK, HK (без 1B-источников). AU/SG/FR/DE — нет `jurisdiction_card` |
-| L2 | `venue_card.json` | `sources` | LSE Main/AIM, Aquis, HKEX Main/GEM |
-| L3 | per-cell `{query_type}_raw.json` | `citations` | UK (Phase 1 и Phase 2), HK (Phase 1 и Phase 2) |
-| L4 | `level4.json` | `sources` | UK, HK |
+### L1 — jurisdiction_card.json → поле `sources`
 
-После завершения L1 постпроцессинга для AU/SG/FR/DE и запуска `add_citations.py` — эти юрисдикции тоже получат sources.
+| Юрисдикция | sources |
+|------------|---------|
+| Австралия | 94 |
+| Великобритания | 57 |
+| Германия | 78 |
+| Гонконг | 38 |
+| Сингапур | 55 |
+| Франция | 62 |
+| Россия | — (нет jurisdiction_card.json) |
+
+Примечание: у UK, HK, России `1B_institutional.json` создавался через старый MD-импорт (без Parallel), поэтому 1B-источники у этих трёх отсутствуют. Для AU/SG/FR/DE все три файла (1A+1B+1C) — через Parallel.
+
+### L2 — venue_card.json → поле `sources`
+
+| Площадка | sources |
+|----------|---------|
+| Australian Securities Exchange | 7 |
+| Cboe Australia | 5 |
+| National Stock Exchange of Australia | 4 |
+| Sydney Stock Exchange | 5 |
+| Aquis Stock Exchange | 4 |
+| LSE AIM | 3 |
+| LSE Main Market | 3 |
+| BÖAG Börsen | 5 |
+| Börse München | 3 |
+| Börse Stuttgart | 4 |
+| Frankfurt Stock Exchange | 3 |
+| Tradegate / Berlin Stock Exchange | 4 |
+| HKEX GEM | 4 |
+| HKEX Main Board | 2 |
+| SGX Mainboard and Catalist | 5 |
+| Aquis Exchange Europe | 2 |
+| Euronext Access Paris | 3 |
+| Euronext Growth Paris | 5 |
+| Euronext Paris | 3 |
+| MTS France | 4 |
+
+### L3 — raw-файлы → поле `citations`
+
+Все площадки с L3 данными покрыты (UK, HK, AU/Sydney, SG, FR/MTS, DE/Tradegate).
+
+### L4 — level4.json → поле `sources`
+
+| Юрисдикция | sources |
+|------------|---------|
+| Австралия | 34 |
+| Великобритания | 41 |
+| Германия | 33 |
+| Гонконг | 23 |
+| Сингапур | 36 |
+| Франция | 36 |
 
 ---
 
