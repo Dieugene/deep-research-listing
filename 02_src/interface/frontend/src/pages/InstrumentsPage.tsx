@@ -10,9 +10,8 @@ const INSTR_ORDER = ['equity', 'bond', 'fund', 'depositary_receipt']
 
 const PHASES = [
   { key: 'admission', label: 'Допуск' },
-  { key: 'continuing', label: 'Поддержание' },
-  { key: 'suspension', label: 'Приостановка' },
-  { key: 'delisting', label: 'Исключение' },
+  { key: 'maintenance', label: 'После допуска' },
+  { key: 'enforcement', label: 'Мониторинг и надзор' },
 ]
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -43,9 +42,8 @@ function flagEmoji(jurisdiction_ru: string): string {
 function phaseColor(key: string): string {
   const colors: Record<string, string> = {
     admission: '#3B82F6',
-    continuing: '#10B981',
-    suspension: '#F59E0B',
-    delisting: '#F87171',
+    maintenance: '#10B981',
+    enforcement: '#94A3B8',
   }
   return colors[key] ?? '#9CA3AF'
 }

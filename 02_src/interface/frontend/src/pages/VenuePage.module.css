@@ -238,8 +238,9 @@
   backdrop-filter: blur(12px);
   border-bottom: 2px solid var(--vp-border);
   display: flex;
-  margin: 0 -28px;
-  padding: 0 28px;
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
   transition: box-shadow 0.15s;
   margin-bottom: 20px;
 }

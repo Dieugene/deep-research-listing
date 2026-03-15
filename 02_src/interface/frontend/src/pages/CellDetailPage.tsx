@@ -553,19 +553,24 @@ export default function CellDetailPage() {
       {viewMode === 'tabs' && (
         <>
           <div className={styles.phaseTabs}>
-            {cellContent.phases.map((p) => (
-              <button
-                key={p.phase_key}
-                className={`${styles.phaseTab} ${p.phase_key === activePhaseKey ? styles.phaseTabActive : ''}`}
-                onClick={() => handlePhaseChange(p.phase_key)}
-              >
-                <span
-                  className={styles.ptDot}
-                  style={{ background: phaseColor(p.phase_key) }}
-                />
-                {p.phase_label}
-              </button>
-            ))}
+            {cellContent.phases
+              .filter((p) => p.phase_key !== 'enforcement')
+              .map((p) => {
+                const label = p.phase_key === 'maintenance' ? 'После допуска' : p.phase_label
+                return (
+                  <button
+                    key={p.phase_key}
+                    className={`${styles.phaseTab} ${p.phase_key === activePhaseKey ? styles.phaseTabActive : ''}`}
+                    onClick={() => handlePhaseChange(p.phase_key)}
+                  >
+                    <span
+                      className={styles.ptDot}
+                      style={{ background: phaseColor(p.phase_key) }}
+                    />
+                    {label}
+                  </button>
+                )
+              })}
           </div>
 
           {activePhaseContent ? (
