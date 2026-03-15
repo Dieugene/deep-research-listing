@@ -158,9 +158,10 @@ def poll_until_done(
     """
     Synchronously poll a single task until it completes or fails.
 
-    result_save_fn(content) — called with the raw output content once done.
+    result_save_fn(output_data) — called with the full output.model_dump() once done.
+    output_data is a dict with keys "content" and "basis" (list of FieldBasis with citations).
     state_file: path override for state persistence (defaults to LEVEL1_STATE_FILE).
-    Returns the content or None on error.
+    Returns the output_data or None on error.
     """
     entry = state["tasks"][task_key]
     if entry.get("status") == "done":
@@ -181,15 +182,15 @@ def poll_until_done(
             # Fetch result
             result = client.task_run.result(task_id)
             output = result.output
-            content = output.content
-            result_path = result_save_fn(content)
+            output_data = output.model_dump()
+            result_path = result_save_fn(output_data)
 
             entry["status"] = "done"
             entry["result_path"] = str(result_path) if result_path else None
             entry["completed_at"] = now_iso()
             save_state(state, state_file)
             logger.info("Task %s completed. Result saved to %s", task_key, result_path)
-            return content
+            return output_data
 
         elif status == "failed":
             error_msg = str(run.error) if run.error else "unknown error"
@@ -254,8 +255,8 @@ def poll_all(
 
             if status == "completed":
                 result = client.task_run.result(task_id)
-                content = result.output.content
-                result_path = result_save_fn(content)
+                output_data = result.output.model_dump()
+                result_path = result_save_fn(output_data)
 
                 entry = state["tasks"][task_key]
                 entry["status"] = "done"
@@ -263,7 +264,7 @@ def poll_all(
                 entry["completed_at"] = now_iso()
                 save_state(state, state_file)
                 logger.info("Task %s completed. Result saved to %s", task_key, result_path)
-                results[task_key] = content
+                results[task_key] = output_data
 
             elif status in ("failed", "cancelled", "cancelling"):
                 error_msg = str(run.error) if run.error else f"status={status}"

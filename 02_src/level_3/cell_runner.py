@@ -270,14 +270,14 @@ def _make_save_fn(cell: dict, query_type: str, name_ru: str, i: int, has_duplica
     venue_key = cell["venue_key"]
     cell_dir = _make_cell_dir(cell, name_ru, i, has_duplicate)
 
-    def save_fn(content) -> Path:
+    def save_fn(output_data) -> Path:
         path = cell_dir / f"{query_type}_raw.json"
         data = {
             "cell_id": cell_id,
             "venue_key": venue_key,
             "query_type": query_type,
             "retrieved_at": now_iso(),
-            "content": content,
+            "parallel_output": output_data,
         }
         save_json(path, data)
         return path

@@ -166,7 +166,10 @@ def postprocess_all_venues(state: dict) -> None:
                 logger.warning("Raw file not found: %s — skipping", raw_file)
                 continue
 
-            content = raw_data.get("content", {})
+            if "parallel_output" in raw_data:
+                content = raw_data["parallel_output"].get("content", {})
+            else:
+                content = raw_data.get("content", {})
             if not isinstance(content, dict):
                 logger.warning("Unexpected content format in %s — skipping", raw_file)
                 continue

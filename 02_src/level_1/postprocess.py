@@ -26,12 +26,23 @@ logger = get_logger("postprocess")
 
 
 def _load_content(path: Path):
-    """Load content from a JSON file. Returns the 'content' field if present, else full dict."""
+    """Load content from a raw Parallel output file. Handles both old and new formats."""
     data = load_json(path)
     if data is None:
         return None
-    if isinstance(data, dict) and "content" in data:
-        # Try to parse content as JSON for 1B/1C
+    if not isinstance(data, dict):
+        return data
+    # New format: parallel_output.content
+    if "parallel_output" in data:
+        content = data["parallel_output"].get("content")
+        if isinstance(content, str):
+            try:
+                return json.loads(content)
+            except (json.JSONDecodeError, ValueError):
+                return content
+        return content
+    # Old format: "content" key at top level
+    if "content" in data:
         content = data["content"]
         if isinstance(content, str):
             try:
@@ -39,7 +50,9 @@ def _load_content(path: Path):
             except (json.JSONDecodeError, ValueError):
                 return content
         return content
-    return data
+    # Really old format: content spread at top level (1B/1C old format)
+    # Return the whole dict minus metadata keys
+    return {k: v for k, v in data.items() if k not in ("jurisdiction", "retrieved_at", "query")}
 
 
 def process_jurisdiction(juris_en: str, juris_ru: str) -> bool:
@@ -73,11 +86,14 @@ def process_jurisdiction(juris_en: str, juris_ru: str) -> bool:
     logger.info("Postprocessing %s ...", juris_ru)
 
     # Load contents
-    content_1a = load_json(path_1a)
-    if isinstance(content_1a, dict):
-        text_1a = content_1a.get("content", json.dumps(content_1a, ensure_ascii=False))
+    text_1a_raw = load_json(path_1a)
+    if isinstance(text_1a_raw, dict):
+        if "parallel_output" in text_1a_raw:
+            text_1a = text_1a_raw["parallel_output"].get("content", "") or ""
+        else:
+            text_1a = text_1a_raw.get("content", json.dumps(text_1a_raw, ensure_ascii=False))
     else:
-        text_1a = str(content_1a)
+        text_1a = str(text_1a_raw) if text_1a_raw else ""
 
     content_1b = _load_content(path_1b)
     content_1c = _load_content(path_1c)

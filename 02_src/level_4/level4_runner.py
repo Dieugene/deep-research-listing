@@ -281,12 +281,16 @@ def run_level4_parallel(jurisdictions: list = None) -> None:
             continue
 
         def _make_save_fn(save_path: Path, jurisdiction: str):
-            def save_fn(content) -> Path:
-                # text output: content is a string
-                text = content if isinstance(content, str) else str(content)
+            def save_fn(output_data) -> Path:
                 level4_dir_local = save_path.parent
                 level4_dir_local.mkdir(parents=True, exist_ok=True)
-                save_json(save_path, {"jurisdiction": jurisdiction, "raw_text": text, "retrieved_at": now_iso()})
+                data = {
+                    "jurisdiction": jurisdiction,
+                    "query": "4A",
+                    "retrieved_at": now_iso(),
+                    "parallel_output": output_data,
+                }
+                save_json(save_path, data)
                 return save_path
             return save_fn
 
@@ -438,7 +442,11 @@ def run_level4_postprocess(llm: ChatOpenAI, jurisdictions: list = None) -> None:
             logger.warning("4A_raw.json empty for %s — skipping", name_ru)
             continue
 
-        raw_text = raw_data.get("raw_text", "")
+        # Support both new format (parallel_output.content) and old format (raw_text / content)
+        if "parallel_output" in raw_data:
+            raw_text = raw_data["parallel_output"].get("content", "") or ""
+        else:
+            raw_text = raw_data.get("raw_text", "") or raw_data.get("content", "") or ""
         jurisdiction_en = raw_data.get("jurisdiction", jur["name_en"])
 
         work_items.append({

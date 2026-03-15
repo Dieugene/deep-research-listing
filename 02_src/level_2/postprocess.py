@@ -51,6 +51,27 @@ MAX_COMPRESSION_ATTEMPTS = 3
 
 
 # ---------------------------------------------------------------------------
+# Raw file format helpers
+# ---------------------------------------------------------------------------
+
+def _extract_parallel_content(raw_data: dict) -> dict:
+    """Extract content dict from raw file — handles both old and new formats.
+
+    New format: {"parallel_output": {"content": {...}, "basis": [...]}, ...}
+    Old format: content fields spread at top level (minus metadata keys).
+    """
+    if not raw_data:
+        return {}
+    if "parallel_output" in raw_data:
+        content = raw_data["parallel_output"].get("content", {})
+        return content if isinstance(content, dict) else {}
+    # Old format: content is spread at top level
+    # Strip metadata keys that aren't actual content
+    meta_keys = {"venue_key", "venue_name_english", "retrieved_at", "parallel_output", "query"}
+    return {k: v for k, v in raw_data.items() if k not in meta_keys}
+
+
+# ---------------------------------------------------------------------------
 # Pydantic models
 # ---------------------------------------------------------------------------
 
@@ -1087,10 +1108,13 @@ def _load_venue_inputs(venue: dict) -> dict | None:
     card_path = d / "venue_card.json"
     cells_path = d / "cells_list.json"
 
-    raw_2a = load_json(path_2a)
-    if raw_2a is None:
+    raw_2a_file = load_json(path_2a)
+    if raw_2a_file is None:
         logger.error("Failed to load 2A_structure.json for %s", venue_key)
         return None
+    # Extract actual content dict — handles both new format (parallel_output.content)
+    # and old format (content fields at top level)
+    raw_2a = _extract_parallel_content(raw_2a_file)
 
     card_l1_path = get_country_level1_dir(name_ru) / "jurisdiction_card.json"
     jurisdiction_card = load_json(card_l1_path)

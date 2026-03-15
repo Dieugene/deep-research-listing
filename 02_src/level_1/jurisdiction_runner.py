@@ -34,7 +34,7 @@ from dotenv import load_dotenv
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[2] / ".env")
 
 from pipeline.config import PILOT_JURISDICTIONS, PROMPTS_DIR, get_country_level1_dir
-from pipeline.storage import save_raw_query, save_json, save_prompt, load_json, now_iso
+from pipeline.storage import save_json, save_prompt, load_json, now_iso
 from pipeline.parallel_runner import (
     launch_task,
     poll_all,
@@ -63,50 +63,58 @@ def _key(juris_ru: str, query: str) -> str:
 # Save functions
 # ---------------------------------------------------------------------------
 
+def _extract_text_content(raw_data: dict) -> str:
+    """Extract text content from raw file — handles both old and new formats."""
+    if not raw_data:
+        return ""
+    # New format: parallel_output.content
+    if "parallel_output" in raw_data:
+        return raw_data["parallel_output"].get("content", "") or ""
+    # Old format: content key
+    return raw_data.get("content", "") or ""
+
+
 def _save_fn_1a(juris_ru: str, juris_en: str):
-    def fn(content) -> Path:
+    def fn(output_data) -> Path:
         d = get_country_level1_dir(juris_ru)
         path = d / "1A_architecture.json"
-        if isinstance(content, dict):
-            text = json.dumps(content, ensure_ascii=False)
-        else:
-            text = str(content)
-        save_raw_query(path, juris_en, "1A", text)
+        # output_data["content"] — строка (текстовый запрос)
+        data = {
+            "jurisdiction": juris_en,
+            "query": "1A",
+            "retrieved_at": now_iso(),
+            "parallel_output": output_data,
+        }
+        save_json(path, data)
         return path
     return fn
 
 
 def _save_fn_1c(juris_ru: str, juris_en: str):
-    def fn(content) -> Path:
+    def fn(output_data) -> Path:
         d = get_country_level1_dir(juris_ru)
         path = d / "1C_venues.json"
-        if isinstance(content, dict):
-            data = {"jurisdiction": juris_en, **content, "retrieved_at": now_iso()}
-        else:
-            data = {
-                "jurisdiction": juris_en,
-                "query": "1C",
-                "content": str(content),
-                "retrieved_at": now_iso(),
-            }
+        data = {
+            "jurisdiction": juris_en,
+            "query": "1C",
+            "retrieved_at": now_iso(),
+            "parallel_output": output_data,
+        }
         save_json(path, data)
         return path
     return fn
 
 
 def _save_fn_1b(juris_ru: str, juris_en: str):
-    def fn(content) -> Path:
+    def fn(output_data) -> Path:
         d = get_country_level1_dir(juris_ru)
         path = d / "1B_institutional.json"
-        if isinstance(content, dict):
-            data = {"jurisdiction": juris_en, **content, "retrieved_at": now_iso()}
-        else:
-            data = {
-                "jurisdiction": juris_en,
-                "query": "1B",
-                "content": str(content),
-                "retrieved_at": now_iso(),
-            }
+        data = {
+            "jurisdiction": juris_en,
+            "query": "1B",
+            "retrieved_at": now_iso(),
+            "parallel_output": output_data,
+        }
         save_json(path, data)
         return path
     return fn
@@ -177,7 +185,7 @@ def launch_all_1c(state: dict, jurisdictions: list = None) -> None:
         data_1a = load_json(path_1a)
         regulatory_ctx = "see regulatory architecture research"
         if data_1a and isinstance(data_1a, dict):
-            content_1a_str = data_1a.get("content", "")
+            content_1a_str = _extract_text_content(data_1a)
             if content_1a_str:
                 regulatory_ctx = f"Regulatory architecture research (1A):\n{content_1a_str}"
 

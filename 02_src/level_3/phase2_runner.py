@@ -1531,14 +1531,19 @@ def run_3p_execute(groups: dict, data_root: Path) -> None:
                 logger.error("[ERROR] Failed to launch 3P task for group %s: %s", group_id, exc)
                 continue
 
-            # save_fn: content is a dict (JSON schema output from Parallel API)
-            def _make_save_fn(save_path: Path):
-                def save_fn(content: dict) -> Path:
-                    save_json(save_path, content)
+            # save_fn: output_data is the full output.model_dump() dict
+            def _make_save_fn(save_path: Path, _group_id: str):
+                def save_fn(output_data: dict) -> Path:
+                    data = {
+                        "group_id": _group_id,
+                        "retrieved_at": now_iso(),
+                        "parallel_output": output_data,
+                    }
+                    save_json(save_path, data)
                     return save_path
                 return save_fn
 
-            tasks_to_poll.append((task_key, _make_save_fn(raw_path)))
+            tasks_to_poll.append((task_key, _make_save_fn(raw_path, group_id)))
 
     if not tasks_to_poll:
         logger.info("No 3P tasks to poll (all skipped or already done)")
@@ -1738,9 +1743,20 @@ def run_new_pass2(state: dict, llm: ChatOpenAI) -> None:
             gname_ru: str = group_meta.get("name_ru", name_ru)
             instrument_class: str = group_meta.get("instrument_class", "")
 
-            # Load 3P results if available
+            # Load 3P results if available — handles both new and old formats
             three_p_raw_path = group_dir / "3P_raw.json"
-            three_p_raw: Optional[dict] = load_json(three_p_raw_path) if three_p_raw_path.exists() else None
+            three_p_raw: Optional[dict] = None
+            if three_p_raw_path.exists():
+                _three_p_file = load_json(three_p_raw_path)
+                if _three_p_file is not None:
+                    if "parallel_output" in _three_p_file:
+                        # New format: extract content dict
+                        _content = _three_p_file["parallel_output"].get("content", {})
+                        three_p_raw = _content if isinstance(_content, dict) else None
+                    else:
+                        # Old format: content spread at top level (minus metadata keys)
+                        _meta_keys = {"group_id", "retrieved_at"}
+                        three_p_raw = {k: v for k, v in _three_p_file.items() if k not in _meta_keys}
 
             for cell_info in group_meta.get("cells", []):
                 cell_id: str = cell_info["cell_id"]

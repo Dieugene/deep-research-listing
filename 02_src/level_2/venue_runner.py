@@ -63,24 +63,15 @@ def _make_save_fn(venue: dict):
     venue_key = venue["venue_key"]
     venue_name_english = venue["venue_name_english"]
 
-    def save_fn(content) -> Path:
+    def save_fn(output_data) -> Path:
         d = get_country_level2_dir(name_ru, venue_key)
         path = d / "2A_structure.json"
-        if isinstance(content, dict):
-            data = {
-                "venue_key": venue_key,
-                "venue_name_english": venue_name_english,
-                "retrieved_at": now_iso(),
-                **content,
-            }
-        else:
-            # Plain text / unexpected format — wrap it
-            data = {
-                "venue_key": venue_key,
-                "venue_name_english": venue_name_english,
-                "retrieved_at": now_iso(),
-                "content": str(content),
-            }
+        data = {
+            "venue_key": venue_key,
+            "venue_name_english": venue_name_english,
+            "retrieved_at": now_iso(),
+            "parallel_output": output_data,
+        }
         save_json(path, data)
         return path
 
