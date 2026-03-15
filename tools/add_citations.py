@@ -30,14 +30,7 @@ SRC_DIR = REPO_ROOT / "02_src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from pipeline.config import (
-    PILOT_JURISDICTIONS,
-    PILOT_VENUES,
-    get_country_level1_dir,
-    get_country_level2_dir,
-    get_country_level3_dir,
-    get_country_level4_dir,
-)
+COUNTRIES_DIR = REPO_ROOT / "03_data" / "countries"
 
 # ---------------------------------------------------------------------------
 # JSON helpers
@@ -137,13 +130,20 @@ class Stats:
 
 
 def process_level1(dry_run: bool, stats: Stats) -> None:
+    """Auto-discovers all jurisdictions that have jurisdiction_card.json on disk."""
     print("\n=== Level 1: jurisdiction_card.json ===")
     raw_names = ["1A_architecture.json", "1B_institutional.json", "1C_venues.json"]
 
-    for jur in PILOT_JURISDICTIONS:
-        name_ru = jur["name_ru"]
-        l1_dir = get_country_level1_dir(name_ru)
+    for country_dir in sorted(COUNTRIES_DIR.iterdir()):
+        if not country_dir.is_dir():
+            continue
+        l1_dir = country_dir / "level_1"
         processed_path = l1_dir / "jurisdiction_card.json"
+
+        if not processed_path.exists():
+            continue  # nothing to update here
+
+        name = country_dir.name
 
         # Gather sources from all three raw files
         all_sources: list[list[dict]] = []
@@ -151,31 +151,20 @@ def process_level1(dry_run: bool, stats: Stats) -> None:
         for raw_name in raw_names:
             raw_path = l1_dir / raw_name
             if not raw_path.exists():
-                print(f"  [WARN] Raw file not found, skipping contribution: {raw_path}")
-                stats.skipped_no_raw += 1
                 continue
             raw_data = load_json(raw_path)
             if not raw_data or "parallel_output" not in raw_data:
-                print(f"  [WARN] No parallel_output in: {raw_path}")
-                stats.skipped_no_parallel_output += 1
                 continue
             has_any_parallel_output = True
-            sources = extract_sources_from_raw(raw_path)
-            all_sources.append(sources)
+            all_sources.append(extract_sources_from_raw(raw_path))
 
         if not has_any_parallel_output:
-            print(f"  [{name_ru}] No parallel_output found in any raw file — skipping.")
+            print(f"  [{name}] No parallel_output in any raw file — skipping.")
             continue
 
         merged = merge_sources_dedup(all_sources)
-
-        if not processed_path.exists():
-            print(f"  [{name_ru}] Processed file not found — skipping: {processed_path}")
-            stats.skipped_no_processed += 1
-            continue
-
         print(
-            f"  [{name_ru}] {len(merged)} sources → {processed_path.name}"
+            f"  [{name}] {len(merged)} sources → jurisdiction_card.json"
             + (" [DRY-RUN]" if dry_run else "")
         )
 
@@ -183,7 +172,7 @@ def process_level1(dry_run: bool, stats: Stats) -> None:
             try:
                 processed = load_json(processed_path)
                 if processed is None:
-                    print(f"  [ERROR] Could not load processed file: {processed_path}")
+                    print(f"  [ERROR] Could not load {processed_path}")
                     stats.errors += 1
                     continue
                 processed["sources"] = merged
@@ -202,53 +191,55 @@ def process_level1(dry_run: bool, stats: Stats) -> None:
 
 
 def process_level2(dry_run: bool, stats: Stats) -> None:
+    """Auto-discovers all venue directories that have venue_card.json on disk."""
     print("\n=== Level 2: venue_card.json ===")
 
-    for venue in PILOT_VENUES:
-        name_ru = venue["name_ru"]
-        venue_key = venue["venue_key"]
-        l2_dir = get_country_level2_dir(name_ru, venue_key)
-        raw_path = l2_dir / "2A_structure.json"
-        processed_path = l2_dir / "venue_card.json"
-
-        if not raw_path.exists():
-            print(f"  [WARN] Raw file not found: {raw_path}")
-            stats.skipped_no_raw += 1
+    for country_dir in sorted(COUNTRIES_DIR.iterdir()):
+        if not country_dir.is_dir():
             continue
-
-        raw_data = load_json(raw_path)
-        if not raw_data or "parallel_output" not in raw_data:
-            print(f"  [WARN] No parallel_output in: {raw_path}")
-            stats.skipped_no_parallel_output += 1
+        l2_root = country_dir / "level_2"
+        if not l2_root.exists():
             continue
+        for venue_dir in sorted(l2_root.iterdir()):
+            if not venue_dir.is_dir():
+                continue
+            venue_key = venue_dir.name
+            raw_path = venue_dir / "2A_structure.json"
+            processed_path = venue_dir / "venue_card.json"
 
-        sources = extract_sources_from_raw(raw_path)
+            if not processed_path.exists():
+                continue  # nothing to update
 
-        if not processed_path.exists():
-            print(f"  [{venue_key}] Processed file not found — skipping: {processed_path}")
-            stats.skipped_no_processed += 1
-            continue
+            if not raw_path.exists():
+                stats.skipped_no_raw += 1
+                continue
 
-        print(
-            f"  [{venue_key}] {len(sources)} sources → {processed_path.name}"
-            + (" [DRY-RUN]" if dry_run else "")
-        )
+            raw_data = load_json(raw_path)
+            if not raw_data or "parallel_output" not in raw_data:
+                stats.skipped_no_parallel_output += 1
+                continue
 
-        if not dry_run:
-            try:
-                processed = load_json(processed_path)
-                if processed is None:
-                    print(f"  [ERROR] Could not load processed file: {processed_path}")
+            sources = extract_sources_from_raw(raw_path)
+            print(
+                f"  [{venue_key}] {len(sources)} sources → venue_card.json"
+                + (" [DRY-RUN]" if dry_run else "")
+            )
+
+            if not dry_run:
+                try:
+                    processed = load_json(processed_path)
+                    if processed is None:
+                        print(f"  [ERROR] Could not load {processed_path}")
+                        stats.errors += 1
+                        continue
+                    processed["sources"] = sources
+                    save_json(processed_path, processed)
+                    stats.updated += 1
+                except Exception as exc:
+                    print(f"  [ERROR] Failed to write {processed_path}: {exc}")
                     stats.errors += 1
-                    continue
-                processed["sources"] = sources
-                save_json(processed_path, processed)
+            else:
                 stats.updated += 1
-            except Exception as exc:
-                print(f"  [ERROR] Failed to write {processed_path}: {exc}")
-                stats.errors += 1
-        else:
-            stats.updated += 1
 
 
 # ---------------------------------------------------------------------------
@@ -290,14 +281,21 @@ def process_level3(dry_run: bool, stats: Stats) -> None:
     print("\n=== Level 3: raw files ===")
     query_types = ["3A", "3B", "3C"]
 
-    for venue in PILOT_VENUES:
-        name_ru = venue["name_ru"]
-        venue_key = venue["venue_key"]
-        l3_dir = get_country_level3_dir(name_ru, venue_key)
-
-        if not l3_dir.exists():
-            print(f"  [WARN] L3 dir not found: {l3_dir}")
+    # Auto-discover all level_3/{venue_key} directories across all countries
+    for country_dir in sorted(COUNTRIES_DIR.iterdir()):
+        if not country_dir.is_dir():
             continue
+        l3_root = country_dir / "level_3"
+        if not l3_root.exists():
+            continue
+        for venue_dir in sorted(l3_root.iterdir()):
+            if not venue_dir.is_dir():
+                continue
+            venue_key = venue_dir.name
+            l3_dir = venue_dir
+
+            if not l3_dir.exists():
+                continue
 
         print(f"  [{venue_key}]")
 
@@ -332,34 +330,34 @@ def process_level3(dry_run: bool, stats: Stats) -> None:
 
 
 def process_level4(dry_run: bool, stats: Stats) -> None:
+    """Auto-discovers all jurisdictions that have level4.json on disk."""
     print("\n=== Level 4: level4.json ===")
 
-    for jur in PILOT_JURISDICTIONS:
-        name_ru = jur["name_ru"]
-        l4_dir = get_country_level4_dir(name_ru)
+    for country_dir in sorted(COUNTRIES_DIR.iterdir()):
+        if not country_dir.is_dir():
+            continue
+        l4_dir = country_dir / "level_4"
+        if not l4_dir.exists():
+            continue
         raw_path = l4_dir / "4A_raw.json"
         processed_path = l4_dir / "level4.json"
 
+        if not processed_path.exists():
+            continue  # nothing to update
+
         if not raw_path.exists():
-            print(f"  [WARN] Raw file not found: {raw_path}")
             stats.skipped_no_raw += 1
             continue
 
         raw_data = load_json(raw_path)
         if not raw_data or "parallel_output" not in raw_data:
-            print(f"  [WARN] No parallel_output in: {raw_path}")
             stats.skipped_no_parallel_output += 1
             continue
 
         sources = extract_sources_from_raw(raw_path)
-
-        if not processed_path.exists():
-            print(f"  [{name_ru}] Processed file not found — skipping: {processed_path}")
-            stats.skipped_no_processed += 1
-            continue
-
+        name = country_dir.name
         print(
-            f"  [{name_ru}] {len(sources)} sources → {processed_path.name}"
+            f"  [{name}] {len(sources)} sources → level4.json"
             + (" [DRY-RUN]" if dry_run else "")
         )
 
@@ -367,7 +365,7 @@ def process_level4(dry_run: bool, stats: Stats) -> None:
             try:
                 processed = load_json(processed_path)
                 if processed is None:
-                    print(f"  [ERROR] Could not load processed file: {processed_path}")
+                    print(f"  [ERROR] Could not load {processed_path}")
                     stats.errors += 1
                     continue
                 processed["sources"] = sources
