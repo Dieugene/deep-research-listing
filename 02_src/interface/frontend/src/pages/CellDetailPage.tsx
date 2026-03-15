@@ -113,12 +113,10 @@ function ValidationBadge({ status }: ValidationBadgeProps) {
 
 interface SectionCardProps {
   section: ContentSection
-  parameters: ParameterValue[]
-  phaseKey: string
   onOpenDrawer: (sources: ParsedSource[]) => void
 }
 
-function SectionCard({ section, parameters, phaseKey, onOpenDrawer }: SectionCardProps) {
+function SectionCard({ section, onOpenDrawer }: SectionCardProps) {
   const [expanded, setExpanded] = useState(false)
 
   const allSources = getSources(section)
@@ -126,13 +124,6 @@ function SectionCard({ section, parameters, phaseKey, onOpenDrawer }: SectionCar
   const displayedSources = expanded ? allSources : allSources.slice(0, 3)
 
   const paragraphs = section.text.split('\n\n').filter(Boolean)
-
-  const sectionParams = parameters.filter(
-    (p) =>
-      (p.lifecycle_phase_key === phaseKey || (p as ParameterValue & { phase_key?: string }).phase_key === phaseKey) &&
-      p.status === 'found',
-  )
-  const hasParameters = sectionParams.length > 0
 
   return (
     <div className={styles.sectionCard}>
@@ -150,18 +141,6 @@ function SectionCard({ section, parameters, phaseKey, onOpenDrawer }: SectionCar
           <p key={i}>{p}</p>
         ))}
       </div>
-
-      {hasParameters && (
-        <div className={styles.paramsStrip}>
-          {sectionParams.map((p) => (
-            <div key={p.parameter_id} className={styles.paramChip}>
-              <span className={styles.paramCode}>{p.parameter_id}</span>
-              <span>{p.parameter_name || p.parameter_id}:</span>
-              <span className={styles.paramVal}>{p.value}</span>
-            </div>
-          ))}
-        </div>
-      )}
 
       {sourcesCount > 0 && (
         <div className={styles.sourcesFooter}>
@@ -598,8 +577,6 @@ export default function CellDetailPage() {
                   <SectionCard
                     key={section.section_key}
                     section={section}
-                    parameters={cellParameters?.parameters ?? []}
-                    phaseKey={activePhaseKey}
                     onOpenDrawer={(sources) => setDrawerSources(sources)}
                   />
                 ))}

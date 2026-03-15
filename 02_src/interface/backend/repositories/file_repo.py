@@ -864,7 +864,7 @@ class FileDataRepository:
             for venue_key in _list_venue_keys(name_ru):
                 cells = _load_cells_list(name_ru, venue_key)
                 for cell in cells:
-                    ik = cell.get("instrument_class_key", "")
+                    ik = cell.get("instrument_class", cell.get("instrument_class_key", ""))
                     if not ik:
                         continue
                     cell_id = cell.get("cell_id", "")
@@ -932,7 +932,7 @@ class FileDataRepository:
 
                 cells = _load_cells_list(name_ru, venue_key)
                 for cell in cells:
-                    if cell.get("instrument_class_key") != instrument_class_key:
+                    if cell.get("instrument_class", cell.get("instrument_class_key")) != instrument_class_key:
                         continue
                     cell_id = cell.get("cell_id", "")
                     tier = cell.get("tier", "")
@@ -943,7 +943,7 @@ class FileDataRepository:
 
                     param_values: dict[str, str] = {}
                     for pv in pass2.get("parameter_values", []):
-                        if pv.get("lifecycle_phase_key") != phase_key:
+                        if pv.get("lifecycle_phase", pv.get("lifecycle_phase_key")) != phase_key:
                             continue
                         if pv.get("status") != "found":
                             continue
