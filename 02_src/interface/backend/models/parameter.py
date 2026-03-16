@@ -23,6 +23,7 @@ class ParameterValue(BaseModel):
     status_label: str
     drill_down_applied: bool = False
     note: str | None
+    section_keys: list[str] = []
 
 
 class CellParameters(BaseModel):

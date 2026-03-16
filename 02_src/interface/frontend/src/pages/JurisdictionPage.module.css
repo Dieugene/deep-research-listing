@@ -1204,3 +1204,174 @@
 .sourcesCount { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
 .showAllBtn { font-family: var(--font-mono); font-size: 11px; color: var(--accent-primary); background: var(--accent-light-bg); border: 1px solid rgba(37,99,235,0.2); border-radius: 5px; padding: 3px 10px; cursor: pointer; }
 .showAllBtn:hover { background: rgba(37,99,235,0.1); }
+
+/* ─── CHANGE 1: listing_authority_short expand ───── */
+.regName {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.regExpand {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent-primary);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.regFull {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 4px 0 8px;
+  font-family: var(--font-mono);
+  line-height: 1.6;
+  width: 100%;
+}
+
+/* ─── CHANGE 2: Drawer period badge + meta ────────── */
+.drawerPeriod {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent-primary);
+  background: var(--accent-light-bg);
+  border: 1px solid rgba(37,99,235,.15);
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+.drawerMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+.metaLabel {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.metaTag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--bg-white);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  padding: 1px 8px;
+  color: var(--text-secondary);
+}
+.drawerSources2 {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-white);
+  flex-shrink: 0;
+}
+.drawerSourcesLabel2 {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.drawerMoreSources {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+/* ─── CHANGE 3: Block sources in cards ───────────── */
+.blockSources {
+  border-top: 1px solid var(--border);
+  background: var(--bg-white);
+}
+.blockSourcesHd {
+  padding: 8px 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+.srcBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-strong);
+  border-radius: 5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all .12s;
+}
+.srcBtn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: var(--accent-light-bg);
+}
+.blockSourcesList {
+  padding: 8px 20px 12px;
+  border-top: 1px solid var(--border);
+}
+.blockSourcesLabelRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+}
+.blockSourcesLabel {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.blockSourcesCount {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  padding: 0 7px;
+  color: var(--text-muted);
+}
+
+/* ─── CHANGE 4: Source type filter chips ─────────── */
+.typeFilters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.typeChip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 4px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  background: var(--bg-subtle);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all .12s;
+}
+.typeChip:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+.typeChipActive {
+  background: var(--accent-light-bg);
+  border-color: rgba(37,99,235,.3);
+  color: var(--accent-primary);
+}

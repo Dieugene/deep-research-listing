@@ -164,6 +164,17 @@ def _param_status_label(status: str) -> str:
     return PARAMETER_STATUS_LABELS.get(status, status)
 
 
+def _normalize_sources(data: dict) -> list[dict] | None:
+    """Normalizes source/sources field: returns list or None."""
+    sources = data.get("sources")
+    if isinstance(sources, list):
+        return sources
+    source_str = data.get("source")
+    if isinstance(source_str, str) and source_str.strip():
+        return [{"url": source_str, "title": source_str, "field": "", "excerpts": []}]
+    return None
+
+
 PHASE_LABELS: dict[str, str] = {
     "admission": "Допуск",
     "continuing": "Поддержание",
@@ -303,7 +314,7 @@ class FileDataRepository:
                 parameters_as_tools=l4.get("parameters_as_tools", []),
                 reforms=l4.get("reforms", []),
                 validation_status=val_status,
-                sources=l4.get("sources"),
+                sources=_normalize_sources(l4),
             )
 
         venue_keys_for_status = _list_venue_keys(name_ru)
@@ -326,6 +337,7 @@ class FileDataRepository:
             admission_architecture=card.get("admission_architecture"),
             admission_architecture_ru=card.get("admission_architecture_ru"),
             listing_authority=card.get("listing_authority"),
+            listing_authority_short=card.get("listing_authority_short"),
             iso_code=JURISDICTION_ISO_CODES.get(name_ru),
             data_status=data_status,
             market_types=card.get("market_types", []),
@@ -333,7 +345,7 @@ class FileDataRepository:
             supranational_flag=card.get("supranational_flag", False),
             supranational_framework=card.get("supranational_framework"),
             notes=card.get("notes"),
-            sources=card.get("sources"),
+            sources=_normalize_sources(card),
             venues=venues_in_card,
             level4=level4_data,
         )
@@ -377,7 +389,7 @@ class FileDataRepository:
             if not value or value in ("N/A", "—", "-", "null", "None"):
                 continue
 
-            pill = ParamPill(code=code, label=label, value=value)
+            pill = ParamPill(param_id=code, label=label, value_short=value[:40])
 
             if phase == "admission":
                 adm.append(pill)
@@ -454,7 +466,7 @@ class FileDataRepository:
             instrument_coverage=vc.get("instrument_coverage", []),
             notes=vc.get("notes"),
             notes_ru=vc.get("notes_ru"),
-            sources=vc.get("sources"),
+            sources=_normalize_sources(vc),
             cells=cells_in_venue,
         )
 
@@ -728,6 +740,7 @@ class FileDataRepository:
                     status_label=_param_status_label(status),
                     drill_down_applied=raw_p.get("drill_down_applied", False),
                     note=raw_p.get("note") or None,
+                    section_keys=raw_p.get("section_keys", []),
                 )
             )
 

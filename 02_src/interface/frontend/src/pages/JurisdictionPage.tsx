@@ -4,6 +4,7 @@ import { fetchJurisdiction } from '../api/jurisdictions'
 import type { JurisdictionCard, Level4Item, SourceCitation } from '../api/types'
 import LoadingState from '../components/common/LoadingState'
 import ErrorState from '../components/common/ErrorState'
+import SourceItem from '../components/SourceItem'
 import styles from './JurisdictionPage.module.css'
 
 // ──────────────────────────────────────────────────────────────
@@ -136,7 +137,7 @@ function buildTimelineEvents(card: JurisdictionCard): TimelineEvent[] {
       id: ++id,
       type: 'problem',
       ...period,
-      label: getEventLabel('problem', item),
+      label: item.label || getEventLabel('problem', item),
       item,
     })
   }
@@ -147,7 +148,7 @@ function buildTimelineEvents(card: JurisdictionCard): TimelineEvent[] {
       id: ++id,
       type: 'contradiction',
       ...period,
-      label: getEventLabel('contradiction', item),
+      label: item.label || getEventLabel('contradiction', item),
       item,
     })
   }
@@ -158,7 +159,7 @@ function buildTimelineEvents(card: JurisdictionCard): TimelineEvent[] {
       id: ++id,
       type: 'parameter',
       ...period,
-      label: getEventLabel('parameter', item),
+      label: item.label || getEventLabel('parameter', item),
       item,
     })
   }
@@ -172,7 +173,7 @@ function buildTimelineEvents(card: JurisdictionCard): TimelineEvent[] {
       id: ++id,
       type: 'reform',
       ...period,
-      label: getEventLabel('reform', item),
+      label: item.label || getEventLabel('reform', item),
       item,
     })
   }
@@ -664,6 +665,23 @@ function Drawer({
   )
 }
 
+function pluralSourcesN(n: number): string {
+  if (n % 10 === 1 && n % 100 !== 11) return `${n} источник`
+  if (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) return `${n} источника`
+  return `${n} источников`
+}
+
+function articulatedByLabel(key: string): string {
+  const map: Record<string, string> = {
+    government: 'правительство',
+    regulator: 'регулятор',
+    academic: 'академическое сообщество',
+    market_participants: 'участники рынка',
+    exchange: 'биржа',
+  }
+  return map[key] ?? key
+}
+
 function EventDrawerContent({
   event,
   onClose,
@@ -672,7 +690,9 @@ function EventDrawerContent({
   onClose: () => void
 }) {
   const { type, item } = event
-  const period =
+  const [showAllSources, setShowAllSources] = useState(false)
+
+  const periodStr =
     event.start === event.end
       ? String(event.start)
       : `${event.start} – ${event.end}`
@@ -681,25 +701,28 @@ function EventDrawerContent({
     (item.description_ru as string | undefined) ||
     (item.description as string | undefined) ||
     ''
-  const sources = parseSources(item.source as string | undefined)
+  const legacySources = parseSources(item.source as string | undefined)
+  const structuredSources: SourceCitation[] = item.sources ?? []
+
+  const drawerTitle =
+    item.label ||
+    (type === 'contradiction'
+      ? ((item.objective_a as string | undefined) && (item.objective_b as string | undefined)
+          ? `${item.objective_a} vs ${item.objective_b}`
+          : truncateWords(description))
+      : type === 'parameter'
+      ? (item.parameter_description as string | undefined) || truncateWords(description)
+      : type === 'reform'
+      ? (item.driver as string | undefined) || truncateWords(description)
+      : truncateWords(description))
 
   return (
     <>
       <div className={styles.drawerHd}>
         <div className={styles.drawerHdLeft}>
-          <div className={styles.drawerTitle}>
-            {type === 'contradiction'
-              ? ((item.objective_a as string | undefined) && (item.objective_b as string | undefined)
-                  ? `${item.objective_a} vs ${item.objective_b}`
-                  : truncateWords(description))
-              : type === 'parameter'
-              ? (item.parameter_description as string | undefined) || truncateWords(description)
-              : type === 'reform'
-              ? (item.driver as string | undefined) || truncateWords(description)
-              : truncateWords(description)}
-          </div>
+          <div className={styles.drawerTitle}>{drawerTitle}</div>
           <div className={styles.drawerBadges}>
-            <span className={styles.periodTag}>{period}</span>
+            <span className={styles.drawerPeriod}>{periodStr}</span>
             <TypeBadge type={type} />
           </div>
         </div>
@@ -739,32 +762,6 @@ function EventDrawerContent({
         ) : (
           <>
             {description && <div className={styles.drawerText}>{description}</div>}
-            {type === 'problem' && Boolean(item.articulated_by) && (
-              <div style={{ marginBottom: '14px' }}>
-                <div className={styles.drawerSourcesLabel} style={{ marginBottom: '6px' }}>
-                  Поставили проблему
-                </div>
-                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                  {(Array.isArray(item.articulated_by)
-                    ? (item.articulated_by as string[])
-                    : [String(item.articulated_by)]
-                  ).map((ab) => (
-                    <span key={ab} className={styles.metaBadge ?? ''} style={{
-                      fontFamily: 'var(--font-mono)', fontSize: '11px',
-                      padding: '2px 8px', borderRadius: '4px',
-                      background: 'var(--bg-subtle)', border: '1px solid var(--border-strong)',
-                      color: 'var(--text-secondary)'
-                    }}>
-                      {ab === 'government' ? 'правительство'
-                       : ab === 'academic' ? 'академическое сообщество'
-                       : ab === 'regulator' ? 'регулятор'
-                       : ab === 'market_participants' ? 'участники рынка'
-                       : ab}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
             {type === 'parameter' && Boolean(item.problem_addressed) && (
               <div className={styles.confSide} style={{ marginBottom: '10px' }}>
                 <div className={styles.confSideLabel}>Какую проблему решает</div>
@@ -799,11 +796,24 @@ function EventDrawerContent({
             )}
           </>
         )}
-        {sources.length > 0 && (
+        {/* articulated_by — rendered for all types that may carry it */}
+        {Boolean(item.articulated_by) && (Array.isArray(item.articulated_by) ? (item.articulated_by as string[]) : [String(item.articulated_by)]).length > 0 && (
+          <div className={styles.drawerMeta}>
+            <span className={styles.metaLabel}>Поставили проблему</span>
+            {(Array.isArray(item.articulated_by)
+              ? (item.articulated_by as string[])
+              : [String(item.articulated_by)]
+            ).map((ab) => (
+              <span key={ab} className={styles.metaTag}>{articulatedByLabel(ab)}</span>
+            ))}
+          </div>
+        )}
+        {/* Legacy string sources */}
+        {legacySources.length > 0 && structuredSources.length === 0 && (
           <>
             <div className={styles.drawerSourcesLabel}>Источники</div>
             <div className={styles.drawerSources}>
-              {sources.map((src, i) =>
+              {legacySources.map((src, i) =>
                 src.url ? (
                   <a
                     key={i}
@@ -824,6 +834,20 @@ function EventDrawerContent({
           </>
         )}
       </div>
+      {/* Per-record structured sources at bottom of drawer */}
+      {structuredSources.length > 0 && (
+        <div className={styles.drawerSources2}>
+          <div className={styles.drawerSourcesLabel2}>Источники</div>
+          {(showAllSources ? structuredSources : structuredSources.slice(0, 3)).map((s, i) => (
+            <SourceItem key={s.url ?? i} source={s} />
+          ))}
+          {!showAllSources && structuredSources.length > 3 && (
+            <button className={styles.drawerMoreSources} onClick={() => setShowAllSources(true)}>
+              ещё {structuredSources.length - 3}
+            </button>
+          )}
+        </div>
+      )}
     </>
   )
 }
@@ -932,9 +956,37 @@ function TermsTab({ mapping }: { mapping: Record<string, string> }) {
 // Tab 1: Jurisdiction tab
 // ──────────────────────────────────────────────────────────────
 
+function BlockSourcesSection({
+  sources,
+  fieldKey,
+  open,
+}: {
+  sources: SourceCitation[]
+  fieldKey: string
+  open: boolean
+}) {
+  const blockSources = sources.filter(s => s.field === fieldKey)
+  if (blockSources.length === 0 || !open) return null
+  return (
+    <div className={styles.blockSourcesList}>
+      <div className={styles.blockSourcesLabelRow}>
+        <span className={styles.blockSourcesLabel}>Источники блока</span>
+        <span className={styles.blockSourcesCount}>{blockSources.length}</span>
+      </div>
+      {blockSources.map((s, i) => <SourceItem key={s.url ?? i} source={s} />)}
+    </div>
+  )
+}
+
 function JurisdictionTab({ data }: { data: JurisdictionCard }) {
   const navigate = useNavigate()
+  const [authorityExpanded, setAuthorityExpanded] = useState(false)
+  const [archSourcesOpen, setArchSourcesOpen] = useState(false)
+  const [regSourcesOpen, setRegSourcesOpen] = useState(false)
   const hasArch = Boolean(data.admission_architecture_ru || data.admission_architecture)
+  const cardSources: SourceCitation[] = data.sources ?? []
+  const archSourceCount = cardSources.filter(s => s.field === 'architecture').length
+  const regSourceCount = cardSources.filter(s => s.field === 'regulator').length
 
   return (
     <>
@@ -945,6 +997,11 @@ function JurisdictionTab({ data }: { data: JurisdictionCard }) {
         <div className={styles.card}>
           <div className={styles.cardHd}>
             <span className={styles.cardTitle}>Архитектура допуска</span>
+            {archSourceCount > 0 && (
+              <button className={styles.srcBtn} onClick={() => setArchSourcesOpen(o => !o)}>
+                {archSourcesOpen ? 'свернуть ↑' : `${pluralSourcesN(archSourceCount)} ↓`}
+              </button>
+            )}
           </div>
 
           <div className={styles.cardBody}>
@@ -969,25 +1026,36 @@ function JurisdictionTab({ data }: { data: JurisdictionCard }) {
             <>
               <div className={styles.cardDivider} />
               <div className={styles.regulatorStrip}>
-                <span className={styles.regulatorLabel}>Регулятор</span>
+                <div className={styles.regulatorRow} style={{ justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className={styles.regulatorLabel}>Регулятор</span>
+                  {regSourceCount > 0 && (
+                    <button className={styles.srcBtn} onClick={() => setRegSourcesOpen(o => !o)}>
+                      {regSourcesOpen ? 'свернуть ↑' : `${pluralSourcesN(regSourceCount)} ↓`}
+                    </button>
+                  )}
+                </div>
                 {data.regulator_name && (
                   <span className={styles.regulatorName}>{data.regulator_name}</span>
                 )}
                 {data.regulator_type && (
                   <span className={styles.metaBadge}>{data.regulator_type}</span>
                 )}
-                {data.listing_authority && (
+                {(data.listing_authority_short || data.listing_authority) && (
                   <div className={styles.regulatorRow}>
                     <span className={styles.regulatorLabel}>Орган листинга</span>
-                    <span
-                      className={styles.regulatorName}
-                      title={data.listing_authority}
-                      style={{ maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'inline-block', verticalAlign: 'middle' }}
-                    >
-                      {data.listing_authority.length > 60
-                        ? data.listing_authority.slice(0, 60) + '…'
-                        : data.listing_authority}
-                    </span>
+                    {data.listing_authority_short ? (
+                      <>
+                        <span className={styles.regName}>{data.listing_authority_short}</span>
+                        <button
+                          className={styles.regExpand}
+                          onClick={() => setAuthorityExpanded(e => !e)}
+                        >
+                          {authorityExpanded ? 'свернуть ↑' : 'подробнее ↓'}
+                        </button>
+                      </>
+                    ) : (
+                      <span className={styles.regulatorName}>{data.listing_authority}</span>
+                    )}
                   </div>
                 )}
                 {data.legal_family && (
@@ -1004,6 +1072,9 @@ function JurisdictionTab({ data }: { data: JurisdictionCard }) {
                   </div>
                 )}
               </div>
+              {authorityExpanded && data.listing_authority && (
+                <div className={styles.regFull}>{data.listing_authority}</div>
+              )}
             </>
           )}
 
@@ -1017,6 +1088,9 @@ function JurisdictionTab({ data }: { data: JurisdictionCard }) {
               </div>
             </>
           )}
+
+          <BlockSourcesSection sources={cardSources} fieldKey="architecture" open={archSourcesOpen} />
+          <BlockSourcesSection sources={cardSources} fieldKey="regulator" open={regSourcesOpen} />
         </div>
 
         {/* Right column: Venues */}
@@ -1109,26 +1183,34 @@ function JurisdictionTab({ data }: { data: JurisdictionCard }) {
 // Sources tab
 // ──────────────────────────────────────────────────────────────
 
+const SOURCE_TYPES = [
+  { key: null, label: 'Все' },
+  { key: 'legislation', label: 'Законодательство' },
+  { key: 'rulebook', label: 'Правила биржи' },
+  { key: 'government', label: 'Регулятор' },
+  { key: 'consultation', label: 'Консультация' },
+  { key: 'research', label: 'Исследование' },
+]
+
 function SourcesTab({ sources }: { sources: SourceCitation[] }) {
   const [search, setSearch] = useState('')
   const [showAll, setShowAll] = useState(false)
+  const [activeType, setActiveType] = useState<string | null>(null)
   const INITIAL_SHOW = 15
 
-  const filtered = sources.filter(s => {
-    if (!search) return true
-    const q = search.toLowerCase()
-    return (s.title || '').toLowerCase().includes(q) || s.url.toLowerCase().includes(q)
-  })
+  const filtered = sources
+    .filter(s => activeType === null || s.type === activeType)
+    .filter(s => {
+      if (!search) return true
+      const q = search.toLowerCase()
+      return (s.title || '').toLowerCase().includes(q) || (s.url ?? '').toLowerCase().includes(q)
+    })
 
-  const displayed = showAll ? filtered : filtered.slice(0, INITIAL_SHOW)
-
-  function getHostname(url: string): string {
-    try { return new URL(url).hostname } catch { return url }
-  }
+  const visible = showAll ? filtered : filtered.slice(0, INITIAL_SHOW)
 
   return (
     <div className={styles.sourcesTab}>
-      {/* Search and controls */}
+      {/* Search */}
       <div className={styles.sourcesTabHeader}>
         <div className={styles.sourcesSearch}>
           <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1142,30 +1224,27 @@ function SourcesTab({ sources }: { sources: SourceCitation[] }) {
             onChange={e => { setSearch(e.target.value); setShowAll(false) }}
           />
         </div>
-        <div className={styles.sourcesTypeFilter}>
-          <span className={styles.sourcesFilterNote}>Фильтр по типу · появится позже</span>
-        </div>
       </div>
 
-      {/* Source list */}
+      {/* Type filter chips */}
+      <div className={styles.typeFilters}>
+        {SOURCE_TYPES.map(({ key, label }) => (
+          <button
+            key={String(key)}
+            className={[styles.typeChip, activeType === key ? styles.typeChipActive : ''].filter(Boolean).join(' ')}
+            onClick={() => { setActiveType(key); setShowAll(false) }}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {/* Source list using SourceItem */}
       <div className={styles.sourcesListCard}>
-        {displayed.length === 0 ? (
+        {visible.length === 0 ? (
           <div className={styles.sourcesEmpty}>Ничего не найдено</div>
         ) : (
-          displayed.map((s, i) => (
-            <div key={s.url} className={styles.sourceItemRow}>
-              <span className={styles.srcRowNum}>{i + 1}</span>
-              <span className={styles.srcRowTitle}>{s.title || getHostname(s.url)}</span>
-              <a
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.srcRowLink}
-              >
-                {getHostname(s.url)} ↗
-              </a>
-            </div>
-          ))
+          visible.map((s, i) => <SourceItem key={s.url ?? i} source={s} />)
         )}
       </div>
 
@@ -1173,7 +1252,7 @@ function SourcesTab({ sources }: { sources: SourceCitation[] }) {
       {filtered.length > INITIAL_SHOW && (
         <div className={styles.sourcesShowMore}>
           <span className={styles.sourcesCount}>
-            показано {displayed.length} из {filtered.length}
+            показано {visible.length} из {filtered.length}
           </span>
           {!showAll && (
             <button className={styles.showAllBtn} onClick={() => setShowAll(true)}>
@@ -1198,14 +1277,14 @@ function L4SourcesSection({ sources }: { sources: SourceCitation[] }) {
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
         {shown.map((src, i) => {
-          const label = src.title || (() => { try { return new URL(src.url).hostname } catch { return src.url } })()
+          const label = src.title || (() => { try { return new URL(src.url ?? '').hostname } catch { return src.url ?? '' } })()
           return (
             <div key={i} style={{ display: 'flex', alignItems: 'baseline', gap: '10px', fontSize: '12.5px' }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-muted)', width: '20px', textAlign: 'right', flexShrink: 0 }}>{i + 1}</span>
               <span style={{ flex: 1, color: 'var(--text-secondary)' }}>{label}</span>
-              <a href={src.url} target="_blank" rel="noopener noreferrer"
+              <a href={src.url ?? '#'} target="_blank" rel="noopener noreferrer"
                 style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--accent)', whiteSpace: 'nowrap', flexShrink: 0 }}>
-                {(() => { try { return new URL(src.url).hostname } catch { return '↗' } })()} ↗
+                {(() => { try { return new URL(src.url ?? '').hostname } catch { return '↗' } })()} ↗
               </a>
             </div>
           )

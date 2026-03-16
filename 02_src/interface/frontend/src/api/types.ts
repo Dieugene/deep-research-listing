@@ -6,9 +6,11 @@ export type ValidationStatus = 'green' | 'yellow' | 'red' | 'unknown'
 export type MatrixCellStatus = 'filled' | 'not_filled' | 'not_applicable'
 
 export interface SourceCitation {
-  url: string
+  url?: string | null
   title: string
   field?: string
+  type?: string | null
+  excerpts?: string[]
 }
 
 // ---- Jurisdictions ----
@@ -37,8 +39,12 @@ export interface VenueInJurisdiction {
 export interface Level4Item {
   description_ru?: string
   description?: string
+  label?: string
   period?: string
   year?: string
+  type?: string
+  articulated_by?: string[]
+  sources?: SourceCitation[]
   source?: string
   [key: string]: unknown
 }
@@ -61,6 +67,7 @@ export interface JurisdictionCard {
   admission_architecture: string | null
   admission_architecture_ru: string | null
   listing_authority: string | null
+  listing_authority_short: string | null
   iso_code: string | null
   data_status: string
   market_types: string[]
@@ -77,9 +84,9 @@ export interface JurisdictionCard {
 // ---- Venues ----
 
 export interface ParamPill {
-  code: string    // e.g. "П01"
-  label: string   // parameter label
-  value: string   // actual value
+  param_id: string    // e.g. "П01"
+  label: string       // parameter label
+  value_short: string // actual value
 }
 
 export interface CellInVenue {
@@ -188,6 +195,7 @@ export interface ParameterValue {
   status_label: string
   drill_down_applied: boolean
   note: string | null
+  section_keys: string[]
 }
 
 export interface CellParameters {

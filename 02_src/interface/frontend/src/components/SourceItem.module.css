@@ -1,0 +1,28 @@
+/* Source row */
+.srcBlock { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 6px; }
+.srcHd { display: flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--bg2); transition: background 0.1s; }
+.srcHd.clickable { cursor: pointer; }
+.srcHd.clickable:hover { background: var(--bg3); }
+
+/* Type badge */
+.typeBadge { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.05em; text-transform: uppercase; padding: 1px 6px; border-radius: 3px; flex-shrink: 0; border: 1px solid; white-space: nowrap; }
+.tLegislation { background: #EFF6FF; color: #1D4ED8; border-color: #BFDBFE; }
+.tRulebook { background: #F5F3FF; color: #6D28D9; border-color: #DDD6FE; }
+.tGovernment { background: rgba(5,150,105,0.07); color: #059669; border-color: rgba(5,150,105,0.2); }
+.tConsultation { background: rgba(217,119,6,0.06); color: #D97706; border-color: rgba(217,119,6,0.2); }
+.tResearch { background: #FDF4FF; color: #7C3AED; border-color: #E9D5FF; }
+.tOther { background: var(--bg3); color: var(--text-dim); border-color: var(--border2); }
+
+/* Title and link */
+.srcTitle { font-size: 13px; color: var(--text-mid); flex: 1; line-height: 1.4; }
+.srcLink { font-family: var(--font-mono); font-size: 10.5px; color: var(--accent); white-space: nowrap; flex-shrink: 0; text-decoration: none; }
+.srcLink:hover { text-decoration: underline; }
+
+/* Excerpt toggle button */
+.excerptToggle { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); background: var(--bg3); border: 1px solid var(--border2); border-radius: 4px; padding: 2px 7px; flex-shrink: 0; cursor: pointer; white-space: nowrap; }
+
+/* Excerpts panel */
+.excerpts { background: #FAFBFF; border-top: 1px solid var(--border); padding: 0; }
+.excerptItem { padding: 10px 14px 10px 26px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--text-mid); line-height: 1.65; font-family: var(--font-serif); font-style: italic; position: relative; }
+.excerptItem:last-child { border-bottom: none; }
+.excerptItem::before { content: '\201C'; position: absolute; left: 10px; top: 8px; font-size: 20px; color: var(--border2); font-family: var(--font-serif); line-height: 1; }

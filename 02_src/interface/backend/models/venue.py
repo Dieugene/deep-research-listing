@@ -10,9 +10,9 @@ class ParamPill(BaseModel):
     """A compact parameter display pill for the venue card UI."""
     model_config = ConfigDict(populate_by_name=True)
 
-    code: str    # param_id, e.g. "П01"
-    label: str   # param_label_ru or param_label
-    value: str   # actual value string
+    param_id: str    # e.g. "П01"
+    label: str       # param_label_ru or param_label
+    value_short: str # actual value string, max 40 chars
 
 
 class CellInVenue(BaseModel):

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useSearchParams, useNavigate, Link } from 'react-router-dom'
 import { fetchVenue } from '../api/venues'
-import type { VenueCard, CellInVenue, ParamPill } from '../api/types'
+import type { VenueCard, CellInVenue, ParamPill, SourceCitation } from '../api/types'
 import styles from './VenuePage.module.css'
+import SourceItem from '../components/SourceItem'
 
 // ──────────────────────────────────────────────────────────────
 // Constants
@@ -28,19 +29,9 @@ const LISTING_ARCHITECTURE_LABELS: Record<string, string> = {
   merged: 'Единая',
 }
 
-const SOURCES_INITIAL_COUNT = 5
-
 // ──────────────────────────────────────────────────────────────
 // Helpers
 // ──────────────────────────────────────────────────────────────
-
-function getHostname(url: string): string {
-  try {
-    return new URL(url).hostname.replace(/^www\./, '')
-  } catch {
-    return url
-  }
-}
 
 function venueTypeRu(key: string): string {
   return VENUE_TYPE_LABELS[key] ?? key
@@ -143,9 +134,9 @@ interface ParamPillItemProps {
 function ParamPillItem({ pill }: ParamPillItemProps) {
   return (
     <div className={styles.tcPill}>
-      <span className={styles.tcPillCode}>{pill.code}</span>
+      <span className={styles.tcPillCode}>{pill.param_id}</span>
       <span className={styles.tcPillName}>{pill.label}:</span>
-      <span className={styles.tcPillVal}>{pill.value}</span>
+      <span className={styles.tcPillVal}>{pill.value_short}</span>
     </div>
   )
 }
@@ -236,60 +227,25 @@ function ModeCard({ cell, venueKey }: ModeCardProps) {
 }
 
 // ──────────────────────────────────────────────────────────────
-// SourcesSection
+// VenueSourcesSection
 // ──────────────────────────────────────────────────────────────
 
-interface SourceItem {
-  url: string
-  title: string
-  field?: string
-}
-
-interface SourcesSectionProps {
-  sources: SourceItem[]
-}
-
-function SourcesSection({ sources }: SourcesSectionProps) {
-  const [expanded, setExpanded] = useState(false)
-
-  if (!sources.length) return null
-
-  const visible = expanded ? sources : sources.slice(0, SOURCES_INITIAL_COUNT)
-  const hiddenCount = sources.length - SOURCES_INITIAL_COUNT
-
+function VenueSourcesSection({ sources }: { sources: SourceCitation[] }) {
+  const [showAll, setShowAll] = useState(false)
+  const INITIAL = 10
+  const visible = showAll ? sources : sources.slice(0, INITIAL)
   return (
-    <section className={styles.sourcesSection}>
-      <div className={styles.sourcesSectionTitle}>Источники</div>
-      <div className={styles.sourcesList}>
-        {visible.map((src, i) => {
-          const hostname = getHostname(src.url)
-          const label = src.title || hostname
-          return (
-            <div key={i} className={styles.sourceItem}>
-              <span className={styles.sourceNum}>{i + 1}</span>
-              <span className={styles.sourceTitle}>{label}</span>
-              <a
-                href={src.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.sourceLink}
-                onClick={e => e.stopPropagation()}
-              >
-                {hostname} ↗
-              </a>
-            </div>
-          )
-        })}
-      </div>
-      {!expanded && hiddenCount > 0 && (
-        <button
-          className={styles.showMoreBtn}
-          onClick={() => setExpanded(true)}
-        >
-          Показать ещё {hiddenCount}
+    <div className={styles.sourcesSection}>
+      <div className={styles.sourcesSectionTitle}>Источники площадки</div>
+      {visible.map((s, i) => (
+        <SourceItem key={s.url ?? i} source={s} />
+      ))}
+      {!showAll && sources.length > INITIAL && (
+        <button className={styles.showMoreBtn} onClick={() => setShowAll(true)}>
+          показать все {sources.length}
         </button>
       )}
-    </section>
+    </div>
   )
 }
 
@@ -489,7 +445,7 @@ export default function VenuePage() {
 
       {/* ── Sources ───────────────────────────────────────── */}
       {data.sources && data.sources.length > 0 && (
-        <SourcesSection sources={data.sources} />
+        <VenueSourcesSection sources={data.sources} />
       )}
     </div>
   )

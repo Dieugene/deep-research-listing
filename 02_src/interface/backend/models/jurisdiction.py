@@ -53,6 +53,7 @@ class JurisdictionCard(BaseModel):
     admission_architecture: str | None
     admission_architecture_ru: str | None
     listing_authority: str | None
+    listing_authority_short: str | None = None
     iso_code: str | None = None           # ISO 3166-1 alpha-2, e.g. "GB", "HK"
     data_status: str = "empty"            # "full" | "partial" | "empty"
     market_types: list[str]

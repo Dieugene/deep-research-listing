@@ -9,9 +9,19 @@ import type {
   MatrixView,
   ContentSection,
   ParameterValue,
-  SourceCitation,
 } from '../api/types'
 import styles from './CellDetailPage.module.css'
+import SourceBlock from '../components/SourceBlock'
+
+// ──────────────────────────────────────────────────────────────
+// Phase display config
+// ──────────────────────────────────────────────────────────────
+
+const DISPLAY_PHASES = [
+  { key: 'admission', label: 'Допуск' },
+  { key: 'maintenance', label: 'Поддержание' },
+  { key: 'delisting', label: 'Исключение' },
+]
 
 // ──────────────────────────────────────────────────────────────
 // Helpers
@@ -33,46 +43,14 @@ interface ParsedSource {
   title?: string
 }
 
-function parseSrcString(source: string): ParsedSource[] {
-  return source
-    .split(';')
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .map((fragment) => {
-      if (fragment.includes('http')) {
-        return { url: fragment }
-      }
-      return { text: fragment }
-    })
-}
-
-function getSources(section: ContentSection): ParsedSource[] {
-  if (section.citations && section.citations.length > 0) {
-    return section.citations.map((c: SourceCitation) => ({
-      url: c.url || undefined,
-      text: c.title || undefined,
-      title: c.title || undefined,
-    }))
-  }
-  if (section.source) {
-    return parseSrcString(section.source)
-  }
-  return []
-}
-
 function phaseColor(phaseKey: string): string {
-  switch (phaseKey) {
-    case 'admission':
-      return '#3B82F6'
-    case 'continuing':
-      return '#10B981'
-    case 'suspension':
-      return '#F59E0B'
-    case 'delisting':
-      return '#F87171'
-    default:
-      return '#9CA3AF'
+  const colors: Record<string, string> = {
+    admission: '#3B82F6',    // blue
+    maintenance: '#10B981',  // green
+    delisting: '#F87171',    // red
+    enforcement: '#94A3B8',  // slate (matrix only)
   }
+  return colors[phaseKey] ?? '#9CA3AF'
 }
 
 // ──────────────────────────────────────────────────────────────
@@ -113,27 +91,16 @@ function ValidationBadge({ status }: ValidationBadgeProps) {
 
 interface SectionCardProps {
   section: ContentSection
-  onOpenDrawer: (sources: ParsedSource[]) => void
+  parameters?: ParameterValue[]
 }
 
-function SectionCard({ section, onOpenDrawer }: SectionCardProps) {
-  const [expanded, setExpanded] = useState(false)
-
-  const allSources = getSources(section)
-  const sourcesCount = allSources.length
-  const displayedSources = expanded ? allSources : allSources.slice(0, 3)
-
+function SectionCard({ section, parameters }: SectionCardProps) {
   const paragraphs = section.text.split('\n\n').filter(Boolean)
 
   return (
     <div className={styles.sectionCard}>
       <div className={styles.sectionCardHd}>
         <span className={styles.sectionCardTitle}>{section.section_label}</span>
-        {sourcesCount > 0 && (
-          <button className={styles.srcBtn} onClick={() => onOpenDrawer(allSources)}>
-            {sourcesCount} источника(ов)
-          </button>
-        )}
       </div>
 
       <div className={styles.sectionCardBody}>
@@ -142,36 +109,23 @@ function SectionCard({ section, onOpenDrawer }: SectionCardProps) {
         ))}
       </div>
 
-      {sourcesCount > 0 && (
-        <div className={styles.sourcesFooter}>
-          {displayedSources.map((src, i) => (
-            <div className={styles.sourceRow} key={i}>
-              <span className={styles.srcNum}>{i + 1}</span>
-              <span className={styles.srcTxt}>
-                {src.url ? (
-                  <a
-                    className={styles.srcLnk}
-                    href={src.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {src.title || getHostname(src.url)} ↗
-                  </a>
-                ) : (
-                  src.text
-                )}
-              </span>
+      {parameters && parameters.length > 0 && (
+        <div className={styles.paramsStrip}>
+          {parameters.map((p) => (
+            <div key={p.parameter_id} className={styles.paramChip}>
+              <span className={styles.paramCode}>{p.parameter_id}</span>
+              <span>{p.parameter_name}</span>
+              <span className={styles.paramVal}>{p.value}</span>
             </div>
           ))}
-          {allSources.length > 3 && (
-            <button
-              className={styles.srcExpandBtn}
-              onClick={() => setExpanded((prev) => !prev)}
-            >
-              {expanded ? '↑ Свернуть' : `Показать ещё ${allSources.length - 3}`}
-            </button>
-          )}
         </div>
+      )}
+
+      {section.citations && section.citations.length > 0 && (
+        <SourceBlock
+          sources={section.citations}
+          blockId={`section-${section.section_key}`}
+        />
       )}
     </div>
   )
@@ -399,16 +353,10 @@ export default function CellDetailPage() {
         setCellParameters(params)
         setMatrixData(matrix)
 
-        // Determine active phase
+        // Determine active phase — always use one of the 3 DISPLAY_PHASES keys
         const requestedPhase = phaseParam
-        const firstWithData = content.phases.find((p) => p.has_data)
-        const defaultKey =
-          (requestedPhase && content.phases.some((p) => p.phase_key === requestedPhase)
-            ? requestedPhase
-            : null) ??
-          firstWithData?.phase_key ??
-          content.phases[0]?.phase_key ??
-          'admission'
+        const validDisplayKey = DISPLAY_PHASES.some((dp) => dp.key === requestedPhase)
+        const defaultKey = validDisplayKey ? requestedPhase : 'admission'
         setActivePhaseKey(defaultKey)
       })
       .catch((e: Error) => {
@@ -507,8 +455,6 @@ export default function CellDetailPage() {
   // Find cell metadata from venue
   const cellMeta = venue.cells.find((c) => c.cell_id === cellId)
 
-  const activePhaseContent = cellContent.phases.find((p) => p.phase_key === activePhaseKey) ?? cellContent.phases[0]
-
   return (
     <div className={styles.page}>
       {/* Breadcrumb */}
@@ -553,44 +499,54 @@ export default function CellDetailPage() {
       {viewMode === 'tabs' && (
         <>
           <div className={styles.phaseTabs}>
-            {cellContent.phases
-              .filter((p) => p.phase_key !== 'enforcement')
-              .map((p) => {
-                const label = p.phase_key === 'maintenance' ? 'После допуска' : p.phase_label
-                return (
-                  <button
-                    key={p.phase_key}
-                    className={`${styles.phaseTab} ${p.phase_key === activePhaseKey ? styles.phaseTabActive : ''}`}
-                    onClick={() => handlePhaseChange(p.phase_key)}
-                  >
-                    <span
-                      className={styles.ptDot}
-                      style={{ background: phaseColor(p.phase_key) }}
-                    />
-                    {label}
-                  </button>
-                )
-              })}
+            {DISPLAY_PHASES.map((dp) => (
+              <button
+                key={dp.key}
+                className={`${styles.phaseTab} ${dp.key === activePhaseKey ? styles.phaseTabActive : ''}`}
+                onClick={() => handlePhaseChange(dp.key)}
+              >
+                <span
+                  className={styles.ptDot}
+                  style={{ background: phaseColor(dp.key) }}
+                />
+                {dp.label}
+              </button>
+            ))}
           </div>
 
-          {activePhaseContent ? (
-            !activePhaseContent.has_data ? (
-              <div className={styles.emptyPhase}>Данные в работе</div>
-            ) : (
+          {(() => {
+            const activePhaseContent = cellContent.phases.find(
+              (p) => p.phase_key === activePhaseKey,
+            )
+            if (!activePhaseContent) {
+              const phaseLabel =
+                DISPLAY_PHASES.find((dp) => dp.key === activePhaseKey)?.label ?? activePhaseKey
+              return (
+                <div className={styles.emptyPhase}>
+                  Данные по фазе «{phaseLabel}» не извлечены
+                </div>
+              )
+            }
+            if (!activePhaseContent.has_data) {
+              return <div className={styles.emptyPhase}>Данные в работе</div>
+            }
+            return (
               <>
-                {activePhaseContent.sections.map((section) => (
-                  <SectionCard
-                    key={section.section_key}
-                    section={section}
-                    onOpenDrawer={(sources) => setDrawerSources(sources)}
-                  />
-                ))}
-                <ParamStrip phase={activePhaseKey} parameters={cellParameters} />
+                {activePhaseContent.sections.map((s) => {
+                  const sectionParams = (cellParameters?.parameters ?? []).filter(
+                    (p) => p.status === 'found' && p.section_keys?.includes(s.section_key),
+                  )
+                  return (
+                    <SectionCard
+                      key={s.section_key}
+                      section={s}
+                      parameters={sectionParams}
+                    />
+                  )
+                })}
               </>
             )
-          ) : (
-            <div className={styles.emptyPhase}>Фаза не найдена</div>
-          )}
+          })()}
         </>
       )}
 

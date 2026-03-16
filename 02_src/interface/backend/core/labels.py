@@ -14,13 +14,17 @@ VENUE_TYPE_LABELS: dict[str, str] = {
     "regulated_market": "Regulated Market",
     "MTF": "MTF",
     "OTF": "OTF",
+    "mtf": "MTF",
+    "otf": "OTF",
+    "exchange_regulated": "Exchange-Regulated",
 }
 
 LIFECYCLE_PHASE_LABELS: dict[str, str] = {
-    "admission": "Первичный допуск",
-    "continuing": "Поддержание листинга",
+    "admission": "Допуск",
+    "continuing": "Поддержание",
+    "maintenance": "Поддержание",
     "suspension": "Приостановка",
-    "delisting": "Исключение из списка",
+    "delisting": "Исключение",
     "multiple": "Общие требования",
 }
 

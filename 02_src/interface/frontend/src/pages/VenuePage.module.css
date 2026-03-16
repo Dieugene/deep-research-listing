@@ -540,19 +540,17 @@
 }
 
 .showMoreBtn {
-  margin-top: 10px;
   font-family: var(--font-mono, 'IBM Plex Mono', monospace);
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--vp-accent);
-  background: var(--vp-accent-bg);
-  border: 1px solid rgba(37,99,235,0.2);
-  border-radius: 5px;
-  padding: 5px 14px;
+  background: none;
+  border: none;
   cursor: pointer;
+  padding: 8px 0;
 }
 
 .showMoreBtn:hover {
-  background: rgba(37,99,235,0.1);
+  text-decoration: underline;
 }
 
 /* ── Empty states ───────────────────────────────────────────── */
