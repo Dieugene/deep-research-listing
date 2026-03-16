@@ -166,21 +166,98 @@ function ParamStrip({ phase, parameters }: ParamStripProps) {
 // MatrixViewPanel
 // ──────────────────────────────────────────────────────────────
 
-const MATRIX_COL_LABELS: Record<string, string> = {
-  requirements: 'Требования',
-  procedures: 'Процедуры',
-  monitoring: 'Мониторинг и надзор',
-  sanctions: 'Санкции',
-  disclosure: 'Раскрытие информации',
+// Matrix row keys shown (exclude 'suspension')
+const MATRIX_DISPLAY_ROW_KEYS = new Set(['admission', 'continuing', 'delisting'])
+
+// Map matrix row_key → tab phase_key for click navigation
+const MATRIX_ROW_TO_TAB: Record<string, string> = {
+  admission: 'admission',
+  continuing: 'maintenance',
+  delisting: 'delisting',
+}
+
+// Section key patterns per matrix column — order matters: first match wins
+const COL_SECTION_PATTERNS: Record<string, string[]> = {
+  requirements: [
+    'eligibility_requirements',
+    'instrument_requirements',
+    'restrictions_and_lock_ups',
+    'special_regimes',
+    'continuing_obligations.quantitative_thresholds',
+    'continuing_obligations.qualitative_obligations',
+    'delisting_voluntary.conditions',
+    'delisting_compulsory.shareholder_protection',
+  ],
+  procedures: [
+    'procedure_and_timeline',
+    'admission_overview',
+    'sponsor_and_infrastructure',
+    'continuing_obligations.periodic_reporting',
+    'continuing_obligations.compliance_confirmation',
+    'delisting_voluntary.procedure',
+    'delisting_voluntary.shareholder_approval',
+    'delisting_compulsory.procedure',
+    'delisting_compulsory.grace_period',
+  ],
+  monitoring: [
+    'ongoing_disclosure',
+    'market_monitoring',
+    'delisting_compulsory.grounds',
+  ],
+  sanctions: [
+    'suspension_and_cancellation',
+    'sanctions',
+    'enforcement_actions',
+  ],
+  disclosure: [
+    'disclosure_at_admission',
+    'disclosure_obligations',
+    'delisting_compulsory.disclosure',
+  ],
+}
+
+/** Assigns each parameter to exactly one column per phase, in column order. */
+function buildPhaseColPills(
+  params: ParameterValue[],
+  phaseKey: string,
+  colOrder: string[],
+): Map<string, ParameterValue[]> {
+  const colMap = new Map<string, ParameterValue[]>()
+  colOrder.forEach((c) => colMap.set(c, []))
+
+  const phaseParams = params.filter(
+    (p) =>
+      (p.lifecycle_phase_key === phaseKey || p.lifecycle_phase_key === 'multiple') &&
+      p.status === 'found',
+  )
+
+  const assigned = new Set<string>()
+
+  for (const colKey of colOrder) {
+    const patterns = COL_SECTION_PATTERNS[colKey] ?? []
+    for (const param of phaseParams) {
+      const pid = `${param.parameter_id}|${param.lifecycle_phase_key}`
+      if (assigned.has(pid)) continue
+      if (param.section_keys?.some((sk) => patterns.includes(sk))) {
+        colMap.get(colKey)!.push(param)
+        assigned.add(pid)
+      }
+    }
+  }
+
+  return colMap
 }
 
 interface MatrixViewPanelProps {
   matrix: MatrixView
-  onCellClick: (phaseKey: string) => void
+  cellParameters: CellParameters | null
+  onCellClick: (tabPhaseKey: string) => void
 }
 
-function MatrixViewPanel({ matrix, onCellClick }: MatrixViewPanelProps) {
-  const allCols = matrix.rows.length > 0 ? matrix.rows[0].columns : []
+function MatrixViewPanel({ matrix, cellParameters, onCellClick }: MatrixViewPanelProps) {
+  const displayRows = matrix.rows.filter((r) => MATRIX_DISPLAY_ROW_KEYS.has(r.row_key))
+  const allCols = displayRows.length > 0 ? displayRows[0].columns : []
+  const colOrder = allCols.map((c) => c.col_key)
 
   return (
     <div className={styles.matrixWrap}>
@@ -189,53 +266,80 @@ function MatrixViewPanel({ matrix, onCellClick }: MatrixViewPanelProps) {
           <tr>
             <th>Фаза</th>
             {allCols.map((col) => (
-              <th key={col.col_key}>
-                {MATRIX_COL_LABELS[col.col_key] ?? col.col_label}
-              </th>
+              <th key={col.col_key}>{col.col_label}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {matrix.rows.map((row) => (
-            <tr key={row.row_key}>
-              <td className={styles.mxPhaseLabel}>
-                <span className={styles.mxPhaseName}>{row.row_label}</span>
-              </td>
-              {row.columns.map((col) => {
-                if (col.status === 'not_applicable') {
-                  return (
-                    <td key={col.col_key} className={styles.mxCellNa}>
-                      <span className={styles.mxNaLabel}>—</span>
-                    </td>
-                  )
-                }
-                if (col.status === 'filled') {
-                  return (
-                    <td
-                      key={col.col_key}
-                      className={styles.mxCell}
-                      onClick={() => onCellClick(row.row_key)}
-                    >
-                      <div className={styles.mxPills}>
-                        <div className={styles.mxPill}>
-                          <span className={styles.mxPillCode}>{col.col_key}</span>
-                          <span className={styles.mxPillVal}>
-                            {col.text_volume > 0
-                              ? `${col.text_volume.toLocaleString('ru-RU')} симв.`
-                              : MATRIX_COL_LABELS[col.col_key] ?? col.col_label}
-                          </span>
+          {displayRows.map((row) => {
+            const colPills = cellParameters
+              ? buildPhaseColPills(cellParameters.parameters, row.row_key, colOrder)
+              : null
+
+            return (
+              <tr key={row.row_key}>
+                <td className={styles.mxPhaseLabel}>
+                  <span className={styles.mxPhaseName}>{row.row_label}</span>
+                </td>
+                {row.columns.map((col) => {
+                  const tabKey = MATRIX_ROW_TO_TAB[row.row_key] ?? row.row_key
+
+                  if (col.status === 'not_applicable') {
+                    return (
+                      <td key={col.col_key} className={styles.mxCellNa}>
+                        <span className={styles.mxNaLabel}>—</span>
+                      </td>
+                    )
+                  }
+
+                  if (col.status === 'filled') {
+                    const pills = (colPills?.get(col.col_key) ?? []).slice(0, 3)
+                    return (
+                      <td
+                        key={col.col_key}
+                        className={styles.mxCell}
+                        onClick={() => onCellClick(tabKey)}
+                      >
+                        <div className={styles.mxPills}>
+                          {pills.length > 0 ? (
+                            pills.map((p) => (
+                              <div key={`${p.parameter_id}|${p.lifecycle_phase_key}`} className={styles.mxPill}>
+                                <span className={styles.mxPillCode}>{p.parameter_id}</span>
+                                <span className={styles.mxPillVal}>{p.value}</span>
+                              </div>
+                            ))
+                          ) : (
+                            <div className={styles.mxPill}>
+                              <span className={styles.mxPillVal} style={{ color: 'var(--text-dim)', fontStyle: 'italic' }}>
+                                данные есть
+                              </span>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    </td>
-                  )
-                }
-                // not_filled
-                return <td key={col.col_key} />
-              })}
-            </tr>
-          ))}
+                      </td>
+                    )
+                  }
+
+                  // not_filled
+                  return <td key={col.col_key} />
+                })}
+              </tr>
+            )
+          })}
         </tbody>
       </table>
+
+      {/* Legend */}
+      <div className={styles.mxLegend}>
+        <span className={styles.mxLegendItem}>
+          <span className={styles.mxLegendDotFilled} />
+          Данные есть — кликните для просмотра
+        </span>
+        <span className={styles.mxLegendItem}>
+          <span className={styles.mxLegendDotNa} />
+          Не применимо
+        </span>
+      </div>
     </div>
   )
 }
@@ -553,7 +657,7 @@ export default function CellDetailPage() {
       {/* Matrix view */}
       {viewMode === 'matrix' && (
         matrixData ? (
-          <MatrixViewPanel matrix={matrixData} onCellClick={switchToPhase} />
+          <MatrixViewPanel matrix={matrixData} cellParameters={cellParameters} onCellClick={switchToPhase} />
         ) : (
           <div className={styles.emptyPhase}>Матрица недоступна</div>
         )
