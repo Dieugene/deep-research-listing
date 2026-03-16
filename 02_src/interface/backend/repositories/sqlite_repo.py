@@ -48,9 +48,20 @@ from models.parameter import (
     ParameterSummary,
     ParameterValue,
 )
-from models.venue import CellInVenue, VenueCard
+from models.venue import CellInVenue, ParamPill, VenueCard
 
 logger = logging.getLogger(__name__)
+
+
+def _normalize_sources(data: dict) -> list[dict] | None:
+    """Normalizes source/sources field: returns list or None."""
+    sources = data.get("sources")
+    if isinstance(sources, list):
+        return sources
+    source_str = data.get("source")
+    if isinstance(source_str, str) and source_str.strip():
+        return [{"url": source_str, "title": source_str, "field": "", "excerpts": []}]
+    return None
 
 
 class SQLiteDataRepository:
@@ -150,6 +161,41 @@ class SQLiteDataRepository:
         if all(s == "green" for s in statuses):
             return "green"
         return "unknown"
+
+    def _get_cell_param_pills(
+        self, name_ru: str, venue_key: str, cell_id: str
+    ) -> tuple[list[ParamPill], list[ParamPill], list[ParamPill]]:
+        pass2 = self._load_pass2(name_ru, venue_key, cell_id)
+        if not pass2:
+            return [], [], []
+
+        params = pass2.get("parameter_values", [])
+        if not params and "parameters" in pass2:
+            params = pass2["parameters"]
+
+        adm: list[ParamPill] = []
+        maint: list[ParamPill] = []
+        enf: list[ParamPill] = []
+
+        for p in params:
+            status = p.get("status", p.get("validation_status", ""))
+            if status not in ("found", "Найдено", "extracted"):
+                continue
+            phase = p.get("lifecycle_phase_key", p.get("lifecycle_phase", p.get("phase", "")))
+            code = str(p.get("param_id", p.get("parameter_id", p.get("id", ""))))
+            label = str(p.get("param_label_ru", p.get("param_label", p.get("parameter_name", p.get("label", "")))))
+            value = str(p.get("value", p.get("param_value", "")))
+            if not value or value in ("N/A", "—", "-", "null", "None"):
+                continue
+            pill = ParamPill(param_id=code, label=label, value_short=value[:40])
+            if phase == "admission":
+                adm.append(pill)
+            elif phase == "continuing":
+                maint.append(pill)
+            elif phase in ("suspension", "delisting", "enforcement"):
+                enf.append(pill)
+
+        return adm[:3], maint[:3], enf[:3]
 
     def _find_jurisdiction_for_venue(self, venue_key: str) -> str | None:
         """Scan all jurisdiction names to find which one contains this venue_key."""
@@ -274,7 +320,7 @@ class SQLiteDataRepository:
                 parameters_as_tools=l4.get("parameters_as_tools", []),
                 reforms=l4.get("reforms", []),
                 validation_status=val_status,
-                sources=l4.get("sources"),
+                sources=_normalize_sources(l4),
             )
 
         venue_keys_for_status = self._list_venue_keys(name_ru)
@@ -298,6 +344,7 @@ class SQLiteDataRepository:
             admission_architecture=card.get("admission_architecture"),
             admission_architecture_ru=card.get("admission_architecture_ru"),
             listing_authority=card.get("listing_authority"),
+            listing_authority_short=card.get("listing_authority_short"),
             iso_code=JURISDICTION_ISO_CODES.get(name_ru),
             data_status=data_status,
             market_types=card.get("market_types", []),
@@ -306,7 +353,7 @@ class SQLiteDataRepository:
             supranational_framework=card.get("supranational_framework"),
             notes=card.get("notes"),
             notes_ru=card.get("notes_ru"),
-            sources=card.get("sources"),
+            sources=_normalize_sources(card),
             venues=venues_in_card,
             level4=level4_data,
         )
@@ -345,6 +392,7 @@ class SQLiteDataRepository:
             )
 
             val_status = self._cell_validation_status(name_ru, venue_key, cid)
+            p_adm, p_maint, p_enf = self._get_cell_param_pills(name_ru, venue_key, cid)
 
             cells_in_venue.append(
                 CellInVenue(
@@ -357,6 +405,9 @@ class SQLiteDataRepository:
                     has_enforcement_data=has_3c,
                     has_parameters=has_params,
                     validation_status=val_status,
+                    params_admission=p_adm,
+                    params_maintenance=p_maint,
+                    params_enforcement=p_enf,
                 )
             )
 
@@ -377,7 +428,7 @@ class SQLiteDataRepository:
             instrument_coverage=vc.get("instrument_coverage", []),
             notes=vc.get("notes"),
             notes_ru=vc.get("notes_ru"),
-            sources=vc.get("sources"),
+            sources=_normalize_sources(vc),
             cells=cells_in_venue,
         )
 
@@ -532,24 +583,31 @@ class SQLiteDataRepository:
             f"{name_ru}/level_3/{venue_key}/{cell_id}/3C_validation.json"
         )
 
+        citations_3a = raw_3a.get("citations", []) if raw_3a else []
+        citations_3b = raw_3b.get("citations", []) if raw_3b else []
+        citations_3c = raw_3c.get("citations", []) if raw_3c else []
+
         phases: list[PhaseContent] = [
             self._build_phase_content(
                 "admission",
                 "Первичный допуск",
                 raw_3a,
                 val_3a,
+                citations_3a,
             ),
             self._build_phase_content(
                 "maintenance",
                 "Поддержание, приостановка и исключение",
                 raw_3b,
                 val_3b,
+                citations_3b,
             ),
             self._build_phase_content(
                 "enforcement",
                 "Мониторинг и надзор",
                 raw_3c,
                 val_3c,
+                citations_3c,
             ),
         ]
 
@@ -568,6 +626,7 @@ class SQLiteDataRepository:
         phase_label: str,
         raw: dict | None,
         validation: dict | None,
+        raw_citations: list[dict] | None = None,
     ) -> PhaseContent:
         val_status = "unknown"
         if validation:
@@ -586,6 +645,7 @@ class SQLiteDataRepository:
             )
 
         content_dict = raw.get("content", {})
+        all_citations: list[dict] = raw_citations if raw_citations is not None else []
         sections: list[ContentSection] = []
 
         for key, value in content_dict.items():
@@ -601,12 +661,14 @@ class SQLiteDataRepository:
                 continue
             source = value.get("source") or None
             section_label = SECTION_LABELS.get(key, key)
+            section_citations = [c for c in all_citations if isinstance(c, dict) and c.get("field") == key]
             sections.append(
                 ContentSection(
                     section_key=key,
                     section_label=section_label,
                     text=description,
                     source=source,
+                    citations=section_citations,
                 )
             )
 
@@ -656,6 +718,7 @@ class SQLiteDataRepository:
                     status_label=self._param_status_label(status),
                     drill_down_applied=raw_p.get("drill_down_applied", False),
                     note=raw_p.get("note") or None,
+                    section_keys=raw_p.get("section_keys", []),
                 )
             )
 
