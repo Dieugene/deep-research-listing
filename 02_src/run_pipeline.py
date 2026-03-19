@@ -23,6 +23,7 @@ Options:
 import argparse
 import datetime
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -44,6 +45,7 @@ from pipeline.config import (
     PHASE2_STATE_FILE,
     SUPRANATIONAL_DIR,
     LLM_SMART_MODEL,
+    LLM_FAST_MODEL,
 )
 from pipeline.logging_setup import get_logger
 from pipeline.registry import load_jurisdictions, discover_all_venues
@@ -181,6 +183,28 @@ def run_level1(jurisdictions: list[dict]) -> None:
     logger.info("--- L1 Step 8: Postprocess ---")
     process_all_l1(jurisdictions=jurisdictions)
 
+    logger.info("--- L1 Step 9: Add citations ---")
+    from pipeline.sources import process_level1_citations
+    process_level1_citations(jurisdictions=[j["name_ru"] for j in jurisdictions])
+
+    logger.info("--- L1 Step 10: Normalize L1 fields ---")
+    from pipeline.l1_l2_normalize import process_l1_normalizations
+    process_l1_normalizations(jurisdictions=[j["name_ru"] for j in jurisdictions])
+
+    logger.info("--- L1 Step 11: Classify source types ---")
+    from pipeline.source_classifier import process_source_types
+    process_source_types(jurisdictions=[j["name_ru"] for j in jurisdictions])
+
+    logger.info("--- L1 Step 12: Clean excerpt artifacts ---")
+    from pipeline.excerpt_cleaner import run_excerpt_cleanup
+    run_excerpt_cleanup(jurisdictions=[j["name_ru"] for j in jurisdictions])
+
+    logger.info("--- L1 Step 13: Translate jurisdiction notes ---")
+    from pipeline.translate_ru_fields import translate_jurisdiction_notes
+    from langchain_openai import ChatOpenAI
+    _llm_l1_translate = ChatOpenAI(model=LLM_FAST_MODEL, api_key=os.environ["OPENAI_API_KEY"], temperature=0)
+    translate_jurisdiction_notes(llm=_llm_l1_translate, jurisdictions=[j["name_ru"] for j in jurisdictions])
+
     logger.info("========== Level 1 Complete ==========")
 
 
@@ -209,6 +233,23 @@ def run_level2(venues: list[dict]) -> None:
 
     logger.info("--- L2 Step 4: Postprocess ---")
     process_all_l2(venues=venues)
+
+    logger.info("--- L2 Step 5: Add citations ---")
+    from pipeline.sources import process_level2_citations
+    process_level2_citations(venues=[v["venue_key"] for v in venues])
+
+    logger.info("--- L2 Step 6: Normalize L2 fields ---")
+    from pipeline.l1_l2_normalize import process_l2_normalizations
+    jurisdiction_names = list({v.get("name_ru") for v in venues if v.get("name_ru")})
+    process_l2_normalizations(jurisdictions=jurisdiction_names)
+
+    logger.info("--- L2 Step 7: Classify source types ---")
+    from pipeline.source_classifier import process_source_types
+    process_source_types(jurisdictions=jurisdiction_names)
+
+    logger.info("--- L2 Step 8: Clean excerpt artifacts ---")
+    from pipeline.excerpt_cleaner import run_excerpt_cleanup
+    run_excerpt_cleanup(jurisdictions=jurisdiction_names)
 
     logger.info("========== Level 2 Complete ==========")
 
@@ -253,6 +294,37 @@ def run_level3(venues: list[dict]) -> None:
     except ImportError:
         logger.warning("validator not implemented — skipping")
 
+    logger.info("--- L3 Step 6: Add citations ---")
+    from pipeline.sources import process_level3_citations
+    process_level3_citations()
+
+    logger.info("--- L3 Step 7: Classify L3 citation types ---")
+    from pipeline.source_classifier import process_l3_citation_types
+    jurisdiction_names = list({v.get("name_ru") for v in venues if v.get("name_ru")})
+    process_l3_citation_types(jurisdiction_names if jurisdiction_names else None)
+
+    logger.info("--- L3 Step 8: Fix 'Fetched web page' titles ---")
+    from pipeline.source_classifier import fix_fetched_web_page_titles
+    fix_fetched_web_page_titles(jurisdiction_names if jurisdiction_names else None)
+
+    logger.info("--- L3 Step 9: Clean excerpt artifacts ---")
+    from pipeline.excerpt_cleaner import run_excerpt_cleanup
+    run_excerpt_cleanup(jurisdictions=jurisdiction_names if jurisdiction_names else None)
+
+    logger.info("--- L3 Step 10: Build matrix ---")
+    from level_3.matrix_builder import build_matrix_all
+    build_matrix_all(llm=None)  # creates LLM_FAST_MODEL internally
+
+    logger.info("--- L3 Step 11: Translate section descriptions to Russian ---")
+    from pipeline.l3_translate import run_l3_translate
+    from langchain_openai import ChatOpenAI
+    llm_translate = ChatOpenAI(
+        model=LLM_FAST_MODEL,
+        api_key=os.environ["OPENAI_API_KEY"],
+        temperature=0,
+    )
+    run_l3_translate(llm=llm_translate, jurisdictions=jurisdiction_names if jurisdiction_names else None)
+
     logger.info("========== Level 3 Complete ==========")
 
 
@@ -260,8 +332,11 @@ def run_phase2(mode: str = "basic") -> None:
     """
     Run Phase 2 on ALL data in COUNTRIES_DIR (not filtered by batch).
 
-    mode: "basic"    → form_groups + pass1 + pass2
-          "extended" → form_groups + pass1 + 3p-classify + 3p-execute + pass2-new
+    mode: "basic"    → form_groups + pass1 + pass2-new + translate
+          "extended" → form_groups + pass1 + 3p-classify + 3p-execute + pass2-new + translate
+
+    Note: basic mode uses run_new_pass2 (not the legacy run_pass2) so that
+    pass2.json is produced and run_pass2_translate can consume it.
     """
     logger.info("========== Phase 2 Start (mode: %s) ==========", mode)
 
@@ -269,11 +344,9 @@ def run_phase2(mode: str = "basic") -> None:
         load_state as load_state_phase2,
         form_groups,
         run_pass1,
-        run_pass2,
         run_all_extended,
-        run_3p_classify,
-        run_3p_execute,
         run_new_pass2,
+        run_pass2_translate,
         _get_llm as _get_llm_phase2,
     )
 
@@ -282,15 +355,40 @@ def run_phase2(mode: str = "basic") -> None:
     if mode == "extended":
         run_all_extended(state_phase2)
     else:
-        # basic: form_groups → pass1 → pass2
+        # basic: form_groups → pass1 → pass2-new
+        # Using run_new_pass2 (not legacy run_pass2) because:
+        #   - run_new_pass2 writes pass2.json (the format run_pass2_translate reads)
+        #   - legacy run_pass2 writes params.json which translate does not consume
         logger.info("--- Phase 2 Step 1: Form groups ---")
         form_groups(state_phase2)
 
         logger.info("--- Phase 2 Step 2: Pass 1 ---")
         run_pass1(state_phase2)
 
-        logger.info("--- Phase 2 Step 3: Pass 2 ---")
-        run_pass2(state_phase2)
+        logger.info("--- Phase 2 Step 3: Pass 2 (new) ---")
+        llm_smart = _get_llm_phase2(LLM_SMART_MODEL)
+        run_new_pass2(state=state_phase2, llm=llm_smart)
+
+    # Translate pass2.json → pass2_ru.json (runs after both basic and extended modes).
+    # Uses LLM_FAST_MODEL because translation is a straightforward task.
+    # Idempotent: cells that already have pass2_ru.json are skipped automatically.
+    logger.info("--- Phase 2 Step: Translate (pass2 → pass2_ru) ---")
+    llm_translate = _get_llm_phase2(LLM_FAST_MODEL)
+    run_pass2_translate(llm=llm_translate)
+
+    logger.info("--- Phase 2 Step: Section keys ---")
+    from pipeline.section_keys import process_section_keys
+    process_section_keys()
+
+    logger.info("--- Phase 2 Step: Translate tier names + param labels ---")
+    from pipeline.translate_ru_fields import translate_phase2_fields
+    from langchain_openai import ChatOpenAI
+    _llm_p2_translate = ChatOpenAI(model=LLM_FAST_MODEL, api_key=os.environ["OPENAI_API_KEY"], temperature=0)
+    translate_phase2_fields(llm=_llm_p2_translate, jurisdictions=None)
+
+    logger.info("--- Phase 2 Step: Normalize param IDs ---")
+    from pipeline.translate_ru_fields import normalize_param_ids
+    normalize_param_ids()
 
     logger.info("========== Phase 2 Complete ==========")
 
@@ -303,6 +401,33 @@ def run_level4(jurisdictions: list[dict]) -> None:
 
     llm = _get_llm_l4(LLM_SMART_MODEL)
     run_level4_all(llm=llm, jurisdictions=jurisdictions)
+
+    logger.info("--- L4 Step 2: Add citations ---")
+    from pipeline.sources import process_level4_citations
+    process_level4_citations(jurisdictions=[j["name_ru"] for j in jurisdictions])
+
+    logger.info("--- L4 Step 3: Enrich record sources ---")
+    from pipeline.level4_postprocess import process_level4_record_sources
+    process_level4_record_sources(jurisdictions=[j["name_ru"] for j in jurisdictions])
+
+    logger.info("--- L4 Step 4: Labels and articulated_by ---")
+    from pipeline.level4_postprocess import process_level4_labels, process_level4_articulated_by
+    process_level4_labels(jurisdictions=[j["name_ru"] for j in jurisdictions])
+    process_level4_articulated_by(jurisdictions=[j["name_ru"] for j in jurisdictions])
+
+    logger.info("--- L4 Step 5: Classify source types ---")
+    from pipeline.source_classifier import process_source_types
+    process_source_types(jurisdictions=[j["name_ru"] for j in jurisdictions])
+
+    logger.info("--- L4 Step 6: Clean excerpt artifacts ---")
+    from pipeline.excerpt_cleaner import run_excerpt_cleanup
+    run_excerpt_cleanup(jurisdictions=[j["name_ru"] for j in jurisdictions])
+
+    logger.info("--- L4 Step 7: Translate reforms + ptools fields ---")
+    from pipeline.translate_ru_fields import translate_level4_fields
+    from langchain_openai import ChatOpenAI
+    _llm_l4_translate = ChatOpenAI(model=LLM_FAST_MODEL, api_key=os.environ["OPENAI_API_KEY"], temperature=0)
+    translate_level4_fields(llm=_llm_l4_translate, jurisdictions=[j["name_ru"] for j in jurisdictions])
 
     logger.info("========== Level 4 Complete ==========")
 
