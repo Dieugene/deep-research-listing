@@ -332,11 +332,7 @@ def run_level3(venues: list[dict]) -> None:
     from pipeline.excerpt_joiner import run_excerpt_joiner
     run_excerpt_joiner(jurisdictions=jurisdiction_names if jurisdiction_names else None)
 
-    logger.info("--- L3 Step 11: Build matrix ---")
-    from level_3.matrix_builder import build_matrix_all
-    build_matrix_all(llm=None)  # creates LLM_FAST_MODEL internally
-
-    logger.info("--- L3 Step 12: Translate section descriptions to Russian ---")
+    logger.info("--- L3 Step 11: Translate section descriptions to Russian ---")
     from pipeline.l3_translate import run_l3_translate
     from langchain_openai import ChatOpenAI
     llm_translate = ChatOpenAI(
@@ -345,6 +341,10 @@ def run_level3(venues: list[dict]) -> None:
         temperature=0,
     )
     run_l3_translate(llm=llm_translate, jurisdictions=jurisdiction_names if jurisdiction_names else None)
+
+    logger.info("--- L3 Step 12: Build matrix ---")
+    from level_3.matrix_builder import build_matrix_all
+    build_matrix_all(llm=None)  # creates LLM_FAST_MODEL internally
 
     logger.info("========== Level 3 Complete ==========")
 
