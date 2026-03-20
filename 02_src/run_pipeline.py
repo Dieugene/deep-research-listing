@@ -293,6 +293,10 @@ def run_level3(venues: list[dict]) -> None:
     jurisdiction_names_for_tier_map = list({v.get("name_ru") for v in venues if v.get("name_ru")})
     run_canonical_tier_mapping(jurisdictions=jurisdiction_names_for_tier_map)
 
+    logger.info("--- L3 Step 3.6: Update cells_list from tier maps ---")
+    from pipeline.tier_mapper import update_cells_list_from_tier_maps
+    update_cells_list_from_tier_maps(jurisdictions=jurisdiction_names_for_tier_map)
+
     logger.info("--- L3 Step 4: Postprocess ---")
     try:
         from level_3.postprocess_l3 import postprocess_all_venues

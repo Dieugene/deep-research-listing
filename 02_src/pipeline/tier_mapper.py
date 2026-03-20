@@ -486,6 +486,225 @@ def _load_venue_card(jurisdiction_ru: str, venue_key: str) -> dict:
 # ---------------------------------------------------------------------------
 
 
+# ---------------------------------------------------------------------------
+# Step 3.6: Update cells_list.json from tier_map results
+# ---------------------------------------------------------------------------
+
+
+def update_cells_list_from_tier_maps(
+    jurisdictions: list[str] | None = None,
+) -> None:
+    """
+    Update cells_list.json for each venue based on tier_map.json files.
+
+    For each venue:
+    1. Load all tier_map files (one per instrument_class)
+    2. For each canonical tier with belongs_to_venue=True:
+       - Check if a matching cell exists in cells_list
+       - If not, create a new cell entry
+       - If exists but tier name is "(no listing tiers — flat structure)",
+         update the tier name to canonical_name
+    3. Save updated cells_list.json
+    """
+
+    for juris_dir in sorted(COUNTRIES_DIR.iterdir()):
+        if not juris_dir.is_dir():
+            continue
+        if jurisdictions and juris_dir.name not in jurisdictions:
+            continue
+
+        l3_dir = juris_dir / "level_3"
+        l2_dir = juris_dir / "level_2"
+        if not l3_dir.exists() or not l2_dir.exists():
+            continue
+
+        for venue_dir in sorted(l3_dir.iterdir()):
+            if not venue_dir.is_dir() or venue_dir.name.startswith("_"):
+                continue
+
+            par_raw = venue_dir / "_parallel_raw"
+            if not par_raw.exists():
+                continue
+
+            venue_key = venue_dir.name
+
+            # Load cells_list
+            cells_list_path = l2_dir / venue_key / "cells_list.json"
+            if not cells_list_path.exists():
+                continue
+            cells_data = _load_json(cells_list_path)
+            if not cells_data:
+                continue
+            cells = cells_data.get("cells", [])
+
+            # Load all tier_maps for this venue
+            tier_maps: dict[str, dict] = {}  # instrument_class -> tier_map data
+            for tm_file in sorted(par_raw.glob("*_tier_map.json")):
+                tm = _load_json(tm_file)
+                if not tm:
+                    continue
+                # Extract instrument_class from filename
+                # Format: {venue_key}_{instrument_class}_tier_map.json
+                stem = tm_file.stem
+                ic = stem.replace(f"{venue_key}_", "", 1).replace("_tier_map", "")
+                tier_maps[ic] = tm
+
+            if not tier_maps:
+                continue
+
+            # Determine ISO code from existing cell_ids
+            iso = ""
+            for c in cells:
+                cid = c.get("cell_id", "")
+                parts = cid.split("_")
+                if len(parts) >= 2 and len(parts[0]) == 2:
+                    iso = parts[0]
+                    break
+
+            if not iso:
+                logger.warning(
+                    "Cannot determine ISO code for %s — skipping", venue_key
+                )
+                continue
+
+            changed = False
+
+            for ic, tm in tier_maps.items():
+                canonical_tiers = [
+                    t
+                    for t in tm.get("tiers", [])
+                    if t.get("belongs_to_venue", False)
+                ]
+
+                if not canonical_tiers:
+                    continue
+
+                # Find existing cells for this instrument_class
+                ic_cells = [c for c in cells if c.get("instrument_class") == ic]
+
+                # Identify flat cells (outdated tier names)
+                flat_cells = [
+                    c
+                    for c in ic_cells
+                    if c.get("tier", "").startswith("(no listing")
+                ]
+
+                if len(canonical_tiers) == 1 and flat_cells:
+                    # Single canonical tier, flat cell — just update tier name
+                    flat_cells[0]["tier"] = canonical_tiers[0]["canonical_name"]
+                    changed = True
+                    logger.info(
+                        "[UPDATED] %s/%s: flat -> %s",
+                        venue_key,
+                        ic,
+                        canonical_tiers[0]["canonical_name"],
+                    )
+                    continue
+
+                if len(canonical_tiers) > 1 and flat_cells:
+                    # Multiple tiers found but cells_list has flat cell(s)
+                    # Reuse first flat cell, create new cells for rest
+                    first = True
+                    for ct in canonical_tiers:
+                        canon_id = ct["canonical_id"]
+                        canon_name = ct["canonical_name"]
+
+                        if first and flat_cells:
+                            # Reuse the existing flat cell (preserves cell_dir)
+                            flat_cells[0]["tier"] = canon_name
+                            changed = True
+                            logger.info(
+                                "[UPDATED] %s/%s: flat -> %s (reused existing cell)",
+                                venue_key,
+                                ic,
+                                canon_name,
+                            )
+                            first = False
+                        else:
+                            # Build new cell_id
+                            slug = (
+                                canon_id.replace(" ", "_")
+                                .replace("-", "_")[:40]
+                            )
+                            new_cell_id = f"{iso}_{venue_key}_{slug}_{ic}"
+
+                            # Skip if already exists
+                            if any(
+                                c.get("cell_id") == new_cell_id for c in cells
+                            ):
+                                logger.info(
+                                    "[SKIP] %s/%s: cell %s already exists",
+                                    venue_key,
+                                    ic,
+                                    new_cell_id,
+                                )
+                                continue
+
+                            # Clone structure from first flat cell as template
+                            template = flat_cells[0]
+                            new_cell = {
+                                "cell_id": new_cell_id,
+                                "venue_key": venue_key,
+                                "tier": canon_name,
+                                "instrument_class": ic,
+                                "secondary_admission_applicable": template.get(
+                                    "secondary_admission_applicable", False
+                                ),
+                                "distinct_regime": template.get(
+                                    "distinct_regime", False
+                                ),
+                                "legacy": template.get("legacy", False),
+                                "admission_path": template.get(
+                                    "admission_path"
+                                ),
+                                "segment": template.get("segment"),
+                                "modifiers": template.get("modifiers", []),
+                                "prompts": {},
+                            }
+                            cells.append(new_cell)
+                            changed = True
+                            logger.info(
+                                "[CREATED] %s/%s: new cell %s (tier: %s)",
+                                venue_key,
+                                ic,
+                                new_cell_id,
+                                canon_name,
+                            )
+
+                            # Create cell directory in L3
+                            cell_dir = venue_dir / new_cell_id
+                            cell_dir.mkdir(parents=True, exist_ok=True)
+                    continue
+
+                # Non-flat cells — check if all canonical tiers have matches
+                for ct in canonical_tiers:
+                    canon_name = ct["canonical_name"]
+                    matched = False
+                    for c in ic_cells:
+                        cell_tier = c.get("tier", "")
+                        if cell_tier.lower() == canon_name.lower():
+                            matched = True
+                            break
+                        if (
+                            canon_name.lower() in cell_tier.lower()
+                            or cell_tier.lower() in canon_name.lower()
+                        ):
+                            matched = True
+                            break
+                    if not matched:
+                        logger.warning(
+                            "[UNMATCHED] %s/%s: canonical tier '%s' has no matching cell",
+                            venue_key,
+                            ic,
+                            canon_name,
+                        )
+
+            if changed:
+                cells_data["cells"] = cells
+                _save_json(cells_list_path, cells_data)
+                logger.info("[SAVED] cells_list.json for %s", venue_key)
+
+
 def run_canonical_tier_mapping(
     llm=None,
     jurisdictions: Optional[list[str]] = None,
