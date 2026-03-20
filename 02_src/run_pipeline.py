@@ -199,7 +199,11 @@ def run_level1(jurisdictions: list[dict]) -> None:
     from pipeline.excerpt_cleaner import run_excerpt_cleanup
     run_excerpt_cleanup(jurisdictions=[j["name_ru"] for j in jurisdictions])
 
-    logger.info("--- L1 Step 13: Translate jurisdiction notes ---")
+    logger.info("--- L1 Step 13: Join fragmented excerpts ---")
+    from pipeline.excerpt_joiner import run_excerpt_joiner
+    run_excerpt_joiner(jurisdictions=[j["name_ru"] for j in jurisdictions])
+
+    logger.info("--- L1 Step 14: Translate jurisdiction notes ---")
     from pipeline.translate_ru_fields import translate_jurisdiction_notes
     from langchain_openai import ChatOpenAI
     _llm_l1_translate = ChatOpenAI(model=LLM_FAST_MODEL, api_key=os.environ["OPENAI_API_KEY"], temperature=0)
@@ -250,6 +254,10 @@ def run_level2(venues: list[dict]) -> None:
     logger.info("--- L2 Step 8: Clean excerpt artifacts ---")
     from pipeline.excerpt_cleaner import run_excerpt_cleanup
     run_excerpt_cleanup(jurisdictions=jurisdiction_names)
+
+    logger.info("--- L2 Step 9: Join fragmented excerpts ---")
+    from pipeline.excerpt_joiner import run_excerpt_joiner
+    run_excerpt_joiner(jurisdictions=jurisdiction_names)
 
     logger.info("========== Level 2 Complete ==========")
 
@@ -311,11 +319,15 @@ def run_level3(venues: list[dict]) -> None:
     from pipeline.excerpt_cleaner import run_excerpt_cleanup
     run_excerpt_cleanup(jurisdictions=jurisdiction_names if jurisdiction_names else None)
 
-    logger.info("--- L3 Step 10: Build matrix ---")
+    logger.info("--- L3 Step 10: Join fragmented excerpts ---")
+    from pipeline.excerpt_joiner import run_excerpt_joiner
+    run_excerpt_joiner(jurisdictions=jurisdiction_names if jurisdiction_names else None)
+
+    logger.info("--- L3 Step 11: Build matrix ---")
     from level_3.matrix_builder import build_matrix_all
     build_matrix_all(llm=None)  # creates LLM_FAST_MODEL internally
 
-    logger.info("--- L3 Step 11: Translate section descriptions to Russian ---")
+    logger.info("--- L3 Step 12: Translate section descriptions to Russian ---")
     from pipeline.l3_translate import run_l3_translate
     from langchain_openai import ChatOpenAI
     llm_translate = ChatOpenAI(
@@ -423,7 +435,11 @@ def run_level4(jurisdictions: list[dict]) -> None:
     from pipeline.excerpt_cleaner import run_excerpt_cleanup
     run_excerpt_cleanup(jurisdictions=[j["name_ru"] for j in jurisdictions])
 
-    logger.info("--- L4 Step 7: Translate reforms + ptools fields ---")
+    logger.info("--- L4 Step 7: Join fragmented excerpts ---")
+    from pipeline.excerpt_joiner import run_excerpt_joiner
+    run_excerpt_joiner(jurisdictions=[j["name_ru"] for j in jurisdictions])
+
+    logger.info("--- L4 Step 8: Translate reforms + ptools fields ---")
     from pipeline.translate_ru_fields import translate_level4_fields
     from langchain_openai import ChatOpenAI
     _llm_l4_translate = ChatOpenAI(model=LLM_FAST_MODEL, api_key=os.environ["OPENAI_API_KEY"], temperature=0)
