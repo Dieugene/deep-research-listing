@@ -19,18 +19,21 @@ export interface WorldMapProps {
   activeJurisdiction?: string | null
 }
 
-const BASE_POINTS: JurisdictionPoint[] = [
-  { nameEn: 'United Kingdom', nameRu: 'Великобритания', coords: [-2, 54], active: true },
-  { nameEn: 'Hong Kong', nameRu: 'Гонконг', coords: [114.1, 22.3], active: true },
-  { nameEn: 'Germany', nameRu: 'Германия', coords: [10.5, 51.2], active: true },
-  { nameEn: 'Singapore', nameRu: 'Сингапур', coords: [103.8, 1.35], active: true },
-  { nameEn: 'Australia', nameRu: 'Австралия', coords: [133, -27], active: true },
-  { nameEn: 'France', nameRu: 'Франция', coords: [2.3, 46.6], active: true },
-  // Future jurisdictions (placeholders)
-  { nameEn: 'United States', nameRu: 'США', coords: [-95, 38], active: false },
-  { nameEn: 'Japan', nameRu: 'Япония', coords: [138, 36], active: false },
-  { nameEn: 'China', nameRu: 'Китай', coords: [104, 35], active: false },
-]
+// ISO alpha-2 → approximate centroid [lon, lat]
+const ISO_COORDS: Record<string, [number, number]> = {
+  AU: [133, -27], AT: [13.3, 47.5], BE: [4.4, 50.5], BR: [-51, -10],
+  CA: [-106, 56], CL: [-71, -33], CN: [104, 35], CO: [-74, 4],
+  CZ: [15.5, 49.8], DK: [10, 56], EG: [30, 27], FI: [26, 64],
+  FR: [2.3, 46.6], DE: [10.5, 51.2], GR: [22, 39], HK: [114.1, 22.3],
+  HU: [19.5, 47.2], IN: [79, 22], ID: [118, -2], IE: [-8, 53.5],
+  IL: [35, 31.5], IT: [12.5, 42.5], JP: [138, 36], KW: [47.5, 29.3],
+  MY: [102, 4], MX: [-102, 23.5], NL: [5.3, 52.2], NZ: [174, -41],
+  NO: [10, 62], PE: [-76, -10], PH: [122, 12.5], PL: [20, 52],
+  PT: [-8, 39.5], QA: [51.2, 25.3], RU: [100, 60], SA: [45, 24],
+  SG: [103.8, 1.35], ZA: [25, -29], KR: [128, 36], ES: [-3.7, 40.4],
+  SE: [15, 62], CH: [8.2, 46.8], TW: [121, 23.7], TH: [101, 14],
+  TR: [35, 39], AE: [54, 24], GB: [-2, 54], US: [-95, 38],
+}
 
 const WORLD_ATLAS_URL =
   'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'
@@ -47,19 +50,17 @@ export default function WorldMap({ jurisdictions, activeJurisdiction }: WorldMap
   // Cache world atlas to avoid re-fetching on resize
   const worldDataRef = useRef<Topology | null>(null)
 
-  // Merge jurisdiction data from props into points
-  const points: JurisdictionPoint[] = BASE_POINTS.map((p) => {
-    if (!jurisdictions) return p
-    const found = jurisdictions.find(
-      (j) => j.name_ru === p.nameRu || j.name_en === p.nameEn,
-    )
-    if (!found) return p
-    return {
-      ...p,
-      legalFamily: found.legal_family,
-      venueCount: found.venue_count,
-    }
-  })
+  // Build points dynamically from jurisdictions prop
+  const points: JurisdictionPoint[] = (jurisdictions ?? [])
+    .filter((j) => j.iso_code && ISO_COORDS[j.iso_code])
+    .map((j) => ({
+      nameEn: j.name_en,
+      nameRu: j.name_ru,
+      coords: ISO_COORDS[j.iso_code!],
+      active: j.has_full_data,
+      legalFamily: j.legal_family,
+      venueCount: j.venue_count,
+    }))
 
   // ---- ResizeObserver: re-render map on container resize ----
   useEffect(() => {

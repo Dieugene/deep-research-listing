@@ -20,6 +20,7 @@ class CellInVenue(BaseModel):
 
     cell_id: str
     tier: str
+    tier_ru: str | None = None
     instrument_class_key: str    # "equity", "bond", etc. (for frontend filters)
     instrument_class_label: str  # "Акции", etc.
     has_admission_data: bool
@@ -52,3 +53,4 @@ class VenueCard(BaseModel):
     notes_ru: str | None
     sources: list[dict] | None = None
     cells: list[CellInVenue]
+    research_priority: str = "primary"

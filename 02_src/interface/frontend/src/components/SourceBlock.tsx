@@ -5,6 +5,7 @@ import { SourceData } from './SourceItem'
 interface SourceBlockProps {
   sources: SourceData[]
   blockId: string
+  defaultOpen?: boolean
 }
 
 // Russian pluralization helpers
@@ -42,8 +43,8 @@ function dtLabel(type: string | null | undefined): string {
   return map[type ?? ''] ?? 'Другое'
 }
 
-export default function SourceBlock({ sources, blockId }: SourceBlockProps) {
-  const [open, setOpen] = useState(false)
+export default function SourceBlock({ sources, blockId, defaultOpen = false }: SourceBlockProps) {
+  const [open, setOpen] = useState(defaultOpen)
   const [openExcerpts, setOpenExcerpts] = useState<Set<number>>(new Set())
 
   const totalExcerpts = sources.reduce((sum, s) => sum + (s.excerpts?.length ?? 0), 0)
@@ -136,9 +137,6 @@ export default function SourceBlock({ sources, blockId }: SourceBlockProps) {
                     ) : (
                       <span className={styles.srcLinkEl}>{source.title}</span>
                     )}
-                    <span className={[styles.docType, styles[dtClass(source.type)]].join(' ')}>
-                      {dtLabel(source.type)}
-                    </span>
                   </div>
 
                   {hasSourceExcerpts && (

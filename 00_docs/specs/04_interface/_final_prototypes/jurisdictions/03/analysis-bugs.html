@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — Регуляторный анализ: баги</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA;--bg2:#fff;--bg3:#F0F2F7;
+  --border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.16);
+  --text:#111827;--text-mid:#374151;--text-dim:#6B7280;
+  --accent:#2563EB;--accent-bg:rgba(37,99,235,0.06);
+  --red:#DC2626;--red-bg:rgba(220,38,38,0.05);
+  --orange:#D97706;--orange-bg:rgba(217,119,6,0.06);
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --r:8px;--r-lg:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:14.5px;line-height:1.7;padding:48px}
+.wrap{max-width:780px;margin:0 auto}
+h1{font-size:24px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+.meta{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:36px}
+p{color:var(--text-mid);font-size:14px;line-height:1.75;margin-bottom:10px}
+p strong{color:var(--text);font-weight:500}
+ul{color:var(--text-mid);font-size:14px;line-height:1.75;padding-left:20px;margin-bottom:10px}
+li{margin-bottom:4px}
+li strong{color:var(--text);font-weight:500}
+code{font-family:var(--font-mono);font-size:12px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:1px 5px}
+pre{background:#1E2433;color:#E2E8F4;border-radius:var(--r);padding:14px 18px;font-family:var(--font-mono);font-size:12.5px;line-height:1.65;overflow-x:auto;margin:8px 0}
+.cm{color:#6B7A99}.cs{color:#A5D6A7}.ck{color:#80DEEA}
+
+.task{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:12px}
+.task-hd{display:flex;align-items:center;gap:10px;padding:11px 16px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.num{font-family:var(--font-mono);font-size:10px;background:var(--bg2);border:1px solid var(--border2);border-radius:4px;padding:2px 7px;color:var(--text-dim);flex-shrink:0}
+.title{font-size:13.5px;font-weight:600;color:var(--text)}
+.pri{margin-left:auto;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;flex-shrink:0;border:1px solid;white-space:nowrap}
+.p-bug{background:#FEF3C7;color:#92400E;border-color:#FDE68A;font-weight:700}
+.p-high{background:var(--red-bg);color:var(--red);border-color:rgba(220,38,38,.2)}
+.p-med{background:var(--orange-bg);color:var(--orange);border-color:rgba(217,119,6,.2)}
+.task-body{padding:14px 16px}
+.task-body p,.task-body ul{margin-bottom:8px}
+.task-body p:last-child,.task-body ul:last-child{margin-bottom:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Регуляторный анализ: баги в списочном режиме</h1>
+<div class="meta">Германия · /jurisdictions/Германия · март 2026</div>
+
+<div class="task">
+  <div class="task-hd">
+    <span class="num">РА-1</span>
+    <span class="title">Текст каждой записи дублируется — показывается дважды</span>
+    <span class="pri p-bug">Баг</span>
+  </div>
+  <div class="task-body">
+    <p>В списочном режиме каждая запись регуляторного анализа показывает один и тот же текст дважды: первый раз жирным (это <code>title</code> или <code>text_ru</code>), второй раз обычным шрифтом (то же самое поле). Судя по структуре данных, компонент рендерит одно поле в двух местах, или отображает и <code>text</code>, и <code>text_ru</code>, когда должен показывать только одно.</p>
+    <p><strong>Диагностика:</strong> проверить в компоненте списка, какие поля подставляются в «заголовок» и «текст» записи. Вероятные варианты:</p>
+    <ul>
+      <li>Компонент рендерит <code>text_ru</code> как заголовок И как тело — нужно использовать <code>title_ru</code> (или <code>label</code>) для заголовка, <code>text_ru</code> для тела</li>
+      <li>Если отдельного <code>title_ru</code> нет в данных — использовать первые ~10 слов <code>text_ru</code> как заголовок, полный текст — как раскрываемое тело</li>
+    </ul>
+    <p><strong>В drawer таймлайна</strong> дублирования нет — значит там правильная логика. Можно подсмотреть как устроен drawer и применить ту же логику в списке.</p>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-hd">
+    <span class="num">РА-2</span>
+    <span class="title">Доп. поля из данных не отображаются в списочном режиме</span>
+    <span class="pri p-high">Высокий</span>
+  </div>
+  <div class="task-body">
+    <p>В drawer таймлайна уже реализовано отображение дополнительных полей (на скрине виден тег «правительство» — это <code>articulated_by</code>). В списочном режиме эти поля отсутствуют. Добавить по аналогии с drawer:</p>
+    <ul>
+      <li><strong><code>articulated_by</code></strong> (problems) — теги «Поставили проблему»: правительство, регулятор, академическое сообщество, участники рынка</li>
+      <li><strong><code>problem_addressed</code></strong> (parameters_as_tools) — блок «Какую проблему решает»</li>
+      <li><strong><code>calibration_debate</code></strong> (parameters_as_tools) — блок «Дискуссия о настройке»</li>
+      <li><strong><code>opposition</code></strong> (reforms) — блок «Контраргументы» с лёгким красным фоном</li>
+    </ul>
+    <p>Компонент карточки записи в списке должен использовать тот же набор полей, что и drawer. Проще всего вынести рендеринг содержимого в отдельный shared-компонент и использовать его в обоих местах.</p>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-hd">
+    <span class="num">РА-3</span>
+    <span class="title">Hash-навигация: вкладка не переключается по #analysis</span>
+    <span class="pri p-med">Средний</span>
+  </div>
+  <div class="task-body">
+    <p>При переходе по <code>/jurisdictions/Германия#analysis</code> страница открывается на вкладке «Юрисдикция», а не «Регуляторный анализ». Это подтверждено через BrowserMCP — snapshot показывает контент юрисдикции несмотря на хэш в URL.</p>
+    <p>Реализовать (задача К-4 из <code>ui-tasks.html</code>): при монтировании компонента читать <code>window.location.hash</code> и активировать соответствующую вкладку. При переключении вкладки вручную — обновлять hash, чтобы работала кнопка «Назад» в браузере.</p>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

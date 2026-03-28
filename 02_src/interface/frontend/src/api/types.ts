@@ -34,6 +34,7 @@ export interface VenueInJurisdiction {
   name_ru: string
   venue_type: string
   cell_count: number
+  research_priority?: string
 }
 
 export interface Level4Item {
@@ -69,6 +70,7 @@ export interface JurisdictionCard {
   listing_authority: string | null
   listing_authority_short: string | null
   iso_code: string | null
+  market_type: string | null
   data_status: string
   market_types: string[]
   key_terms_mapping: Record<string, string>
@@ -79,6 +81,39 @@ export interface JurisdictionCard {
   sources?: SourceCitation[] | null
   venues: VenueInJurisdiction[]
   level4: Level4Data | null
+  institutional_metrics?: InstitutionalMetrics | null
+  cluster_label?: string | null
+  similar_jurisdictions?: SimilarJurisdiction[]
+}
+
+export interface InstitutionalMetric {
+  value: number | null
+  year?: number | null
+  percentile?: number | null
+}
+
+export interface InvestorProtection {
+  disclosure?: number | null
+  director_liability?: number | null
+  shareholder_suits?: number | null
+  composite?: number | null
+}
+
+export interface InstitutionalMetrics {
+  rule_of_law?: InstitutionalMetric | null
+  regulatory_quality?: InstitutionalMetric | null
+  political_stability?: InstitutionalMetric | null
+  wgi_composite?: InstitutionalMetric | null
+  market_cap_gdp_pct?: InstitutionalMetric | null
+  investor_protection?: InvestorProtection | null
+}
+
+export interface SimilarJurisdiction {
+  iso_code: string
+  name_en: string
+  name_ru?: string | null
+  score?: number | null
+  common_traits?: string[]
 }
 
 // ---- Venues ----
@@ -92,6 +127,7 @@ export interface ParamPill {
 export interface CellInVenue {
   cell_id: string
   tier: string
+  tier_ru?: string | null
   instrument_class_key: string
   instrument_class_label: string
   has_admission_data: boolean
@@ -122,6 +158,7 @@ export interface VenueCard {
   notes_ru: string | null
   sources?: SourceCitation[] | null
   cells: CellInVenue[]
+  research_priority?: string
 }
 
 // ---- Matrix ----
@@ -132,6 +169,8 @@ export interface MatrixColumn {
   col_label: string
   status: MatrixCellStatus
   text_volume: number
+  snippet?: string | null
+  snippet_hint?: string | null
 }
 
 export interface MatrixRow {
@@ -167,12 +206,14 @@ export interface PhaseContent {
   has_data: boolean
   validation_status: ValidationStatus
   sections: ContentSection[]
+  citations?: SourceCitation[]  // Phase-level citations from _parallel_raw
 }
 
 export interface CellContent {
   cell_id: string
   venue_key: string
   tier: string
+  tier_ru?: string | null
   instrument_class_key: string
   instrument_class_label: string
   phases: PhaseContent[]
@@ -202,6 +243,7 @@ export interface CellParameters {
   cell_id: string
   venue_key: string
   tier: string
+  tier_ru?: string | null
   instrument_class_label: string
   parameters: ParameterValue[]
 }

@@ -24,7 +24,7 @@
 /* Source meta area */
 .srcMeta { flex: 1; min-width: 0; }
 .srcTitleRow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.srcLinkEl { color: var(--accent); font-size: 13px; font-weight: 500; text-decoration: none; }
+.srcLinkEl { color: var(--accent); font-size: 13px; font-weight: 500; text-decoration: none; overflow-wrap: anywhere; }
 .srcLinkEl:hover { text-decoration: underline; }
 
 /* Doc type badges (same as SourceItem but with dt- prefix logic) */
@@ -50,7 +50,7 @@
 /* Excerpt quotes */
 .excerptsWrap { display: none; margin-top: 8px; padding-left: 16px; border-left: 2px solid var(--border2); }
 .excerptsWrap.open { display: block; }
-.excerptItem { font-family: var(--font-serif); font-style: italic; font-size: 12.5px; color: var(--text-mid); line-height: 1.72; padding: 6px 0; border-bottom: 1px dashed var(--border); }
+.excerptItem { font-family: var(--font-serif); font-style: italic; font-size: 12.5px; color: var(--text-mid); line-height: 1.72; padding: 6px 0; border-bottom: 1px dashed var(--border); white-space: pre-wrap; }
 .excerptItem:last-child { border-bottom: none; padding-bottom: 0; }
 .excerptItem::before { content: '\201C'; color: var(--text-dim); margin-right: 2px; font-size: 15px; line-height: 0; vertical-align: -3px; }
 .excerptItem::after { content: '\201D'; color: var(--text-dim); margin-left: 2px; font-size: 15px; line-height: 0; vertical-align: -3px; }

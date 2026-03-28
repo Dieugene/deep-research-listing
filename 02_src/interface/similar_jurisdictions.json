@@ -1,0 +1,2747 @@
+[
+  {
+    "jurisdiction": "Australia",
+    "iso_code": "AU",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "FI",
+        "name_en": "Finland",
+        "score": 0.83,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "SE",
+        "name_en": "Sweden",
+        "score": 0.8,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "DK",
+        "name_en": "Denmark",
+        "score": 0.77,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "stable_wgi"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.76,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "IT",
+        "name_en": "Italy",
+        "score": 0.76,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "stable_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Austria",
+    "iso_code": "AT",
+    "cluster": "S4-4",
+    "cluster_label": "Mixed, declining",
+    "similar": [
+      {
+        "iso_code": "HU",
+        "name_en": "Hungary",
+        "score": 0.8,
+        "common_traits": [
+          "civil_law_german",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "FI",
+        "name_en": "Finland",
+        "score": 0.8,
+        "common_traits": [
+          "DM",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "DE",
+        "name_en": "Germany",
+        "score": 0.79,
+        "common_traits": [
+          "civil_law_german",
+          "DM",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.77,
+        "common_traits": [
+          "DM",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "ES",
+        "name_en": "Spain",
+        "score": 0.76,
+        "common_traits": [
+          "DM"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Belgium",
+    "iso_code": "BE",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "ES",
+        "name_en": "Spain",
+        "score": 0.89,
+        "common_traits": [
+          "civil_law_french",
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "IT",
+        "name_en": "Italy",
+        "score": 0.83,
+        "common_traits": [
+          "civil_law_french",
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "DK",
+        "name_en": "Denmark",
+        "score": 0.83,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "TW",
+        "name_en": "Taiwan",
+        "score": 0.83,
+        "common_traits": [
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "FI",
+        "name_en": "Finland",
+        "score": 0.82,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Brazil",
+    "iso_code": "BR",
+    "cluster": "S4-4",
+    "cluster_label": "Mixed, declining",
+    "similar": [
+      {
+        "iso_code": "MX",
+        "name_en": "Mexico",
+        "score": 0.74,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "ES",
+        "name_en": "Spain",
+        "score": 0.73,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      },
+      {
+        "iso_code": "DE",
+        "name_en": "Germany",
+        "score": 0.68,
+        "common_traits": [
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "PE",
+        "name_en": "Peru",
+        "score": 0.68,
+        "common_traits": [
+          "civil_law_french",
+          "EM"
+        ]
+      },
+      {
+        "iso_code": "KW",
+        "name_en": "Kuwait",
+        "score": 0.67,
+        "common_traits": [
+          "civil_law_french",
+          "EM"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Canada",
+    "iso_code": "CA",
+    "cluster": "S4-2",
+    "cluster_label": "Deep markets, volatile",
+    "similar": [
+      {
+        "iso_code": "US",
+        "name_en": "United States",
+        "score": 0.85,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "GB",
+        "name_en": "United Kingdom",
+        "score": 0.78,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "declining_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "NZ",
+        "name_en": "New Zealand",
+        "score": 0.74,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.74,
+        "common_traits": [
+          "DM",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "IL",
+        "name_en": "Israel",
+        "score": 0.73,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "strong_investor_protection"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Chile",
+    "iso_code": "CL",
+    "cluster": "S4-4",
+    "cluster_label": "Mixed, declining",
+    "similar": [
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.68,
+        "common_traits": [
+          "civil_law_french",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "ZA",
+        "name_en": "South Africa",
+        "score": 0.68,
+        "common_traits": [
+          "EM",
+          "declining_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "US",
+        "name_en": "United States",
+        "score": 0.68,
+        "common_traits": [
+          "declining_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "TR",
+        "name_en": "Turkey",
+        "score": 0.67,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "CA",
+        "name_en": "Canada",
+        "score": 0.67,
+        "common_traits": [
+          "declining_wgi",
+          "deep_market"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "China",
+    "iso_code": "CN",
+    "cluster": "S4-3",
+    "cluster_label": "Emerging, growing",
+    "similar": [
+      {
+        "iso_code": "ID",
+        "name_en": "Indonesia",
+        "score": 0.8,
+        "common_traits": [
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "PE",
+        "name_en": "Peru",
+        "score": 0.75,
+        "common_traits": [
+          "EM"
+        ]
+      },
+      {
+        "iso_code": "IT",
+        "name_en": "Italy",
+        "score": 0.74,
+        "common_traits": []
+      },
+      {
+        "iso_code": "TW",
+        "name_en": "Taiwan",
+        "score": 0.72,
+        "common_traits": [
+          "civil_law_german",
+          "EM",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "ES",
+        "name_en": "Spain",
+        "score": 0.72,
+        "common_traits": []
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Colombia",
+    "iso_code": "CO",
+    "cluster": "S4-3",
+    "cluster_label": "Emerging, growing",
+    "similar": [
+      {
+        "iso_code": "PH",
+        "name_en": "Philippines",
+        "score": 0.77,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "PE",
+        "name_en": "Peru",
+        "score": 0.75,
+        "common_traits": [
+          "civil_law_french",
+          "EM"
+        ]
+      },
+      {
+        "iso_code": "TH",
+        "name_en": "Thailand",
+        "score": 0.7,
+        "common_traits": [
+          "EM",
+          "growing_wgi",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "GR",
+        "name_en": "Greece",
+        "score": 0.68,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "ES",
+        "name_en": "Spain",
+        "score": 0.67,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Czech Republic",
+    "iso_code": "CZ",
+    "cluster": "S4-4",
+    "cluster_label": "Mixed, declining",
+    "similar": [
+      {
+        "iso_code": "AT",
+        "name_en": "Austria",
+        "score": 0.71,
+        "common_traits": [
+          "civil_law_german",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "HU",
+        "name_en": "Hungary",
+        "score": 0.7,
+        "common_traits": [
+          "civil_law_german",
+          "EM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "FI",
+        "name_en": "Finland",
+        "score": 0.65,
+        "common_traits": []
+      },
+      {
+        "iso_code": "DK",
+        "name_en": "Denmark",
+        "score": 0.65,
+        "common_traits": []
+      },
+      {
+        "iso_code": "ES",
+        "name_en": "Spain",
+        "score": 0.64,
+        "common_traits": []
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Denmark",
+    "iso_code": "DK",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "NO",
+        "name_en": "Norway",
+        "score": 0.92,
+        "common_traits": [
+          "civil_law_scandinavian",
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.83,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "JP",
+        "name_en": "Japan",
+        "score": 0.83,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "FI",
+        "name_en": "Finland",
+        "score": 0.83,
+        "common_traits": [
+          "civil_law_scandinavian",
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "KR",
+        "name_en": "South Korea",
+        "score": 0.81,
+        "common_traits": [
+          "same_cluster"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Egypt",
+    "iso_code": "EG",
+    "cluster": "S4-3",
+    "cluster_label": "Emerging, growing",
+    "similar": [
+      {
+        "iso_code": "PH",
+        "name_en": "Philippines",
+        "score": 0.51,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "GR",
+        "name_en": "Greece",
+        "score": 0.48,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "TR",
+        "name_en": "Turkey",
+        "score": 0.43,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "BR",
+        "name_en": "Brazil",
+        "score": 0.43,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "CO",
+        "name_en": "Colombia",
+        "score": 0.41,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "same_cluster"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Finland",
+    "iso_code": "FI",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "AU",
+        "name_en": "Australia",
+        "score": 0.83,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "DK",
+        "name_en": "Denmark",
+        "score": 0.83,
+        "common_traits": [
+          "civil_law_scandinavian",
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.82,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "NL",
+        "name_en": "Netherlands",
+        "score": 0.8,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "AT",
+        "name_en": "Austria",
+        "score": 0.8,
+        "common_traits": [
+          "DM",
+          "declining_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "France",
+    "iso_code": "FR",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "SE",
+        "name_en": "Sweden",
+        "score": 0.78,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "PT",
+        "name_en": "Portugal",
+        "score": 0.75,
+        "common_traits": [
+          "civil_law_french",
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "DE",
+        "name_en": "Germany",
+        "score": 0.73,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "GR",
+        "name_en": "Greece",
+        "score": 0.7,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      },
+      {
+        "iso_code": "GB",
+        "name_en": "United Kingdom",
+        "score": 0.7,
+        "common_traits": [
+          "DM",
+          "declining_wgi",
+          "deep_market"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Germany",
+    "iso_code": "DE",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "PT",
+        "name_en": "Portugal",
+        "score": 0.8,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "SE",
+        "name_en": "Sweden",
+        "score": 0.8,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "NL",
+        "name_en": "Netherlands",
+        "score": 0.79,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "AT",
+        "name_en": "Austria",
+        "score": 0.79,
+        "common_traits": [
+          "civil_law_german",
+          "DM",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "FI",
+        "name_en": "Finland",
+        "score": 0.75,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Greece",
+    "iso_code": "GR",
+    "cluster": "S4-3",
+    "cluster_label": "Emerging, growing",
+    "similar": [
+      {
+        "iso_code": "PH",
+        "name_en": "Philippines",
+        "score": 0.75,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "PE",
+        "name_en": "Peru",
+        "score": 0.73,
+        "common_traits": [
+          "civil_law_french",
+          "EM"
+        ]
+      },
+      {
+        "iso_code": "PT",
+        "name_en": "Portugal",
+        "score": 0.73,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      },
+      {
+        "iso_code": "FR",
+        "name_en": "France",
+        "score": 0.7,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      },
+      {
+        "iso_code": "CO",
+        "name_en": "Colombia",
+        "score": 0.68,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Hong Kong",
+    "iso_code": "HK",
+    "cluster": "S4-2",
+    "cluster_label": "Deep markets, volatile",
+    "similar": [
+      {
+        "iso_code": "US",
+        "name_en": "United States",
+        "score": 0.54,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "CA",
+        "name_en": "Canada",
+        "score": 0.53,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "CL",
+        "name_en": "Chile",
+        "score": 0.48,
+        "common_traits": [
+          "declining_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "SA",
+        "name_en": "Saudi Arabia",
+        "score": 0.47,
+        "common_traits": [
+          "common_law",
+          "deep_market",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "GB",
+        "name_en": "United Kingdom",
+        "score": 0.44,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "declining_wgi",
+          "deep_market"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Hungary",
+    "iso_code": "HU",
+    "cluster": "S4-4",
+    "cluster_label": "Mixed, declining",
+    "similar": [
+      {
+        "iso_code": "AT",
+        "name_en": "Austria",
+        "score": 0.8,
+        "common_traits": [
+          "civil_law_german",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "CZ",
+        "name_en": "Czech Republic",
+        "score": 0.7,
+        "common_traits": [
+          "civil_law_german",
+          "EM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "DE",
+        "name_en": "Germany",
+        "score": 0.7,
+        "common_traits": [
+          "civil_law_german",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "PL",
+        "name_en": "Poland",
+        "score": 0.68,
+        "common_traits": [
+          "civil_law_german",
+          "EM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "FI",
+        "name_en": "Finland",
+        "score": 0.68,
+        "common_traits": [
+          "declining_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "India",
+    "iso_code": "IN",
+    "cluster": "S4-1",
+    "cluster_label": "English law, growing",
+    "similar": [
+      {
+        "iso_code": "KR",
+        "name_en": "South Korea",
+        "score": 0.8,
+        "common_traits": [
+          "EM",
+          "growing_wgi",
+          "deep_market",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "TH",
+        "name_en": "Thailand",
+        "score": 0.79,
+        "common_traits": [
+          "common_law",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "MY",
+        "name_en": "Malaysia",
+        "score": 0.76,
+        "common_traits": [
+          "common_law",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "ES",
+        "name_en": "Spain",
+        "score": 0.75,
+        "common_traits": []
+      },
+      {
+        "iso_code": "IT",
+        "name_en": "Italy",
+        "score": 0.75,
+        "common_traits": []
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Indonesia",
+    "iso_code": "ID",
+    "cluster": "S4-3",
+    "cluster_label": "Emerging, growing",
+    "similar": [
+      {
+        "iso_code": "CN",
+        "name_en": "China",
+        "score": 0.8,
+        "common_traits": [
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "PE",
+        "name_en": "Peru",
+        "score": 0.68,
+        "common_traits": [
+          "civil_law_french",
+          "EM"
+        ]
+      },
+      {
+        "iso_code": "IT",
+        "name_en": "Italy",
+        "score": 0.65,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      },
+      {
+        "iso_code": "ES",
+        "name_en": "Spain",
+        "score": 0.65,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      },
+      {
+        "iso_code": "IN",
+        "name_en": "India",
+        "score": 0.64,
+        "common_traits": [
+          "EM",
+          "growing_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Ireland",
+    "iso_code": "IE",
+    "cluster": "S4-1",
+    "cluster_label": "English law, growing",
+    "similar": [
+      {
+        "iso_code": "SG",
+        "name_en": "Singapore",
+        "score": 0.79,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "same_cluster",
+          "stable_wgi"
+        ]
+      },
+      {
+        "iso_code": "SE",
+        "name_en": "Sweden",
+        "score": 0.67,
+        "common_traits": [
+          "DM"
+        ]
+      },
+      {
+        "iso_code": "IL",
+        "name_en": "Israel",
+        "score": 0.67,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "same_cluster",
+          "stable_wgi"
+        ]
+      },
+      {
+        "iso_code": "NZ",
+        "name_en": "New Zealand",
+        "score": 0.67,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "same_cluster",
+          "stable_wgi"
+        ]
+      },
+      {
+        "iso_code": "PT",
+        "name_en": "Portugal",
+        "score": 0.64,
+        "common_traits": [
+          "DM",
+          "stable_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Israel",
+    "iso_code": "IL",
+    "cluster": "S4-1",
+    "cluster_label": "English law, growing",
+    "similar": [
+      {
+        "iso_code": "MY",
+        "name_en": "Malaysia",
+        "score": 0.77,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "TH",
+        "name_en": "Thailand",
+        "score": 0.74,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "GB",
+        "name_en": "United Kingdom",
+        "score": 0.74,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "same_cluster",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "CA",
+        "name_en": "Canada",
+        "score": 0.73,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "SA",
+        "name_en": "Saudi Arabia",
+        "score": 0.72,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "strong_investor_protection"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Italy",
+    "iso_code": "IT",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "ES",
+        "name_en": "Spain",
+        "score": 0.88,
+        "common_traits": [
+          "civil_law_french",
+          "DM",
+          "same_cluster",
+          "stable_wgi"
+        ]
+      },
+      {
+        "iso_code": "TW",
+        "name_en": "Taiwan",
+        "score": 0.84,
+        "common_traits": [
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.83,
+        "common_traits": [
+          "civil_law_french",
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "KR",
+        "name_en": "South Korea",
+        "score": 0.79,
+        "common_traits": [
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "DK",
+        "name_en": "Denmark",
+        "score": 0.78,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "stable_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Japan",
+    "iso_code": "JP",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "KR",
+        "name_en": "South Korea",
+        "score": 0.84,
+        "common_traits": [
+          "civil_law_german",
+          "same_cluster",
+          "growing_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "DK",
+        "name_en": "Denmark",
+        "score": 0.83,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "NO",
+        "name_en": "Norway",
+        "score": 0.82,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "TW",
+        "name_en": "Taiwan",
+        "score": 0.8,
+        "common_traits": [
+          "civil_law_german",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.79,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Kuwait",
+    "iso_code": "KW",
+    "cluster": "S4-1",
+    "cluster_label": "English law, growing",
+    "similar": [
+      {
+        "iso_code": "ES",
+        "name_en": "Spain",
+        "score": 0.68,
+        "common_traits": [
+          "civil_law_french",
+          "stable_wgi"
+        ]
+      },
+      {
+        "iso_code": "AE",
+        "name_en": "United Arab Emirates",
+        "score": 0.68,
+        "common_traits": [
+          "EM",
+          "same_cluster",
+          "stable_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "BR",
+        "name_en": "Brazil",
+        "score": 0.67,
+        "common_traits": [
+          "civil_law_french",
+          "EM"
+        ]
+      },
+      {
+        "iso_code": "IN",
+        "name_en": "India",
+        "score": 0.66,
+        "common_traits": [
+          "EM",
+          "same_cluster",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "SA",
+        "name_en": "Saudi Arabia",
+        "score": 0.63,
+        "common_traits": [
+          "EM",
+          "same_cluster",
+          "deep_market"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Malaysia",
+    "iso_code": "MY",
+    "cluster": "S4-1",
+    "cluster_label": "English law, growing",
+    "similar": [
+      {
+        "iso_code": "TH",
+        "name_en": "Thailand",
+        "score": 0.85,
+        "common_traits": [
+          "common_law",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "IL",
+        "name_en": "Israel",
+        "score": 0.77,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "IN",
+        "name_en": "India",
+        "score": 0.76,
+        "common_traits": [
+          "common_law",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "GB",
+        "name_en": "United Kingdom",
+        "score": 0.76,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "deep_market",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "NZ",
+        "name_en": "New Zealand",
+        "score": 0.75,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "strong_investor_protection"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Mexico",
+    "iso_code": "MX",
+    "cluster": "S4-4",
+    "cluster_label": "Mixed, declining",
+    "similar": [
+      {
+        "iso_code": "BR",
+        "name_en": "Brazil",
+        "score": 0.74,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "ES",
+        "name_en": "Spain",
+        "score": 0.74,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      },
+      {
+        "iso_code": "PE",
+        "name_en": "Peru",
+        "score": 0.71,
+        "common_traits": [
+          "civil_law_french",
+          "EM"
+        ]
+      },
+      {
+        "iso_code": "IT",
+        "name_en": "Italy",
+        "score": 0.7,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.69,
+        "common_traits": [
+          "civil_law_french",
+          "declining_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Netherlands",
+    "iso_code": "NL",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "FI",
+        "name_en": "Finland",
+        "score": 0.8,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "DE",
+        "name_en": "Germany",
+        "score": 0.79,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "CH",
+        "name_en": "Switzerland",
+        "score": 0.77,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "AU",
+        "name_en": "Australia",
+        "score": 0.75,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "IT",
+        "name_en": "Italy",
+        "score": 0.75,
+        "common_traits": [
+          "civil_law_french",
+          "DM",
+          "same_cluster"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "New Zealand",
+    "iso_code": "NZ",
+    "cluster": "S4-1",
+    "cluster_label": "English law, growing",
+    "similar": [
+      {
+        "iso_code": "GB",
+        "name_en": "United Kingdom",
+        "score": 0.77,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "same_cluster",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "MY",
+        "name_en": "Malaysia",
+        "score": 0.75,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "CA",
+        "name_en": "Canada",
+        "score": 0.74,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.74,
+        "common_traits": [
+          "DM"
+        ]
+      },
+      {
+        "iso_code": "IL",
+        "name_en": "Israel",
+        "score": 0.71,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "same_cluster",
+          "stable_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Norway",
+    "iso_code": "NO",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "DK",
+        "name_en": "Denmark",
+        "score": 0.92,
+        "common_traits": [
+          "civil_law_scandinavian",
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "KR",
+        "name_en": "South Korea",
+        "score": 0.83,
+        "common_traits": [
+          "same_cluster",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "JP",
+        "name_en": "Japan",
+        "score": 0.82,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.8,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "FI",
+        "name_en": "Finland",
+        "score": 0.79,
+        "common_traits": [
+          "civil_law_scandinavian",
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Peru",
+    "iso_code": "PE",
+    "cluster": "S4-1",
+    "cluster_label": "English law, growing",
+    "similar": [
+      {
+        "iso_code": "ES",
+        "name_en": "Spain",
+        "score": 0.78,
+        "common_traits": [
+          "civil_law_french",
+          "stable_wgi"
+        ]
+      },
+      {
+        "iso_code": "CN",
+        "name_en": "China",
+        "score": 0.75,
+        "common_traits": [
+          "EM"
+        ]
+      },
+      {
+        "iso_code": "CO",
+        "name_en": "Colombia",
+        "score": 0.75,
+        "common_traits": [
+          "civil_law_french",
+          "EM"
+        ]
+      },
+      {
+        "iso_code": "GR",
+        "name_en": "Greece",
+        "score": 0.73,
+        "common_traits": [
+          "civil_law_french",
+          "EM"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.72,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Philippines",
+    "iso_code": "PH",
+    "cluster": "S4-3",
+    "cluster_label": "Emerging, growing",
+    "similar": [
+      {
+        "iso_code": "CO",
+        "name_en": "Colombia",
+        "score": 0.77,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "GR",
+        "name_en": "Greece",
+        "score": 0.75,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "PE",
+        "name_en": "Peru",
+        "score": 0.68,
+        "common_traits": [
+          "civil_law_french",
+          "EM"
+        ]
+      },
+      {
+        "iso_code": "TH",
+        "name_en": "Thailand",
+        "score": 0.67,
+        "common_traits": [
+          "EM",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "IT",
+        "name_en": "Italy",
+        "score": 0.66,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Poland",
+    "iso_code": "PL",
+    "cluster": "S4-4",
+    "cluster_label": "Mixed, declining",
+    "similar": [
+      {
+        "iso_code": "FI",
+        "name_en": "Finland",
+        "score": 0.75,
+        "common_traits": [
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "AT",
+        "name_en": "Austria",
+        "score": 0.72,
+        "common_traits": [
+          "civil_law_german",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "AU",
+        "name_en": "Australia",
+        "score": 0.7,
+        "common_traits": []
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.7,
+        "common_traits": [
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "HU",
+        "name_en": "Hungary",
+        "score": 0.68,
+        "common_traits": [
+          "civil_law_german",
+          "EM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Portugal",
+    "iso_code": "PT",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "DE",
+        "name_en": "Germany",
+        "score": 0.8,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "SE",
+        "name_en": "Sweden",
+        "score": 0.8,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "FR",
+        "name_en": "France",
+        "score": 0.75,
+        "common_traits": [
+          "civil_law_french",
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "GR",
+        "name_en": "Greece",
+        "score": 0.73,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      },
+      {
+        "iso_code": "FI",
+        "name_en": "Finland",
+        "score": 0.72,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Qatar",
+    "iso_code": "QA",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "CH",
+        "name_en": "Switzerland",
+        "score": 0.66,
+        "common_traits": [
+          "same_cluster",
+          "declining_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "NL",
+        "name_en": "Netherlands",
+        "score": 0.64,
+        "common_traits": [
+          "civil_law_french",
+          "same_cluster",
+          "declining_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "DE",
+        "name_en": "Germany",
+        "score": 0.6,
+        "common_traits": [
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "KW",
+        "name_en": "Kuwait",
+        "score": 0.56,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "HU",
+        "name_en": "Hungary",
+        "score": 0.54,
+        "common_traits": [
+          "EM",
+          "declining_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Russia (2009-2021)",
+    "iso_code": "RU",
+    "cluster": "S4-3",
+    "cluster_label": "Emerging, growing",
+    "similar": [
+      {
+        "iso_code": "IT",
+        "name_en": "Italy",
+        "score": 0.77,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      },
+      {
+        "iso_code": "ES",
+        "name_en": "Spain",
+        "score": 0.72,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      },
+      {
+        "iso_code": "CN",
+        "name_en": "China",
+        "score": 0.71,
+        "common_traits": [
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "PE",
+        "name_en": "Peru",
+        "score": 0.7,
+        "common_traits": [
+          "civil_law_french",
+          "EM"
+        ]
+      },
+      {
+        "iso_code": "MX",
+        "name_en": "Mexico",
+        "score": 0.67,
+        "common_traits": [
+          "civil_law_french",
+          "EM"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Russia (2022-2024)",
+    "iso_code": "RU",
+    "cluster": "S4-4",
+    "cluster_label": "Mixed, declining",
+    "similar": [
+      {
+        "iso_code": "MX",
+        "name_en": "Mexico",
+        "score": 0.56,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "HU",
+        "name_en": "Hungary",
+        "score": 0.53,
+        "common_traits": [
+          "EM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "AT",
+        "name_en": "Austria",
+        "score": 0.51,
+        "common_traits": [
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "RU",
+        "name_en": "Russia (2009-2021)",
+        "score": 0.51,
+        "common_traits": [
+          "civil_law_french",
+          "EM"
+        ]
+      },
+      {
+        "iso_code": "FR",
+        "name_en": "France",
+        "score": 0.51,
+        "common_traits": [
+          "civil_law_french",
+          "declining_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Saudi Arabia",
+    "iso_code": "SA",
+    "cluster": "S4-1",
+    "cluster_label": "English law, growing",
+    "similar": [
+      {
+        "iso_code": "IL",
+        "name_en": "Israel",
+        "score": 0.72,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "MY",
+        "name_en": "Malaysia",
+        "score": 0.7,
+        "common_traits": [
+          "common_law",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "AE",
+        "name_en": "United Arab Emirates",
+        "score": 0.7,
+        "common_traits": [
+          "common_law",
+          "EM",
+          "same_cluster",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "TH",
+        "name_en": "Thailand",
+        "score": 0.67,
+        "common_traits": [
+          "common_law",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "KW",
+        "name_en": "Kuwait",
+        "score": 0.63,
+        "common_traits": [
+          "EM",
+          "same_cluster",
+          "deep_market"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Singapore",
+    "iso_code": "SG",
+    "cluster": "S4-1",
+    "cluster_label": "English law, growing",
+    "similar": [
+      {
+        "iso_code": "IE",
+        "name_en": "Ireland",
+        "score": 0.79,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "same_cluster",
+          "stable_wgi"
+        ]
+      },
+      {
+        "iso_code": "MY",
+        "name_en": "Malaysia",
+        "score": 0.7,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "deep_market",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "NZ",
+        "name_en": "New Zealand",
+        "score": 0.68,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "same_cluster",
+          "stable_wgi"
+        ]
+      },
+      {
+        "iso_code": "CA",
+        "name_en": "Canada",
+        "score": 0.66,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "deep_market",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "AE",
+        "name_en": "United Arab Emirates",
+        "score": 0.66,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "stable_wgi",
+          "deep_market"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "South Africa",
+    "iso_code": "ZA",
+    "cluster": "S4-2",
+    "cluster_label": "Deep markets, volatile",
+    "similar": [
+      {
+        "iso_code": "US",
+        "name_en": "United States",
+        "score": 0.78,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "declining_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "CL",
+        "name_en": "Chile",
+        "score": 0.68,
+        "common_traits": [
+          "EM",
+          "declining_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "CA",
+        "name_en": "Canada",
+        "score": 0.68,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "declining_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.66,
+        "common_traits": [
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "IN",
+        "name_en": "India",
+        "score": 0.66,
+        "common_traits": [
+          "common_law",
+          "EM",
+          "deep_market",
+          "strong_investor_protection"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "South Korea",
+    "iso_code": "KR",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "TW",
+        "name_en": "Taiwan",
+        "score": 0.87,
+        "common_traits": [
+          "civil_law_german",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "JP",
+        "name_en": "Japan",
+        "score": 0.84,
+        "common_traits": [
+          "civil_law_german",
+          "same_cluster",
+          "growing_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "NO",
+        "name_en": "Norway",
+        "score": 0.83,
+        "common_traits": [
+          "same_cluster",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "DK",
+        "name_en": "Denmark",
+        "score": 0.81,
+        "common_traits": [
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "IN",
+        "name_en": "India",
+        "score": 0.8,
+        "common_traits": [
+          "EM",
+          "growing_wgi",
+          "deep_market",
+          "strong_investor_protection"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Spain",
+    "iso_code": "ES",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.89,
+        "common_traits": [
+          "civil_law_french",
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "IT",
+        "name_en": "Italy",
+        "score": 0.88,
+        "common_traits": [
+          "civil_law_french",
+          "DM",
+          "same_cluster",
+          "stable_wgi"
+        ]
+      },
+      {
+        "iso_code": "TW",
+        "name_en": "Taiwan",
+        "score": 0.81,
+        "common_traits": [
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "KR",
+        "name_en": "South Korea",
+        "score": 0.78,
+        "common_traits": [
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "PE",
+        "name_en": "Peru",
+        "score": 0.78,
+        "common_traits": [
+          "civil_law_french",
+          "stable_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Sweden",
+    "iso_code": "SE",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "PT",
+        "name_en": "Portugal",
+        "score": 0.8,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "AU",
+        "name_en": "Australia",
+        "score": 0.8,
+        "common_traits": [
+          "DM",
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "FI",
+        "name_en": "Finland",
+        "score": 0.8,
+        "common_traits": [
+          "civil_law_scandinavian",
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "DE",
+        "name_en": "Germany",
+        "score": 0.8,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "FR",
+        "name_en": "France",
+        "score": 0.78,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Switzerland",
+    "iso_code": "CH",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "NL",
+        "name_en": "Netherlands",
+        "score": 0.77,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "QA",
+        "name_en": "Qatar",
+        "score": 0.66,
+        "common_traits": [
+          "same_cluster",
+          "declining_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "DE",
+        "name_en": "Germany",
+        "score": 0.63,
+        "common_traits": [
+          "civil_law_german",
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "FI",
+        "name_en": "Finland",
+        "score": 0.61,
+        "common_traits": [
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "KW",
+        "name_en": "Kuwait",
+        "score": 0.6,
+        "common_traits": [
+          "deep_market"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Taiwan",
+    "iso_code": "TW",
+    "cluster": "S4-5",
+    "cluster_label": "Developed, stable",
+    "similar": [
+      {
+        "iso_code": "KR",
+        "name_en": "South Korea",
+        "score": 0.87,
+        "common_traits": [
+          "civil_law_german",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "IT",
+        "name_en": "Italy",
+        "score": 0.84,
+        "common_traits": [
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.83,
+        "common_traits": [
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "ES",
+        "name_en": "Spain",
+        "score": 0.81,
+        "common_traits": [
+          "same_cluster"
+        ]
+      },
+      {
+        "iso_code": "DK",
+        "name_en": "Denmark",
+        "score": 0.8,
+        "common_traits": [
+          "same_cluster"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Thailand",
+    "iso_code": "TH",
+    "cluster": "S4-1",
+    "cluster_label": "English law, growing",
+    "similar": [
+      {
+        "iso_code": "MY",
+        "name_en": "Malaysia",
+        "score": 0.85,
+        "common_traits": [
+          "common_law",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "IN",
+        "name_en": "India",
+        "score": 0.79,
+        "common_traits": [
+          "common_law",
+          "EM",
+          "same_cluster",
+          "growing_wgi"
+        ]
+      },
+      {
+        "iso_code": "KR",
+        "name_en": "South Korea",
+        "score": 0.75,
+        "common_traits": [
+          "EM",
+          "growing_wgi",
+          "deep_market",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "IL",
+        "name_en": "Israel",
+        "score": 0.74,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "TW",
+        "name_en": "Taiwan",
+        "score": 0.73,
+        "common_traits": [
+          "EM",
+          "growing_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "Turkey",
+    "iso_code": "TR",
+    "cluster": "S4-4",
+    "cluster_label": "Mixed, declining",
+    "similar": [
+      {
+        "iso_code": "PE",
+        "name_en": "Peru",
+        "score": 0.68,
+        "common_traits": [
+          "civil_law_french",
+          "EM"
+        ]
+      },
+      {
+        "iso_code": "CL",
+        "name_en": "Chile",
+        "score": 0.67,
+        "common_traits": [
+          "civil_law_french",
+          "EM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "PT",
+        "name_en": "Portugal",
+        "score": 0.63,
+        "common_traits": [
+          "civil_law_french"
+        ]
+      },
+      {
+        "iso_code": "FR",
+        "name_en": "France",
+        "score": 0.63,
+        "common_traits": [
+          "civil_law_french",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "PL",
+        "name_en": "Poland",
+        "score": 0.63,
+        "common_traits": [
+          "EM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "United Arab Emirates",
+    "iso_code": "AE",
+    "cluster": "S4-1",
+    "cluster_label": "English law, growing",
+    "similar": [
+      {
+        "iso_code": "MY",
+        "name_en": "Malaysia",
+        "score": 0.7,
+        "common_traits": [
+          "common_law",
+          "EM",
+          "same_cluster",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "SA",
+        "name_en": "Saudi Arabia",
+        "score": 0.7,
+        "common_traits": [
+          "common_law",
+          "EM",
+          "same_cluster",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "KW",
+        "name_en": "Kuwait",
+        "score": 0.68,
+        "common_traits": [
+          "EM",
+          "same_cluster",
+          "stable_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "SG",
+        "name_en": "Singapore",
+        "score": 0.66,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "stable_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "CN",
+        "name_en": "China",
+        "score": 0.63,
+        "common_traits": [
+          "EM",
+          "deep_market"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "United Kingdom",
+    "iso_code": "GB",
+    "cluster": "S4-1",
+    "cluster_label": "English law, growing",
+    "similar": [
+      {
+        "iso_code": "CA",
+        "name_en": "Canada",
+        "score": 0.78,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "declining_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "NZ",
+        "name_en": "New Zealand",
+        "score": 0.77,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "same_cluster",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "SE",
+        "name_en": "Sweden",
+        "score": 0.77,
+        "common_traits": [
+          "DM",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "MY",
+        "name_en": "Malaysia",
+        "score": 0.76,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "deep_market",
+          "strong_investor_protection"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.76,
+        "common_traits": [
+          "DM",
+          "declining_wgi"
+        ]
+      }
+    ]
+  },
+  {
+    "jurisdiction": "United States",
+    "iso_code": "US",
+    "cluster": "S4-2",
+    "cluster_label": "Deep markets, volatile",
+    "similar": [
+      {
+        "iso_code": "CA",
+        "name_en": "Canada",
+        "score": 0.85,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "same_cluster",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "ZA",
+        "name_en": "South Africa",
+        "score": 0.78,
+        "common_traits": [
+          "common_law",
+          "same_cluster",
+          "declining_wgi",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "BE",
+        "name_en": "Belgium",
+        "score": 0.71,
+        "common_traits": [
+          "DM",
+          "declining_wgi"
+        ]
+      },
+      {
+        "iso_code": "JP",
+        "name_en": "Japan",
+        "score": 0.71,
+        "common_traits": [
+          "DM",
+          "deep_market"
+        ]
+      },
+      {
+        "iso_code": "GB",
+        "name_en": "United Kingdom",
+        "score": 0.69,
+        "common_traits": [
+          "common_law",
+          "DM",
+          "declining_wgi",
+          "deep_market"
+        ]
+      }
+    ]
+  }
+]

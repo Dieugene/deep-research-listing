@@ -193,7 +193,7 @@ function ModeCard({ cell, venueKey }: ModeCardProps) {
     >
       <div className={styles.tcHd}>
         <div className={styles.tcHdLeft}>
-          <div className={styles.tcTierName}>{cell.tier}</div>
+          <div className={styles.tcTierName}>{cell.tier_ru ?? cell.tier}</div>
           <div className={styles.tcTierEn}>{cell.instrument_class_label}</div>
         </div>
         <div className={styles.tcHdRight}>
@@ -339,6 +339,7 @@ export default function VenuePage() {
   const archLabel      = data.listing_architecture
     ? listingArchitectureRu(data.listing_architecture)
     : null
+  const isDeferred = data.research_priority === 'deferred'
 
   return (
     <div className={styles.page}>
@@ -369,6 +370,11 @@ export default function VenuePage() {
         {data.secondary_listing_regime && (
           <span className={`${styles.chip} ${styles.chipSecondary}`}>
             Вторичный листинг
+          </span>
+        )}
+        {isDeferred && (
+          <span className={`${styles.chip} ${styles.chipDeferred}`}>
+            Детализация отложена
           </span>
         )}
       </h1>
@@ -412,35 +418,46 @@ export default function VenuePage() {
         </div>
       )}
 
-      {/* ── Instrument tabs ───────────────────────────────── */}
-      {tabs.length > 0 && (
-        <div className={styles.instrTabs}>
-          {tabs.map(tab => (
-            <button
-              key={tab.key}
-              className={`${styles.instrTab} ${tab.key === activeTabKey ? styles.instrTabActive : ''}`}
-              onClick={() => setActiveTab(tab.key)}
-            >
-              {tab.labelRu}
-              <span className={styles.instrTabCount}>{tab.count}</span>
-            </button>
-          ))}
-        </div>
-      )}
-
-      {/* ── Cells grid ────────────────────────────────────── */}
-      {activeCells.length > 0 ? (
-        <div className={styles.cellsGrid}>
-          {activeCells.map(cell => (
-            <ModeCard key={cell.cell_id} cell={cell} venueKey={data.venue_key} />
-          ))}
-        </div>
-      ) : (
-        <div className={styles.emptyState}>
-          <div className={styles.emptyStateTitle}>
-            Нет данных по выбранному инструменту
+      {/* ── Instrument tabs + cells (only for primary venues) */}
+      {isDeferred ? (
+        <div className={styles.deferredStub}>
+          <div className={styles.deferredStubTitle}>Детализация не проводилась</div>
+          <div className={styles.deferredStubText}>
+            Для этой площадки доступна обзорная карточка (структура, тиры, инструменты).
+            Детальный анализ режимов листинга будет выполнен в следующих итерациях.
           </div>
         </div>
+      ) : (
+        <>
+          {tabs.length > 0 && (
+            <div className={styles.instrTabs}>
+              {tabs.map(tab => (
+                <button
+                  key={tab.key}
+                  className={`${styles.instrTab} ${tab.key === activeTabKey ? styles.instrTabActive : ''}`}
+                  onClick={() => setActiveTab(tab.key)}
+                >
+                  {tab.labelRu}
+                  <span className={styles.instrTabCount}>{tab.count}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {activeCells.length > 0 ? (
+            <div className={styles.cellsGrid}>
+              {activeCells.map(cell => (
+                <ModeCard key={cell.cell_id} cell={cell} venueKey={data.venue_key} />
+              ))}
+            </div>
+          ) : (
+            <div className={styles.emptyState}>
+              <div className={styles.emptyStateTitle}>
+                Нет данных по выбранному инструменту
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* ── Sources ───────────────────────────────────────── */}

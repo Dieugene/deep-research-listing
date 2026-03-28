@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — UI: задачи по интерфейсу</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA;--bg2:#fff;--bg3:#F0F2F7;
+  --border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.16);
+  --text:#111827;--text-mid:#374151;--text-dim:#6B7280;
+  --accent:#2563EB;--accent-bg:rgba(37,99,235,0.06);
+  --green:#059669;--green-bg:rgba(5,150,105,0.07);
+  --red:#DC2626;--red-bg:rgba(220,38,38,0.05);
+  --orange:#D97706;--orange-bg:rgba(217,119,6,0.06);
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --r:8px;--r-lg:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:14.5px;line-height:1.7;padding:48px}
+.wrap{max-width:800px;margin:0 auto}
+h1{font-size:24px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+.meta{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:36px}
+h2{font-size:13px;font-weight:500;font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin:36px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+p{color:var(--text-mid);font-size:14px;line-height:1.75;margin-bottom:10px}
+p strong{color:var(--text);font-weight:500}
+ul{color:var(--text-mid);font-size:14px;line-height:1.75;padding-left:20px;margin-bottom:10px}
+li{margin-bottom:4px}
+li strong{color:var(--text);font-weight:500}
+code{font-family:var(--font-mono);font-size:12px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:1px 5px}
+pre{background:#1E2433;color:#E2E8F4;border-radius:var(--r);padding:14px 18px;font-family:var(--font-mono);font-size:12.5px;line-height:1.65;overflow-x:auto;margin:8px 0}
+.cm{color:#6B7A99}.cs{color:#A5D6A7}.ck{color:#80DEEA}.cn{color:#FFB74D}
+
+.task{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:10px}
+.task-hd{display:flex;align-items:center;gap:10px;padding:11px 16px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.num{font-family:var(--font-mono);font-size:10px;background:var(--bg2);border:1px solid var(--border2);border-radius:4px;padding:2px 7px;color:var(--text-dim);flex-shrink:0}
+.title{font-size:13.5px;font-weight:600;color:var(--text)}
+.pri{margin-left:auto;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;flex-shrink:0;border:1px solid;white-space:nowrap}
+.p-bug{background:#FEF3C7;color:#92400E;border-color:#FDE68A;font-weight:700}
+.p-high{background:var(--red-bg);color:var(--red);border-color:rgba(220,38,38,.2)}
+.p-med{background:var(--orange-bg);color:var(--orange);border-color:rgba(217,119,6,.2)}
+.p-check{background:var(--accent-bg);color:var(--accent);border-color:rgba(37,99,235,.2)}
+.task-body{padding:14px 16px}
+.task-body p,.task-body ul{margin-bottom:8px}
+.task-body p:last-child,.task-body ul:last-child{margin-bottom:0}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+thead tr{background:var(--bg3)}
+thead th{padding:8px 12px;text-align:left;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);font-weight:400;border-bottom:1px solid var(--border2)}
+tbody tr{border-bottom:1px solid var(--border)}
+tbody tr:last-child{border-bottom:none}
+tbody td{padding:9px 12px;color:var(--text-mid);vertical-align:top}
+tbody td:first-child{color:var(--text);font-weight:500}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>UI: задачи по интерфейсу</h1>
+<div class="meta">localhost:3000 · проверено Browser MCP · март 2026</div>
+
+<!-- ══════════════════════════════
+     ВСЕ СТРАНИЦЫ
+══════════════════════════════ -->
+<h2>Все страницы — nav</h2>
+
+<div class="task">
+  <div class="task-hd">
+    <span class="num">Н-1</span>
+    <span class="title">Dropdown «Справочник» исчезает при движении мыши к пунктам</span>
+    <span class="pri p-bug">Баг</span>
+  </div>
+  <div class="task-body">
+    <p>Между триггером «Справочник» и dropdown-блоком есть зазор — мышь его пересекает, срабатывает <code>mouseleave</code>, список скрывается раньше чем пользователь до него добирается.</p>
+    <p><strong>Если dropdown на CSS (hover):</strong></p>
+    <pre><span class="ck">.dropdown</span> {
+  margin-top: <span class="cn">-2px</span>;  <span class="cm">/* перекрыть зазор */</span>
+  padding-top: <span class="cn">6px</span>;  <span class="cm">/* визуальный отступ */</span>
+}</pre>
+    <p><strong>Если dropdown на JS (mouseleave/mouseenter):</strong></p>
+    <pre><span class="ck">let</span> hideTimeout;
+trigger.addEventListener(<span class="cs">'mouseleave'</span>, () => {
+  hideTimeout = setTimeout(() => hideDropdown(), <span class="cn">150</span>);
+});
+dropdown.addEventListener(<span class="cs">'mouseenter'</span>, () => clearTimeout(hideTimeout));
+dropdown.addEventListener(<span class="cs">'mouseleave'</span>, () => hideDropdown());</pre>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-hd">
+    <span class="num">Н-2</span>
+    <span class="title">Флаги не отображаются на Windows (показываются коды «GB», «DE»…)</span>
+    <span class="pri p-bug">Баг</span>
+  </div>
+  <div class="task-body">
+    <p>Windows не поддерживает emoji-флаги нативно. Заменить emoji на <code>&lt;img&gt;</code> с <code>flagcdn.com</code>:</p>
+    <pre>&lt;img
+  src=<span class="cs">"https://flagcdn.com/24x18/{iso_code_lowercase}.png"</span>
+  srcset=<span class="cs">"https://flagcdn.com/48x36/{iso_code_lowercase}.png 2x"</span>
+  width=<span class="cs">"24"</span> height=<span class="cs">"18"</span>
+  alt=<span class="cs">"{country_name}"</span>
+  style=<span class="cs">"display:block"</span>
+/&gt;</pre>
+    <p>ISO-код — строчными: <code>gb</code>, <code>de</code>, <code>hk</code> и т.д. Контейнер флага — круглый <code>div</code> с <code>overflow: hidden</code>, <code>img</code> внутри с <code>object-fit: cover; width: 100%; height: 100%</code>.</p>
+    <p>Применить: список юрисдикций, карточка юрисдикции (шапка), карточка-превью на лендинге.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     СПИСОК ЮРИСДИКЦИЙ
+══════════════════════════════ -->
+<h2>Список юрисдикций — /jurisdictions</h2>
+
+<div class="task">
+  <div class="task-hd">
+    <span class="num">С-1</span>
+    <span class="title">Дублирование «civil law» в фильтрах правовой семьи</span>
+    <span class="pri p-bug">Баг</span>
+  </div>
+  <div class="task-body">
+    <p>Кнопки фильтра строятся динамически из данных без дедупликации — «civil law» появляется дважды. Исправить при формировании списка значений:</p>
+    <pre><span class="ck">const</span> families = Array.from(<span class="ck">new</span> Set(
+  jurisdictions.map(j => j.legal_family.toLowerCase())
+));</pre>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-hd">
+    <span class="num">С-2</span>
+    <span class="title">«Civil law» с заглавной буквы в строке Германии</span>
+    <span class="pri p-high">Высокий</span>
+  </div>
+  <div class="task-body">
+    <p>Данные приходят с разным регистром. Нормализовать при отображении чипа правовой семьи — не трогая данные:</p>
+    <pre>legalFamily.toLowerCase()</pre>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     КАРТОЧКА ЮРИСДИКЦИИ
+══════════════════════════════ -->
+<h2>Карточка юрисдикции — /jurisdictions/[name]</h2>
+
+<div class="task">
+  <div class="task-hd">
+    <span class="num">К-1</span>
+    <span class="title">Блок «Notes» выводится как параграф — оформить как секцию «Примечания»</span>
+    <span class="pri p-high">Высокий</span>
+  </div>
+  <div class="task-body">
+    <p>Поле <code>notes</code> сейчас — обычный параграф сразу после регулятор-стрипа. Оформить как отдельную секцию внутри той же левой карточки: горизонтальный разделитель → заголовок «Примечания» → текст курсивом (паттерн <code>arch-note</code> из прототипа). Показывать только если поле не пустое.</p>
+  </div>
+</div>
+
+<div class="task">
+  <div class="task-hd">
+    <span class="num">К-2</span>
+    <span class="title">Система источников — реинтегрировать после восстановления в пайплайне</span>
+    <span class="pri p-high">Высокий</span>
+  </div>
+  <div class="task-body">
+    <p><strong>Источники — критически важный элемент продукта.</strong> Только через них выполняется верификация отображаемых данных. Источники нужны по каждому блоку данных везде в интерфейсе, их отсутствие — не допустимо как финальное состояние.</p>
+    <p>Текущая ситуация: источники терялись в пайплайне сбора данных. Работа по их восстановлению ведётся параллельно. Как только источники появятся в данных — их нужно немедленно реинтегрировать в интерфейс.</p>
+    <p><strong>Где отображать:</strong></p>
+    <ul>
+      <li>Блоки «Архитектура допуска», «Регулятор», «Примечания» — кнопка «N источников» в шапке блока + пронумерованный список внизу</li>
+      <li>Drawer регуляторного анализа — список источников в конце каждой записи</li>
+      <li>Карточка площадки — источники при каждом параметре</li>
+    </ul>
+    <p><strong>Правило по количеству</strong> (из ТЗ <code>listing-research-dev-spec.html</code>, раздел «Система источников»): 1–5 — показать все; 6–15 — collapse «показать ещё»; 16+ — drawer со списком и поиском.</p>
+    <p>Рекомендация: подготовить компонент источников заранее, чтобы при появлении данных интеграция была вопросом одного подключения, а не разработки с нуля.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     СВОДНАЯ ТАБЛИЦА
+══════════════════════════════ -->
+<h2>Сводная таблица</h2>
+
+<table>
+  <thead><tr><th>#</th><th>Задача</th><th>Страница</th><th>Приоритет</th></tr></thead>
+  <tbody>
+    <tr><td>Н-1</td><td>Dropdown исчезает при движении мыши</td><td>Все страницы</td><td>Баг</td></tr>
+    <tr><td>Н-2</td><td>Флаги не отображаются на Windows</td><td>Все страницы</td><td>Баг</td></tr>
+    <tr><td>С-1</td><td>Дублирование «civil law» в фильтрах</td><td>/jurisdictions</td><td>Баг</td></tr>
+    <tr><td>С-2</td><td>«Civil law» с заглавной у Германии</td><td>/jurisdictions</td><td>Высокий</td></tr>
+    <tr><td>К-1</td><td>Notes-блок как параграф вместо секции</td><td>/jurisdictions/[name]</td><td>Высокий</td></tr>
+    <tr><td>К-2</td><td>Система источников — реинтегрировать</td><td>Весь интерфейс</td><td>Высокий</td></tr>
+    <tr><td>К-3</td><td>Тип площадки «other»</td><td>/jurisdictions/[name]</td><td>Средний</td></tr>
+    <tr><td>К-4</td><td>Hash-навигация по вкладкам</td><td>/jurisdictions/[name]</td><td>Средний</td></tr>
+  </tbody>
+</table>
+
+</div>
+</body>
+</html>

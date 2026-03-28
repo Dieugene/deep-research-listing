@@ -328,17 +328,22 @@ def process_level4_labels(
 
     # Step 3: batch LLM call
     inputs = [[system_msg, HumanMessage(content=text)] for text in texts]
-    try:
-        results = llm.batch(inputs, config={"max_concurrency": 50})
-    except Exception as e:
-        logger.error("LLM batch call failed: %s", e)
-        return
+    results = llm.batch(
+        inputs,
+        config={"max_concurrency": 50},
+        return_exceptions=True,
+    )
 
     # Step 4: assign results back to records
     modified_jurisdictions: set[str] = set()
+    error_count = 0
 
     for i, (name_ru, section_name, record_idx) in enumerate(pending):
         result = results[i]
+        if isinstance(result, Exception):
+            logger.error("LLM error for %s/%s[%d]: %s", name_ru, section_name, record_idx, result)
+            error_count += 1
+            continue
         label = result.content.strip()[:35]
         if not label:
             continue
@@ -356,6 +361,8 @@ def process_level4_labels(
         except Exception as e:
             logger.error("[ERROR] %s — failed to save labels: %s", name_ru, e)
 
+    if error_count:
+        logger.warning("Labels generation: %d errors (will be retried on next run)", error_count)
     logger.info("Labels generation complete: %d jurisdictions updated", len(modified_jurisdictions))
 
 

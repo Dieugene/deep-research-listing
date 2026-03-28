@@ -1,0 +1,155 @@
+{
+  "output": {
+    "type": "text",
+    "content": "# Navigating France's Dual-Track Listing Regime: From AMF Visa to Euronext Compartments\n\n## Executive Summary\n\n1. **Dual Concepts Survive MiFID II**: French law distinguishes the regulatory approval of a prospectus from the actual \"admission to trading\" (*admission aux négociations*). The historical concept of \"official listing\" (*admission à la cote officielle*) has been subsumed into the MiFID-aligned admission to trading framework. \n2. **Admission Power Sits with the Exchange, Not the Regulator**: Euronext Paris, acting as the market operator (*entreprise de marché*), holds the exclusive legal authority to grant or refuse admission to trading. The regulator (AMF) focuses on disclosure and prospectus approval.\n3. **AMF Is a Stand-Alone Markets Commission**: The *Autorité des marchés financiers* (AMF) is an independent public authority governing securities markets, distinct from the central bank or prudential regulators.\n4. **Three Statutory Venue Types Map 1-for-1 to MiFID II**: France strictly follows EU taxonomy with Regulated Markets, Multilateral Trading Facilities (MTFs), and Organised Trading Facilities (OTFs), adding no local variants.\n5. **Euronext's Four-Level Ecosystem Creates Built-In Graduation Path**: The exchange segments issuers by market capitalization (Compartments A, B, C) and operates dedicated SME/growth MTFs (Euronext Growth, Euronext Access), alongside thematic segments like Euronext Tech Leaders.\n6. **Issuer-Level vs. Security-Level Checks**: Euronext's harmonized rulebook imposes both general issuer eligibility requirements and specific per-instrument criteria during the admission process.\n7. **Secondary Listings Go \"Consent-Free\" if Primary RM in EEA**: French law permits the admission of financial instruments already traded on another EEA regulated market without the issuer's explicit consent, streamlining cross-listings.\n8. **Suspension Powers Are Fragmented**: While the exchange manages routine trading halts, the AMF can suspend trading for up to two days during exceptional events, with longer suspensions requiring Ministry of Economy intervention.\n\n## 1. Legal Architecture: Two-Step Listing vs. Trading\n\nDespite EU harmonization, France preserves a bifurcated process requiring both regulatory clearance for public offers and exchange approval for market entry. Mismanaging the hand-off between these two entities is a common pitfall for prospective issuers.\n\n### 1.1 Prospectus Approval (\"Visa\") by AMF\n\nThe regulatory clearance phase is governed by the *Autorité des marchés financiers* (AMF). Under Article L.621-8 of the *Code monétaire et financier* (CMF), the AMF is the competent authority responsible for carrying out the missions resulting from the EU Prospectus Regulation (Regulation (EU) 2017/1129) [1]. The AMF grants a \"visa\" (approval) for the prospectus once it verifies that the information is complete, consistent, and comprehensible [2]. \n\n### 1.2 Trading Admission by Euronext\n\n**Official Local Term:** *Admission aux négociations* (Admission to trading).\n**Legal Source:** CMF Article L.421-14 [3].\n\nThe actual decision to admit securities to the market is entirely separate from the AMF's prospectus visa. Under CMF Article L.421-14, the admission of financial instruments to trading on a regulated market is decided exclusively by the market operator (*entreprise de marché*), in accordance with the market's rules [3]. These rules must ensure that the admitted instruments can be traded in a fair, orderly, and efficient manner [3]. The market operator is also responsible for making the admission decisions public [3].\n\n### 1.3 Historical Shift from \"Cotation Officielle\" to MiFID Nomenclature\n\nHistorically, French law referred to \"official listing\" (*admission à la cote officielle*). However, under the modern MiFID II framework transposed into the CMF, the operative legal concept is strictly \"admission to trading\" (*admission aux négociations*) [3]. The dual-track system means issuers must secure the AMF visa for their disclosure documents and separately satisfy Euronext's listing rules for market entry.\n\n## 2. Institutional Players & Their Statutory Bases\n\nKnowing which institution holds specific statutory powers is critical for structuring a successful listing timeline.\n\n### 2.1 AMF (Markets Commission)\n\n**Official Local Term:** *Autorité des marchés financiers* (Financial Markets Authority).\n**Legal Source:** CMF Article L.621-1 et seq. [4] [5].\n\nThe AMF is an independent public authority (markets commission) responsible for safeguarding investments, ensuring orderly markets, and regulating disclosures. It is not a central bank. Its governing framework is anchored in Title II of Book VI of the CMF (Articles L.621-1 to L.621-35) [5]. \n\n### 2.2 Euronext Paris as \"Entreprise de Marché\"\n\n**Official Local Term:** *Entreprise de marché* (Market Operator).\n**Legal Source:** CMF Article L.421-2 [6].\n\nEuronext Paris S.A. operates the French regulated market. By law, a regulated market is managed by a market operator (*entreprise de marché*), which must take the form of a commercial company (*société commerciale*) [6]. Euronext Paris acts as the listing authority that evaluates applications, enforces the Euronext Rule Book, and ultimately grants admission to trading [7].\n\n## 3. Trading Venue Taxonomy: RM, MTF, OTF\n\nFrance maps its trading venues directly to the MiFID II framework without introducing complex local equivalents. This clean taxonomy simplifies passporting for international issuers.\n\n### 3.1 Statutory Definitions\n\n| Venue Type (English) | Official Local Term | Legal Source | Key Characteristics |\n| :--- | :--- | :--- | :--- |\n| **Regulated Market** | *Marché réglementé* | CMF Art. L.421-1 | A multilateral system operating under non-discretionary rules that brings together multiple third-party buying and selling interests [6]. Managed by an *entreprise de marché* [6]. |\n| **Multilateral Trading Facility (MTF)** | *Système multilatéral de négociation* | CMF Art. L.424-1 | A multilateral system governed by MiFID II rules, requiring mechanisms to reject orders exceeding volume thresholds [8] [9] [10]. |\n| **Organised Trading Facility (OTF)** | *Système organisé de négociation* | CMF Art. L.425-1 | A multilateral system (non-RM, non-MTF) where multiple third-party buying and selling interests interact. The AMF may grant certain exemptions to the operator under CMF L.425-2 [11]. |\n\n*Strategic Takeaway:* Issuers targeting institutional capital typically aim for the Regulated Market (Euronext Paris), while growth-stage companies utilize MTFs (Euronext Growth/Access) for lighter regulatory burdens.\n\n## 4. Euronext Segmentation & Graduation Path\n\nEuronext Paris segments its markets to cater to companies of varying sizes and maturity levels. This hierarchical structure allows companies to list early on an MTF and graduate to the Regulated Market as they scale.\n\n### 4.1 Regulated Market Compartments A, B, and C\n\nThe Regulated Market is divided into three distinct compartments based on market capitalization, which are reviewed annually based on a 60-day trading average [12].\n\n| Compartment | Market Capitalization Threshold | Target Issuer Profile |\n| :--- | :--- | :--- |\n| **Compartment A** | Over €1 billion | Large, highly structured companies with substantial financing depth [13] [12]. |\n| **Compartment B** | €150 million to €1 billion | Mid-cap companies [13] [12]. |\n| **Compartment C** | Less than €150 million | Small-cap companies on the regulated market [13] [12]. |\n\n### 4.2 SME Growth Markets and Pre-IPO Tiers\n\nFor companies not yet ready for the Regulated Market, Euronext operates MTFs:\n* **Euronext Growth:** An MTF tailored for SMEs. Issuers applying for admission here must appoint a Listing Sponsor [14].\n* **Euronext Access / Access+:** A pre-IPO nursery market (also an MTF). Issuers must also appoint a Listing Sponsor unless granted an exemption [15] [16].\n\n### 4.3 Thematic Segments: Euronext Tech Leaders\n\nEuronext overlays thematic segments across its markets to boost visibility. The **Euronext Tech Leaders** segment comprises over 110 high-growth and leading listed tech companies that meet specific qualification criteria, helping raise their international profile [17] [18].\n\n## 5. Eligibility & Ongoing Obligations\n\n**Official Local Term:** *Conditions d'admission* (Admission requirements).\n**Legal Source:** Euronext Rule Book I, Chapter 6 [7].\n\n### 5.1 Issuer Eligibility vs. Per-Issue Admission\n\nEuronext employs a unified but dual-layered procedure outlined in Chapter 6 of the Euronext Rule Book I [7]. The process is not entirely separate but involves two distinct sets of checks within the same application:\n1. **General Requirements (Rule 6.2):** Evaluates the issuer's overall eligibility, governance, and legal standing [7].\n2. **Additional Requirements per Category (Rule 6.3):** Evaluates the specific financial instruments (e.g., Shares, Bonds, ETFs) for free float, settlement compatibility, and valid issuance [7].\n\nThe decision is ultimately made by the Relevant Euronext Market Undertaking (Rule 6.6) [7].\n\n### 5.2 Administrative Measures: Recovery Box and Penalty Bench\n\nEuronext actively polices ongoing obligations. Under Rule 6903, Euronext maintains specific compartments for distressed or non-compliant issuers [7]:\n* **Recovery Box:** Groups together issuers that are subject to insolvency procedures [7].\n* **Penalty Bench:** Groups together issuers that fail to comply with the Rules [7]. Placement here severely impacts liquidity and institutional mandate eligibility.\n\n## 6. Secondary/Cross-Listing Playbook\n\n**Official Local Term:** *Admission sans le consentement de l'émetteur* (Admission without issuer consent) / *Passeport européen* (European Passport).\n**Legal Source:** CMF Article L.421-14 II [3]; AMF General Regulation Art. 212-3 [1].\n\n### 6.1 The \"Consent-Free\" EEA Provision\n\nFrance offers a highly streamlined regime for secondary listings. Under CMF Article L.421-14 II, if a financial instrument is already admitted to trading on a regulated market of another EU Member State or EEA party, it can be admitted to trading on a French regulated market *without the express consent of the issuer* [3]. \n\n### 6.2 Prospectus Passporting\n\nFor cross-listings initiated by the issuer, the AMF General Regulation (Article 212-3) operationalizes the EU Prospectus Regulation passport. If the AMF is not the competent authority that approved the original prospectus, the home regulator simply notifies the AMF with a certificate of approval and a copy of the prospectus (and a French translation of the summary, if applicable) [1]. This eliminates the need for a redundant regulatory review in France.\n\n## 7. Crisis Management & Suspension Powers\n\n**Official Local Term:** *Suspension des négociations* (Suspension of trading).\n**Legal Source:** CMF Article L.421-16 [3].\n\nAuthority to halt trading is fragmented, requiring issuers to maintain clear crisis communication protocols:\n* **Euronext:** Can suspend trading based on market rules and volatility parameters.\n* **AMF President:** Under CMF Article L.421-16 I, if an exceptional event disrupts the regular functioning of a regulated market, the President of the AMF (or a designated representative) can suspend all or part of trading for a maximum of **two consecutive trading days** [3].\n* **Ministry of Economy:** Any suspension extending beyond the two-day AMF limit must be enacted by an order (*arrêté*) from the Minister of the Economy, based on a proposal from the AMF President [3].\n\n## 8. Action Checklist for Prospective Issuers\n\n* **Sequence Filings:** Submit the prospectus to the AMF for the *visa* while simultaneously negotiating the *admission aux négociations* with Euronext Paris.\n* **Select the Right Venue:** Choose between the Regulated Market (Compartments A/B/C) for maximum institutional reach, or MTFs (Euronext Growth/Access) for lighter compliance burdens.\n* **Appoint a Listing Sponsor:** Mandatory if targeting Euronext Growth or Access [14] [15].\n* **Leverage the EU Passport:** If already listed in the EEA, utilize the AMF notification process to bypass a secondary prospectus review [1].\n* **Monitor Ongoing Compliance:** Maintain strict adherence to Euronext Rule Book I to avoid relegation to the Penalty Bench [7].\n\n## References\n\n1. *consultation publique sur les modifications apportees au ...*. https://www.amf-france.org/sites/institutionnel/files/2020-02/bilan-de-la-consultation-publique-sur-les-modifications-apportees-au-reglement-general-de-lamf-a-loccasion-de-lentree-en-application-du-reglement-ue-ndeg-2017_1129-dit-_prospectus_.pdf\n2. *EUROAPI - Prospectus d'admission (22-076). ...*. https://live.euronext.com/sites/default/files/2022-04/EUROAPI%20-%20Prospectus%20d%27admission%20%2822-076%29.pdf\n3. *Section 4 : Admission aux négociations (Articles L421-14 à L421-16) - Légifrance*. https://www.legifrance.gouv.fr/codes/id/LEGISCTA000032786100/2018-01-03\n4. *EU PROSPECTUS LAW*. https://durham-repository.worktribe.com/OutputFile/1124300\n5. *Titre II : L'Autorité des marchés financiers (Articles L621-1 à L621-35) - Légifrance*. https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006140166\n6. *Chapitre Ier : Les marchés réglementés français (Articles L421-1 à L421-20) - Légifrance*. https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006072026/LEGISCTA000006154474/\n7. *EURONEXT RULE BOOK*. https://www.euronext.com/sites/default/files/2025-01/rulebook_i_en_270125_-_bob.pdf\n8. *Chapitre IV : Systèmes multilatéraux de négociation (Articles L424-1 à L424-10) - Légifrance*. https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006072026/LEGISCTA000006154476/\n9. *Conditions Générales*. https://www.oddo-bhf.com/app/uploads/sites/2/2025/07/oddo-bhf-sca-conditions-generales-fr.pdf\n10. * Transposition de la Directive concernant les marchés d'instruments financiers et la réforme du règlement général de l'Autorité des marchés financiers : les marchés non réglementés | Lexbase*. https://www.lexbase.fr/article-juridique/3209315-textestranspositiondeladirectiveconcernantlesmarcha9sdinstrumentsfinanciersetlara9form\n11. *TITRE III : Systèmes organisés de négociation (OTF) (Articles 531-1 à 532-8) - Légifrance*. https://www.legifrance.gouv.fr/codes/section_lc/JORFTEXT000000606599/LEGISCTA000026150920/2025-12-29\n12. *CLASSIFICATION IN MARKET CAPITALISATION ...*. https://www.euronext.com/sites/default/files/2020-11/Euronext_Notice_6-02_EN.pdf\n13. *Choosing a Market | Euronext Listing*. https://www.euronext.com/en/listing/raise-capital/how-go-public/choosing-market\n14. *publication_decision-et-regles-euronext-access-paris- ...*. https://www.amf-france.org/sites/institutionnel/files/private/2022-02/publication_decision-et-regles-euronext-access-paris-applicables-au-28-fevrier-2022_0.pdf\n15. *EURONEXT ACCESS RULE BOOK*. https://www.euronext.com/sites/default/files/2019-05/euronext_access_paris_en.pdf\n16. *EURONEXT ACCESS MARKETS RULE BOOK*. https://www.euronext.com/sites/default/files/2024-04/euronext_access_harmonized_rulebook_i.pdf\n17. *Euronext Tech Leaders | Euronext Listing*. https://www.euronext.com/en/listing/raise-capital/euronext-tech-leaders\n18. *Tech | Euronext Listing*. https://www.euronext.com/en/listing/raise-capital/sector-focused-listing-solutions/tech",
+    "basis": [
+      {
+        "field": "content",
+        "reasoning": "The answer cannot be synthesized from multiple sources because the provided citations lack excerpts or textual evidence. Although the citations list various titles and URLs such as \"EURONEXT RULE BOOK\", \"Code monétaire et financier\", and \"EU PROSPECTUS LAW\", none of these citations contain the actual text or excerpts needed to verify the report's claims regarding France's dual-track listing regime, the AMF visa process, Euronext compartments, or suspension powers. Consequently, it is impossible to map the major claims to specific supporting facts, numbers, or quotations. Because all items lack excerpts, no usable evidence was provided to validate the detailed legal and regulatory assertions made in the report.",
+        "confidence": "low",
+        "citations": [
+          {
+            "url": "https://www.amf-france.org/sites/institutionnel/files/private/2022-02/publication_decision-et-regles-euronext-access-paris-applicables-au-28-fevrier-2022_0.pdf",
+            "excerpts": [],
+            "title": "publication_decision-et-regles-euronext-access-paris- ..."
+          },
+          {
+            "url": "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006072026/LEGISCTA000006154474/",
+            "excerpts": [],
+            "title": "Chapitre Ier : Les marchés réglementés français (Articles L421-1 à L421-20) - Légifrance"
+          },
+          {
+            "url": "https://live.euronext.com/sites/default/files/2022-04/EUROAPI%20-%20Prospectus%20d%27admission%20%2822-076%29.pdf",
+            "excerpts": [],
+            "title": "EUROAPI - Prospectus d'admission (22-076). ..."
+          },
+          {
+            "url": "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000032786100/2018-01-03",
+            "excerpts": [],
+            "title": "Section 4 : Admission aux négociations (Articles L421-14 à L421-16) - Légifrance"
+          },
+          {
+            "url": "https://www.dalloz.fr/documentation/Document?id=CMON003463&FromId=CODES_SECS_CMON_TALPHA",
+            "excerpts": [],
+            "title": "Code monétaire et financier - Ancien art. L. 421-15 | Dalloz"
+          },
+          {
+            "url": "https://live.euronext.com/sites/default/files/2025-09/Document%20d%20information_PASSAT.pdf",
+            "excerpts": [],
+            "title": "DOCUMENT D'INFORMATION"
+          },
+          {
+            "url": "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006072026/LEGISCTA000006154476/",
+            "excerpts": [],
+            "title": "Chapitre IV : Systèmes multilatéraux de négociation (Articles L424-1 à L424-10) - Légifrance"
+          },
+          {
+            "url": "https://durham-repository.worktribe.com/OutputFile/1124300",
+            "excerpts": [],
+            "title": "EU PROSPECTUS LAW"
+          },
+          {
+            "url": "https://www.legifrance.gouv.fr/codes/section_lc/JORFTEXT000000606599/LEGISCTA000026150920/2025-12-29",
+            "excerpts": [],
+            "title": "TITRE III : Systèmes organisés de négociation (OTF) (Articles 531-1 à 532-8) - Légifrance"
+          },
+          {
+            "url": "https://www.oddo-bhf.com/app/uploads/sites/2/2025/07/oddo-bhf-sca-conditions-generales-fr.pdf",
+            "excerpts": [],
+            "title": "Conditions Générales"
+          },
+          {
+            "url": "https://mobi-juridoc.gouv.nc/juridoc/jdjonc.nsf/8014F16A005D9B304B2577FE0079C929/$file/8568.pdf?openelement",
+            "excerpts": [],
+            "title": "JOURNAL OFFICIEL - Juridoc"
+          },
+          {
+            "url": "https://www.amf-france.org/fr/eli/fr/aai/amf/rg/article/531-1/20180103/notes",
+            "excerpts": [],
+            "title": "Article 531-1 - AMF RG | AMF"
+          },
+          {
+            "url": "https://www.lexbase.fr/article-juridique/3209315-textestranspositiondeladirectiveconcernantlesmarcha9sdinstrumentsfinanciersetlara9form",
+            "excerpts": [],
+            "title": " Transposition de la Directive concernant les marchés d'instruments financiers et la réforme du règlement général de l'Autorité des marchés financiers : les marchés non réglementés | Lexbase"
+          },
+          {
+            "url": "https://www.amf-france.org/sites/institutionnel/files/2020-02/bilan-de-la-consultation-publique-sur-les-modifications-apportees-au-reglement-general-de-lamf-a-loccasion-de-lentree-en-application-du-reglement-ue-ndeg-2017_1129-dit-_prospectus_.pdf",
+            "excerpts": [],
+            "title": "consultation publique sur les modifications apportees au ..."
+          },
+          {
+            "url": "https://www.covea-finance.fr/sites/default/files/2022-03/8.%20Politique%20de%20s%C3%A9lection%20et%20de%20meilleure%20ex%C3%A9cution%202022.pdf",
+            "excerpts": [],
+            "title": "Politique de meilleure sélection des intermédiaires d' ..."
+          },
+          {
+            "url": "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006140166",
+            "excerpts": [],
+            "title": "Titre II : L'Autorité des marchés financiers (Articles L621-1 à L621-35) - Légifrance"
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/2024-04/euronext_growth_harmonised_rulebook_i.pdf",
+            "excerpts": [],
+            "title": "EURONEXT GROWTH MARKETS RULE BOOK"
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/2025-01/rulebook_i_en_270125_-_bob.pdf",
+            "excerpts": [],
+            "title": "EURONEXT RULE BOOK"
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/2019-05/euronext_access_paris_en.pdf",
+            "excerpts": [],
+            "title": "EURONEXT ACCESS RULE BOOK"
+          },
+          {
+            "url": "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000025347548",
+            "excerpts": [],
+            "title": "REGLEMENT GENERAL DE L'AUTORITE DES MARCHES FINANCIERS (RGAMF) (Articles 211-1 à 723-7) - Légifrance"
+          },
+          {
+            "url": "https://www.euronext.com/en/listing/raise-capital/how-go-public/choosing-market",
+            "excerpts": [],
+            "title": "Choosing a Market | Euronext Listing"
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/2020-11/Euronext_Notice_6-02_EN.pdf",
+            "excerpts": [],
+            "title": "CLASSIFICATION IN MARKET CAPITALISATION ..."
+          },
+          {
+            "url": "https://www.euronext.com/en/listing/raise-capital/euronext-tech-leaders",
+            "excerpts": [],
+            "title": "Euronext Tech Leaders | Euronext Listing"
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/2024-04/euronext_access_harmonized_rulebook_i.pdf",
+            "excerpts": [],
+            "title": "EURONEXT ACCESS MARKETS RULE BOOK"
+          },
+          {
+            "url": "https://www.euronext.com/en/listing/raise-capital/sector-focused-listing-solutions/tech",
+            "excerpts": [],
+            "title": "Tech | Euronext Listing"
+          }
+        ]
+      }
+    ],
+    "beta_fields": null,
+    "output_schema": null
+  },
+  "run": {
+    "created_at": "2026-03-13T15:07:20.876958Z",
+    "is_active": false,
+    "modified_at": "2026-03-13T15:17:08.119380Z",
+    "processor": "pro",
+    "run_id": "trun_a9e04426dfab4c3aa4313055e3731a58",
+    "status": "completed",
+    "error": null,
+    "metadata": {},
+    "task_group_id": null,
+    "warnings": null,
+    "interaction_id": "trun_a9e04426dfab4c3aa4313055e3731a58"
+  }
+}

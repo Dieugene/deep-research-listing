@@ -16,6 +16,8 @@ class MatrixColumn(BaseModel):
     col_label: str       # from CONTENT_TYPE_LABELS
     status: MatrixCellStatus
     text_volume: int = 0  # character count of underlying raw JSON (for UI colour intensity)
+    snippet: str | None = None  # First ~150 chars of content for micro-excerpt display
+    snippet_hint: str | None = None  # Section subtitle(s) for source hint
 
 
 class MatrixRow(BaseModel):
@@ -33,6 +35,7 @@ class MatrixView(BaseModel):
     cell_id: str
     venue_key: str
     tier: str
+    tier_ru: str | None = None
     instrument_class_key: str
     instrument_class_label: str
     validation_status: str
@@ -57,6 +60,7 @@ class PhaseContent(BaseModel):
     has_data: bool
     validation_status: str
     sections: list[ContentSection]
+    citations: list[dict] = []  # Phase-level citations from _parallel_raw
 
 
 class CellContent(BaseModel):
@@ -65,6 +69,7 @@ class CellContent(BaseModel):
     cell_id: str
     venue_key: str
     tier: str
+    tier_ru: str | None = None
     instrument_class_key: str
     instrument_class_label: str
     phases: list[PhaseContent]  # 3 phases: admission, maintenance, enforcement

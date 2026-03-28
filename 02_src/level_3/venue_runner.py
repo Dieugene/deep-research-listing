@@ -630,9 +630,16 @@ def _make_raw_save_fn(venue_key: str, name_ru: str, instrument_class: str, query
             "instrument_class": instrument_class,
             "query_type": query_type,
             "retrieved_at": now_iso(),
-            "content": content,
+            "parallel_output": content,  # full parallel_output (basis, content, type, ...)
+            "content": content.get("content", {}) if isinstance(content, dict) else content,  # inner research data
         }
         save_json(path, data)
+        logger.info(
+            "Saved %s (parallel_output: %s, content keys: %s)",
+            filename,
+            "yes" if isinstance(content, dict) and "basis" in content else "no",
+            list(content.get("content", {}).keys())[:3] if isinstance(content, dict) and isinstance(content.get("content"), dict) else "N/A",
+        )
         return path
 
     return save_fn

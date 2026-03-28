@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — Требования к постобработке пайплайна</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA;--bg2:#fff;--bg3:#F0F2F7;--bg4:#E4E8F2;
+  --border:rgba(0,0,0,0.11);--border2:rgba(0,0,0,0.18);
+  --text:#111827;--text-mid:#4B5563;--text-dim:#9CA3AF;
+  --accent:#2563EB;--accent-bg:rgba(37,99,235,0.06);
+  --green:#059669;--orange:#D97706;--red:#DC2626;
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-serif:'Newsreader',Georgia,serif;
+  --r:8px;--r-lg:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.7}
+.wrap{max-width:940px;margin:0 auto;padding:56px 40px 120px}
+
+h1{font-family:var(--font-serif);font-size:36px;font-weight:400;letter-spacing:-.02em;margin-bottom:8px}
+.doc-meta{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:48px}
+
+/* TOC */
+.toc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 26px;margin-bottom:52px}
+.toc-title{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:14px}
+.toc a{display:block;font-size:13.5px;color:var(--text-mid);padding:3px 0;text-decoration:none}
+.toc a:hover{color:var(--accent)}
+.toc-sub{padding-left:18px;font-size:12.5px}
+
+/* SECTION */
+.section{margin-bottom:60px}
+h2{font-size:12px;font-weight:500;font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2 .snum{background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:1px 7px;font-size:10px}
+h3{font-size:15px;font-weight:500;margin-bottom:10px;margin-top:24px;color:var(--text)}
+p{color:var(--text-mid);font-size:14px;line-height:1.75;margin-bottom:12px;font-weight:300}
+p strong{color:var(--text);font-weight:500}
+ul,ol{color:var(--text-mid);font-size:14px;line-height:1.75;font-weight:300;padding-left:20px;margin-bottom:12px}
+li{margin-bottom:4px}
+code{font-family:var(--font-mono);font-size:12px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:1px 5px;color:var(--text)}
+pre{background:#1E2433;color:#E2E8F4;border-radius:var(--r);padding:18px 20px;font-family:var(--font-mono);font-size:12.5px;line-height:1.65;overflow-x:auto;margin-bottom:16px}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:12.5px}
+.cm{color:#6B7A99}.cs{color:#A5D6A7}.ck{color:#80DEEA}.cn{color:#FFB74D}
+
+/* CALLOUT */
+.callout{background:var(--accent-bg);border:1px solid rgba(37,99,235,.15);border-radius:var(--r);padding:14px 18px;margin-bottom:16px;font-size:13.5px;color:var(--text-mid);line-height:1.7}
+.callout strong{color:var(--accent)}
+.callout-warn{background:rgba(217,119,6,.05);border-color:rgba(217,119,6,.2)}
+.callout-warn strong{color:var(--orange)}
+.callout-green{background:rgba(5,150,105,.05);border-color:rgba(5,150,105,.2)}
+.callout-green strong{color:var(--green)}
+
+/* ITEM CARD — numbered requirement */
+.req-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);
+  overflow:hidden;margin-bottom:16px;
+}
+.req-hd{
+  padding:12px 20px;background:var(--bg3);border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+}
+.req-hd-left{display:flex;align-items:center;gap:12px}
+.req-num{
+  font-family:var(--font-mono);font-size:11px;font-weight:500;
+  color:#fff;background:var(--accent);border-radius:5px;
+  padding:2px 8px;flex-shrink:0;
+}
+.req-title{font-size:14px;font-weight:500;color:var(--text)}
+.req-tag{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;
+  padding:2px 8px;border-radius:4px;font-weight:500;flex-shrink:0;
+}
+.tag-must{background:#FEE2E2;color:#991B1B;border:1px solid #FECACA}
+.tag-should{background:#FEF3C7;color:#92400E;border:1px solid #FDE68A}
+.tag-nice{background:#F0FDF4;color:#166534;border:1px solid #BBF7D0}
+.req-body{padding:16px 20px}
+.req-body p{margin-bottom:8px}
+.req-body p:last-child{margin-bottom:0}
+
+/* FIELD SPEC TABLE */
+.field-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+.field-table th{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);padding:0 12px 8px 0;text-align:left;font-weight:400;border-bottom:1px solid var(--border2)}
+.field-table td{padding:8px 12px 8px 0;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text-mid);font-weight:300;line-height:1.55;font-size:13px}
+.field-table td:first-child{font-family:var(--font-mono);font-size:11.5px;color:var(--accent);font-weight:400;width:200px}
+.field-table td:nth-child(2){color:var(--text);font-weight:500;width:120px}
+.field-table tr:last-child td{border-bottom:none}
+
+/* BEFORE/AFTER */
+.diff-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.diff-box{border-radius:var(--r);padding:12px 16px;font-size:13px;line-height:1.6}
+.diff-before{background:#FEF2F2;border:1px solid #FECACA;color:#7F1D1D}
+.diff-after{background:#F0FDF4;border:1px solid #BBF7D0;color:#14532D}
+.diff-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:6px;opacity:.7}
+
+.divider{height:1px;background:var(--border);margin:32px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Требования к постобработке пайплайна</h1>
+<div class="doc-meta">Март 2026 · Для команды пайплайна · Цель: привести структуру данных в соответствие с UI-прототипами</div>
+
+<div class="toc">
+  <div class="toc-title">Содержание</div>
+  <a href="#s0">Контекст и приоритеты</a>
+  <a href="#s1">R-01 — Разделение фаз: три файла вместо двух</a>
+  <a href="#s2">R-02 — Маппинг параметров к секциям контента</a>
+  <a href="#s3">R-03 — Топ-параметры фазы для карточки режима</a>
+  <a href="#s4">R-04 — Агрегаты по инструменту для обзорной страницы</a>
+  <a href="#s5">R-05 — Нормализация поля source</a>
+  <a href="#s6">R-06 — Флаг is_legacy для устаревающих режимов</a>
+  <a href="#s7">Итоговая схема выходных данных</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s0">
+<h2><span class="snum">00</span> Контекст и приоритеты</h2>
+
+<p>При разработке UI-прототипов часть элементов была спроектирована в расчёте на структуру данных, которой в реальном пайплайне не существует. Сейчас планируется повторный прогон LLM-обработки — это возможность заложить в пайплайн извлечение именно тех полей и структур, которые нужны UI.</p>
+
+<p>Требования ниже сгруппированы по приоритету:</p>
+<ul>
+  <li><strong>Обязательно (must)</strong> — без этого UI работает неправильно или ключевые элементы не отображаются</li>
+  <li><strong>Важно (should)</strong> — значительно улучшает качество отображения</li>
+  <li><strong>Желательно (nice)</strong> — обогащает интерфейс, но некритично</li>
+</ul>
+
+<div class="callout">
+  <strong>Принцип:</strong> все поля, которые пайплайн не может достоверно извлечь, должны получать явное значение <code>null</code> или пустой массив — не отсутствовать совсем. Это позволяет UI отличить «данных нет» от «поле не запрашивалось».
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s1">
+<h2><span class="snum">01</span> R-01 — Разделение фаз: три файла вместо двух</h2>
+
+<div class="req-card">
+  <div class="req-hd">
+    <div class="req-hd-left">
+      <span class="req-num">R-01</span>
+      <span class="req-title">Три отдельных файла фаз: admission / maintenance / delisting</span>
+    </div>
+    <span class="req-tag tag-must">Обязательно</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Проблема.</strong> Текущая структура: <code>3A</code> (допуск) + <code>3B</code> (всё после допуска смешанно) + <code>3C</code> (мониторинг/санкции как надзорная деятельность). UI требует три чётких фазы жизненного цикла эмитента: допуск, поддержание листинга, исключение из списка. Файл <code>3B</code> содержит нераздельно смешанный контент, который невозможно разнести без нового прогона.</p>
+
+    <p><strong>Требуемая структура на выходе.</strong> Три файла (или три ключа в едином JSON) на каждую ячейку:</p>
+
+    <div class="diff-wrap">
+      <div class="diff-box diff-before">
+        <div class="diff-label">Сейчас</div>
+        3A_raw — admission<br>
+        3B_raw — maintenance + suspension + delisting (смешанно)<br>
+        3C_raw — enforcement/monitoring
+      </div>
+      <div class="diff-after">
+        <div class="diff-label">Нужно</div>
+        phase_admission — первичный допуск<br>
+        phase_maintenance — поддержание листинга<br>
+        phase_delisting — приостановка и исключение
+      </div>
+    </div>
+
+    <p><strong>Что должно быть в каждой фазе.</strong></p>
+
+    <table class="field-table">
+      <tr><th>Файл / ключ</th><th>Метка в UI</th><th>Содержание</th></tr>
+      <tr>
+        <td>phase_admission</td>
+        <td>Допуск</td>
+        <td>Требования к эмитенту и инструменту для первичного листинга, процедура подачи заявки, раскрытие при допуске (проспект), спонсор/агент, специальные режимы (DCSS и т.п.), ограничения lock-up при допуске</td>
+      </tr>
+      <tr>
+        <td>phase_maintenance</td>
+        <td>Поддержание</td>
+        <td>Постоянные обязательства эмитента, периодическая отчётность, текущее раскрытие (инсайдерская информация, MAR), существенные сделки и связанные стороны, корпоративное управление в процессе листинга</td>
+      </tr>
+      <tr>
+        <td>phase_delisting</td>
+        <td>Исключение</td>
+        <td>Основания для приостановки торгов, процедура добровольного исключения, принудительное исключение регулятором, санкционные меры, требования к акционерам при исключении (порог голосования и т.п.)</td>
+      </tr>
+    </table>
+
+    <p><strong>Указание для LLM.</strong> При обработке исходного текста классифицировать каждый извлечённый блок информации по принадлежности к фазе на основе смысла, а не расположения в исходном документе. Критерий разграничения maintenance/delisting: если блок описывает что происходит при нормальном продолжении листинга — maintenance; если описывает условия прекращения или нарушения — delisting.</p>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s2">
+<h2><span class="snum">02</span> R-02 — Маппинг параметров к секциям контента</h2>
+
+<div class="req-card">
+  <div class="req-hd">
+    <div class="req-hd-left">
+      <span class="req-num">R-02</span>
+      <span class="req-title">Каждый параметр (П01–П41) привязан к конкретной секции, в которой он упоминается</span>
+    </div>
+    <span class="req-tag tag-must">Обязательно</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Проблема.</strong> Сейчас параметры хранятся плоским списком на уровне ячейки с полем <code>lifecycle_phase</code>, но без привязки к секции. В результате UI вынужден дублировать полный список параметров под каждой секцией — что делает страницу нечитаемой при реальных данных (наблюдался баг B-NEW-1).</p>
+
+    <p><strong>Требуемое поле.</strong> В объекте параметра добавить поле <code>section_keys</code> — массив ключей секций, в которых этот параметр релевантен:</p>
+
+<pre><code>{
+  <span class="cs">"parameter_id"</span>: <span class="cn">"P01"</span>,
+  <span class="cs">"lifecycle_phase"</span>: <span class="cn">"admission"</span>,
+  <span class="cs">"section_keys"</span>: [<span class="cn">"instrument_requirements"</span>, <span class="cn">"admission_overview"</span>],
+  <span class="cm">// ... остальные поля без изменений</span>
+}</code></pre>
+
+    <p><strong>Логика маппинга.</strong> LLM при извлечении параметра должна определить, в контексте какой секции он встретился в исходном тексте, и записать ключ этой секции. Если параметр упоминается в нескольких секциях — все ключи в массив. Если принадлежность неоднозначна — <code>null</code>.</p>
+
+    <p><strong>Зачем.</strong> Это позволяет UI показывать параметры локально — только под той секцией, к которой они относятся — вместо глобального повтора. Полоса «Параметры» в секции рендерится только из параметров с совпадающим <code>section_key</code>.</p>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s3">
+<h2><span class="snum">03</span> R-03 — Топ-параметры фазы для карточки режима</h2>
+
+<div class="req-card">
+  <div class="req-hd">
+    <div class="req-hd-left">
+      <span class="req-num">R-03</span>
+      <span class="req-title">Краткий набор ключевых параметров для каждой фазы на уровне ячейки</span>
+    </div>
+    <span class="req-tag tag-must">Обязательно</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Проблема.</strong> Карточки режимов на странице площадки (<code>/venues/:venue_key</code>) должны показывать содержательные параметры прямо в теле карточки — в трёх колонках Допуск / Поддержание / Исключение. Сейчас там всегда «Параметры не извлечены», потому что venue-страница получает только оглавление ячеек (<code>cells[]</code> без параметров), а загружать полный контент каждой ячейки при загрузке venue-страницы — слишком тяжело.</p>
+
+    <p><strong>Решение.</strong> Добавить в объект ячейки в <code>/api/venues/:venue_key</code> новое поле <code>phase_highlights</code> — компактный срез по 3–5 самых значимых параметров на фазу:</p>
+
+<pre><code>{
+  <span class="cs">"cell_id"</span>: <span class="cn">"GB_LSE_Main_Market_equity_shares_commercial_compa_equity"</span>,
+  <span class="cs">"validation_status"</span>: <span class="cn">"green"</span>,
+  <span class="cm">// ... существующие поля ...</span>
+  <span class="cs">"phase_highlights"</span>: {
+    <span class="cs">"admission"</span>: [
+      { <span class="cs">"param_id"</span>: <span class="cn">"P01"</span>, <span class="cs">"label"</span>: <span class="cn">"Free float"</span>, <span class="cs">"value_short"</span>: <span class="cn">"≥ 10%"</span> },
+      { <span class="cs">"param_id"</span>: <span class="cn">"P02"</span>, <span class="cs">"label"</span>: <span class="cn">"Market cap"</span>, <span class="cs">"value_short"</span>: <span class="cn">"≥ £30 млн"</span> },
+      { <span class="cs">"param_id"</span>: <span class="cn">"P12"</span>, <span class="cs">"label"</span>: <span class="cn">"История"</span>, <span class="cs">"value_short"</span>: <span class="cn">"≥ 3 года"</span> }
+    ],
+    <span class="cs">"maintenance"</span>: [
+      { <span class="cs">"param_id"</span>: <span class="cn">"P25"</span>, <span class="cs">"label"</span>: <span class="cn">"Отчётность"</span>, <span class="cs">"value_short"</span>: <span class="cn">"Годовая + полугодовая"</span> },
+      { <span class="cs">"param_id"</span>: <span class="cn">"P27"</span>, <span class="cs">"label"</span>: <span class="cn">"Инсайд. раскрытие"</span>, <span class="cs">"value_short"</span>: <span class="cn">"MAR — немедленно"</span> }
+    ],
+    <span class="cs">"delisting"</span>: [
+      { <span class="cs">"param_id"</span>: <span class="cn">"P38"</span>, <span class="cs">"label"</span>: <span class="cn">"Добров. исключение"</span>, <span class="cs">"value_short"</span>: <span class="cn">"≥ 75% акционеров"</span> }
+    ]
+  }
+}</code></pre>
+
+    <p><strong>Требования к <code>value_short</code>.</strong> Максимум 40 символов. Это значение отображается прямо в пилюле на карточке — должно быть коротким и самодостаточным. LLM при генерации должна сжимать значение до сути: числовые пороги, ключевые ограничения, нормативные ссылки опустить.</p>
+
+    <p><strong>Критерий отбора топ-параметров.</strong> Приоритет — количественные и структурные параметры (пороговые значения, типы процедур), а не описательные. Для admission: free float, market cap, история деятельности, тип процедуры. Для maintenance: периодичность отчётности, режим раскрытия. Для delisting: порог голосования, основания исключения.</p>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s4">
+<h2><span class="snum">04</span> R-04 — Агрегаты по инструменту для обзорной страницы</h2>
+
+<div class="req-card">
+  <div class="req-hd">
+    <div class="req-hd-left">
+      <span class="req-num">R-04</span>
+      <span class="req-title">Сводные данные по инструменту: охват и частотные параметры</span>
+    </div>
+    <span class="req-tag tag-should">Важно</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Проблема.</strong> Страница «По инструментам» (<code>/instruments</code>) должна показывать на карточках каждого инструмента: сколько юрисдикций и режимов его покрывают, и какие параметры наиболее часто встречаются. Сейчас этих агрегатов нет — карточки не загружаются вообще.</p>
+
+    <p><strong>Требуемый эндпоинт или поле.</strong> Новый эндпоинт <code>/api/instruments/summary</code> или дополнение к существующему каталогу параметров. Структура:</p>
+
+<pre><code>[
+  {
+    <span class="cs">"instrument_class"</span>: <span class="cn">"equity"</span>,
+    <span class="cs">"label_ru"</span>: <span class="cn">"Акции"</span>,
+    <span class="cs">"jurisdictions_count"</span>: <span class="cn">42</span>,
+    <span class="cs">"regimes_count"</span>: <span class="cn">98</span>,
+    <span class="cs">"top_params_admission"</span>: [
+      { <span class="cs">"param_id"</span>: <span class="cn">"P01"</span>, <span class="cs">"label"</span>: <span class="cn">"Free float"</span>, <span class="cs">"occurrence_count"</span>: <span class="cn">87</span> },
+      { <span class="cs">"param_id"</span>: <span class="cn">"P02"</span>, <span class="cs">"label"</span>: <span class="cn">"Market cap"</span>, <span class="cs">"occurrence_count"</span>: <span class="cn">74</span> },
+      { <span class="cs">"param_id"</span>: <span class="cn">"P07"</span>, <span class="cs">"label"</span>: <span class="cn">"История"</span>, <span class="cs">"occurrence_count"</span>: <span class="cn">61</span> }
+    ],
+    <span class="cs">"top_params_maintenance"</span>: [ <span class="cm">/* аналогично */</span> ],
+    <span class="cs">"top_params_delisting"</span>: [ <span class="cm">/* аналогично */</span> ]
+  },
+  <span class="cm">/* equity, bond, fund, depositary_receipt */</span>
+]</code></pre>
+
+    <p><strong>Как считать <code>occurrence_count</code>.</strong> Количество ячеек (cell_id) данного инструмента, в которых параметр имеет статус <code>found</code>. Данные уже есть в <code>pass2_ru.json</code> — это агрегация, не новое извлечение. Может быть вычислен на бэкенде без повторного прогона LLM.</p>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s5">
+<h2><span class="snum">05</span> R-05 — Нормализация поля source</h2>
+
+<div class="req-card">
+  <div class="req-hd">
+    <div class="req-hd-left">
+      <span class="req-num">R-05</span>
+      <span class="req-title">Поле source — структурированный массив, не plain-text строка</span>
+    </div>
+    <span class="req-tag tag-should">Важно</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Проблема.</strong> Сейчас <code>source</code> — строка, где несколько источников разделены <code>;</code>. UI вынужден парсить строку, угадывать где URL а где нормативная ссылка, и не может корректно отображать развёрнутый список источников с кликабельными ссылками.</p>
+
+    <p><strong>Требуемая структура.</strong> Заменить строку на массив объектов:</p>
+
+<pre><code><span class="cs">"sources"</span>: [
+  {
+    <span class="cs">"label"</span>: <span class="cn">"UKLR 5.5.2R"</span>,          <span class="cm">// короткое человекочитаемое название</span>
+    <span class="cs">"url"</span>: <span class="cn">"https://handbook.fca.org.uk/..."</span>,  <span class="cm">// null если нет URL</span>
+    <span class="cs">"type"</span>: <span class="cn">"regulation"</span>           <span class="cm">// regulation | guidance | academic | other</span>
+  },
+  {
+    <span class="cs">"label"</span>: <span class="cn">"LSE ADS Schedule 1"</span>,
+    <span class="cs">"url"</span>: <span class="cn">"https://docs.londonstockexchange.com/..."</span>,
+    <span class="cs">"type"</span>: <span class="cn">"regulation"</span>
+  }
+]</code></pre>
+
+    <p><strong>Обратная совместимость.</strong> Если повторный прогон невозможен — бэкенд может нормализовать существующие строки в массив при отдаче через API (как слой адаптации), без пересчёта пайплайна. Это допустимое промежуточное решение, но целевое состояние — массив из LLM.</p>
+
+    <p><strong>Для кнопки «N источников» в шапке секции.</strong> UI считает <code>sources.length</code> — это возможно только при массиве. При строке количество нельзя определить без парсинга.</p>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s6">
+<h2><span class="snum">06</span> R-06 — Флаг is_legacy для устаревающих режимов</h2>
+
+<div class="req-card">
+  <div class="req-hd">
+    <div class="req-hd-left">
+      <span class="req-num">R-06</span>
+      <span class="req-title">Булево поле is_legacy на уровне ячейки</span>
+    </div>
+    <span class="req-tag tag-nice">Желательно</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Что это.</strong> Некоторые листинговые режимы являются переходными или устаревающими — например, «Equity Shares (Transition)» на LSE после реформы UKLR 2024. В прототипе для таких режимов предусмотрен визуальный маркер <span style="font-family:var(--font-mono);font-size:10px;background:#FEF3C7;color:#92400E;border:1px solid #FDE68A;border-radius:4px;padding:1px 6px">Устаревающий</span> на карточке тира.</p>
+
+    <p><strong>Требуемое поле.</strong> В объект ячейки добавить:</p>
+<pre><code><span class="cs">"is_legacy"</span>: <span class="cn">true</span>  <span class="cm">// или false, по умолчанию false</span></code></pre>
+
+    <p><strong>Критерий для LLM.</strong> Режим считается legacy если: (а) в источниках явно указано что режим закрыт для новых участников, или (б) режим введён как временная переходная категория с указанием срока действия или условия прекращения.</p>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s7">
+<h2><span class="snum">07</span> Итоговая схема изменений</h2>
+
+<p>Сводка по всем требованиям — что меняется, где и с каким приоритетом:</p>
+
+<table class="field-table">
+  <tr>
+    <th>ID</th><th>Приоритет</th><th>Тип изменения</th><th>Что меняется</th>
+  </tr>
+  <tr>
+    <td>R-01</td>
+    <td><span class="req-tag tag-must" style="display:inline">must</span></td>
+    <td>Новый прогон LLM</td>
+    <td>Разделить 3B на <code>phase_maintenance</code> + <code>phase_delisting</code>. Переименовать 3A → <code>phase_admission</code>, 3C остаётся как аспект матрицы, не фаза.</td>
+  </tr>
+  <tr>
+    <td>R-02</td>
+    <td><span class="req-tag tag-must" style="display:inline">must</span></td>
+    <td>Новый прогон LLM</td>
+    <td>Добавить поле <code>section_keys: []</code> в объект параметра — к каким секциям он относится.</td>
+  </tr>
+  <tr>
+    <td>R-03</td>
+    <td><span class="req-tag tag-must" style="display:inline">must</span></td>
+    <td>Новый прогон LLM или бэкенд-агрегация</td>
+    <td>Добавить поле <code>phase_highlights</code> в <code>cells[]</code> на уровне venue API — 3–5 параметров на фазу с коротким значением.</td>
+  </tr>
+  <tr>
+    <td>R-04</td>
+    <td><span class="req-tag tag-should" style="display:inline">should</span></td>
+    <td>Бэкенд-агрегация (без LLM)</td>
+    <td>Новый эндпоинт <code>/api/instruments/summary</code> — подсчёт охвата и частоты параметров по instrument_class. Вычисляется из существующих данных.</td>
+  </tr>
+  <tr>
+    <td>R-05</td>
+    <td><span class="req-tag tag-should" style="display:inline">should</span></td>
+    <td>Новый прогон LLM (или адаптер на бэкенде)</td>
+    <td>Поле <code>source</code> (строка) → <code>sources</code> (массив объектов с label, url, type). Промежуточно — адаптер парсинга на бэкенде.</td>
+  </tr>
+  <tr>
+    <td>R-06</td>
+    <td><span class="req-tag tag-nice" style="display:inline">nice</span></td>
+    <td>Новый прогон LLM</td>
+    <td>Добавить булево поле <code>is_legacy</code> в объект ячейки.</td>
+  </tr>
+</table>
+
+<div class="callout callout-green">
+  <strong>R-04 и частично R-05</strong> можно реализовать без нового прогона LLM — силами бэкенда на существующих данных. Рекомендуется сделать это в первую очередь, чтобы разблокировать страницу инструментов, пока готовится полный прогон.
+</div>
+
+<div class="callout callout-warn">
+  <strong>Порядок прогона.</strong> R-01 (разделение фаз) является базовым — R-02 и R-03 зависят от правильной фазовой структуры. Рекомендуется запускать их в одном прогоне, а не последовательно, чтобы не тратить ресурсы дважды.
+</div>
+
+</div>
+
+</div><!-- /wrap -->
+</body>
+</html>

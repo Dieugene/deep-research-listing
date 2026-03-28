@@ -25,11 +25,12 @@ function typeClass(type: string | null | undefined): string {
 
 function typeLabel(type: string | null | undefined): string {
   const map: Record<string, string> = {
-    legislation: 'Законодат.',
-    rulebook: 'Правила',
-    government: 'Правит.',
-    consultation: 'Консульт.',
-    research: 'Исследов.',
+    legislation: 'Законодательство',
+    rulebook: 'Правила биржи',
+    government: 'Регулятор',
+    consultation: 'Консультация',
+    research: 'Исследование',
+    other: 'Другое',
   }
   return map[type ?? ''] ?? 'Другое'
 }
@@ -57,12 +58,6 @@ export default function SourceItem({ source }: SourceItemProps) {
         className={hdClass}
         onClick={hasExcerpts ? () => setExcerptOpen(v => !v) : undefined}
       >
-        <span
-          className={[styles.typeBadge, styles[typeClass(source.type)]].join(' ')}
-        >
-          {typeLabel(source.type)}
-        </span>
-
         <span className={styles.srcTitle}>{source.title}</span>
 
         {hostname ? (

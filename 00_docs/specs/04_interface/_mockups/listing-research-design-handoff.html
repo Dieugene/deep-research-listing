@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — Design Handoff</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA;--bg2:#fff;--bg3:#F0F2F7;--bg4:#E4E8F2;
+  --border:rgba(0,0,0,0.11);--border2:rgba(0,0,0,0.18);
+  --text:#111827;--text-mid:#4B5563;--text-dim:#9CA3AF;
+  --accent:#2563EB;--accent2:#3B82F6;--accent-bg:rgba(37,99,235,0.06);
+  --green:#059669;--red:#DC2626;--orange:#D97706;--yellow:#B45309;
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-serif:'Newsreader',Georgia,serif;
+  --r:8px;--r-lg:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.7}
+
+/* LAYOUT */
+.doc-wrap{max-width:900px;margin:0 auto;padding:48px 40px 100px}
+h1{font-family:var(--font-serif);font-size:36px;font-weight:400;letter-spacing:-.02em;margin-bottom:8px}
+.doc-meta{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:48px}
+
+/* SECTION */
+.section{margin-bottom:56px}
+h2{font-size:13px;font-weight:500;font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:20px;padding-bottom:10px;
+  border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2 .snum{background:var(--bg3);border:1px solid var(--border2);border-radius:4px;
+  padding:1px 7px;font-size:10px;color:var(--text-dim)}
+h3{font-size:15px;font-weight:500;margin-bottom:12px;margin-top:24px;color:var(--text)}
+p{color:var(--text-mid);font-size:14px;line-height:1.75;margin-bottom:12px;font-weight:300}
+p strong{color:var(--text);font-weight:500}
+ul{color:var(--text-mid);font-size:14px;line-height:1.75;font-weight:300;padding-left:20px;margin-bottom:12px}
+li{margin-bottom:4px}
+
+/* CALLOUT */
+.callout{background:rgba(37,99,235,.05);border:1px solid rgba(37,99,235,.15);
+  border-radius:var(--r);padding:14px 18px;margin-bottom:16px;
+  font-size:13.5px;color:var(--text-mid);line-height:1.7}
+.callout strong{color:var(--accent)}
+.callout-warn{background:rgba(217,119,6,.05);border-color:rgba(217,119,6,.2)}
+.callout-warn strong{color:var(--orange)}
+
+/* CODE */
+pre{background:#1E2433;color:#E2E8F4;border-radius:var(--r);padding:18px 20px;
+  font-family:var(--font-mono);font-size:12.5px;line-height:1.65;overflow-x:auto;margin-bottom:16px}
+code{font-family:var(--font-mono);font-size:12px;background:var(--bg3);
+  border:1px solid var(--border2);border-radius:4px;padding:1px 5px;color:var(--text)}
+pre code{background:none;border:none;padding:0;color:inherit;font-size:12.5px}
+.cm{color:#6B7A99}.cs{color:#A5D6A7}.ck{color:#80DEEA}.cn{color:#FFB74D}.cv{color:#CE93D8}
+
+/* SWATCH ROW */
+.swatches{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.swatch{border-radius:var(--r);overflow:hidden;width:140px;border:1px solid var(--border2)}
+.swatch-color{height:48px}
+.swatch-info{padding:8px 10px;background:#fff}
+.swatch-name{font-family:var(--font-mono);font-size:10px;color:var(--text);font-weight:500}
+.swatch-var{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);margin-top:1px}
+.swatch-hex{font-family:var(--font-mono);font-size:10px;color:var(--text-dim)}
+
+/* TYPE SPECIMEN */
+.type-row{display:flex;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid var(--border)}
+.type-row:last-child{border-bottom:none}
+.type-label{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);width:140px;flex-shrink:0}
+.type-sample{color:var(--text)}
+
+/* COMPONENT DEMO */
+.demo-box{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:24px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.demo-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:14px}
+
+/* NAV DEMO */
+.demo-nav{height:48px;background:rgba(255,255,255,0.93);border:1px solid var(--border);
+  border-radius:var(--r);display:flex;align-items:center;padding:0 20px;gap:4px}
+.demo-nav-logo{width:26px;height:26px;background:var(--accent);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:10px;color:#fff;margin-right:8px}
+.demo-nav-text{font-size:13px;font-weight:500;margin-right:auto}
+.demo-nav-link{padding:5px 11px;border-radius:5px;font-size:12.5px;color:var(--text-mid)}
+.demo-nav-link.active{color:var(--accent);background:var(--accent-bg);font-weight:500}
+.demo-nav-badge{font-size:9px;font-family:var(--font-mono);color:var(--text-dim);
+  background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:1px 4px}
+
+/* CARD DEMO */
+.demo-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);
+  overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08),0 0 0 0.5px rgba(0,0,0,.04)}
+.demo-card-hd{padding:12px 18px;border-bottom:1px solid var(--border);background:var(--bg);
+  display:flex;align-items:center;justify-content:space-between}
+.demo-card-title{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)}
+.demo-card-body{padding:18px 20px;font-size:13.5px;color:var(--text-mid);font-weight:300;line-height:1.7}
+
+/* BADGE */
+.badge{font-family:var(--font-mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 7px;border-radius:4px;display:inline-flex;align-items:center}
+.badge-reg{background:var(--accent-bg);color:var(--accent);border:1px solid rgba(37,99,235,.2)}
+.badge-mtf{background:rgba(245,158,11,.08);color:var(--yellow);border:1px solid rgba(217,119,6,.2)}
+.badge-verified{background:rgba(5,150,105,.07);color:var(--green);
+  border:1px solid rgba(5,150,105,.2);display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:var(--r);font-size:11.5px}
+.badge-verified::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* PERIOD TAG */
+.period-tag{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;
+  color:var(--accent);background:var(--accent-bg);border:1px solid rgba(37,99,235,.15);
+  border-radius:4px;padding:2px 8px;white-space:nowrap}
+.period-tag::before{content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--accent);opacity:.5;flex-shrink:0}
+
+/* SOURCE btn */
+.src-btn{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;
+  color:var(--text-dim);background:var(--bg3);border:1px solid var(--border2);
+  border-radius:5px;padding:3px 9px;cursor:pointer}
+
+/* CITE */
+.cite-demo{font-size:14px;color:var(--text-mid);line-height:1.8}
+sup.cite{font-family:var(--font-mono);font-size:9px;color:var(--accent);background:var(--accent-bg);
+  border-radius:3px;padding:1px 4px;margin-left:1px;vertical-align:super;line-height:0;
+  border:1px solid rgba(37,99,235,.15);cursor:pointer}
+
+/* SOURCES LIST */
+.sources-list{border-top:1px solid var(--border);padding:12px 20px;
+  display:flex;flex-direction:column;gap:6px;background:var(--bg)}
+.src-item{display:flex;align-items:baseline;gap:8px;font-size:12px}
+.src-num{font-family:var(--font-mono);font-size:9px;color:var(--accent);
+  background:var(--accent-bg);border:1px solid rgba(37,99,235,.15);border-radius:3px;padding:1px 5px}
+.src-text{color:var(--text-mid)}
+.src-link{color:var(--accent);font-family:var(--font-mono);font-size:10.5px}
+
+/* TABS DEMO */
+.demo-tabs{display:flex;border-bottom:2px solid var(--border);gap:0;margin-bottom:16px}
+.demo-tab{padding:10px 16px;font-size:13px;color:var(--text-mid);
+  border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;
+  display:flex;align-items:center;gap:6px}
+.demo-tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500}
+.demo-tab-count{font-family:var(--font-mono);font-size:10px;background:var(--bg3);
+  border:1px solid var(--border2);border-radius:8px;padding:1px 6px;color:var(--text-dim)}
+.demo-tab.active .demo-tab-count{background:var(--accent-bg);border-color:rgba(37,99,235,.2);color:var(--accent)}
+
+/* VENUE MINI */
+.venue-mini-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);
+  padding:14px 16px;display:flex;flex-direction:column;gap:10px;margin-bottom:8px}
+.venue-mini-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.venue-mini-name{font-size:13px;font-weight:500;color:var(--text)}
+.venue-mini-en{font-size:10.5px;color:var(--text-dim);font-family:var(--font-mono)}
+.venue-mini-foot{display:flex;align-items:center;justify-content:space-between;
+  font-size:11.5px;color:var(--text-dim)}
+.v-stat-val{font-family:var(--font-mono);color:var(--text-mid)}
+
+/* CONFLICT GRID */
+.conf-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.conf-side{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.conf-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:5px}
+.conf-text{font-size:12.5px;color:var(--text-mid);line-height:1.65;font-weight:300}
+.resolution-block{background:rgba(5,150,105,.05);border:1px solid rgba(5,150,105,.15);
+  border-radius:var(--r);padding:12px 14px}
+.res-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:5px}
+.res-text{font-size:12.5px;color:var(--text-mid);line-height:1.65;font-weight:300}
+
+/* METRIC CARD */
+.metric-card{background:var(--bg3);border-radius:var(--r);padding:14px 16px}
+.metric-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px}
+.metric-value{font-size:22px;font-weight:500;font-family:var(--font-mono);color:var(--text);letter-spacing:-.02em}
+.metric-sub{font-size:11px;color:var(--text-dim);margin-top:3px}
+.metric-bar-wrap{margin-top:8px;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.metric-bar{height:100%;border-radius:2px;background:var(--accent2)}
+
+/* CLUSTER CHIP */
+.cluster-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;
+  background:var(--bg3);border:1px solid var(--border2);border-radius:6px;
+  font-size:12.5px;color:var(--text-mid);margin-right:6px;margin-bottom:6px}
+.sim{font-family:var(--font-mono);font-size:10px;color:var(--text-dim)}
+
+/* TL ANALYSIS COLORS */
+.tl-swatch{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;
+  border-radius:5px;font-size:12px;font-weight:500;margin-right:8px;margin-bottom:6px;border:1px solid}
+.tl-problem{background:#FEE2E2;color:#991B1B;border-color:#FECACA}
+.tl-contra {background:#FEF3C7;color:#92400E;border-color:#FDE68A}
+.tl-reform {background:#DBEAFE;color:#1E40AF;border-color:#BFDBFE}
+.tl-tool   {background:#D1FAE5;color:#065F46;border-color:#A7F3D0}
+
+/* DECISION TABLE */
+.decision-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.decision-table th{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-dim);padding:0 12px 10px 0;text-align:left;font-weight:400;border-bottom:1px solid var(--border2)}
+.decision-table td{padding:10px 12px 10px 0;border-bottom:1px solid var(--border);
+  vertical-align:top;color:var(--text-mid);font-weight:300;line-height:1.6}
+.decision-table td:first-child{color:var(--text);font-weight:500;width:220px}
+.decision-table tr:last-child td{border-bottom:none}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:32px 0}
+
+/* TOC */
+.toc{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:20px 24px;margin-bottom:48px}
+.toc-title{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:12px}
+.toc a{display:block;font-size:13.5px;color:var(--text-mid);padding:3px 0;text-decoration:none}
+.toc a:hover{color:var(--accent)}
+.toc-sub{padding-left:16px;font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="doc-wrap">
+
+<h1>Listing Research — Design Handoff</h1>
+<div class="doc-meta">Версия 1.0 · Март 2026 · Страница юрисдикции и таймлайн регуляторного анализа</div>
+
+<div class="toc">
+  <div class="toc-title">Содержание</div>
+  <a href="#s1">1. Контекст продукта</a>
+  <a href="#s2">2. Дизайн-принципы</a>
+  <a href="#s3">3. Токены: цвета, типографика, отступы</a>
+  <a href="#s4">4. Компоненты навигации</a>
+  <a href="#s5">5. Карточки и блоки</a>
+  <a href="#s6">6. Система источников</a>
+  <a href="#s7">7. Площадки — миникарточки</a>
+  <a href="#s8">8. Регуляторный анализ</a>
+  <a href="#s9">9. Таймлайн</a>
+  <a href="#s10">10. Страница юрисдикции — макет и решения</a>
+  <a href="#s11">11. Следующие страницы</a>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s1">
+<h2><span class="snum">01</span> Контекст продукта</h2>
+
+<p><strong>Listing Research</strong> — аналитическая база регуляторных требований к листингу ценных бумаг по ~47 юрисдикциям и ~120 торговым площадкам. Целевая аудитория — регуляторы, юридические и финансовые аналитики Банка России.</p>
+
+<p><strong>Основная задача интерфейса:</strong> сделать плотные структурированные данные читабельными и сравнимыми. Пользователь приходит за конкретной информацией, а не за впечатлением — поэтому дизайн утилитарный, но с характером.</p>
+
+<p><strong>Технический стек:</strong> предположительно React + Node.js/Python бэкенд + PostgreSQL. Прототипы сделаны как статический HTML/CSS/JS. CSS-переменные перенесутся напрямую. Таймлайн — чистый JS без библиотек (масштабируется).</p>
+
+<div class="callout">
+  <strong>Важно:</strong> сервис планирует расширяться до ~47 юрисдикций, ~120 площадок. Все компоненты должны работать при любом объёме данных — от 1 площадки до 30+, от 3 событий в таймлайне до 27+.
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s2">
+<h2><span class="snum">02</span> Дизайн-принципы</h2>
+
+<table class="decision-table">
+  <tr><th>Принцип</th><th>Что это значит на практике</th></tr>
+  <tr>
+    <td>Утилитарность прежде всего</td>
+    <td>Никакой декорации ради декорации. Каждый визуальный элемент несёт смысловую нагрузку. Характер — через типографику и консистентность, не через цвет.</td>
+  </tr>
+  <tr>
+    <td>Пользовательская логика, не техническая</td>
+    <td>Данные расположены так, как пользователь думает, а не так, как удобно в базе. Площадки важнее маппинга терминов — несмотря на то что термины «технически» привязаны к юрисдикции.</td>
+  </tr>
+  <tr>
+    <td>Масштабируемость</td>
+    <td>Все компоненты должны работать при пустых данных, частичных данных и полных. Пустые юрисдикции показываем с явным статусом «В работе», не молчим.</td>
+  </tr>
+  <tr>
+    <td>Источники везде</td>
+    <td>Это регуляторный инструмент. Каждый блок данных обязан иметь доступные источники. Система двухуровневая: суперскрипт на фрагменте + кнопка «N источников» в шапке блока.</td>
+  </tr>
+  <tr>
+    <td>Светлая тема основная</td>
+    <td>Аудитория — регуляторы и юристы, не трейдеры. Белый фон = документ = доверие. Длинные тексты лучше читаются на светлом.</td>
+  </tr>
+</table>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s3">
+<h2><span class="snum">03</span> Токены: цвета, типографика, отступы</h2>
+
+<h3>CSS-переменные (копировать как есть)</h3>
+<pre><code><span class="cm">:root {</span>
+  <span class="cm">/* Backgrounds */</span>
+  <span class="ck">--bg</span>:       <span class="cs">#F7F8FA</span>;   <span class="cm">/* page bg */</span>
+  <span class="ck">--bg2</span>:      <span class="cs">#FFFFFF</span>;   <span class="cm">/* surface */</span>
+  <span class="ck">--bg3</span>:      <span class="cs">#F0F2F7</span>;   <span class="cm">/* muted surface, card headers */</span>
+  <span class="ck">--bg4</span>:      <span class="cs">#E4E8F2</span>;   <span class="cm">/* progress bar tracks */</span>
+
+  <span class="cm">/* Borders */</span>
+  <span class="ck">--border</span>:   <span class="cs">rgba(0,0,0,0.11)</span>;
+  <span class="ck">--border2</span>:  <span class="cs">rgba(0,0,0,0.18)</span>;
+
+  <span class="cm">/* Text */</span>
+  <span class="ck">--text</span>:     <span class="cs">#111827</span>;   <span class="cm">/* primary */</span>
+  <span class="ck">--text-mid</span>: <span class="cs">#4B5563</span>;   <span class="cm">/* secondary */</span>
+  <span class="ck">--text-dim</span>: <span class="cs">#9CA3AF</span>;   <span class="cm">/* tertiary, labels */</span>
+
+  <span class="cm">/* Accent */</span>
+  <span class="ck">--accent</span>:   <span class="cs">#2563EB</span>;
+  <span class="ck">--accent2</span>:  <span class="cs">#3B82F6</span>;
+  <span class="ck">--accent-bg</span>:<span class="cs">rgba(37,99,235,0.06)</span>;
+
+  <span class="cm">/* Semantic */</span>
+  <span class="ck">--green</span>:    <span class="cs">#059669</span>;
+  <span class="ck">--green-bg</span>: <span class="cs">rgba(5,150,105,0.07)</span>;
+  <span class="ck">--orange</span>:   <span class="cs">#D97706</span>;
+  <span class="ck">--red</span>:      <span class="cs">#DC2626</span>;
+  <span class="ck">--yellow</span>:   <span class="cs">#B45309</span>;  <span class="cm">/* MTF badge */</span>
+
+  <span class="cm">/* Fonts */</span>
+  <span class="ck">--font-serif</span>: <span class="cs">'Newsreader'</span>, Georgia, serif;
+  <span class="ck">--font-sans</span>:  <span class="cs">'IBM Plex Sans'</span>, sans-serif;
+  <span class="ck">--font-mono</span>:  <span class="cs">'IBM Plex Mono'</span>, monospace;
+
+  <span class="cm">/* Radii */</span>
+  <span class="ck">--r</span>:    <span class="cs">8px</span>;
+  <span class="ck">--r-lg</span>:<span class="cs">12px</span>;
+<span class="cm">}</span></code></pre>
+
+<h3>Цветовые свотчи</h3>
+<div class="swatches">
+  <div class="swatch"><div class="swatch-color" style="background:#F7F8FA"></div><div class="swatch-info"><div class="swatch-name">bg</div><div class="swatch-hex">#F7F8FA</div></div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#F0F2F7"></div><div class="swatch-info"><div class="swatch-name">bg3</div><div class="swatch-hex">#F0F2F7</div></div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#111827"></div><div class="swatch-info"><div class="swatch-name">text</div><div class="swatch-hex">#111827</div></div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#2563EB"></div><div class="swatch-info"><div class="swatch-name">accent</div><div class="swatch-hex">#2563EB</div></div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#059669"></div><div class="swatch-info"><div class="swatch-name">green</div><div class="swatch-hex">#059669</div></div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#DC2626"></div><div class="swatch-info"><div class="swatch-name">red</div><div class="swatch-hex">#DC2626</div></div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#D97706"></div><div class="swatch-info"><div class="swatch-name">orange</div><div class="swatch-hex">#D97706</div></div></div>
+  <div class="swatch"><div class="swatch-color" style="background:#3B82F6"></div><div class="swatch-info"><div class="swatch-name">accent2</div><div class="swatch-hex">#3B82F6</div></div></div>
+</div>
+
+<h3>Типографическая шкала</h3>
+<div class="demo-box">
+  <div class="type-row">
+    <div class="type-label">Page title<br>Newsreader 400</div>
+    <div class="type-sample" style="font-family:var(--font-serif);font-size:40px;font-weight:400;letter-spacing:-.025em;line-height:1.1">Великобритания</div>
+  </div>
+  <div class="type-row">
+    <div class="type-label">Section serif<br>Newsreader 400</div>
+    <div class="type-sample" style="font-family:var(--font-serif);font-size:22px;font-weight:400;letter-spacing:-.02em">Архитектура допуска</div>
+  </div>
+  <div class="type-row">
+    <div class="type-label">Body strong<br>IBM Plex Sans 500</div>
+    <div class="type-sample" style="font-size:15px;font-weight:500">Financial Conduct Authority (FCA)</div>
+  </div>
+  <div class="type-row">
+    <div class="type-label">Body text<br>IBM Plex Sans 300</div>
+    <div class="type-sample" style="font-size:14px;font-weight:300;color:var(--text-mid);line-height:1.78">Раздельная модель «двух ворот»: FCA ведёт Official List и принимает решения об официальном листинге; допуск к торгам на конкретную площадку решает каждая RIE.</div>
+  </div>
+  <div class="type-row">
+    <div class="type-label">Label mono<br>IBM Plex Mono 400</div>
+    <div class="type-sample" style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)">Архитектура допуска</div>
+  </div>
+  <div class="type-row">
+    <div class="type-label">Arch note italic<br>Newsreader italic 400</div>
+    <div class="type-sample" style="font-family:var(--font-serif);font-style:italic;font-size:13px;color:var(--text-dim);border-left:2px solid var(--border2);padding-left:12px">Separate two-gate model: the FCA maintains the Official List.</div>
+  </div>
+</div>
+
+<div class="callout callout-warn">
+  <strong>Правило двуязычных блоков:</strong> русскоязычный основной текст — обычный стиль, англоязычный перевод — курсив Newsreader в блоке с левой чертой. Они не смешиваются в одном абзаце.
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s4">
+<h2><span class="snum">04</span> Навигация</h2>
+
+<h3>Топ-навигация</h3>
+<div class="demo-box">
+  <div class="demo-label">Компонент: nav</div>
+  <div class="demo-nav">
+    <div class="demo-nav-logo">LR</div>
+    <span class="demo-nav-text" style="font-size:13px;font-weight:500">Listing Research</span>
+    <span class="demo-nav-link">Главная</span>
+    <span class="demo-nav-link active">Справочник</span>
+    <span class="demo-nav-link">Каталог параметров</span>
+    <span class="demo-nav-link">Анализ <span class="demo-nav-badge">SOON</span></span>
+    <span class="demo-nav-link">Ассистент <span class="demo-nav-badge">SOON</span></span>
+  </div>
+</div>
+
+<pre><code><span class="cm">/* Nav: sticky, blur, z-index: 200 */</span>
+<span class="ck">nav</span> {
+  position: sticky; top: 0; z-index: 200; height: 56px;
+  background: rgba(255,255,255,0.93);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}</code></pre>
+
+<h3>Вкладки страницы (page tabs)</h3>
+<div class="demo-box">
+  <div class="demo-label">Компонент: page-tabs (sticky top: 56px, z-index: 100)</div>
+  <div class="demo-tabs">
+    <div class="demo-tab active">Юрисдикция</div>
+    <div class="demo-tab">Регуляторный анализ <span class="demo-tab-count">18</span></div>
+    <div class="demo-tab">Термины <span class="demo-tab-count">12</span></div>
+  </div>
+  <p style="margin:0;font-size:13px;color:var(--text-dim)">Активная вкладка: синяя нижняя черта 2px + font-weight: 500. Бейдж меняет цвет на accent при активности.</p>
+</div>
+
+<div class="callout">
+  <strong>Страница юрисдикции имеет 3 вкладки</strong> (не 4): Юрисдикция / Регуляторный анализ / Термины. Отдельная вкладка «Площадки» убрана — площадки встроены в вкладку «Юрисдикция» как миникарточки в правой колонке первого экрана.
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s5">
+<h2><span class="snum">05</span> Карточки и блоки</h2>
+
+<h3>Базовая карточка (.card)</h3>
+<pre><code><span class="ck">.card</span> {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg); <span class="cm">/* 12px */</span>
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08), 0 0 0 0.5px rgba(0,0,0,.04);
+}
+<span class="ck">.card-hd</span> {
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg); <span class="cm">/* #F0F2F7 — чуть темнее белого */</span>
+  display: flex; align-items: center; justify-content: space-between;
+}
+<span class="ck">.card-title</span> {
+  font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--text-dim);
+}
+<span class="ck">.card-body</span> { padding: 22px 24px; }</code></pre>
+
+<h3>Живой пример</h3>
+<div class="demo-card" style="margin-bottom:16px">
+  <div class="demo-card-hd">
+    <span class="demo-card-title">Регулятор</span>
+    <span class="src-btn">
+      <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      1 источник
+    </span>
+  </div>
+  <div class="demo-card-body">
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+      <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim)">Регулятор</span>
+      <span style="font-size:13.5px;font-weight:500">Financial Conduct Authority (FCA)</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);background:#fff;border:1px solid var(--border2);border-radius:4px;padding:2px 8px">commission</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);background:#fff;border:1px solid var(--border2);border-radius:4px;padding:2px 8px">common law</span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);background:#fff;border:1px solid var(--border2);border-radius:4px;padding:2px 8px">осн. 2013</span>
+    </div>
+  </div>
+</div>
+
+<div class="callout">
+  <strong>Паттерн «регулятор»</strong>: данных мало, поэтому вместо таблицы — горизонтальная плашка с тегами. Экономит вертикальное пространство. Применяется когда ≤5 коротких атрибутов.
+</div>
+
+<h3>Бейджи</h3>
+<div class="demo-box">
+  <div class="demo-label">Типы бейджей</div>
+  <span class="badge badge-reg">Regulated Market</span>&nbsp;
+  <span class="badge badge-mtf">MTF</span>&nbsp;
+  <span class="badge-verified">Верифицировано</span>&nbsp;
+  <span class="period-tag">2013 – 2024</span>
+</div>
+
+<h3>Метрические карточки (институциональные данные ВБ)</h3>
+<div class="demo-box">
+  <div class="demo-label">Компонент: metric-card (4 в ряд в сетке grid-template-columns: repeat(4,1fr))</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <div class="metric-card">
+      <div class="metric-label">Rule of Law</div>
+      <div class="metric-value">1.74</div>
+      <div class="metric-sub">WGI 2022, p92</div>
+      <div class="metric-bar-wrap"><div class="metric-bar" style="width:92%"></div></div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Reg. Quality</div>
+      <div class="metric-value">1.68</div>
+      <div class="metric-sub">WGI 2022, p90</div>
+      <div class="metric-bar-wrap"><div class="metric-bar" style="width:90%"></div></div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Gov. Effect.</div>
+      <div class="metric-value">1.42</div>
+      <div class="metric-sub">WGI 2022, p88</div>
+      <div class="metric-bar-wrap"><div class="metric-bar" style="width:88%"></div></div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Market Cap/GDP</div>
+      <div class="metric-value">96%</div>
+      <div class="metric-sub">WDI 2022</div>
+      <div class="metric-bar-wrap"><div class="metric-bar" style="width:62%"></div></div>
+    </div>
+  </div>
+</div>
+<p>Метрики ВБ — пока placeholder, реальные данные из WGI и WDI (CM.MKT.LCAP.GD.ZS) будут подгружены из публичных датасетов.</p>
+
+<h3>Блок кластеризации</h3>
+<div class="demo-box">
+  <div class="demo-label">Схожие юрисдикции (по институциональным факторам)</div>
+  <div class="cluster-chip">🇭🇰 Гонконг <span class="sim">0.91</span></div>
+  <div class="cluster-chip">🇦🇺 Австралия <span class="sim">0.87</span></div>
+  <div class="cluster-chip">🇸🇬 Сингапур <span class="sim">0.85</span></div>
+  <div class="cluster-chip">🇨🇦 Канада <span class="sim">0.82</span></div>
+</div>
+<p>Кластеризация выявляет юрисдикции с похожим institutional profile (правовая семья + WGI + структура рынка). Используется для обоснования выбора режима листинга для РФ.</p>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s6">
+<h2><span class="snum">06</span> Система источников</h2>
+
+<p>Каждый блок данных обязан иметь источники. Система двухуровневая:</p>
+
+<h3>Уровень 1 — суперскрипт внутри текста</h3>
+<div class="demo-box">
+  <div class="cite-demo">
+    Раздельная модель <strong>«двух ворот»</strong>:<sup class="cite">1</sup>
+    FCA ведёт Official List и принимает решения об официальном листинге;
+    допуск к торгам решает каждая RIE по своим правилам.<sup class="cite">2</sup>
+    Проспекты регулируются POATRs (с 19.01.2026).<sup class="cite">3</sup>
+  </div>
+</div>
+
+<h3>Уровень 2 — кнопка «N источников» в шапке блока</h3>
+<div class="demo-box">
+  <div style="display:flex;align-items:center;justify-content:space-between">
+    <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)">Архитектура допуска</span>
+    <span class="src-btn">
+      <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      3 источника
+    </span>
+  </div>
+</div>
+
+<h3>Список источников внизу карточки</h3>
+<div style="border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:16px">
+  <div class="sources-list">
+    <div class="src-item"><span class="src-num">1</span><span class="src-text">FSMA 2000, Part VI — <a class="src-link" href="#">legislation.gov.uk ↗</a></span></div>
+    <div class="src-item"><span class="src-num">2</span><span class="src-text">FCA UK Listing Rules (UKLR) — <a class="src-link" href="#">fca.org.uk ↗</a></span></div>
+    <div class="src-item"><span class="src-num">3</span><span class="src-text">POATRs 2024 — <a class="src-link" href="#">legislation.gov.uk ↗</a></span></div>
+  </div>
+</div>
+
+<p>Клик по суперскрипту скроллит к соответствующей строке в списке источников с подсветкой (JS: <code>scrollIntoView + background highlight + setTimeout</code>).</p>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s7">
+<h2><span class="snum">07</span> Площадки — миникарточки</h2>
+
+<p>Площадки отображаются в правой колонке вкладки «Юрисдикция» как кликабельные миникарточки. Карточка — точка входа на отдельную страницу площадки. Никакого детального контента здесь нет.</p>
+
+<div class="demo-box">
+  <div class="demo-label">Компонент: venue-mini-card (правая колонка, ширина ~340px)</div>
+  <div class="venue-mini-card">
+    <div class="venue-mini-hd">
+      <div>
+        <div class="venue-mini-name">LSE — Основной рынок</div>
+        <div class="venue-mini-en">London Stock Exchange — Main Market</div>
+      </div>
+      <span class="badge badge-reg">Regulated</span>
+    </div>
+    <div class="venue-mini-foot">
+      <div style="display:flex;gap:12px"><span>Параметров: <span class="v-stat-val">10</span></span><span>Сегментов: <span class="v-stat-val">4</span></span></div>
+      <span style="color:var(--text-dim);font-size:12px;transition:color .12s">→</span>
+    </div>
+  </div>
+  <div class="venue-mini-card">
+    <div class="venue-mini-hd">
+      <div>
+        <div class="venue-mini-name">AIM</div>
+        <div class="venue-mini-en">AIM — London Stock Exchange</div>
+      </div>
+      <span class="badge badge-mtf">MTF</span>
+    </div>
+    <div class="venue-mini-foot">
+      <div style="display:flex;gap:12px"><span>Параметров: <span class="v-stat-val">2</span></span><span>Сегментов: <span class="v-stat-val">1</span></span></div>
+      <span style="color:var(--text-dim);font-size:12px">→</span>
+    </div>
+  </div>
+</div>
+
+<div class="callout">
+  <strong>Масштабируемость:</strong> при 1 площадке правая колонка выглядит органично — одна карточка как характеристика юрисдикции. При 10+ площадках список скроллится. Вкладки «Площадки» как отдельной единицы в навигации нет.
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s8">
+<h2><span class="snum">08</span> Регуляторный анализ — список</h2>
+
+<p>Четыре категории: Проблемы, Противоречия, Реформы, Параметры как инструменты. Каждый элемент — карточка с заголовком, периодом, текстом и источниками.</p>
+
+<h3>Цветовая маркировка категорий</h3>
+<div class="demo-box">
+  <span class="tl-swatch tl-problem">Проблемы</span>
+  <span class="tl-swatch tl-contra">Противоречия</span>
+  <span class="tl-swatch tl-reform">Реформы</span>
+  <span class="tl-swatch tl-tool">Инструменты</span>
+</div>
+
+<pre><code><span class="cm">/* Цвета категорий — одинаковые для списка и таймлайна */</span>
+<span class="cm">/* Проблемы */</span>  bg: <span class="cs">#FEE2E2</span>  text: <span class="cs">#991B1B</span>  border: <span class="cs">#FECACA</span>
+<span class="cm">/* Противоречия */</span> bg: <span class="cs">#FEF3C7</span>  text: <span class="cs">#92400E</span>  border: <span class="cs">#FDE68A</span>
+<span class="cm">/* Реформы */</span>    bg: <span class="cs">#DBEAFE</span>  text: <span class="cs">#1E40AF</span>  border: <span class="cs">#BFDBFE</span>
+<span class="cm">/* Инструменты */</span> bg: <span class="cs">#D1FAE5</span>  text: <span class="cs">#065F46</span>  border: <span class="cs">#A7F3D0</span></code></pre>
+
+<h3>Противоречие — специальный паттерн</h3>
+<div class="demo-box">
+  <div class="demo-label">Карточка типа «Противоречие»: две стороны + разрешение</div>
+  <div class="conf-grid">
+    <div class="conf-side">
+      <div class="conf-label">Цель А — Защита инвесторов</div>
+      <div class="conf-text">С 2013–2014 FCA приоритизировала защиту через структурные гарантии для компаний с контролирующими акционерами.</div>
+    </div>
+    <div class="conf-side">
+      <div class="conf-label">Цель Б — Привлечение эмитентов</div>
+      <div class="conf-text">С 2021 приоритет сместился к привлечению: разрешены DCSS, убрано деление на сегменты.</div>
+    </div>
+  </div>
+  <div class="resolution-block">
+    <div class="res-label">Разрешение</div>
+    <div class="res-text">FCA допустила DCSS и заменила деление на сегменты единой категорией — перенастройка, а не полная дерегуляция.</div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s9">
+<h2><span class="snum">09</span> Таймлайн регуляторного анализа</h2>
+
+<p>Таймлайн — альтернативный режим просмотра регуляторного анализа. Показывает развитие дискурса во времени одним взглядом. Переключается кнопкой «Список / Таймлайн» внутри вкладки, таймлайн — по умолчанию.</p>
+
+<h3>Ключевые дизайн-решения</h3>
+<table class="decision-table">
+  <tr><th>Решение</th><th>Обоснование</th></tr>
+  <tr>
+    <td>Единая хронологическая ось без группировки по категориям</td>
+    <td>Категории и так закодированы цветом. Группировка ломает нарратив: пользователю важно видеть, что реформа UKLR 2024 — ответ на проблему 2008–2021, а не отдельная история.</td>
+  </tr>
+  <tr>
+    <td>Один элемент — одна строка</td>
+    <td>Несколько элементов на одной строке разрывают линейное восприятие времени. При 27+ элементах (Гонконг) таймлайн высокий, но читаемый.</td>
+  </tr>
+  <tr>
+    <td>Все периоды — отрезки (не прямоугольники)</td>
+    <td>Отрезок честнее передаёт «период времени» без ложного ощущения объёма. Унификация убирает визуальную иерархию, которой нет в данных. Прямоугольники создавали ожидание контента внутри.</td>
+  </tr>
+  <tr>
+    <td>Подпись выровнена по левой точке отрезка</td>
+    <td>Начало чтения = начало периода. Взгляд не прыгает между идентификацией начала отрезка и центром подписи.</td>
+  </tr>
+  <tr>
+    <td>Детализация — drawer-оверлей справа</td>
+    <td>Не сужает таймлайн. Не требует скролла. Накладывается поверх контента, закрывается крестиком или кликом по затемнению. Стандартный паттерн аналитических инструментов.</td>
+  </tr>
+  <tr>
+    <td>Drawer начинается под nav + tabs (top: 112px)</td>
+    <td>Сохраняет навигацию доступной при открытом drawer. Backdrop тоже начинается с этой точки.</td>
+  </tr>
+</table>
+
+<h3>Параметры рендеринга (JS)</h3>
+<pre><code><span class="cm">/* Таймлайн — параметры компоновки */</span>
+<span class="ck">const</span> LANE_H   = <span class="cn">40</span>;   <span class="cm">// высота строки (px)</span>
+<span class="ck">const</span> TOP_PAD  = <span class="cn">24</span>;   <span class="cm">// отступ сверху для первой строки</span>
+<span class="ck">const</span> TICK_H   = <span class="cn">4</span>;    <span class="cm">// высота риски (leader line)</span>
+<span class="ck">const</span> LABEL_H  = <span class="cn">12</span>;   <span class="cm">// высота текста метки</span>
+<span class="cm">/* GAP: расстояние от нижней границы риски до центра элемента */</span>
+<span class="ck">const</span> GAP_SEG  = <span class="cn">3</span>;    <span class="cm">// для отрезков — плотно</span>
+<span class="ck">const</span> GAP_PT   = <span class="cn">6</span>;    <span class="cm">// для точек — риска не наезжает на diamond</span>
+
+<span class="cm">/* Толщина линии отрезка */</span>
+<span class="ck">const</span> lineH = wp > <span class="cn">15</span> ? <span class="cn">3</span> : <span class="cn">2</span>; <span class="cm">// длинные (>15% оси) — 3px</span>
+
+<span class="cm">/* Near-right: подпись флипает вправо если sp+wp > 91% */</span>
+<span class="ck">const</span> nearRight = sp + wp > <span class="cn">91</span>;
+
+<span class="cm">/* Diamond (точечное событие): width/height 8px, rotate(45deg) */</span></code></pre>
+
+<h3>Drawer — позиционирование</h3>
+<pre><code><span class="ck">.drawer</span> {
+  position: fixed;
+  top: 112px; <span class="cm">/* 56px nav + 56px tabs */</span>
+  right: 0; bottom: 0;
+  width: 420px;
+  transform: translateX(110%); <span class="cm">/* 110% = гарантированно за экраном */</span>
+  visibility: hidden;
+  transition: transform .28s cubic-bezier(.4,0,.2,1),
+              visibility 0s linear .28s; <span class="cm">/* задержка: скрыть после анимации */</span>
+}
+<span class="ck">.drawer.open</span> {
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform .28s cubic-bezier(.4,0,.2,1),
+              visibility 0s linear 0s; <span class="cm">/* показать немедленно */</span>
+}
+<span class="cm">/* ВАЖНО: overflow-x: hidden на html,body НЕ работает для position:fixed.
+   Поэтому используем visibility вместо translateX(100%). */</span></code></pre>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s10">
+<h2><span class="snum">10</span> Страница юрисдикции — макет и решения</h2>
+
+<h3>Общая структура</h3>
+<pre><code><span class="cm">/* Первый экран (grid 1fr 340px) */</span>
+[Архитектура допуска + Регулятор] | [Площадки-миникарточки]
+
+<span class="cm">/* Ниже при скролле (grid 1fr 1fr) */</span>
+[Институциональные метрики ВБ]   | [Схожие юрисдикции / кластеры]</code></pre>
+
+<h3>Ключевые layout-решения</h3>
+<table class="decision-table">
+  <tr><th>Решение</th><th>Обоснование</th></tr>
+  <tr>
+    <td>Архитектура + Регулятор = одна карточка</td>
+    <td>Регулятор — структурированный ответ на вопрос «кто управляет этой системой», логически вложенный в архитектуру допуска. Разделение создавало избыточную вертикаль.</td>
+  </tr>
+  <tr>
+    <td>Регулятор — горизонтальная плашка, не таблица</td>
+    <td>5 коротких атрибутов в таблице занимали ~160px и выглядели пусто. Плашка занимает ~44px.</td>
+  </tr>
+  <tr>
+    <td>Площадки в правой колонке первого экрана</td>
+    <td>Площадки — основной пользовательский путь (там про листинг). Должны быть видны без прокрутки. Не в низу страницы, не отдельной вкладкой.</td>
+  </tr>
+  <tr>
+    <td>Флаг — SVG Union Jack, не эмодзи</td>
+    <td>Эмодзи флаги рендерятся как «GB» в некоторых конфигурациях Windows+Chrome. SVG работает везде.</td>
+  </tr>
+</table>
+
+<h3>Заголовок страницы (SVG флаг)</h3>
+<pre><code><span class="cm">&lt;!-- SVG Union Jack — работает в любом браузере --&gt;</span>
+&lt;svg width=<span class="cs">"48"</span> height=<span class="cs">"48"</span> viewBox=<span class="cs">"0 0 60 40"</span> style=<span class="cs">"border-radius:5px"</span>&gt;
+  &lt;rect width=<span class="cs">"60"</span> height=<span class="cs">"40"</span> fill=<span class="cs">"#012169"</span>/&gt;
+  &lt;path d=<span class="cs">"M0,0 L60,40 M60,0 L0,40"</span> stroke=<span class="cs">"#fff"</span> stroke-width=<span class="cs">"8"</span>/&gt;
+  &lt;path d=<span class="cs">"M0,0 L60,40 M60,0 L0,40"</span> stroke=<span class="cs">"#C8102E"</span> stroke-width=<span class="cs">"5"</span>/&gt;
+  &lt;path d=<span class="cs">"M30,0 V40 M0,20 H60"</span> stroke=<span class="cs">"#fff"</span> stroke-width=<span class="cs">"12"</span>/&gt;
+  &lt;path d=<span class="cs">"M30,0 V40 M0,20 H60"</span> stroke=<span class="cs">"#C8102E"</span> stroke-width=<span class="cs">"8"</span>/&gt;
+&lt;/svg&gt;
+<span class="cm">&lt;!-- Для других юрисдикций — аналогичный SVG или эмодзи с fallback --&gt;</span></code></pre>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<div class="section" id="s11">
+<h2><span class="snum">11</span> Следующие страницы к разработке</h2>
+
+<p>Страница юрисдикции (и всё связанное с ней) завершена. Следующие страницы в очереди:</p>
+
+<table class="decision-table">
+  <tr><th>Страница</th><th>Что важно учесть</th></tr>
+  <tr>
+    <td>Страница торговой площадки</td>
+    <td>Площадка имеет сегменты/тиры. Основное содержимое — параметры листинга (П01–П41). Нужна страница с параметрической сеткой. Источники — обязательны на каждой ячейке параметра.</td>
+  </tr>
+  <tr>
+    <td>Список юрисдикций (справочник)</td>
+    <td>Прототип готов (listing-jurisdictions.html). Строки с пустыми данными — dimmed + статус «В работе». Строки с данными — кликабельны целиком. Фильтры по правовой семье.</td>
+  </tr>
+  <tr>
+    <td>Каталог параметров</td>
+    <td>41 параметр (П01–П41), 5 групп. Каждый параметр имеет структуру: название, определение, тип, применимость по юрисдикциям.</td>
+  </tr>
+  <tr>
+    <td>Раздел «Анализ»</td>
+    <td>Сравнительные матрицы, факторный анализ. Помечен SOON в навигации.</td>
+  </tr>
+</table>
+
+<div class="callout">
+  <strong>Рабочие прототипы:</strong> все обсуждённые страницы реализованы как HTML-файлы с полным CSS/JS. Используй их как живую reference, а не только этот документ.
+  <br><br>
+  Файлы: <code>jurisdiction-v3.html</code> (текущий), <code>listing-jurisdictions.html</code>, <code>listing-research-landing.html</code>
+</div>
+</div>
+
+</div>
+</body>
+</html>

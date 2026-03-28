@@ -45,7 +45,8 @@ from pipeline.parallel_runner import (
 from pipeline.logging_setup import get_logger
 from level_1.prompts import (
     build_prompt_1a, build_prompt_1b, build_prompt_1c,
-    SCHEMA_1B, SCHEMA_1C,
+    build_prompt_1c_registry, build_prompt_1c_structure,
+    SCHEMA_1B, SCHEMA_1C, SCHEMA_1C_REGISTRY,
 )
 
 logger = get_logger("jurisdiction_runner")
@@ -97,6 +98,21 @@ def _save_fn_1c(juris_ru: str, juris_en: str):
         data = {
             "jurisdiction": juris_en,
             "query": "1C",
+            "retrieved_at": now_iso(),
+            "parallel_output": output_data,
+        }
+        save_json(path, data)
+        return path
+    return fn
+
+
+def _save_fn_1c_registry(juris_ru: str, juris_en: str):
+    def fn(output_data) -> Path:
+        d = get_country_level1_dir(juris_ru)
+        path = d / "1C_registry.json"
+        data = {
+            "jurisdiction": juris_en,
+            "query": "1C_registry",
             "retrieved_at": now_iso(),
             "parallel_output": output_data,
         }
@@ -171,6 +187,27 @@ def launch_all_1b(state: dict, jurisdictions: list = None) -> None:
     save_state(state)
 
 
+def launch_all_1c_registry(state: dict, jurisdictions: list = None) -> None:
+    """Launch 1C-registry tasks for all jurisdictions."""
+    for j in (jurisdictions or PILOT_JURISDICTIONS):
+        en = j["name_en"]
+        ru = j["name_ru"]
+        eu_member = j.get("eu_member", False)
+
+        prompt = build_prompt_1c_registry(en, eu_member=eu_member)
+        save_prompt(PROMPTS_DIR, f"1C_registry_{ru}", prompt, schema=SCHEMA_1C_REGISTRY)
+
+        task_key = _key(ru, "1C_registry")
+        launch_task(
+            task_key=task_key,
+            prompt=prompt,
+            output_schema=SCHEMA_1C_REGISTRY,
+            processor="core",
+            state=state,
+        )
+    save_state(state)
+
+
 def launch_all_1c(state: dict, jurisdictions: list = None) -> None:
     """
     Launch 1C tasks for all pilot jurisdictions.
@@ -189,8 +226,25 @@ def launch_all_1c(state: dict, jurisdictions: list = None) -> None:
             if content_1a_str:
                 regulatory_ctx = f"Regulatory architecture research (1A):\n{content_1a_str}"
 
+        # Load 1C-registry results for anchor injection
+        registry_venues = None
+        path_1c_reg = get_country_level1_dir(ru) / "1C_registry.json"
+        if path_1c_reg.exists():
+            data_1c_reg = load_json(path_1c_reg)
+            if isinstance(data_1c_reg, dict):
+                content_reg = data_1c_reg.get("parallel_output", {}).get("content")
+                if isinstance(content_reg, str):
+                    try:
+                        import json as _json
+                        parsed = _json.loads(content_reg)
+                        registry_venues = parsed.get("venues", [])
+                    except (json.JSONDecodeError, ValueError):
+                        pass
+                elif isinstance(content_reg, dict):
+                    registry_venues = content_reg.get("venues", [])
+
         # 1C
-        prompt_1c = build_prompt_1c(en, regulatory_ctx)
+        prompt_1c = build_prompt_1c_structure(en, regulatory_ctx, registry_venues=registry_venues)
         save_prompt(PROMPTS_DIR, f"1C_{ru}", prompt_1c, schema=SCHEMA_1C)
         launch_task(
             task_key=_key(ru, "1C"),
@@ -230,6 +284,18 @@ def poll_all_1b(state: dict, jurisdictions: list = None) -> dict:
     return poll_all(tasks, state)
 
 
+def poll_all_1c_registry(state: dict, jurisdictions: list = None) -> dict:
+    """Poll all 1C-registry tasks."""
+    tasks = []
+    for j in (jurisdictions or PILOT_JURISDICTIONS):
+        ru = j["name_ru"]
+        en = j["name_en"]
+        key = _key(ru, "1C_registry")
+        if key in state["tasks"]:
+            tasks.append((key, _save_fn_1c_registry(ru, en)))
+    return poll_all(tasks, state)
+
+
 def poll_all_1c(state: dict, jurisdictions: list = None) -> dict:
     """Poll all 1C tasks."""
     tasks = []
@@ -262,10 +328,16 @@ def run_all():
     logger.info("=== Step 4: Polling 1B until all done ===")
     poll_all_1b(state)
 
-    logger.info("=== Step 5: Launching 1C for all jurisdictions ===")
+    logger.info("=== Step 5: Launching 1C-registry for all jurisdictions ===")
+    launch_all_1c_registry(state)
+
+    logger.info("=== Step 6: Polling 1C-registry until all done ===")
+    poll_all_1c_registry(state)
+
+    logger.info("=== Step 7: Launching 1C for all jurisdictions ===")
     launch_all_1c(state)
 
-    logger.info("=== Step 6: Polling 1C until all done ===")
+    logger.info("=== Step 8: Polling 1C until all done ===")
     poll_all_1c(state)
 
     logger.info("=== Level 1 jurisdiction queries complete ===")
@@ -278,6 +350,8 @@ if __name__ == "__main__":
     group.add_argument("--poll-1a", action="store_true")
     group.add_argument("--launch-1b", action="store_true")
     group.add_argument("--poll-1b", action="store_true")
+    group.add_argument("--launch-1c-registry", action="store_true")
+    group.add_argument("--poll-1c-registry", action="store_true")
     group.add_argument("--launch-1c", action="store_true")
     group.add_argument("--poll-1c", action="store_true")
     group.add_argument("--run-all", action="store_true", default=True)
@@ -293,6 +367,10 @@ if __name__ == "__main__":
         launch_all_1b(state)
     elif args.poll_1b:
         poll_all_1b(state)
+    elif args.launch_1c_registry:
+        launch_all_1c_registry(state)
+    elif args.poll_1c_registry:
+        poll_all_1c_registry(state)
     elif args.launch_1c:
         launch_all_1c(state)
     elif args.poll_1c:

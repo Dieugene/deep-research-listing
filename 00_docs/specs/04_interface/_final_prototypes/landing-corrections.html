@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — Корректировки лендинга</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA;--bg2:#fff;--bg3:#F0F2F7;
+  --border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.16);
+  --text:#111827;--text-mid:#374151;--text-dim:#6B7280;
+  --accent:#2563EB;--accent-bg:rgba(37,99,235,0.06);
+  --green:#059669;--green-bg:rgba(5,150,105,0.07);
+  --red:#DC2626;--red-bg:rgba(220,38,38,0.05);
+  --orange:#D97706;--orange-bg:rgba(217,119,6,0.06);
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --r:8px;--r-lg:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:14.5px;line-height:1.7;padding:48px}
+.wrap{max-width:820px;margin:0 auto}
+h1{font-size:26px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+.meta{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:36px}
+h2{font-size:13px;font-weight:500;font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-dim);margin:40px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+h3{font-size:15px;font-weight:600;margin:24px 0 10px}
+p{color:var(--text-mid);font-size:14px;line-height:1.75;margin-bottom:10px}
+p strong{color:var(--text);font-weight:500}
+ul{color:var(--text-mid);font-size:14px;line-height:1.75;padding-left:20px;margin-bottom:12px}
+li{margin-bottom:5px}
+li strong{color:var(--text);font-weight:500}
+code{font-family:var(--font-mono);font-size:12px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:1px 5px}
+pre{background:#1E2433;color:#E2E8F4;border-radius:var(--r);padding:16px 18px;
+  font-family:var(--font-mono);font-size:12.5px;line-height:1.65;overflow-x:auto;margin:12px 0}
+pre code{background:none;border:none;padding:0;color:inherit}
+
+.callout{border-radius:var(--r);padding:13px 17px;margin:14px 0;font-size:13.5px;line-height:1.7;border:1px solid}
+.callout p{margin:0;font-size:13.5px}
+.c-red{background:var(--red-bg);border-color:rgba(220,38,38,.18);color:#991B1B}
+.c-green{background:var(--green-bg);border-color:rgba(5,150,105,.18);color:#065F46}
+.c-blue{background:var(--accent-bg);border-color:rgba(37,99,235,.18);color:#1E40AF}
+.c-orange{background:var(--orange-bg);border-color:rgba(217,119,6,.2);color:#92400E}
+
+/* Issue card */
+.issue{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);
+  overflow:hidden;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.issue-header{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.issue-num{font-family:var(--font-mono);font-size:11px;background:var(--bg2);
+  border:1px solid var(--border2);border-radius:4px;padding:2px 8px;color:var(--text-dim);flex-shrink:0}
+.issue-title{font-size:14px;font-weight:600;color:var(--text)}
+.issue-badge{margin-left:auto;font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;
+  text-transform:uppercase;padding:2px 8px;border-radius:4px;flex-shrink:0;border:1px solid}
+.b-fix{background:var(--red-bg);color:var(--red);border-color:rgba(220,38,38,.2)}
+.b-change{background:var(--orange-bg);color:var(--orange);border-color:rgba(217,119,6,.2)}
+.b-keep{background:var(--green-bg);color:var(--green);border-color:rgba(5,150,105,.2)}
+.issue-body{padding:16px 18px}
+.issue-body p{margin-bottom:8px}
+.issue-body ul{margin-bottom:8px}
+.was-should{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.ws-box{border-radius:var(--r);padding:12px 14px;font-size:13px;line-height:1.65}
+.ws-was{background:var(--red-bg);border:1px solid rgba(220,38,38,.15);color:#7F1D1D}
+.ws-should{background:var(--green-bg);border:1px solid rgba(5,150,105,.15);color:#064E3B}
+.ws-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;opacity:.7}
+
+/* Summary table */
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+thead tr{background:var(--bg3)}
+thead th{padding:9px 14px;text-align:left;font-family:var(--font-mono);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);font-weight:400;border-bottom:1px solid var(--border2)}
+tbody tr{border-bottom:1px solid var(--border)}
+tbody tr:last-child{border-bottom:none}
+tbody td{padding:9px 14px;color:var(--text-mid);vertical-align:top}
+tbody td:first-child{color:var(--text);font-weight:500}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Корректировки лендинга (главная страница)</h1>
+<div class="meta">localhost:3000 · проверено через Browser MCP · март 2026</div>
+
+<div class="callout c-blue">
+  <p><strong>Контекст:</strong> разработчик реализовал лендинг на основе прототипа <code>listing-research-landing-v2.html</code>. Ниже — список расхождений, которые нужно исправить. Эталон — прототип.</p>
+</div>
+
+<!-- ══════ SUMMARY ══════ -->
+<h2>Сводная таблица</h2>
+<table>
+  <thead><tr><th>#</th><th>Проблема</th><th>Тип</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Шапка уже основного контента</td><td>Исправить</td></tr>
+    <tr><td>2</td><td>Пункт меню «Параметры» вместо «Инструменты»</td><td>Исправить</td></tr>
+    <tr><td>3</td><td>Старые карточки не удалены, смешиваются с новыми</td><td>Исправить</td></tr>
+    <tr><td>4</td><td>Карточка некликабельна</td><td>Исправить</td></tr>
+    <tr><td>5</td><td>Карточка: убрать «Орган листинга», показывать все площадки</td><td>Изменить</td></tr>
+    <tr><td>6</td><td>Точки на карте слишком крупные</td><td>Изменить</td></tr>
+    <tr><td>7</td><td>Поведение карты и карточки: итоговая модель</td><td>Изменить</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════ ISSUES ══════ -->
+<h2>Детали по каждому пункту</h2>
+
+<!-- 1 -->
+<div class="issue">
+  <div class="issue-header">
+    <span class="issue-num">#1</span>
+    <span class="issue-title">Шапка уже основного контента</span>
+    <span class="issue-badge b-fix">Исправить</span>
+  </div>
+  <div class="issue-body">
+    <p>Навигационная шапка (<code>nav</code>) имеет меньшую ширину, чем основной контент страницы — визуально они не выровнены по левому краю.</p>
+    <div class="was-should">
+      <div class="ws-box ws-was"><div class="ws-label">Сейчас</div>Шапка занимает не всю ширину viewport, логотип и меню не совпадают по левому краю с героев-контентом.</div>
+      <div class="ws-box ws-should"><div class="ws-label">Должно быть</div>Шапка на всю ширину viewport. Внутренние отступы шапки <code>padding: 0 48px</code> — такие же, как у <code>.hero-inner</code>. Логотип и заголовок страницы на одной вертикальной оси.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 2 -->
+<div class="issue">
+  <div class="issue-header">
+    <span class="issue-num">#2</span>
+    <span class="issue-title">Пункт меню «Параметры» → «Инструменты»</span>
+    <span class="issue-badge b-fix">Исправить</span>
+  </div>
+  <div class="issue-body">
+    <p>В навигации отображается устаревшее название «Параметры». Итоговая структура меню:</p>
+    <ul>
+      <li><strong>Справочник</strong> — dropdown с двумя пунктами: «По юрисдикциям» и «По инструментам» (оба активны, без SOON)</li>
+      <li><strong>Анализ</strong> — бейдж SOON, недоступно</li>
+      <li><strong>Ассистент</strong> — бейдж SOON, недоступно</li>
+    </ul>
+    <p>Пункты «Главная» и «Каталог параметров» / «Параметры» в меню <strong>отсутствуют</strong>.</p>
+    <div class="callout c-orange" style="margin-top:10px">
+      <p>Текущая кнопка «Инструменты» ведёт на <code>/parameters</code> — маршрут нужно будет обновить когда раздел инструментов будет готов. До тех пор оставить как есть или вести на заглушку.</p>
+    </div>
+  </div>
+</div>
+
+<!-- 3 -->
+<div class="issue">
+  <div class="issue-header">
+    <span class="issue-num">#3</span>
+    <span class="issue-title">Старые карточки не удалены</span>
+    <span class="issue-badge b-fix">Исправить</span>
+  </div>
+  <div class="issue-body">
+    <p>В циклической анимации чередуются два типа карточек: старые (прежняя реализация) и новые (по прототипу). Это создаёт визуальный разнобой и сломанный UX.</p>
+    <ul>
+      <li><strong>Удалить</strong> старые карточки полностью из компонента анимации.</li>
+      <li>В анимации должны участвовать <strong>только карточки нового стиля</strong> (по прототипу <code>listing-research-landing-v2.html</code>, блок <code>.preview-panel</code>).</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 4 -->
+<div class="issue">
+  <div class="issue-header">
+    <span class="issue-num">#4</span>
+    <span class="issue-title">Карточка некликабельна</span>
+    <span class="issue-badge b-fix">Исправить</span>
+  </div>
+  <div class="issue-body">
+    <p>Карточка-превью юрисдикции должна быть полностью кликабельной — весь блок ведёт на страницу этой юрисдикции.</p>
+    <pre><code>/* Вся карточка — ссылка */
+cursor: pointer;
+transition: border-color .15s, box-shadow .15s;
+
+.preview-panel:hover {
+  border-color: rgba(255,255,255,0.22);
+  box-shadow: 0 28px 72px rgba(0,0,0,.6);
+}</code></pre>
+    <p>Клик → переход на <code>/jurisdictions/[id]</code> текущей отображаемой юрисдикции.</p>
+  </div>
+</div>
+
+<!-- 5 -->
+<div class="issue">
+  <div class="issue-header">
+    <span class="issue-num">#5</span>
+    <span class="issue-title">Карточка: убрать «Орган листинга», показывать все площадки</span>
+    <span class="issue-badge b-change">Изменить</span>
+  </div>
+  <div class="issue-body">
+    <p>Два изменения в содержимом карточки-превью:</p>
+
+    <h3>5a. Убрать строку «Орган листинга»</h3>
+    <p>Поле содержит длинный текст из базы данных (например, полное описание функции регулятора), который не помещается в карточку и выглядит сломанным. Убрать строку целиком — карточка и без неё несёт достаточно информации.</p>
+    <div class="was-should">
+      <div class="ws-box ws-was"><div class="ws-label">Сейчас</div>Строка «Орган листинга» с полным текстом, вылезающим за границы.</div>
+      <div class="ws-box ws-should"><div class="ws-label">Должно быть</div>Строки «Орган листинга» нет. Остаётся только «Торговых площадок: N».</div>
+    </div>
+
+    <h3>5b. Показывать все площадки, не только три</h3>
+    <p>Ограничение в 3 площадки было введено в прототипе под тестовые данные с UK (3 площадки). В реальных данных площадок может быть больше — нужно показывать все.</p>
+    <ul>
+      <li>Убрать лимит на количество отображаемых чипов площадок.</li>
+      <li>Если площадок много (5+) — карточка растёт в высоту. Добавить <code>max-height</code> и <code>overflow-y: auto</code> на блок площадок, чтобы карточка не вылезала за пределы viewport.</li>
+      <li>Рекомендуемый <code>max-height</code> для блока площадок: <code>200px</code>.</li>
+    </ul>
+    <pre><code>.venue-list {
+  max-height: 200px;
+  overflow-y: auto;
+  /* scrollbar styling — match existing dark theme */
+}</code></pre>
+  </div>
+</div>
+
+<!-- 6 -->
+<div class="issue">
+  <div class="issue-header">
+    <span class="issue-num">#6</span>
+    <span class="issue-title">Точки на карте слишком крупные</span>
+    <span class="issue-badge b-change">Изменить</span>
+  </div>
+  <div class="issue-body">
+    <p>При 47 юрисдикциях в базе точки будут очень плотно расположены в Европе и Азии. Крупные точки создадут визуальную кашу.</p>
+    <div class="was-should">
+      <div class="ws-box ws-was"><div class="ws-label">Сейчас</div>Точки — круги с radius ~5–6px.</div>
+      <div class="ws-box ws-should"><div class="ws-label">Должно быть</div>Точки — круги с radius <strong>3px</strong> в обычном состоянии. Активная (текущая в анимации) — <strong>5px</strong> с мягким свечением (box-shadow / filter glow). Это позволит читать карту при высокой плотности.</div>
+    </div>
+    <pre><code>/* Обычная точка */
+.map-dot {
+  r: 3;  /* SVG circle radius */
+  fill: rgba(96, 165, 250, 0.7);
+}
+
+/* Активная точка (текущая юрисдикция в анимации) */
+.map-dot.active {
+  r: 5;
+  fill: rgba(96, 165, 250, 0.95);
+  filter: drop-shadow(0 0 4px rgba(96, 165, 250, 0.6));
+}</code></pre>
+  </div>
+</div>
+
+<!-- 7 -->
+<div class="issue">
+  <div class="issue-header">
+    <span class="issue-num">#7</span>
+    <span class="issue-title">Итоговая модель поведения карты и карточки</span>
+    <span class="issue-badge b-change">Изменить</span>
+  </div>
+  <div class="issue-body">
+    <p>Это ключевое архитектурное решение по лендингу. <strong>Карта — декоративная, не навигационная.</strong></p>
+
+    <h3>Как должно работать</h3>
+    <ul>
+      <li>Карточка-превью расположена фиксированно справа (как в прототипе).</li>
+      <li>Карточка <strong>циклически листает верифицированные юрисдикции</strong> с плавным fade-переходом (~4 секунды на каждую).</li>
+      <li>При смене юрисдикции в карточке — соответствующая точка на карте <strong>подсвечивается</strong> (становится активной: больше + свечение). Остальные точки — в обычном состоянии.</li>
+      <li>Точки на карте <strong>некликабельны</strong>. Карта — атмосферный фон, не элемент навигации.</li>
+      <li>Вся карточка целиком кликабельна → переход на страницу юрисдикции (см. #4).</li>
+    </ul>
+
+    <h3>Что убрать</h3>
+    <ul>
+      <li>Всплывающие карточки у точек на карте (старая реализация) — удалить полностью.</li>
+      <li>Обработчики кликов на точках карты — удалить.</li>
+      <li>Hover-эффекты на точках карты — убрать.</li>
+    </ul>
+
+    <h3>Почему такое решение</h3>
+    <p>Главный заголовок «Глобальный справочник листинговых режимов» занимает левую половину экрана. При 47 юрисдикциях многие точки окажутся под заголовком и будут недостижимы для клика. Лендинг — не навигационная страница: настоящая навигация начинается на следующем экране (список юрисдикций). Задача карты на лендинге — создать ощущение глобального охвата, а задача карточки — показать, что данные реальные и верифицированные.</p>
+
+    <div class="callout c-green">
+      <p><strong>Итог:</strong> одна карточка справа + подсвет активной точки на карте — это минимально достаточная и технически надёжная модель. Она работает при любом количестве юрисдикций и не конфликтует с заголовком.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ KEEP ══════ -->
+<h2>Что оставить без изменений</h2>
+<ul>
+  <li><strong>Тёмная тема</strong> лендинга — реализована верно.</li>
+  <li><strong>Текст подзаголовка</strong> — обновлён корректно («акций, облигаций, фондов, депозитарных расписок...»).</li>
+  <li><strong>Кнопки</strong> «Юрисдикции» (primary) и «Инструменты» (secondary) — правильно.</li>
+  <li><strong>Stats strip</strong> с четырьмя ячейками — правильно, оставить.</li>
+  <li><strong>Стиль карточки-превью</strong> (новый) — оставить, только с правками из пунктов #4 и #5.</li>
+  <li><strong>Dot-grid текстура</strong> фона — оставить.</li>
+</ul>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,571 @@
+{
+  "output": {
+    "type": "json",
+    "content": {
+      "jurisdiction": "France",
+      "operators": [
+        {
+          "operator_name": "Euronext Paris SA",
+          "venues": [
+            {
+              "segments": [
+                {
+                  "description": "Professional Segment – admissions without a public offer, targeted at qualified investors with simplified reporting.",
+                  "name": "Professional Segment"
+                },
+                {
+                  "description": "Recovery Box / Penalty Bench – for issuers in financial distress or breaching regulatory obligations.",
+                  "name": "Recovery Box / Penalty Bench"
+                }
+              ],
+              "own_rulebook": "Euronext Rulebook Book I (Harmonised) & Book II (French specific)",
+              "venue_name_english": "Euronext Paris",
+              "source": "Euronext",
+              "venue_name_local": "Marché Réglementé d'Euronext Paris",
+              "regime_modifiers": [
+                {
+                  "description": "Fast Path – simplified listing for US‑listed issuers using SEC filings.",
+                  "name": "Fast Path"
+                },
+                {
+                  "description": "Professional Segment Rules – specific exemptions for issuers not targeting retail investors.",
+                  "name": "Professional Segment Rules"
+                }
+              ],
+              "tiers": [
+                {
+                  "description": "Compartment A – large caps with market capitalisation > €1 billion.",
+                  "name": "Compartment A"
+                },
+                {
+                  "description": "Compartment B – mid caps with market capitalisation between €150 million and €1 billion.",
+                  "name": "Compartment B"
+                },
+                {
+                  "description": "Compartment C – small caps with market capitalisation < €150 million.",
+                  "name": "Compartment C"
+                }
+              ],
+              "scale": {
+                "listed_issuers": "over 800",
+                "market_cap": "≈ €2.67 trillion (CAC 40) – total Paris market cap contributes a major share of Euronext Group’s €7 trillion"
+              },
+              "market_type": "Regulated Market",
+              "instrument_classes": {
+                "funds": {
+                  "admitted": true
+                },
+                "equities": {
+                  "admitted": true
+                },
+                "depositary_receipts": {
+                  "admitted": true
+                },
+                "bonds": {
+                  "admitted": true
+                }
+              }
+            },
+            {
+              "segments": [],
+              "own_rulebook": "Euronext Growth Markets Rulebook (Book I – Harmonised, Book II – Paris specific)",
+              "venue_name_english": "Euronext Growth Paris",
+              "source": "Euronext",
+              "venue_name_local": "Euronext Growth Paris",
+              "regime_modifiers": [
+                {
+                  "description": "Listing Sponsor – mandatory sponsor for admission and ongoing compliance.",
+                  "name": "Listing Sponsor"
+                },
+                {
+                  "description": "Fast Track – simplified procedure for issuers transferring from other regulated or organised markets.",
+                  "name": "Fast Track"
+                }
+              ],
+              "tiers": [
+                {
+                  "description": "Flat structure tailored for Small and Medium Enterprises (SMEs).",
+                  "name": "Flat Structure"
+                }
+              ],
+              "scale": {
+                "listed_issuers": "≈ 200‑250",
+                "market_cap": ""
+              },
+              "market_type": "MTF",
+              "instrument_classes": {
+                "funds": {
+                  "admitted": false
+                },
+                "equities": {
+                  "admitted": true
+                },
+                "depositary_receipts": {
+                  "admitted": false
+                },
+                "bonds": {
+                  "admitted": true
+                }
+              }
+            },
+            {
+              "segments": [
+                {
+                  "description": "Euronext Access+ – specialised compartment for startups/SMEs requiring higher visibility and transition support.",
+                  "name": "Euronext Access+"
+                }
+              ],
+              "own_rulebook": "Euronext Access Rulebook",
+              "venue_name_english": "Euronext Access Paris",
+              "source": "Euronext",
+              "venue_name_local": "Euronext Access Paris",
+              "regime_modifiers": [
+                {
+                  "description": "Technical admission – admission without a capital raise; listing sponsor required for Access+.",
+                  "name": "Technical Admission"
+                }
+              ],
+              "tiers": [
+                {
+                  "description": "Standard tier for early‑stage companies.",
+                  "name": "Euronext Access"
+                },
+                {
+                  "description": "Access+ – higher‑visibility tier for startups/SMEs with additional reporting requirements.",
+                  "name": "Euronext Access+"
+                }
+              ],
+              "scale": {
+                "listed_issuers": "≈ 160‑180",
+                "market_cap": ""
+              },
+              "market_type": "MTF",
+              "instrument_classes": {
+                "funds": {
+                  "admitted": false
+                },
+                "equities": {
+                  "admitted": true
+                },
+                "depositary_receipts": {
+                  "admitted": false
+                },
+                "bonds": {
+                  "admitted": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "operator_name": "MTS France SAS",
+          "venues": [
+            {
+              "segments": [],
+              "own_rulebook": "MTS France Rules",
+              "venue_name_english": "MTS France",
+              "source": "MTS France",
+              "venue_name_local": "MTS France",
+              "regime_modifiers": [],
+              "tiers": [
+                {
+                  "description": "Flat structure focused on French government bonds (OATs).",
+                  "name": "Flat Structure"
+                }
+              ],
+              "scale": {
+                "listed_issuers": "",
+                "market_cap": ""
+              },
+              "market_type": "MTF",
+              "instrument_classes": {
+                "funds": {
+                  "admitted": false
+                },
+                "equities": {
+                  "admitted": false
+                },
+                "depositary_receipts": {
+                  "admitted": false
+                },
+                "bonds": {
+                  "admitted": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "operator_name": "Aquis Exchange Europe",
+          "venues": [
+            {
+              "segments": [],
+              "own_rulebook": "Aquis Exchange Rulebook",
+              "venue_name_english": "Aquis Exchange Europe",
+              "source": "Aquis Exchange",
+              "venue_name_local": "Aquis Exchange Europe",
+              "regime_modifiers": [],
+              "tiers": [
+                {
+                  "description": "Flat structure for pan‑European equity trading.",
+                  "name": "Flat Structure"
+                }
+              ],
+              "scale": {
+                "listed_issuers": "",
+                "market_cap": ""
+              },
+              "market_type": "MTF",
+              "instrument_classes": {
+                "funds": {
+                  "admitted": false
+                },
+                "equities": {
+                  "admitted": true
+                },
+                "depositary_receipts": {
+                  "admitted": false
+                },
+                "bonds": {
+                  "admitted": false
+                }
+              }
+            }
+          ]
+        },
+        {
+          "operator_name": "TP ICAP (Europe) / ICAP EU",
+          "venues": [
+            {
+              "segments": [],
+              "own_rulebook": "TP ICAP Market Rules",
+              "venue_name_english": "TP ICAP Europe",
+              "source": "TP ICAP",
+              "venue_name_local": "TP ICAP Europe",
+              "regime_modifiers": [],
+              "tiers": [
+                {
+                  "description": "Flat structure for inter‑dealer brokering across derivatives, bonds and commodities.",
+                  "name": "Flat Structure"
+                }
+              ],
+              "scale": {
+                "listed_issuers": "",
+                "market_cap": ""
+              },
+              "market_type": "MTF/OTF",
+              "instrument_classes": {
+                "funds": {
+                  "admitted": false
+                },
+                "equities": {
+                  "admitted": false
+                },
+                "depositary_receipts": {
+                  "admitted": false
+                },
+                "bonds": {
+                  "admitted": true
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "basis": [
+      {
+        "field": "jurisdiction",
+        "reasoning": "The French securities trading venues are regulated under the EU MiFID II framework and overseen nationally by the Autorité des Marchés Financiers (AMF) for market conduct and the Autorité de Contrôle Prudentiel et de Résolution (ACPR) for prudential aspects. These authorities approve the rule‑setting bodies of each venue and ensure compliance with the Directive (EU) 2014/65 on markets in financial instruments.",
+        "confidence": "high",
+        "citations": [
+          {
+            "url": "https://www.euronext.com/en/markets/paris",
+            "excerpts": [
+              "RISING STONE lists on Euronext​​ €35.5 million raised Market capitalisation of €150 million 8th listing on Euronext in…Read more Our Paris market is the key market for French tech unicorns and growth companies. ... €35.5 million raised Market capitalisation of €150 million 8th listing on ...Read more The Paris stock exchange is one of the founding markets of the pan-European Euronext project. It is home to more than 800 listed companies.",
+              "It gathers more than 800 listed companies and 5,300 institutional investors 1 in a common pool of liquidity, allowing companies to finance their growth.",
+              "Our single trading platform, Optiq ® , is at the cutting edge of technology.",
+              " Optiq ® provides a transparent and regulated trading environment for both professional and retail investors. Every day more than €4.1 Bn 2 is traded on our Paris market.\n "
+            ],
+            "title": "Paris stock exchange | Euronext"
+          },
+          {
+            "url": "https://www.amf-france.org/fr/lamf/nos-accords-de-cooperation/accords-multilateraux/liste-des-marches-etrangers-reconnus-en-france",
+            "excerpts": [
+              "Liste des marchés étrangers reconnus en France. Télécharger le contenu. URL = [https://www.amf-france.org/sites/institutionnel/files/private/2023-02/Liste ...Read more"
+            ],
+            "title": "Liste des marchés étrangers reconnus en France | AMF"
+          },
+          {
+            "url": "https://fr.scribd.com/document/635523266/Euronext-Paris",
+            "excerpts": [
+              "Euronext est une société qui gère plusieurs marchés boursiers européens, née de la fusion des bourses d'Amsterdam, Bruxelles et Paris."
+            ],
+            "title": "Euronext-Paris : Marché et Réglementation | PDF"
+          },
+          {
+            "url": "https://live.euronext.com/en/markets/paris/equities/list",
+            "excerpts": [
+              "Live Euronext stock exchange quotes, realtime prices, charts and regulated news."
+            ],
+            "title": "Stocks Paris"
+          },
+          {
+            "url": "https://www.amf-france.org/en/professionals/other-professionals/trading-venue",
+            "excerpts": [
+              "| Trading venue type | Name | MIC |",
+              "| Regulated market | Euronext Paris SA | XPAR |",
+              "| Regulated market | Euronext Paris SA | XPMC |",
+              "| Regulated market | MATIF | XMAT |",
+              "| Regulated market | MONEP | XMON |",
+              "| Multilateral trading facility | AQUIS EXCHANGE EUROPE | AQEA |",
+              "| Multilateral trading facility | AQUIS EXCHANGE EUROPE | AQED |",
+              "| Multilateral trading facility | AQUIS EXCHANGE EUROPE | AQEU |",
+              "| Multilateral trading facility | DealerBox Technologies | DBXT |",
+              "| Multilateral trading facility | Euronext Access Paris | XMLI |",
+              "| Multilateral trading facility | Euronext Growth Paris | ALXP |",
+              "| Multilateral trading facility | MTS France SAS | FMTS |",
+              "| Multilateral trading facility | SIGMA X EUROPE MTF | SGMU |",
+              "| Multilateral trading facility | SIGMA X EUROPE MTF | SGMV |",
+              "| Multilateral trading facility | TP ICAP (Europe) | TPIO |",
+              "| Multilateral trading facility | TP ICAP (EUROPE) | TPIR |",
+              "| Multilateral trading facility | TP ICAP EU MTF | LNEQ |",
+              "| Multilateral trading facility | TP ICAP EU MTF | LNFI |",
+              "| Multilateral trading facility | TRAD-X EUROPE | TRXE |",
+              "| Organised trading facility | AUREL BGC | AURO |",
+              "| Organised trading facility | GRIFFIN MARKETS EUROPE | GMEO |",
+              "| Organised trading facility | HPC Energy Trading OTF | HPCS |",
+              "| Organised trading facility | HPC eTrading OTF | HPCO |",
+              "| Organised trading facility | HPC Voice OTF | HPCV |",
+              "| Organised trading facility | ICAP EU OTF | ICOT |"
+            ],
+            "title": "Obtain a trading venue authorisation | AMF"
+          },
+          {
+            "url": "https://www.euronext.com/en/regulation/euronext-regulated-markets",
+            "excerpts": [
+              "The regulators in Belgium, France, Ireland, Italy, the Netherlands, Norway and Portugal approve the relevant market rules, either collectively (Book I) or in respect to their own jurisdictions (Book II)."
+            ],
+            "title": "Euronext Regulated Markets | Euronext regulation"
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/2020-11/Euronext_Growth_Rule%20Book_Part%20II_Paris_EN.pdf",
+            "excerpts": [
+              "If a Person acting severally or in concert holds an interest of more than fifty percent (50%) of the voting\nrights or the share capital of an Issuer having its registered office in France, such Person must make a\nmandatory tender offer in accordance with the terms of the General Regulation of the Autorité des\nMarchés Financiers.",
+              "Articles 236-1, 236-3 and 236-7 and Chapter VII of Book II of the General Regulation of the Autorité des\nMarchés Financiers are applicable to Issuers whose Securities are admitted to trading on the Euronext\nGrowth Market operated by Euronext Paris.",
+              "Pursuant to Article 5.1 of the Euronext Growth market operated by Euronext Paris rules Part I, the following\nprovisions of Euronext Paris Book II are applicable to the removal from Euronext Growth Paris of the Shares\nof an Issuer :\n- article P 1.4.2 ;\n- article P 1.4.4 ;\n- article P 1.4.6.",
+              "APPENDIX V - SPECIFIC COMPARTMENTS - PENALTY BENCH AND RECOVERY BOX"
+            ],
+            "title": "EURONEXT GROWTH MARKETS RULE BOOK"
+          },
+          {
+            "url": "https://www.euronext.com/en/about/media/euronext-press-releases/2025-euronext-strengthened-its-position-leading-global-venue",
+            "excerpts": [
+              "As of February 2026, Euronext’s regulated exchanges in Belgium, France, Greece, Ireland, Italy, the Netherlands, Norway and Portugal host over 1,800 listed issuers with €7 trillion in market capitalisation, a strong blue-chip franchise and the largest global centre for debt and fund listings."
+            ],
+            "title": "In 2025, Euronext strengthened its position as a leading global venue"
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/2019-11/52118_Euronext-FAQ-2019_v08.pdf",
+            "excerpts": [
+              "next’s cash markets?\nEuronext includes a number of cash markets in Europe:\n\n\n� Euronext, a Regulated Market, with market locations in Amsterdam, Brussels, Dublin, Lisbon,\n\nLondon and Paris;",
+              " Euronext Growth, a Multilateral Trading Facility, with market locations in Brussels, Dublin,\n\nLisbon and Paris;",
+              " Euronext Access, a Multilateral Trading Facility, with market locations in Brussels,\n\nLisbon and Paris;"
+            ],
+            "title": "FREQUENTLY ASKED QUESTIONS"
+          },
+          {
+            "url": "https://www.euronext.com/fr/markets/paris",
+            "excerpts": [
+              ":\nLa Bourse de Paris est l'un des marchés fondateurs du projet paneuropéen Euronext. E",
+              "ext. Elle propose aujourd’hui un accès à un bassin de plus de 5300 investisseurs institutionnels 1 , permettant aux entreprises de financer leur croissance.\n",
+              ".\nNotre plateforme de trading unique, Optiq®, offre un environnement de trading transparent, réglementé et à la pointe de la technologie pour les investisseurs professionnels et particuliers. Chaq"
+            ],
+            "title": "Paris | euronext.com"
+          }
+        ]
+      },
+      {
+        "field": "operators",
+        "reasoning": "The answer lists each market operator that runs one or more trading venues in France. For each operator the relevant venues are extracted, and their attributes (official names, market type, rulebook, tiers, specialised segments, regime modifiers, admitted instrument classes and approximate scale) are mapped to the schema fields.",
+        "confidence": "medium",
+        "citations": [
+          {
+            "url": "https://www.euronext.com/sites/default/files/2025-04/Rulebook%20II%20-%20Euronext%20Access%20Paris%20-140425.pdf",
+            "excerpts": [
+              "Apr 14, 2025 — Transactions executed on Euronext Access shall be cleared by the Clearing. Organisations designated by Euronext and settlement shall be ...Read more"
+            ],
+            "title": "EURONEXT ACCESS RULE BOOK II"
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/2024-04/euronext_growth_harmonised_rulebook_i.pdf",
+            "excerpts": [
+              "May 2, 2024 — Euronext Rule Book: the rule book titled Euronext Rule Book – Book I – Harmonised Rules and the relevant. Book II, applicable to the ...Read more"
+            ],
+            "title": "EURONEXT GROWTH MARKETS RULE BOOK"
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/2019-06/Harmonised-Rulebook-I.pdf",
+            "excerpts": [
+              "Euronext Rule Book – Book I: Harmonised Rules; ISSUE DATE: 17 MAY 2019. | 7. 1.1. DEFINITIONS. For purposes of this Rule Book, the following capitalised terms ...Read more"
+            ],
+            "title": "Book I: Harmonised Rules"
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/2020-02/Book%20II%20_2%20July%202019_UK.PDF",
+            "excerpts": [
+              "PART I: RULES APPLICABLE TO THE EURONEXT PARIS MARKET. 4 | BOOK II – Specific rules applicable to the French regulated markets | Effective date: 2 July 2019.Read more"
+            ],
+            "title": "BOOK II: Specific rules applicable to the French regulated ..."
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/2023-11/Euronext%20Access%20Paris%20Rulebook%20-%20clearing%20migration%20-%20clean.pdf",
+            "excerpts": [
+              "Nov 27, 2023 — the rule book titled “Euronext Rule Book – Book I – Harmonized Rules ... 9311 By default, Transactions executed on Euronext Access Paris shall, ...Read more Nov 27, 2023 — “Euronext Rule Book”: the rule book titled “Euronext Rule Book – Book I – Harmonized Rules” applicable to the. Regulated Markets operated by ...Read more"
+            ],
+            "title": "EURONEXT ACCESS RULE BOOK"
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/2020-12/Appendix%2B2%2B-%2BEuronext%2BGrowth%2BRule%2BBook.pdf",
+            "excerpts": [
+              "Pursuant to Article 5.1 of the Euronext Growth market operated by Euronext Paris rules Part I, the following provisions of Euronext Paris Book II are ... ... Paris rules Part I, the following provisions of Euronext Paris Book II are applicable to the removal from Euronext Growth Paris of the Shares of an Issuer ...Read more"
+            ],
+            "title": "EURONEXT GROWTH MARKETS RULE BOOK"
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/harmonised_rulebook_en_03_07_2017.pdf",
+            "excerpts": [
+              "Feb 27, 2017 — ... Rule Book. Page 2. EURONEXT RULE BOOK – BOOK I: HARMONISED RULES. Issue date: 27 February 2017. Page 2 of 76. TABLE OF CONTENTS: CHAPTER 1 ...Read more Feb 27, 2017 — EURONEXT RULE BOOK – BOOK I: HARMONISED RULES. Issue date: 27 ... Euronext Paris S.A., a corporation (“société anonyme”) organised ...Read more"
+            ],
+            "title": "Book I: Harmonised Rules"
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/2020-11/Harmonised%20rulebook_EN.pdf",
+            "excerpts": [
+              "Euronext Rule Book – Book I: Harmonised Rules.",
+              "Euronext Rule Book – Book I: Harmonised Rules; ISSUE DATE: 17 MAY 2019.",
+              "the allocation of Securities to a special compartment (including the Recovery Box or the Penalty. Bench) in one or more Notices. 6904 [RESERVED]. 6905 REMOVAL.Read more Market it operates, based on Market Capitalisation criteria or other criteria, and allocate Securities to those distinct segments. The allocation will be ...Read more",
+              "CHAPTER 1: GENERAL PROVISIONS."
+            ],
+            "title": "EURONEXT RULE BOOK"
+          },
+          {
+            "url": "https://www.euronext.com/en/markets/paris",
+            "excerpts": [
+              "RISING STONE lists on Euronext​​ €35.5 million raised Market capitalisation of €150 million 8th listing on Euronext in…Read more Our Paris market is the key market for French tech unicorns and growth companies. ... €35.5 million raised Market capitalisation of €150 million 8th listing on ...Read more The Paris stock exchange is one of the founding markets of the pan-European Euronext project. It is home to more than 800 listed companies."
+            ],
+            "title": "Paris stock exchange | Euronext"
+          },
+          {
+            "url": "https://www.euronext.com/en/listing/raise-capital/how-go-public/choosing-market",
+            "excerpts": [
+              "compartment A over €1bn; compartment B €150m to €1bn; compartment C less than €150m. Listing on Euronext is recommended for larger, established companies with ...Read more"
+            ],
+            "title": "Choosing a Market | Euronext Listing"
+          },
+          {
+            "url": "https://www.euronext.com/sites/default/files/2019-05/Euronext_Notice_ndeg_6-02_EN.pdf",
+            "excerpts": [
+              "(i) the compartment \"A\" includes Issuers with a market capitalisation of which is superior to 1 billion Euro;. (ii) the compartment \"B\" includes Issuers ...Read more"
+            ],
+            "title": "CLASSIFICATION IN MARKET CAPITALISATION ..."
+          },
+          {
+            "url": "https://www.amf-france.org/fr/lamf/nos-accords-de-cooperation/accords-multilateraux/liste-des-marches-etrangers-reconnus-en-france",
+            "excerpts": [
+              "Liste des marchés étrangers reconnus en France. Télécharger le contenu. URL = [https://www.amf-france.org/sites/institutionnel/files/private/2023-02/Liste ...Read more"
+            ],
+            "title": "Liste des marchés étrangers reconnus en France | AMF"
+          },
+          {
+            "url": "https://live.euronext.com/en/markets/paris/equities/list",
+            "excerpts": [
+              "Live Euronext stock exchange quotes, realtime prices, charts and regulated news."
+            ],
+            "title": "Stocks Paris"
+          },
+          {
+            "url": "https://www.amf-france.org/en/professionals/other-professionals/trading-venue",
+            "excerpts": [
+              "| Regulated market | Euronext Paris SA | XPAR |",
+              "| Regulated market | Euronext Paris SA | XPMC |",
+              "| Regulated market | MATIF | XMAT |",
+              "| Regulated market | MONEP | XMON |",
+              "| Multilateral trading facility | AQUIS EXCHANGE EUROPE | AQEA |",
+              "| Multilateral trading facility | AQUIS EXCHANGE EUROPE | AQED |",
+              "| Multilateral trading facility | AQUIS EXCHANGE EUROPE | AQEU |",
+              "| Multilateral trading facility | DealerBox Technologies | DBXT |",
+              "| Multilateral trading facility | Euronext Access Paris | XMLI |",
+              "| Multilateral trading facility | Euronext Growth Paris | ALXP |",
+              "| Multilateral trading facility | MTS France SAS | FMTS |",
+              "| Multilateral trading facility | SIGMA X EUROPE MTF | SGMU |",
+              "| Multilateral trading facility | SIGMA X EUROPE MTF | SGMV |",
+              "| Multilateral trading facility | TP ICAP (Europe) | TPIO |",
+              "| Multilateral trading facility | TP ICAP (EUROPE) | TPIR |",
+              "| Multilateral trading facility | TP ICAP EU MTF | LNEQ |",
+              "| Multilateral trading facility | TP ICAP EU MTF | LNFI |",
+              "| Multilateral trading facility | TRAD-X EUROPE | TRXE |",
+              "| Organised trading facility | AUREL BGC | AURO |",
+              "| Organised trading facility | GRIFFIN MARKETS EUROPE | GMEO |",
+              "| Organised trading facility | HPC Energy Trading OTF | HPCS |",
+              "| Organised trading facility | HPC eTrading OTF | HPCO |",
+              "| Organised trading facility | HPC Voice OTF | HPCV |",
+              "| Organised trading facility | ICAP EU OTF | ICOT |"
+            ],
+            "title": "Obtain a trading venue authorisation | AMF"
+          },
+          {
+            "url": "https://www.euronext.com/en/regulation/euronext-regulated-markets",
+            "excerpts": [
+              "A single Euronext Rule Book governs trading on all Euronext Securities and Derivatives Markets.",
+              "Euronext operates the following Regulated Markets :\nSecurities Markets i.e. in Amsterdam, Brussels, Dublin, Lisbon, Milan, Oslo and Paris;\nEuronext Derivatives Markets i.e. in Amsterdam, Brussels, Lisbon, Milan, Oslo and Paris."
+            ],
+            "title": "Euronext Regulated Markets | Euronext regulation"
+          },
+          {
+            "url": "https://www.euronext.com/en/about/media/euronext-press-releases/2025-euronext-strengthened-its-position-leading-global-venue",
+            "excerpts": [
+              "Euronext runs MTS, one of Europe’s leading electronic fixed income trading markets, and Nord Pool, the European power market.",
+              "In November 2025, Euronext acquired a majority stake in the Athens Stock Exchange (ATHEX), reinforcing its pan-European footprint and further extending its fully integrated market infrastructure with the addition of an exchange, a CSD and a clearing house.",
+              "bout Euronext**\nEuronext is the leading European capital market infrastructure, covering the entire capital markets value chain, from listing, trading, clearing, settlement and custody to solutions for issuers and investors"
+            ],
+            "title": "In 2025, Euronext strengthened its position as a leading global venue"
+          }
+        ]
+      }
+    ],
+    "beta_fields": null,
+    "output_schema": null
+  },
+  "run": {
+    "created_at": "2026-03-13T15:33:43.361792Z",
+    "is_active": false,
+    "modified_at": "2026-03-13T15:46:12.001092Z",
+    "processor": "pro",
+    "run_id": "trun_eaa4affd0a9b4fb29079cf5bc4a6fe2d",
+    "status": "completed",
+    "error": null,
+    "metadata": {},
+    "task_group_id": null,
+    "warnings": [
+      {
+        "message": "The field 'source' is already provided in the FieldBasis object (which includes reasoning, citations, excerpts, confidence). Use FieldBasis in the run output instead of duplicating these fields in your output schema.",
+        "type": "spec_validation_warning",
+        "detail": {
+          "path": "properties.operators.items.properties.venues.items.properties.source",
+          "documentation_url": "https://docs.parallel.ai/task-api/guides/specify-a-task"
+        }
+      },
+      {
+        "message": "This task may be too complex for pro processor. Consider using https://platform.parallel.ai/play to optimize your task schema.",
+        "type": "spec_validation_warning",
+        "detail": {
+          "documentation_url": "https://docs.parallel.ai/task-api/guides/specify-a-task",
+          "recommended_max_properties": 20.0,
+          "total_properties": 30.0
+        }
+      }
+    ],
+    "interaction_id": "trun_eaa4affd0a9b4fb29079cf5bc4a6fe2d"
+  }
+}

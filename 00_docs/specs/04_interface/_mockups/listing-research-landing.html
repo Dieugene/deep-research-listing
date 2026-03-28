@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — Global Listing Regimes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #080E1C;
+  --bg2:      #0D1628;
+  --bg3:      #111D35;
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(255,255,255,0.12);
+  --text:     #E2E8F4;
+  --text-dim: #6B7A99;
+  --text-mid: #9AABC8;
+  --accent:   #3B82F6;
+  --accent2:  #60A5FA;
+  --gold:     #F0A030;
+  --green:    #34D399;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-sans:  'IBM Plex Sans', sans-serif;
+  --font-mono:  'IBM Plex Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  background: rgba(8, 14, 28, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-logo-mark {
+  width: 30px;
+  height: 30px;
+  background: var(--accent);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: white;
+  letter-spacing: -0.5px;
+}
+
+.nav-logo-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.nav-link {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13.5px;
+  color: var(--text-mid);
+  text-decoration: none;
+  font-weight: 400;
+  transition: color .15s, background .15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.nav-link.active { color: var(--text); background: rgba(59,130,246,0.12); }
+.nav-link.active::after {
+  content: '';
+  display: block;
+  width: 4px; height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin-left: 2px;
+}
+
+.nav-badge {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  letter-spacing: 0.04em;
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 56px 0 0;
+  overflow: hidden;
+}
+
+/* World map SVG background */
+.hero-map {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-map svg {
+  width: 110%;
+  height: 110%;
+  object-fit: cover;
+}
+
+/* Gradient overlays */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 70% at 15% 50%, rgba(8,14,28,0.95) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 80% 80%, rgba(8,14,28,0.7) 0%, transparent 60%),
+    linear-gradient(to bottom, rgba(8,14,28,0) 60%, rgba(8,14,28,1) 100%);
+  pointer-events: none;
+}
+
+/* Dot grid texture */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(59,130,246,0.15) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 80px 48px 60px;
+  width: 100%;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.25);
+  border-radius: 20px;
+  padding: 5px 14px;
+  margin-bottom: 32px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(42px, 5.5vw, 72px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  max-width: 640px;
+  margin-bottom: 24px;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--accent2);
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  color: var(--text-mid);
+  max-width: 480px;
+  line-height: 1.65;
+  margin-bottom: 44px;
+  font-weight: 300;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--accent);
+  color: white;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background .15s, transform .1s;
+  border: none;
+  cursor: pointer;
+}
+.btn-primary:hover { background: #2563EB; transform: translateY(-1px); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: transparent;
+  color: var(--text-mid);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  border: 1px solid var(--border2);
+  transition: border-color .15s, color .15s;
+  cursor: pointer;
+}
+.btn-secondary:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
+
+/* ── STATS STRIP ── */
+.stats-strip {
+  position: relative;
+  z-index: 2;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 48px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 64px;
+}
+
+.stat-item {
+  background: var(--bg2);
+  padding: 28px 32px;
+  position: relative;
+}
+
+.stat-item:first-child { border-radius: 11px 0 0 11px; }
+.stat-item:last-child { border-radius: 0 11px 11px 0; }
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.stat-value span {
+  color: var(--accent2);
+  font-size: 22px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: var(--font-mono);
+}
+
+/* ── SECTION BELOW HERO ── */
+.section-features {
+  max-width: 1160px;
+  margin: 100px auto 0;
+  padding: 0 48px 100px;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  max-width: 80px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.feature-card {
+  background: var(--bg2);
+  padding: 36px 32px;
+  transition: background .2s;
+}
+.feature-card:hover { background: var(--bg3); }
+
+.feature-icon {
+  width: 40px; height: 40px;
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.feature-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.feature-desc {
+  font-size: 13.5px;
+  color: var(--text-mid);
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+/* ── MAP DOTS ANIMATION ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-inner { animation: fadeInUp 0.7s ease both; }
+.stats-strip { animation: fadeInUp 0.7s 0.15s ease both; }
+.features-grid { animation: fadeInUp 0.7s 0.25s ease both; }
+
+/* ── JURISDICTION POPUP PREVIEW ── */
+.preview-panel {
+  position: absolute;
+  right: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 280px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 20px;
+  z-index: 3;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  animation: fadeInUp 0.7s 0.3s ease both;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.preview-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.preview-badge {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--green);
+  background: rgba(52,211,153,0.1);
+  border: 1px solid rgba(52,211,153,0.2);
+  border-radius: 4px;
+  padding: 2px 7px;
+}
+
+.preview-subtitle {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+}
+
+.preview-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.preview-row-label { color: var(--text-dim); }
+.preview-row-val { color: var(--text); font-weight: 500; }
+
+.venue-list { margin-top: 16px; display: flex; flex-direction: column; gap: 6px; }
+
+.venue-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bg2);
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  font-size: 11.5px;
+}
+
+.venue-name { color: var(--text-mid); }
+.venue-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--accent2);
+  background: rgba(59,130,246,0.1);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 3px; }
+
+/* ── DIVIDER ── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark">LR</div>
+    <span class="nav-logo-text">Listing Research</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="#">Главная</a>
+    <a class="nav-link active" href="#">Справочник</a>
+    <a class="nav-link" href="#">Каталог параметров</a>
+    <a class="nav-link" href="#">Анализ <span class="nav-badge">SOON</span></a>
+    <a class="nav-link" href="#">Ассистент <span class="nav-badge">SOON</span></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+
+  <!-- Dot map SVG -->
+  <div class="hero-map">
+    <svg viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
+      <!-- Simplified continents as paths -->
+      <g fill="rgba(59,130,246,0.4)" stroke="none">
+        <!-- North America -->
+        <path d="M 95 80 Q 180 70 220 90 Q 260 110 280 150 Q 290 180 270 210 Q 250 240 220 260 Q 190 270 170 250 Q 140 230 120 200 Q 90 170 85 140 Q 80 110 95 80 Z"/>
+        <!-- South America -->
+        <path d="M 200 280 Q 250 270 270 300 Q 290 330 280 380 Q 270 420 240 440 Q 210 450 190 430 Q 170 410 165 370 Q 160 330 175 300 Q 185 285 200 280 Z"/>
+        <!-- Europe -->
+        <path d="M 520 60 Q 580 50 610 80 Q 630 100 620 130 Q 610 150 580 160 Q 550 165 530 145 Q 510 125 515 95 Q 518 72 520 60 Z"/>
+        <!-- Africa -->
+        <path d="M 530 160 Q 590 150 620 180 Q 650 220 650 280 Q 648 340 620 380 Q 590 410 555 410 Q 520 405 500 370 Q 480 330 485 270 Q 490 210 510 180 Q 520 162 530 160 Z"/>
+        <!-- Asia -->
+        <path d="M 640 55 Q 780 45 900 70 Q 980 90 1020 120 Q 1060 150 1040 200 Q 1020 240 960 260 Q 880 280 800 260 Q 720 240 680 200 Q 640 160 635 110 Q 633 75 640 55 Z"/>
+        <!-- Australia -->
+        <path d="M 900 300 Q 970 285 1010 310 Q 1050 340 1045 390 Q 1038 430 1000 445 Q 960 455 930 435 Q 895 410 890 370 Q 885 330 900 300 Z"/>
+      </g>
+
+      <!-- Dot grid overlay on continents -->
+      <g fill="rgba(59,130,246,0.6)">
+        <!-- Europe dots -->
+        <circle cx="540" cy="90" r="2"/><circle cx="560" cy="85" r="2"/><circle cx="580" cy="95" r="2"/>
+        <circle cx="545" cy="110" r="2"/><circle cx="565" cy="105" r="2"/><circle cx="590" cy="100" r="2"/>
+        <circle cx="555" cy="125" r="2"/><circle cx="575" cy="120" r="2"/><circle cx="600" cy="115" r="2"/>
+        <!-- UK specific dot -->
+        <circle cx="532" cy="88" r="3" fill="rgba(96,165,250,0.9)"/>
+        <!-- Asia dots -->
+        <circle cx="700" cy="90" r="2"/><circle cx="730" cy="80" r="2"/><circle cx="760" cy="85" r="2"/>
+        <circle cx="800" cy="75" r="2"/><circle cx="840" cy="80" r="2"/><circle cx="880" cy="90" r="2"/>
+        <circle cx="720" cy="110" r="2"/><circle cx="760" cy="105" r="2"/><circle cx="800" cy="100" r="2"/>
+        <circle cx="840" cy="110" r="2"/><circle cx="880" cy="115" r="2"/><circle cx="920" cy="105" r="2"/>
+        <!-- Hong Kong dot -->
+        <circle cx="895" cy="175" r="3" fill="rgba(96,165,250,0.9)"/>
+        <!-- Singapore dot -->
+        <circle cx="890" cy="230" r="3" fill="rgba(96,165,250,0.9)"/>
+        <!-- US dots -->
+        <circle cx="110" cy="110" r="2"/><circle cx="140" cy="100" r="2"/><circle cx="170" cy="105" r="2"/>
+        <circle cx="200" cy="110" r="2"/><circle cx="230" cy="105" r="2"/>
+        <circle cx="120" cy="130" r="2"/><circle cx="150" cy="125" r="2"/><circle cx="180" cy="120" r="2"/>
+        <circle cx="210" cy="130" r="2"/><circle cx="240" cy="125" r="2"/>
+        <!-- NY dot -->
+        <circle cx="245" cy="120" r="3" fill="rgba(240,160,48,0.9)"/>
+        <!-- Tokyo dot -->
+        <circle cx="960" cy="120" r="3" fill="rgba(96,165,250,0.7)"/>
+      </g>
+
+      <!-- Connection lines between major venues -->
+      <g stroke="rgba(59,130,246,0.2)" stroke-width="1" fill="none" stroke-dasharray="4 6">
+        <path d="M 532 88 Q 390 60 245 120"/>
+        <path d="M 532 88 Q 720 60 895 175"/>
+        <path d="M 532 88 Q 650 200 890 230"/>
+        <path d="M 245 120 Q 580 80 960 120"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Research Database</div>
+    <h1 class="hero-title">
+      Глобальный справочник<br>
+      <em>листинговых режимов</em>
+    </h1>
+    <p class="hero-subtitle">
+      Структурированная аналитическая база регуляторных требований к листингу ценных бумаг. Охватывает весь жизненный цикл: допуск, поддержание листинга, мониторинг и принуждение.
+    </p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Открыть справочник
+      </a>
+      <a class="btn-secondary" href="#">
+        Каталог параметров
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Floating preview card -->
+  <div class="preview-panel">
+    <div class="preview-header">
+      <div>
+        <div class="preview-title">Великобритания</div>
+        <div class="preview-subtitle">United Kingdom · common law</div>
+      </div>
+      <span class="preview-badge">✓ verified</span>
+    </div>
+    <div class="preview-row">
+      <span class="preview-row-label">Торговых площадок</span>
+      <span class="preview-row-val">3</span>
+    </div>
+    <div class="preview-row">
+      <span class="preview-row-label">Орган листинга</span>
+      <span class="preview-row-val">FCA</span>
+    </div>
+    <div class="venue-list">
+      <div class="venue-chip">
+        <span class="venue-name">London Stock Exchange</span>
+        <span class="venue-tag">REGULATED</span>
+      </div>
+      <div class="venue-chip">
+        <span class="venue-name">AIM</span>
+        <span class="venue-tag">MTF</span>
+      </div>
+      <div class="venue-chip">
+        <span class="venue-name">Aquis Stock Exchange</span>
+        <span class="venue-tag">REGULATED</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats strip inside hero bottom -->
+  <div class="stats-strip">
+    <div class="stat-item">
+      <div class="stat-value">47</div>
+      <div class="stat-label">Юрисдикций в периметре</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">65</div>
+      <div class="stat-label">Торговых площадок</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">4</div>
+      <div class="stat-label">Класса инструментов</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">~<span>1000</span></div>
+      <div class="stat-label">Листинговых режимов</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section-features">
+  <div class="section-label">Возможности платформы</div>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🗂</div>
+      <div class="feature-title">Справочник юрисдикций</div>
+      <div class="feature-desc">Регуляторные режимы листинга по 47 юрисдикциям с верифицированными источниками и маппингом терминологии.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚖️</div>
+      <div class="feature-title">Каталог параметров</div>
+      <div class="feature-desc">41 структурированный параметр (П01–П41) для сравнительного анализа требований к листингу ценных бумаг.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title">Анализ <span style="font-size:11px;color:var(--text-dim);font-family:var(--font-mono)">SOON</span></div>
+      <div class="feature-desc">Сравнительные матрицы, факторный анализ и визуализация различий регуляторных режимов по юрисдикциям.</div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — ТЗ для разработчика</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA;--bg2:#fff;--bg3:#F0F2F7;--bg4:#E4E8F2;
+  --border:rgba(0,0,0,0.1);--border2:rgba(0,0,0,0.16);
+  --text:#111827;--text-mid:#374151;--text-dim:#6B7280;
+  --accent:#2563EB;--accent-bg:rgba(37,99,235,0.06);
+  --green:#059669;--green-bg:rgba(5,150,105,0.07);
+  --red:#DC2626;--red-bg:rgba(220,38,38,0.05);
+  --orange:#D97706;--orange-bg:rgba(217,119,6,0.06);
+  --yellow:#92400E;--yellow-bg:rgba(245,158,11,0.07);
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --r:8px;--r-lg:12px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);
+  font-size:14.5px;line-height:1.7}
+
+/* LAYOUT */
+.wrap{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--bg2);border-right:1px solid var(--border);padding:28px 0}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.sidebar-logo-text{font-size:13px;font-weight:500;color:var(--text)}
+.sidebar-logo-sub{font-size:11px;color:var(--text-dim);font-family:var(--font-mono);margin-top:2px}
+.sidebar-section{padding:8px 20px 4px;font-family:var(--font-mono);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-top:8px}
+.sidebar a{display:block;padding:6px 20px;font-size:13px;color:var(--text-mid);
+  text-decoration:none;border-left:2px solid transparent;transition:all .12s}
+.sidebar a:hover{color:var(--accent);background:var(--accent-bg)}
+.sidebar a.active{color:var(--accent);border-left-color:var(--accent);background:var(--accent-bg);font-weight:500}
+
+/* MAIN */
+main{padding:48px 56px 100px;max-width:860px}
+h1{font-size:28px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+.doc-meta{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);
+  letter-spacing:.06em;text-transform:uppercase;margin-bottom:40px;
+  display:flex;gap:20px;flex-wrap:wrap}
+.meta-item{display:flex;align-items:center;gap:6px}
+
+h2{font-size:20px;font-weight:600;letter-spacing:-.01em;margin:48px 0 16px;
+  padding-bottom:10px;border-bottom:2px solid var(--border);color:var(--text)}
+h2:first-of-type{margin-top:0}
+h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--text)}
+h4{font-size:13.5px;font-weight:500;margin:18px 0 8px;color:var(--text-mid);
+  font-family:var(--font-mono);letter-spacing:.04em}
+
+p{color:var(--text-mid);line-height:1.75;margin-bottom:12px;font-size:14px}
+p strong{color:var(--text);font-weight:500}
+ul,ol{color:var(--text-mid);font-size:14px;line-height:1.75;padding-left:20px;margin-bottom:12px}
+li{margin-bottom:4px}
+li strong{color:var(--text);font-weight:500}
+
+/* CALLOUT */
+.callout{border-radius:var(--r);padding:14px 18px;margin:16px 0;font-size:13.5px;line-height:1.7}
+.callout p{margin:0;font-size:13.5px}
+.callout strong{font-weight:600}
+.c-blue{background:var(--accent-bg);border:1px solid rgba(37,99,235,.18);color:#1E40AF}
+.c-blue strong{color:#1D4ED8}
+.c-red{background:var(--red-bg);border:1px solid rgba(220,38,38,.18);color:#991B1B}
+.c-red strong{color:#B91C1C}
+.c-green{background:var(--green-bg);border:1px solid rgba(5,150,105,.18);color:#065F46}
+.c-green strong{color:#047857}
+.c-orange{background:var(--orange-bg);border:1px solid rgba(217,119,6,.2);color:#92400E}
+.c-orange strong{color:#B45309}
+.c-yellow{background:var(--yellow-bg);border:1px solid rgba(245,158,11,.2);color:var(--yellow)}
+
+/* CODE */
+pre{background:#1E2433;color:#E2E8F4;border-radius:var(--r);padding:16px 18px;
+  font-family:var(--font-mono);font-size:12.5px;line-height:1.65;overflow-x:auto;margin:12px 0}
+code{font-family:var(--font-mono);font-size:12px;background:var(--bg3);
+  border:1px solid var(--border2);border-radius:4px;padding:1px 5px;color:var(--text)}
+pre code{background:none;border:none;padding:0;color:inherit}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin:12px 0 20px;font-size:13.5px}
+thead tr{background:var(--bg3);border-bottom:1px solid var(--border2)}
+thead th{padding:9px 14px;text-align:left;font-family:var(--font-mono);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);font-weight:400}
+tbody tr{border-bottom:1px solid var(--border)}
+tbody tr:last-child{border-bottom:none}
+tbody td{padding:10px 14px;vertical-align:top;color:var(--text-mid);line-height:1.6}
+tbody td:first-child{color:var(--text);font-weight:500;white-space:nowrap}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:10px;
+  letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;
+  margin-right:4px;border:1px solid}
+.b-red{background:var(--red-bg);color:var(--red);border-color:rgba(220,38,38,.2)}
+.b-green{background:var(--green-bg);color:var(--green);border-color:rgba(5,150,105,.2)}
+.b-blue{background:var(--accent-bg);color:var(--accent);border-color:rgba(37,99,235,.2)}
+.b-gray{background:var(--bg3);color:var(--text-dim);border-color:var(--border2)}
+.b-orange{background:var(--orange-bg);color:var(--orange);border-color:rgba(217,119,6,.2)}
+
+/* ESCALATION BOX */
+.escalation-box{background:#fff;border:2px solid var(--red);border-radius:var(--r-lg);
+  padding:20px 24px;margin:20px 0}
+.escalation-box h3{margin-top:0;color:var(--red)}
+.escalation-box p{font-size:13.5px}
+
+/* DIVIDER */
+hr{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+/* FILE LIST */
+.file-list{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin:12px 0}
+.file-item{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);font-size:13px}
+.file-item:last-child{border-bottom:none}
+.file-icon{font-size:16px;flex-shrink:0}
+.file-name{font-family:var(--font-mono);font-size:12px;color:var(--accent);font-weight:500}
+.file-desc{color:var(--text-dim);font-size:12.5px;margin-left:auto}
+
+/* SOURCE DIAGRAM */
+.source-flow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0}
+.sf-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px}
+.sf-num{font-family:var(--font-mono);font-size:20px;font-weight:500;
+  color:var(--accent);margin-bottom:6px}
+.sf-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px}
+.sf-desc{font-size:12px;color:var(--text-dim);line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-text">Listing Research</div>
+    <div class="sidebar-logo-sub">ТЗ для разработчика · v1.0</div>
+  </div>
+
+  <div class="sidebar-section">Введение</div>
+  <a href="#s-overview">Обзор задачи</a>
+  <a href="#s-files">Прилагаемые файлы</a>
+
+  <div class="sidebar-section">Принципы</div>
+  <a href="#s-data-gap">Расхождение данных с прототипом</a>
+  <a href="#s-escalation">Протокол эскалации</a>
+  <a href="#s-sources">Система источников</a>
+
+  <div class="sidebar-section">Страницы</div>
+  <a href="#s-landing">Стартовый лендинг</a>
+  <a href="#s-jur-list">Список юрисдикций</a>
+  <a href="#s-jur-card">Карточка юрисдикции</a>
+  <a href="#s-venue">Карточка площадки</a>
+  <a href="#s-instruments">Инструменты</a>
+
+  <div class="sidebar-section">Общее</div>
+  <a href="#s-nav">Навигация</a>
+  <a href="#s-design">Дизайн-система</a>
+  <a href="#s-checklist">Чеклист перед сдачей</a>
+</nav>
+
+<!-- MAIN -->
+<main>
+<h1>ТЗ для разработчика: Listing Research Frontend</h1>
+<div class="doc-meta">
+  <span class="meta-item">Версия 1.0</span>
+  <span class="meta-item">Март 2026</span>
+  <span class="meta-item">Статус: передаётся вместе с прототипами</span>
+</div>
+
+<!-- ══════════════════════ OVERVIEW ══════════════════════ -->
+<h2 id="s-overview">Обзор задачи</h2>
+
+<p>Этот документ — <strong>руководящий документ для разработчика</strong>, который реализует фронтенд Listing Research на основе HTML-прототипов. Документ не описывает визуальный дизайн повторно — всё это уже реализовано в прототипах. Задача документа — передать <strong>принципы, которыми нужно руководствоваться</strong>, когда реальность не совпадает с прототипом.</p>
+
+<div class="callout c-blue">
+  <p><strong>Ключевая установка:</strong> прототипы работают с тестовыми данными (2–3 юрисдикции, 3–7 источника на блок). Реальные данные масштабнее и могут быть структурированы иначе. Прототип — это дизайн-эталон, а не жёсткая схема данных.</p>
+</div>
+
+<!-- ══════════════════════ FILES ══════════════════════ -->
+<h2 id="s-files">Прилагаемые файлы</h2>
+
+<p>Это ТЗ охватывает <strong>лендинг, список юрисдикций и карточку юрисдикции</strong>. По карточке торговой площадки и разделу инструментов будет отдельное ТЗ от второго дизайнера — дождись его перед началом работы над этими разделами.</p>
+
+<div class="callout c-blue">
+  <p><strong>Единственный источник истины по дизайн-системе:</strong> файл <code>listing-research-design-handoff.html</code> — CSS-переменные, шрифты, токены, компоненты. Сверяйся с ним при любых сомнениях по визуалу.</p>
+</div>
+
+<h3>Файлы этого ТЗ</h3>
+
+<div class="file-list">
+  <div class="file-item">
+    <span class="file-icon">📄</span>
+    <div>
+      <div class="file-name">listing-research-landing-v2.html</div>
+      <div style="font-size:11px;color:var(--text-dim);font-family:var(--font-mono);margin-top:2px">00_docs/specs/04_interface/_final_prototypes/listing-research-landing-v2.html</div>
+    </div>
+    <span class="file-desc">Стартовый лендинг</span>
+  </div>
+  <div class="file-item">
+    <span class="file-icon">📄</span>
+    <div>
+      <div class="file-name">jurisdictions-list.html</div>
+      <div style="font-size:11px;color:var(--text-dim);font-family:var(--font-mono);margin-top:2px">00_docs/specs/04_interface/_final_prototypes/jurisdictions/jurisdictions-list.html</div>
+    </div>
+    <span class="file-desc">Список юрисдикций</span>
+  </div>
+  <div class="file-item">
+    <span class="file-icon">📄</span>
+    <div>
+      <div class="file-name">jurisdiction-card.html</div>
+      <div style="font-size:11px;color:var(--text-dim);font-family:var(--font-mono);margin-top:2px">00_docs/specs/04_interface/_final_prototypes/jurisdictions/jurisdiction-card.html</div>
+    </div>
+    <span class="file-desc">Карточка юрисдикции</span>
+  </div>
+  <div class="file-item">
+    <span class="file-icon">📐</span>
+    <div>
+      <div class="file-name">listing-research-design-handoff.html</div>
+      <div style="font-size:11px;color:var(--text-dim);font-family:var(--font-mono);margin-top:2px">00_docs/specs/04_interface/_mockups/listing-research-design-handoff.html</div>
+    </div>
+    <span class="file-desc">Дизайн-система</span>
+  </div>
+</div>
+
+<h3>Файлы второго ТЗ (поступят отдельно)</h3>
+
+<div class="file-list">
+  <div class="file-item">
+    <span class="file-icon">⏳</span>
+    <div>
+      <div class="file-name">[venue-card].html</div>
+      <div style="font-size:11px;color:var(--text-dim);font-family:var(--font-mono);margin-top:2px">Путь будет указан в ТЗ от второго дизайнера</div>
+    </div>
+    <span class="file-desc">Карточка площадки</span>
+  </div>
+  <div class="file-item">
+    <span class="file-icon">⏳</span>
+    <div>
+      <div class="file-name">[instruments-*.html]</div>
+      <div style="font-size:11px;color:var(--text-dim);font-family:var(--font-mono);margin-top:2px">Путь будет указан в ТЗ от второго дизайнера</div>
+    </div>
+    <span class="file-desc">Инструменты</span>
+  </div>
+</div>
+
+<!-- ══════════════════════ DATA GAP ══════════════════════ -->
+<h2 id="s-data-gap">Расхождение данных с прототипом</h2>
+
+<p>Прототипы создавались до полной выгрузки реальных данных. Возможны следующие типы расхождений:</p>
+
+<table>
+  <thead><tr><th>Тип расхождения</th><th>Что делать</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Другое название поля</td>
+      <td>Замапить на нужный UI-элемент по смыслу. Документировать маппинг в коде через комментарий.</td>
+    </tr>
+    <tr>
+      <td>Поле отсутствует для части юрисдикций</td>
+      <td>Показывать <code>—</code> или скрывать строку. Не показывать пустые блоки с заголовком без данных.</td>
+    </tr>
+    <tr>
+      <td>Поле есть, но его нет в прототипе</td>
+      <td>Добавить в подходящий блок, придерживаясь визуального языка дизайн-системы. При сомнениях — эскалировать.</td>
+    </tr>
+    <tr>
+      <td>Структура данных принципиально отличается</td>
+      <td><strong>Эскалировать.</strong> Не изобретать структуру самостоятельно.</td>
+    </tr>
+    <tr>
+      <td>Данных значительно больше, чем в прототипе</td>
+      <td>Применять паттерны масштабируемости (см. ниже). При сомнениях — эскалировать.</td>
+    </tr>
+    <tr>
+      <td>Данные есть, но смысл поля неясен</td>
+      <td><strong>Эскалировать.</strong> Не интерпретировать самостоятельно.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Паттерны масштабируемости</h3>
+
+<p>Все прототипы изначально спроектированы с расчётом на масштаб. Нужно проверить, что следующие вещи работают корректно при реальных данных:</p>
+
+<ul>
+  <li><strong>Список юрисдикций:</strong> при 47+ строках пагинация (уже реализована в прототипе, 15 строк/страница).</li>
+  <li><strong>Миникарточки площадок</strong> в правой колонке карточки юрисдикции: при 1 площадке — одна карточка без пустоты, при 10+ — список со скроллом внутри правой колонки (не растягивать всю страницу).</li>
+  <li><strong>Таймлайн регуляторного анализа:</strong> при 27+ событиях (Гонконг) каждое событие на отдельной строке — это предусмотрено алгоритмом, нужно убедиться, что канвас корректно растягивается вертикально.</li>
+  <li><strong>Маппинг терминов:</strong> аккордеон по группам — раскрывать только первую по умолчанию.</li>
+</ul>
+
+<!-- ══════════════════════ ESCALATION ══════════════════════ -->
+<h2 id="s-escalation">Протокол эскалации</h2>
+
+<div class="escalation-box">
+  <h3>⚠ Когда и как эскалировать</h3>
+  <p>Если ты не понимаешь, как соотнести реальные данные с прототипом, <strong>не придумывай решение самостоятельно</strong> — создай файл-отчёт и сообщи мне.</p>
+</div>
+
+<h3>Формат файла-отчёта</h3>
+
+<p>Файл называется <code>ESCALATION_[раздел]_[дата].md</code>, например: <code>ESCALATION_jurisdiction_card_2026-04-01.md</code></p>
+
+<p>Структура файла:</p>
+
+<pre><code># Эскалация: [название раздела/страницы]
+
+## Проблема
+[Одна-две фразы: в чём расхождение]
+
+## Что есть в прототипе
+[Что ожидалось согласно прототипу]
+
+## Что есть в реальных данных
+[Что фактически пришло из API / базы]
+
+## Варианты решения (опционально)
+[Если у тебя есть идеи — перечисли, но не реализуй]
+
+## Что заблокировано
+[Какие именно компоненты/страницы нельзя завершить до ответа]</code></pre>
+
+<p>После создания файла — <strong>немедленно сообщи мне</strong> в рабочем канале: «Эскалация по разделу [X], файл [имя файла]». Не жди следующего статуса.</p>
+
+<div class="callout c-orange">
+  <p><strong>Важно:</strong> эскалация — это нормально и ожидаемо. Прототипы создавались до полного доступа к данным, расхождения заложены в риски проекта. Лучше потерять день на эскалацию, чем реализовать неверную структуру и переделывать.</p>
+</div>
+
+<!-- ══════════════════════ SOURCES ══════════════════════ -->
+<h2 id="s-sources">Система источников</h2>
+
+<p>Это один из самых критичных UX-принципов продукта. <strong>Каждый блок данных должен иметь доступные источники.</strong> Прототипы показывают 2–4 источника на блок — в реальности их может быть 10–20.</p>
+
+<h3>Архитектура системы источников</h3>
+
+<div class="source-flow">
+  <div class="sf-box">
+    <div class="sf-num">1</div>
+    <div class="sf-title">Суперскрипт в тексте</div>
+    <div class="sf-desc">Для точечных ссылок внутри текстового блока. Кликабельный суперскрипт <code>[1]</code>, при клике — плавный скролл к списку внизу карточки с подсветкой.</div>
+  </div>
+  <div class="sf-box">
+    <div class="sf-num">2</div>
+    <div class="sf-title">Кнопка блока</div>
+    <div class="sf-desc">«N источников» в шапке карточки-блока. Показывает общее количество. Открывает раздел источников.</div>
+  </div>
+  <div class="sf-box">
+    <div class="sf-num">3</div>
+    <div class="sf-title">Список внизу карточки</div>
+    <div class="sf-desc">Пронумерованный список с названием документа и кликабельной ссылкой. Сворачивается если > порога.</div>
+  </div>
+</div>
+
+<h3>Правило отображения при большом количестве источников</h3>
+
+<p>Применяй следующую логику в зависимости от количества источников на блок:</p>
+
+<table>
+  <thead><tr><th>Кол-во источников</th><th>Поведение</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>1 – 5</td>
+      <td>Показывать все источники сразу в развёрнутом виде внизу карточки. Дополнительных действий не требуется.</td>
+    </tr>
+    <tr>
+      <td>6 – 15</td>
+      <td>Показывать первые 5, остальные скрыты за кнопкой <strong>«Показать ещё N»</strong>. Клик — разворачивает всё, кнопка меняется на «Свернуть».</td>
+    </tr>
+    <tr>
+      <td>16+</td>
+      <td>Кнопка «N источников» в шапке блока открывает <strong>модальное окно</strong> (или тот же drawer-паттерн из таймлайна) с полным прокручиваемым списком источников, поиском и фильтром по типу документа.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout c-blue">
+  <p><strong>Приоритет:</strong> источники — не сноски, они часть интерфейса. Пользователь-регулятор обязан всегда понимать, откуда взяты данные. Не прятать их слишком глубоко.</p>
+</div>
+
+<h3>Формат данных источника (ожидаемый)</h3>
+
+<pre><code>{
+  "id": "src-001",
+  "label": "FCA UK Listing Rules (UKLR) sourcebook",  // отображаемое название
+  "url": "https://www.fca.org.uk/...",                // ссылка
+  "type": "rulebook",  // тип: rulebook | legislation | consultation | report | other
+  "year": 2024,        // опционально
+  "note": ""           // опциональный комментарий к источнику
+}</code></pre>
+
+<p>Если структура источника в базе отличается от ожидаемой — <strong>эскалировать</strong>.</p>
+
+<!-- ══════════════════════ LANDING ══════════════════════ -->
+<h2 id="s-landing">Стартовый лендинг</h2>
+
+<p><strong>Прототип:</strong> <code>listing-research-landing-v2.html</code></p>
+
+<h3>Специфика реализации</h3>
+
+<ul>
+  <li>Страница занимает ровно один viewport — <strong>вертикальный скролл отсутствует</strong> (<code>overflow: hidden</code> на <code>html, body</code>).</li>
+  <li>Карта — SVG, встроенный в HTML. Точки на карте должны быть <strong>кликабельными</strong> и открывать карточку-превью соответствующей юрисдикции. В прототипе показан пример одной статической карточки — в продакшне карточка подтягивается динамически.</li>
+  <li>Статистические цифры (47, 65, 4, ~1000) должны подтягиваться из API, не хардкодиться.</li>
+  <li>Dropdown меню «Справочник» — два пункта: «По юрисдикциям» и «По инструментам». Оба активны, без пометки SOON.</li>
+  <li>Пункты «Главная» и «Каталог параметров» в навигации <strong>отсутствуют</strong>.</li>
+</ul>
+
+<!-- ══════════════════════ JUR LIST ══════════════════════ -->
+<h2 id="s-jur-list">Список юрисдикций</h2>
+
+<p><strong>Прототип:</strong> <code>listing-jurisdictions-v2.html</code></p>
+
+<h3>Данные строки таблицы</h3>
+
+<table>
+  <thead><tr><th>Поле UI</th><th>Ожидаемое поле данных</th><th>Примечание</th></tr></thead>
+  <tbody>
+    <tr><td>Флаг</td><td><code>iso_code</code> (2 буквы)</td><td>Emoji-флаг генерируется из ISO-кода. Если не рендерится — SVG-заглушка.</td></tr>
+    <tr><td>Название (RU)</td><td><code>name_ru</code></td><td></td></tr>
+    <tr><td>Название (EN)</td><td><code>name_en</code></td><td>Выводится под русским, мелко, моно</td></tr>
+    <tr><td>Правовая семья</td><td><code>legal_family</code></td><td>Значения: <code>common</code>, <code>civil</code>, <code>mixed</code></td></tr>
+    <tr><td>Тип рынка</td><td><code>market_type</code></td><td>Значения: <code>DM</code>, <code>EM</code></td></tr>
+    <tr><td>Площадок</td><td><code>venue_count</code></td><td>Если 0 — показывать <code>—</code></td></tr>
+    <tr><td>Приоритет</td><td><code>priority</code></td><td>Значения: <code>high</code>, <code>med</code>, <code>low</code>. Отображается как метка.</td></tr>
+    <tr><td>Данные</td><td><code>data_status</code></td><td>Значения: <code>full</code>, <code>partial</code>, <code>empty</code></td></tr>
+  </tbody>
+</table>
+
+<h3>Строки без данных</h3>
+<p>Строки со статусом <code>empty</code> визуально dimmed (opacity ~0.55), курсор default, кнопка заменяется на «Скоро». При наличии статуса <code>partial</code> — строка кликабельна, открывает карточку с имеющимися данными.</p>
+
+<h3>Сортировка по умолчанию</h3>
+<p>Первичная сортировка: <code>data_status</code> (full → partial → empty). Вторичная: <code>priority</code> (high → med → low).</p>
+
+<!-- ══════════════════════ JUR CARD ══════════════════════ -->
+<h2 id="s-jur-card">Карточка юрисдикции</h2>
+
+<p><strong>Прототип:</strong> <code>jurisdiction-v3.html</code></p>
+
+<h3>Структура вкладок</h3>
+<p>Три вкладки: <strong>Юрисдикция / Регуляторный анализ / Термины</strong>. Отдельной вкладки «Площадки» нет — площадки встроены в вкладку «Юрисдикция» как миникарточки в правой колонке.</p>
+
+<h3>Вкладка «Юрисдикция» — первый экран</h3>
+<p>Двухколоночный layout: левая колонка (flex: 1) — одна карточка с двумя секциями «Архитектура допуска» и «Регулятор» через разделитель. Правая колонка (ширина ~340px) — стек миникарточек площадок.</p>
+
+<p>Миникарточка площадки — точка входа на страницу площадки. <strong>Весь ряд кликабелен</strong>, включая стрелку <code>→</code>. При hover: <code>border-color</code> → accent, <code>box-shadow</code>.</p>
+
+<h3>Вкладка «Регуляторный анализ»</h3>
+
+<p>Два режима: <strong>Таймлайн</strong> (по умолчанию) и <strong>Список</strong>. Переключатель внутри вкладки.</p>
+
+<h4>Данные события регуляторного анализа</h4>
+<pre><code>{
+  "id": "evt-001",
+  "type": "problem",       // problem | contra | reform | tool
+  "start": 2013,           // год начала
+  "end": 2024,             // год окончания (= start если точечное событие)
+  "label": "...",          // короткий лейбл для таймлайна (≤ ~30 символов)
+  "title": "...",          // заголовок для drawer/списка
+  "text": "...",           // основной текст на русском
+  // Только для type=contra:
+  "conflict": {
+    "a": { "label": "...", "text": "..." },
+    "b": { "label": "...", "text": "..." }
+  },
+  "resolution": "...",     // текст разрешения противоречия
+  "sources": [...]         // массив источников
+}</code></pre>
+
+<h4>Таймлайн — параметры рендеринга</h4>
+<p>JS-константы вынесены в начало функции <code>renderTimeline()</code>. Если при реальных данных элементы накладываются — увеличивать <code>LANE_H</code> с шагом 4px до устранения наложений.</p>
+
+<h4>Drawer детализации</h4>
+<p>Открывается при клике на любой элемент таймлайна или его подпись. Закрывается крестиком или кликом по backdrop. <strong>Backdrop начинается на top: 112px</strong> (под nav 56px + tabs 56px) — это принципиально, иначе закрывает навигацию. Drawer использует <code>visibility: hidden / visible</code> вместо просто <code>transform</code>, потому что <code>overflow-x: hidden</code> на <code>body</code> не скрывает <code>position: fixed</code> элементы.</p>
+
+<h3>Институциональные метрики (WGI/WDI)</h3>
+<p>Данные пока отмечены как placeholder. При подключении реальных данных использовать поля WGI (Rule of Law, Regulatory Quality, Government Effectiveness) и WDI индикатор <code>CM.MKT.LCAP.GD.ZS</code> (Market Cap / GDP). Прогресс-бар нормируется к максимальному значению в выборке, не к фиксированному максимуму.</p>
+
+<h3>Кластеризация</h3>
+<p>Чипы «Схожих юрисдикций» кликабельны — ведут на карточку соответствующей юрисдикции. Коэффициент сходства отображается как число 0.xx в мелком моно-тексте.</p>
+
+<!-- ══════════════════════ VENUE ══════════════════════ -->
+<h2 id="s-venue">Карточка торговой площадки (venue)</h2>
+
+<div class="callout c-yellow">
+  <p><strong>Этот раздел покрывается отдельным ТЗ</strong> от второго дизайнера. Не приступай к реализации до получения этого ТЗ с прототипами. Ниже — только связующие принципы, которые нужно учесть.</p>
+</div>
+
+<h3>Связь с карточкой юрисдикции</h3>
+<p>Площадка — дочерняя сущность юрисдикции. Навигация: Справочник → Юрисдикция → Площадка. Breadcrumb: Главная › Справочник › [Юрисдикция] › [Площадка].</p>
+
+<h3>Иерархия данных</h3>
+<p>Используется трёхуровневая иерархия: <strong>Оператор → Площадка (Venue) → Тир/Сегмент</strong>. Если реальная структура отличается — эскалировать, не адаптировать самостоятельно.</p>
+
+<h3>Параметры листинга (П01–П41)</h3>
+<p>На карточке площадки отображаются значения параметров из словаря (41 параметр, 5 групп). Каждая ячейка параметра имеет источники — применять систему источников согласно разделу выше. Пустые ячейки (данные не собраны) — показывать <code>—</code> без скрытия строки.</p>
+
+<!-- ══════════════════════ INSTRUMENTS ══════════════════════ -->
+<h2 id="s-instruments">Инструменты</h2>
+
+<div class="callout c-yellow">
+  <p><strong>Этот раздел покрывается отдельным ТЗ</strong> от второго дизайнера. Не приступай к реализации до получения этого ТЗ с прототипами. Ниже — только связующие принципы.</p>
+</div>
+
+<h3>Навигация</h3>
+<p>Переход из главной страницы: кнопка «Инструменты». Из навигации: Справочник → «По инструментам». Четыре класса: акции, облигации, фонды, депозитарные расписки.</p>
+
+<h3>Интеграция с юрисдикциями</h3>
+<p>Детальное отображение инструмента включает привязку к юрисдикциям. Кросс-ссылки между карточкой инструмента и карточкой юрисдикции должны работать в обоих направлениях.</p>
+
+<!-- ══════════════════════ NAV ══════════════════════ -->
+<h2 id="s-nav">Навигация — итоговая структура</h2>
+
+<table>
+  <thead><tr><th>Пункт меню</th><th>Поведение</th><th>Статус</th></tr></thead>
+  <tbody>
+    <tr><td>Справочник</td><td>Dropdown: «По юрисдикциям» + «По инструментам»</td><td><span class="badge b-green">Активно</span></td></tr>
+    <tr><td>Анализ</td><td>Недоступно, бейдж SOON</td><td><span class="badge b-gray">SOON</span></td></tr>
+    <tr><td>Ассистент</td><td>Недоступно, бейдж SOON</td><td><span class="badge b-gray">SOON</span></td></tr>
+    <tr><td>Главная</td><td><strong>Отсутствует</strong> в меню</td><td><span class="badge b-red">Убрать</span></td></tr>
+    <tr><td>Каталог параметров</td><td><strong>Отсутствует</strong> в меню</td><td><span class="badge b-red">Убрать</span></td></tr>
+  </tbody>
+</table>
+
+<p>На всех страницах кроме лендинга навигация sticky с <code>top: 0; z-index: 200</code>. На лендинге — <code>position: fixed</code>. Вкладки страницы (page-tabs) sticky с <code>top: 56px; z-index: 100</code>.</p>
+
+<!-- ══════════════════════ DESIGN ══════════════════════ -->
+<h2 id="s-design">Дизайн-система — критичные правила</h2>
+
+<p>Полная документация в <code>listing-research-design-handoff.html</code>. Здесь — только то, что чаще всего нарушают при реализации.</p>
+
+<ul>
+  <li><strong>Шрифты — три, строго:</strong> Newsreader (заголовки страниц), IBM Plex Sans (интерфейс), IBM Plex Mono (метки, числа, теги, код). Не заменять на system fonts.</li>
+  <li><strong>Светлая тема — основная.</strong> Тёмная тема реализована только на лендинге.</li>
+  <li><strong>Карточки:</strong> <code>box-shadow: 0 1px 4px rgba(0,0,0,.08), 0 0 0 0.5px rgba(0,0,0,.04)</code> — двойная тень для чёткости границ. Без этого карточки сливаются с фоном.</li>
+  <li><strong>Флаги — не emoji:</strong> на лендинге SVG Union Jack. В списке юрисдикций emoji допустимы как fallback, но желательно SVG через <a href="https://flagcdn.com/">flagcdn.com</a> или аналог.</li>
+  <li><strong>Анимации:</strong> <code>fadeInUp</code> только при первом рендере страницы, не при каждом роутинге.</li>
+  <li><strong>overflow-x: hidden</strong> на <code>html, body</code> обязателен — иначе drawer выглядывает из-за правого края.</li>
+</ul>
+
+<!-- ══════════════════════ CHECKLIST ══════════════════════ -->
+<h2 id="s-checklist">Чеклист перед сдачей каждой страницы</h2>
+
+<ul>
+  <li>☐ Все состояния пустых данных протестированы (0 площадок, нет WGI данных, пустой список)</li>
+  <li>☐ Пагинация работает при 47+ строках в списке юрисдикций</li>
+  <li>☐ Таймлайн корректно отображает 27+ событий (Гонконг — тест-кейс)</li>
+  <li>☐ Drawer закрывается на <code>Escape</code>, на backdrop, на крестик</li>
+  <li>☐ Источники: правило 1–5 / 6–15 / 16+ соблюдено</li>
+  <li>☐ Breadcrumb отображает корректный путь на всех страницах</li>
+  <li>☐ Все кросс-ссылки (юрисдикция → площадка, инструмент → юрисдикция) работают</li>
+  <li>☐ Фильтры списка юрисдикций: поиск + DM/EM + правовая семья — все комбинации</li>
+  <li>☐ Карточка площадки: вернуться назад через breadcrumb, не только через браузер</li>
+  <li>☐ Статистика на лендинге подтягивается из API</li>
+  <li>☐ Все эскалации задокументированы и переданы</li>
+</ul>
+
+<div class="callout c-green">
+  <p><strong>Хорошая реализация:</strong> если что-то в данных не сходится с прототипом — ты уже написал эскалацию. Если всё сходится — ты проверил все пустые состояния и крайние случаи. Визуально результат неотличим от прототипов.</p>
+</div>
+
+</main>
+</div>
+
+<script>
+/* Active sidebar link on scroll */
+const sections = document.querySelectorAll('h2[id]');
+const links = document.querySelectorAll('.sidebar a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.sidebar a[href="#${e.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

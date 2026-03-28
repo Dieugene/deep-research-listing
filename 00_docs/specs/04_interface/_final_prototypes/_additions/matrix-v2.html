@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matrix v2 — micro-excerpts</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA;--bg2:#fff;--bg3:#F0F2F7;--bg4:#E4E8F2;
+  --border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.17);
+  --text:#111827;--text-mid:#4B5563;--text-dim:#9CA3AF;
+  --accent:#2563EB;--accent-bg:rgba(37,99,235,0.06);
+  --green:#059669;
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-serif:'Newsreader',serif;
+}
+body{background:var(--bg);font-family:var(--font-sans);font-size:14px;color:var(--text);padding:32px 28px 80px;line-height:1.6}
+
+.page-hd{margin-bottom:24px}
+h1{font-family:var(--font-serif);font-style:italic;font-size:28px;font-weight:400;letter-spacing:-.01em;margin-bottom:4px}
+.sub{font-size:12.5px;color:var(--text-dim);margin-bottom:6px}
+.badges{display:flex;gap:8px;align-items:center;margin-bottom:0}
+.badge-v{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;font-weight:500;padding:4px 10px;border-radius:5px;background:rgba(5,150,105,.07);color:var(--green);border:1px solid rgba(5,150,105,.2)}
+.badge-v::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green)}
+.tag{font-family:var(--font-mono);font-size:10px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:2px 8px;color:var(--text-dim)}
+
+/* demo toggle */
+.demo-toggle{display:flex;gap:8px;margin:20px 0 24px;align-items:center}
+.demo-lbl{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;margin-right:4px}
+.tbtn{padding:5px 14px;border-radius:5px;border:1px solid var(--border2);font-size:12.5px;cursor:pointer;background:var(--bg2);color:var(--text-mid);font-family:var(--font-sans);transition:all .15s}
+.tbtn:hover{border-color:var(--accent);color:var(--accent)}
+.tbtn.on{background:var(--accent-bg);border-color:rgba(37,99,235,.3);color:var(--accent);font-weight:500}
+.diff-note{font-size:12px;color:var(--text-dim);padding:6px 12px;background:rgba(37,99,235,.04);border:1px solid rgba(37,99,235,.1);border-radius:5px;font-family:var(--font-mono)}
+
+/* matrix */
+.mx-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+table{width:100%;border-collapse:collapse}
+
+/* header */
+th{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--text-dim);font-weight:400;padding:11px 14px;background:var(--bg3);border-bottom:1px solid var(--border2);text-align:left;white-space:nowrap}
+th:first-child{width:120px}
+
+/* phase label cell */
+td.phase-cell{font-size:13px;font-weight:500;color:var(--text);padding:14px;vertical-align:top;background:var(--bg);border-right:1px solid var(--border2);border-bottom:1px solid var(--border);white-space:nowrap}
+
+/* data cell — base */
+td.mx-cell{padding:12px 14px;vertical-align:top;border-right:1px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s;position:relative}
+td.mx-cell:last-child{border-right:none}
+tr:last-child td{border-bottom:none}
+td.mx-cell:hover{background:rgba(37,99,235,.035)}
+
+/* NA cell */
+td.mx-na{padding:12px 14px;vertical-align:middle;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg3)}
+td.mx-na:last-child{border-right:none}
+tr:last-child td.mx-na{border-bottom:none}
+.na-dash{font-family:var(--font-mono);font-size:16px;color:var(--border2)}
+
+/* parameter pills */
+.pills{display:flex;flex-direction:column;gap:5px}
+.pill{display:flex;align-items:baseline;gap:6px;font-size:12px;line-height:1.4}
+.pcode{font-family:var(--font-mono);font-size:9px;padding:1px 5px;border-radius:3px;flex-shrink:0;border:1px solid rgba(37,99,235,.2);color:var(--accent);background:rgba(219,234,254,.5)}
+.pval{color:var(--text);font-weight:500}
+
+/* MICRO-EXCERPT — the new element */
+.micro{display:flex;flex-direction:column;gap:5px}
+.micro-text{
+  font-size:12px;color:var(--text-mid);font-weight:300;line-height:1.55;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+/* subtle bottom accent by column type */
+td.col-proc .micro-text{border-left:2px solid rgba(16,185,129,.4);padding-left:8px}
+td.col-mon .micro-text{border-left:2px solid rgba(99,102,241,.4);padding-left:8px}
+td.col-sanc .micro-text{border-left:2px solid rgba(239,68,68,.4);padding-left:8px}
+td.col-disc .micro-text{border-left:2px solid rgba(245,158,11,.4);padding-left:8px}
+
+.src-hint{font-family:var(--font-mono);font-size:9px;color:var(--text-dim);margin-top:4px}
+
+/* "данные есть" old style */
+.old-tag{font-size:12px;color:var(--text-dim);font-style:italic}
+
+/* legend */
+.legend{display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;font-size:11.5px;color:var(--text-dim);font-family:var(--font-mono)}
+.leg-item{display:flex;align-items:center;gap:6px}
+.leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<div class="page-hd">
+  <h1>Акции (коммерческих компаний)</h1>
+  <div class="sub">Акции · Лондонская фондовая биржа — Основной рынок</div>
+  <div class="badges">
+    <span class="badge-v">Верифицировано</span>
+    <span class="tag">split</span>
+  </div>
+</div>
+
+<div class="demo-toggle">
+  <span class="demo-lbl">Сравнить:</span>
+  <button class="tbtn on" onclick="setMode('new')">Новый вариант (micro-excerpts)</button>
+  <button class="tbtn" onclick="setMode('old')">Текущий вариант</button>
+  <span class="diff-note" id="diff-note">↑ одинаковый формат во всех ячейках — тезис из первоисточника</span>
+</div>
+
+<div class="mx-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>Фаза</th>
+      <th>Требования</th>
+      <th>Процедуры</th>
+      <th>Мониторинг и надзор</th>
+      <th>Санкции</th>
+      <th>Раскрытие информации</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- ДОПУСК -->
+    <tr>
+      <td class="phase-cell">Допуск</td>
+
+      <!-- Требования — пилюли, как сейчас -->
+      <td class="mx-cell col-req">
+        <div class="pills">
+          <div class="pill"><span class="pcode">П01</span><span class="pval">Free float ≥ 10%</span></div>
+          <div class="pill"><span class="pcode">П02</span><span class="pval">Market cap ≥ £30 млн</span></div>
+          <div class="pill"><span class="pcode">П12</span><span class="pval">Независимость от контр. акционера</span></div>
+        </div>
+      </td>
+
+      <!-- Процедуры — НОВЫЙ: micro-excerpt -->
+      <td class="mx-cell col-proc">
+        <div class="micro new-content">
+          <div class="micro-text">Form 1 и draft prospectus подаются в LSE не менее чем за 10 р.д. до допуска; final Form 1 — за 2 р.д. Допуск вступает в силу при объявлении через RIS.</div>
+          <div class="src-hint">→ Процедура и сроки · Спонсор</div>
+        </div>
+        <div class="old-content" style="display:none"><span class="old-tag">данные есть</span></div>
+      </td>
+
+      <!-- Мониторинг — Н/П -->
+      <td class="mx-na"><span class="na-dash">—</span></td>
+
+      <!-- Санкции — Н/П -->
+      <td class="mx-na"><span class="na-dash">—</span></td>
+
+      <!-- Раскрытие — НОВЫЙ: micro-excerpt -->
+      <td class="mx-cell col-disc">
+        <div class="micro new-content">
+          <div class="micro-text">Требуется полный проспект, утверждённый FCA и опубликованный в соответствии с Prospectus Regulation Rules (PRR).</div>
+          <div class="src-hint">→ Раскрытие при допуске · Общие требования</div>
+        </div>
+        <div class="old-content" style="display:none"><span class="old-tag">данные есть</span></div>
+      </td>
+    </tr>
+
+    <!-- ПОДДЕРЖАНИЕ -->
+    <tr>
+      <td class="phase-cell">Поддержание</td>
+
+      <td class="mx-cell col-req">
+        <div class="pills">
+          <div class="pill"><span class="pcode">П01</span><span class="pval">Free float ≥ 10% постоянно</span></div>
+          <div class="pill"><span class="pcode">П12</span><span class="pval">UK CG Code — «соблюдай или объясняй»</span></div>
+          <div class="pill"><span class="pcode">П13</span><span class="pval">Годовой отчёт — 4 мес. после года</span></div>
+        </div>
+      </td>
+
+      <td class="mx-cell col-proc">
+        <div class="micro new-content">
+          <div class="micro-text">Существенные сделки (Class 1 ≥ 25%) требуют одобрения акционеров и публикации циркуляра. Сделки со связанными сторонами — независимой оценки.</div>
+          <div class="src-hint">→ Существенные сделки</div>
+        </div>
+        <div class="old-content" style="display:none"><span class="old-tag">данные есть</span></div>
+      </td>
+
+      <td class="mx-cell col-mon">
+        <div class="micro new-content">
+          <div class="micro-text">FCA осуществляет текущий надзор за соблюдением UKLR; MAR обязывает к немедленному раскрытию инсайдерской информации (Art. 17).</div>
+          <div class="src-hint">→ Мониторинг и надзор</div>
+        </div>
+        <div class="old-content" style="display:none"><span class="old-tag">данные есть</span></div>
+      </td>
+
+      <td class="mx-cell col-sanc">
+        <div class="micro new-content">
+          <div class="micro-text">FCA вправе применять публичный выговор, финансовые штрафы без фиксированного максимума, запрет на листинг (FSMA 2000, ss. 87K–87Q).</div>
+          <div class="src-hint">→ Санкционный режим</div>
+        </div>
+        <div class="old-content" style="display:none"><span class="old-tag">данные есть</span></div>
+      </td>
+
+      <td class="mx-cell col-disc">
+        <div class="micro new-content">
+          <div class="micro-text">Годовой и полугодовой финансовые отчёты; ежегодное заявление по КУ (TCFD, разнообразие совета); инсайдерская информация — немедленно.</div>
+          <div class="src-hint">→ Постоянные обязательства</div>
+        </div>
+        <div class="old-content" style="display:none"><span class="old-tag">данные есть</span></div>
+      </td>
+    </tr>
+
+    <!-- ИСКЛЮЧЕНИЕ -->
+    <tr>
+      <td class="phase-cell">Исключение</td>
+
+      <td class="mx-cell col-req">
+        <div class="pills">
+          <div class="pill"><span class="pcode">П01</span><span class="pval">Несоблюдение free float — основание для отмены</span></div>
+          <div class="pill"><span class="pcode">ADD_3</span><span class="pval">Утрата допуска к торгам → отмена листинга</span></div>
+        </div>
+      </td>
+
+      <td class="mx-cell col-proc">
+        <div class="micro new-content">
+          <div class="micro-text">Добровольное исключение требует одобрения ≥ 75% независимых акционеров и уведомления за установленный срок.</div>
+          <div class="src-hint">→ Процедура исключения</div>
+        </div>
+        <div class="old-content" style="display:none"><span class="old-tag">данные есть</span></div>
+      </td>
+
+      <td class="mx-na"><span class="na-dash">—</span></td>
+
+      <td class="mx-cell col-sanc">
+        <div class="micro new-content">
+          <div class="micro-text">Принудительная отмена листинга FCA при систематическом нарушении требований; применяются стандарты гражданско-правового доказывания.</div>
+          <div class="src-hint">→ Санкционный режим</div>
+        </div>
+        <div class="old-content" style="display:none"><span class="old-tag">данные есть</span></div>
+      </td>
+
+      <td class="mx-na"><span class="na-dash">—</span></td>
+    </tr>
+
+  </tbody>
+</table>
+</div>
+
+<div class="legend">
+  <span class="leg-item"><span class="leg-dot" style="background:rgba(219,234,254,.8);border:1px solid rgba(37,99,235,.3)"></span>Требования — параметры П0Х</span>
+  <span class="leg-item"><span class="leg-dot" style="background:rgba(16,185,129,.25)"></span>Процедуры</span>
+  <span class="leg-item"><span class="leg-dot" style="background:rgba(99,102,241,.25)"></span>Мониторинг</span>
+  <span class="leg-item"><span class="leg-dot" style="background:rgba(239,68,68,.25)"></span>Санкции</span>
+  <span class="leg-item"><span class="leg-dot" style="background:rgba(245,158,11,.25)"></span>Раскрытие</span>
+  <span class="leg-item"><span class="leg-dot" style="background:var(--bg3);border:1px solid var(--border2)"></span>Не применимо</span>
+</div>
+
+<script>
+function setMode(m) {
+  const isNew = m === 'new';
+  document.querySelectorAll('.new-content').forEach(el => el.style.display = isNew ? '' : 'none');
+  document.querySelectorAll('.old-content').forEach(el => el.style.display = isNew ? 'none' : '');
+  document.querySelectorAll('.tbtn').forEach((b,i) => b.classList.toggle('on', (i===0&&isNew)||(i===1&&!isNew)));
+  document.getElementById('diff-note').textContent = isNew
+    ? '↑ одинаковый формат во всех ячейках — тезис из первоисточника'
+    : '↑ текущий вид — колонка Требования содержательна, остальные — нет';
+}
+</script>
+</body>
+</html>

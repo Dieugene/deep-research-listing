@@ -148,6 +148,7 @@ def run_level1(jurisdictions: list[dict]) -> None:
     from level_1.jurisdiction_runner import (
         launch_all_1a, poll_all_1a,
         launch_all_1b, poll_all_1b,
+        launch_all_1c_registry, poll_all_1c_registry,
         launch_all_1c, poll_all_1c,
     )
     from level_1.postprocess import process_all as process_all_l1
@@ -174,36 +175,42 @@ def run_level1(jurisdictions: list[dict]) -> None:
     logger.info("--- L1 Step 5: Poll 1B ---")
     poll_all_1b(state, jurisdictions=jurisdictions)
 
-    logger.info("--- L1 Step 6: Launch 1C ---")
+    logger.info("--- L1 Step 6: Launch 1C-registry ---")
+    launch_all_1c_registry(state, jurisdictions=jurisdictions)
+
+    logger.info("--- L1 Step 7: Poll 1C-registry ---")
+    poll_all_1c_registry(state, jurisdictions=jurisdictions)
+
+    logger.info("--- L1 Step 8: Launch 1C ---")
     launch_all_1c(state, jurisdictions=jurisdictions)
 
-    logger.info("--- L1 Step 7: Poll 1C ---")
+    logger.info("--- L1 Step 9: Poll 1C ---")
     poll_all_1c(state, jurisdictions=jurisdictions)
 
-    logger.info("--- L1 Step 8: Postprocess ---")
+    logger.info("--- L1 Step 10: Postprocess ---")
     process_all_l1(jurisdictions=jurisdictions)
 
-    logger.info("--- L1 Step 9: Add citations ---")
+    logger.info("--- L1 Step 11: Add citations ---")
     from pipeline.sources import process_level1_citations
     process_level1_citations(jurisdictions=[j["name_ru"] for j in jurisdictions])
 
-    logger.info("--- L1 Step 10: Normalize L1 fields ---")
+    logger.info("--- L1 Step 12: Normalize L1 fields ---")
     from pipeline.l1_l2_normalize import process_l1_normalizations
     process_l1_normalizations(jurisdictions=[j["name_ru"] for j in jurisdictions])
 
-    logger.info("--- L1 Step 11: Classify source types ---")
+    logger.info("--- L1 Step 13: Classify source types ---")
     from pipeline.source_classifier import process_source_types
     process_source_types(jurisdictions=[j["name_ru"] for j in jurisdictions])
 
-    logger.info("--- L1 Step 12: Clean excerpt artifacts ---")
+    logger.info("--- L1 Step 14: Clean excerpt artifacts ---")
     from pipeline.excerpt_cleaner import run_excerpt_cleanup
     run_excerpt_cleanup(jurisdictions=[j["name_ru"] for j in jurisdictions])
 
-    logger.info("--- L1 Step 13: Join fragmented excerpts ---")
+    logger.info("--- L1 Step 15: Join fragmented excerpts ---")
     from pipeline.excerpt_joiner import run_excerpt_joiner
     run_excerpt_joiner(jurisdictions=[j["name_ru"] for j in jurisdictions])
 
-    logger.info("--- L1 Step 14: Translate jurisdiction notes ---")
+    logger.info("--- L1 Step 16: Translate jurisdiction notes ---")
     from pipeline.translate_ru_fields import translate_jurisdiction_notes
     from langchain_openai import ChatOpenAI
     _llm_l1_translate = ChatOpenAI(model=LLM_FAST_MODEL, api_key=os.environ["OPENAI_API_KEY"], temperature=0)
@@ -267,6 +274,19 @@ def run_level3(venues: list[dict]) -> None:
     if not venues:
         logger.warning("Level 3: no venues to process — skipping")
         return
+
+    # Filter out deferred venues — L3 research only for primary
+    primary_venues = [v for v in venues if v.get("research_priority", "primary") != "deferred"]
+    deferred_venues = [v for v in venues if v.get("research_priority", "primary") == "deferred"]
+
+    if deferred_venues:
+        logger.info(
+            "L3: Skipping %d deferred venue(s): %s",
+            len(deferred_venues),
+            [v.get("venue_key", v.get("venue_name_english", "?")) for v in deferred_venues],
+        )
+
+    venues = primary_venues
 
     logger.info("========== Level 3 Start (venues: %d) ==========", len(venues))
 

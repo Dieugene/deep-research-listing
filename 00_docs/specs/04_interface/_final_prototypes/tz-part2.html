@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — ТЗ для разработчика (часть 2)</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA;--bg2:#fff;--bg3:#F0F2F7;--bg4:#E4E8F2;
+  --border:rgba(0,0,0,0.11);--border2:rgba(0,0,0,0.18);
+  --text:#111827;--text-mid:#4B5563;--text-dim:#9CA3AF;
+  --accent:#2563EB;--accent-bg:rgba(37,99,235,0.06);
+  --green:#059669;--orange:#D97706;--red:#DC2626;
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-serif:'Newsreader',Georgia,serif;
+  --r:8px;--r-lg:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.7}
+.wrap{max-width:920px;margin:0 auto;padding:56px 40px 120px}
+
+/* TOC */
+.toc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 26px;margin-bottom:56px}
+.toc-title{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:14px}
+.toc a{display:block;font-size:13.5px;color:var(--text-mid);padding:3px 0;text-decoration:none}
+.toc a:hover{color:var(--accent)}
+.toc-sub{padding-left:18px;font-size:12.5px}
+.toc-num{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);margin-right:6px}
+
+/* HEADINGS */
+h1{font-family:var(--font-serif);font-size:38px;font-weight:400;letter-spacing:-.02em;margin-bottom:8px}
+.doc-meta{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:56px}
+h2{font-size:12px;font-weight:500;font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2 .snum{background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:1px 7px;font-size:10px}
+h3{font-size:15px;font-weight:500;margin-bottom:12px;margin-top:24px;color:var(--text)}
+p{color:var(--text-mid);font-size:14px;line-height:1.75;margin-bottom:12px;font-weight:300}
+p strong{color:var(--text);font-weight:500}
+ul{color:var(--text-mid);font-size:14px;line-height:1.75;font-weight:300;padding-left:20px;margin-bottom:12px}
+li{margin-bottom:4px}
+code{font-family:var(--font-mono);font-size:12px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:1px 5px;color:var(--text)}
+pre{background:#1E2433;color:#E2E8F4;border-radius:var(--r);padding:18px 20px;font-family:var(--font-mono);font-size:12.5px;line-height:1.65;overflow-x:auto;margin-bottom:16px}
+pre code{background:none;border:none;padding:0;color:inherit}
+
+/* SECTIONS */
+.section{margin-bottom:60px}
+
+/* CALLOUT */
+.callout{background:var(--accent-bg);border:1px solid rgba(37,99,235,.15);border-radius:var(--r);padding:14px 18px;margin-bottom:16px;font-size:13.5px;color:var(--text-mid);line-height:1.7}
+.callout strong{color:var(--accent)}
+.callout-warn{background:rgba(217,119,6,.05);border-color:rgba(217,119,6,.2)}
+.callout-warn strong{color:var(--orange)}
+.callout-red{background:rgba(220,38,38,.05);border-color:rgba(220,38,38,.2)}
+.callout-red strong{color:var(--red)}
+.callout-green{background:rgba(5,150,105,.05);border-color:rgba(5,150,105,.2)}
+.callout-green strong{color:var(--green)}
+
+/* TABLE */
+.dt{width:100%;border-collapse:collapse;font-size:13.5px;margin-bottom:16px}
+.dt th{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);padding:0 12px 10px 0;text-align:left;font-weight:400;border-bottom:1px solid var(--border2)}
+.dt td{padding:10px 12px 10px 0;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text-mid);font-weight:300;line-height:1.6}
+.dt td:first-child{color:var(--text);font-weight:500;width:200px}
+.dt tr:last-child td{border-bottom:none}
+.dt td code{font-size:11px}
+
+/* PRIORITY BADGE */
+.pri{display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:4px;font-weight:500;margin-left:8px;vertical-align:middle}
+.pri-must{background:#FEE2E2;color:#991B1B;border:1px solid #FECACA}
+.pri-should{background:#FEF3C7;color:#92400E;border:1px solid #FDE68A}
+.pri-nice{background:#F0FDF4;color:#166534;border:1px solid #BBF7D0}
+.pri-esc{background:#EDE9FE;color:#5B21B6;border:1px solid #DDD6FE}
+
+/* ROUTE TABLE */
+.route-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+.route-table th{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);padding:0 14px 10px 0;text-align:left;font-weight:400;border-bottom:1px solid var(--border2)}
+.route-table td{padding:9px 14px 9px 0;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.55}
+.route-table tr:last-child td{border-bottom:none}
+.route-table td:first-child code{background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:3px 8px;font-size:11.5px;color:var(--text);display:inline-block}
+.route-table td:nth-child(2){color:var(--text-mid);font-weight:300;font-size:13px}
+.route-table td:nth-child(3){font-family:var(--font-mono);font-size:11px;color:var(--text-dim);width:120px}
+
+/* SOURCE DIAGRAM */
+.src-diagram{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px 22px;margin-bottom:16px}
+.src-level{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
+.src-level:last-child{margin-bottom:0}
+.src-level-num{font-family:var(--font-mono);font-size:11px;font-weight:500;color:#fff;background:var(--accent);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.src-level-body{flex:1}
+.src-level-title{font-size:13.5px;font-weight:500;color:var(--text);margin-bottom:4px}
+.src-level-desc{font-size:13px;color:var(--text-mid);font-weight:300;line-height:1.65}
+.src-level-desc code{font-size:11px}
+
+/* ESCALATION BOX */
+.esc-box{background:#FAF5FF;border:1px solid #DDD6FE;border-radius:var(--r-lg);padding:18px 22px;margin-bottom:16px}
+.esc-box-title{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#6D28D9;margin-bottom:10px;font-weight:500}
+.esc-step{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:13.5px}
+.esc-step:last-child{margin-bottom:0}
+.esc-step-n{font-family:var(--font-mono);font-size:11px;font-weight:500;color:#6D28D9;flex-shrink:0;padding-top:1px}
+.esc-step-text{color:var(--text-mid);font-weight:300;line-height:1.6}
+.esc-step-text strong{color:var(--text);font-weight:500}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:32px 0}
+
+/* FILE PATH */
+.filepath{font-family:var(--font-mono);font-size:12px;background:#1E2433;color:#80DEEA;border-radius:5px;padding:8px 14px;display:inline-block;margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Listing Research<br>ТЗ для разработчика — Часть 2</h1>
+<div class="doc-meta">Март 2026 · UX-дизайн: Страница площадки, Список инструментов, Сравнительный вид</div>
+
+<!-- TOC -->
+<div class="toc">
+  <div class="toc-title">Содержание</div>
+  <a href="#s1"><span class="toc-num">01</span> Прототипы и их назначение</a>
+  <a href="#s2"><span class="toc-num">02</span> Маршрутизация (URL-схема)</a>
+  <a href="#s3"><span class="toc-num">03</span> Принципы соответствия данных и дизайна</a>
+  <a href="#s4"><span class="toc-num">04</span> Протокол эскалации при расхождениях</a>
+  <a href="#s5"><span class="toc-num">05</span> Система источников — обязательный подход</a>
+  <a href="#s6"><span class="toc-num">06</span> Страница площадки — ключевые решения</a>
+  <a href="#s7"><span class="toc-num">07</span> Страница «По инструментам» — ключевые решения</a>
+  <a href="#s8"><span class="toc-num">08</span> Общие требования к реализации</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s1">
+<h2><span class="snum">01</span> Прототипы и их назначение</h2>
+
+<p>К этому ТЗ прилагаются два интерактивных HTML-прототипа. Прототипы демонстрируют <strong>организацию данных и логику взаимодействия</strong>, а не финальный визуальный стиль (CSS-токены из прототипов переносятся как есть, компоненты реализуются в соответствии с общими требованиями к дизайн-системе).</p>
+
+<table class="dt">
+  <tr><th>Файл</th><th>Что покрывает</th></tr>
+  <tr>
+    <td><code>00_docs\specs\04_interface\_final_prototypes\venues\venue.html</code></td>
+    <td>Страница торговой площадки: шапка площадки, мета-бар, описание, sticky-вкладки инструментов, карточки листинговых режимов (тиры/категории) с параметрами по фазам, детальный вид режима (вкладки Допуск / Поддержание / Исключение + матричный вид как альтернатива). Демонстрируется на двух примерах: LSE Main Market (с тирами) и HKEX GEM (плоская структура).</td>
+  </tr>
+  <tr>
+    <td><code>00_docs\specs\04_interface\_final_prototypes\instruments\instruments.html</code></td>
+    <td>Страница «По инструментам»: sticky-карточки 4 инструментов (обзор + переключатель), split-layout с левой панелью фильтрации / выбора режимов и правой сравнительной таблицей, переключение фаз и параметров-столбцов.</td>
+  </tr>
+</table>
+
+<div class="callout">
+  <strong>Важно:</strong> данные в прототипах — тестовые заглушки. При реализации все значения берутся из API. Структура компонентов (иерархия, порядок элементов, логика переключения) воспроизводится точно; числовые значения и тексты — из реальных данных.
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s2">
+<h2><span class="snum">02</span> Маршрутизация (URL-схема)</h2>
+
+<p>В прототипах несколько логических экранов объединены в один HTML-файл для удобства демонстрации. В продакшене <strong>каждый экран должен иметь собственный URL</strong> — это необходимо для работы кнопок «назад/вперёд» браузера, для возможности поделиться ссылкой на конкретный режим и для SEO.</p>
+
+<table class="route-table">
+  <tr><th>Маршрут</th><th>Экран</th><th>Файл прототипа</th></tr>
+  <tr>
+    <td><code>/venues/:venue_key</code></td>
+    <td>Страница площадки — шапка, описание, вкладки инструментов, карточки режимов</td>
+    <td>venue.html</td>
+  </tr>
+  <tr>
+    <td><code>/venues/:venue_key/:cell_id</code></td>
+    <td>Детальный вид листингового режима — вкладки Допуск/Поддержание/Исключение и матричный вид</td>
+    <td>venue.html (переход по клику на карточку режима)</td>
+  </tr>
+  <tr>
+    <td><code>/instruments</code></td>
+    <td>Страница «По инструментам» — сравнительный вид</td>
+    <td>instruments.html</td>
+  </tr>
+</table>
+
+<h3>Сохранение состояния в URL</h3>
+<p>Следующие параметры состояния должны отражаться в URL, чтобы страница правильно открывалась по прямой ссылке:</p>
+<ul>
+  <li>На <code>/venues/:venue_key</code> — активная вкладка инструмента: <code>?tab=equity</code></li>
+  <li>На <code>/venues/:venue_key/:cell_id</code> — активная фаза: <code>?phase=admission</code>, активный вид: <code>?view=tabs</code> или <code>?view=matrix</code></li>
+  <li>На <code>/instruments</code> — активный инструмент и активная фаза: <code>?instr=equity&amp;phase=admission</code>. Выбранные режимы (чекбоксы) в URL не сохраняются — это сессионное состояние.</li>
+</ul>
+
+<div class="callout callout-warn">
+  <strong>Внимание:</strong> sticky-полоса с карточками инструментов на странице площадки (<code>/venues/:venue_key</code>) — это переключатель вкладок, а <em>не</em> переход между URL. Смена вкладки инструмента обновляет только query-параметр <code>?tab=</code>, не меняет <code>venue_key</code>.
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s3">
+<h2><span class="snum">03</span> Принципы соответствия данных и дизайна</h2>
+
+<p>Прототипы разработаны на основе анализа структуры API и тестовых данных, но <strong>не проверялись на полном реальном датасете</strong>. При реализации разработчик неизбежно столкнётся с расхождениями. Ниже — принципы принятия решений.</p>
+
+<h3>Иерархия ценностей при конфликте</h3>
+<p>При любом расхождении между прототипом и реальными данными руководствуйтесь следующей приоритизацией:</p>
+
+<table class="dt">
+  <tr><th>Приоритет</th><th>Что сохранить любой ценой</th></tr>
+  <tr>
+    <td>1 — Обязательно <span class="pri pri-must">must</span></td>
+    <td>Логика «что пользователь видит прежде всего». Карточка режима показывает содержательные параметры (free float, market cap), а <em>не</em> технические индикаторы объёма данных. Источники — на каждый блок, не на страницу целиком. Три фазы жизненного цикла — первичная навигация в детальном виде.</td>
+  </tr>
+  <tr>
+    <td>2 — Сохранить <span class="pri pri-should">should</span></td>
+    <td>Параметровые пилюли в карточках режимов. Статусы верификации (green/yellow/red). Разделение «Допуск / Поддержание / Исключение». Split-layout с фиксированной левой панелью на странице инструментов.</td>
+  </tr>
+  <tr>
+    <td>3 — Желательно <span class="pri pri-nice">nice</span></td>
+    <td>Точные наборы параметров по умолчанию. Конкретные значения счётчиков (сколько юрисдикций, режимов). Sticky-тени и анимации.</td>
+  </tr>
+</table>
+
+<h3>Конкретные ситуации — что делать</h3>
+
+<table class="dt">
+  <tr><th>Ситуация</th><th>Решение</th></tr>
+  <tr>
+    <td>У площадки нет тиров (flat structure)</td>
+    <td>Показывать одну карточку режима без уровня тира. Логика прототипа HKEX GEM — референс.</td>
+  </tr>
+  <tr>
+    <td>Тиров больше, чем в прототипе (например, 10+)</td>
+    <td>Список прокручивается вертикально внутри вкладки инструмента. Пагинация не нужна — все карточки отрисовываются, virtualisation по желанию.</td>
+  </tr>
+  <tr>
+    <td>Параметров в карточке режима нет или меньше 3</td>
+    <td>Показывать столько, сколько есть. Если параметров нет совсем — показывать плашку «Параметры не извлечены» вместо пустой колонки.</td>
+  </tr>
+  <tr>
+    <td>Параметров в карточке режима больше, чем в прототипе</td>
+    <td>Показывать все доступные параметры, не обрезать. Колонки тела карточки растягиваются по контенту.</td>
+  </tr>
+  <tr>
+    <td>Для инструмента нет данных по одной из фаз</td>
+    <td>Вкладка фазы показывается, но с состоянием «Данные в работе» (серый placeholder). Вкладку не скрывать — пользователь должен знать, что фаза существует.</td>
+  </tr>
+  <tr>
+    <td>В сравнительной таблице у режима нет значения по параметру</td>
+    <td>Ячейка показывает «—» (тире), не пустую строку.</td>
+  </tr>
+  <tr>
+    <td>Структура <code>sections[]</code> в ячейке отличается от прототипа</td>
+    <td>Каждая <code>section</code> рендерится как отдельный блок с заголовком <code>section_label</code> и телом <code>text</code>. Порядок — по порядку в API-ответе. Неизвестные <code>section_key</code> не игнорировать, показывать как обычный блок.</td>
+  </tr>
+  <tr>
+    <td>Поле <code>listing_architecture</code> = null</td>
+    <td>Строку «Архитектура допуска» в мета-баре не показывать. Не показывать placeholder «нет данных».</td>
+  </tr>
+</table>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s4">
+<h2><span class="snum">04</span> Протокол эскалации при расхождениях</h2>
+
+<p>Если при реализации возникает ситуация, когда разработчик <strong>не понимает, как соотнести реальные данные с прототипом</strong>, и правило из раздела 03 не даёт однозначного ответа — необходима эскалация. Молча «как-то решить» нельзя.</p>
+
+<div class="esc-box">
+  <div class="esc-box-title">Порядок эскалации</div>
+  <div class="esc-step"><span class="esc-step-n">1.</span><span class="esc-step-text">Зафиксировать проблему в отдельном файле. Формат: <code>escalation_YYYY-MM-DD_<em>тема</em>.md</code>. Пример: <code>escalation_2026-03-20_venue-tiers.md</code></span></div>
+  <div class="esc-step"><span class="esc-step-n">2.</span><span class="esc-step-text">Структура файла: <strong>Раздел</strong> (какой экран/компонент затронут), <strong>Проблема</strong> (что конкретно не сходится — ссылка на поле API, описание расхождения), <strong>Варианты решения</strong> (минимум 2, с плюсами и минусами каждого), <strong>Предпочтительный вариант разработчика</strong> с обоснованием.</span></div>
+  <div class="esc-step"><span class="esc-step-n">3.</span><span class="esc-step-text">Уведомить руководителя проекта: тема письма/сообщения — <strong>«[ЭСКАЛАЦИЯ] Listing Research — <em>тема</em>»</strong>. Приложить файл или указать путь к нему.</span></div>
+  <div class="esc-step"><span class="esc-step-n">4.</span><span class="esc-step-text">До получения ответа — <strong>заглушить проблемный блок</strong> состоянием «В разработке» и продолжить работу над остальными частями. Не блокировать весь релиз из-за одного нерешённого вопроса.</span></div>
+</div>
+
+<div class="callout callout-red">
+  <strong>Недопустимо:</strong> молча убирать компоненты из UI, показывать данные в неструктурированном виде («сырой JSON»), или оставлять пустые блоки без состояния — только потому что данных нет или они не подходят по формату.
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s5">
+<h2><span class="snum">05</span> Система источников — обязательный подход</h2>
+
+<p>Прототипы демонстрируют 1–3 источника на блок — это заглушки. В реальных данных источников на блок может быть значительно больше (10–20+). Ниже — обязательный подход к отображению.</p>
+
+<h3>Трёхуровневая система</h3>
+
+<div class="src-diagram">
+  <div class="src-level">
+    <div class="src-level-num">1</div>
+    <div class="src-level-body">
+      <div class="src-level-title">Суперскрипт в тексте <span class="pri pri-must">обязательно</span></div>
+      <div class="src-level-desc">Цифра-ссылка <sup style="font-family:var(--font-mono);font-size:9px;background:var(--accent-bg);border:1px solid rgba(37,99,235,.15);border-radius:3px;padding:1px 3px;color:var(--accent)">1</sup> прямо в тексте секции. Привязана к конкретному утверждению. При клике — плавная прокрутка к соответствующей строке в блоке источников с кратковременной подсветкой (highlight + setTimeout 1.5s). Реализуется через <code>section.source</code> или <code>parameter.source</code> из API.</div>
+    </div>
+  </div>
+  <div class="src-level">
+    <div class="src-level-num">2</div>
+    <div class="src-level-body">
+      <div class="src-level-title">Блок источников секции — collapse/expand <span class="pri pri-must">обязательно</span></div>
+      <div class="src-level-desc">Каждая секция контента имеет свой блок источников внизу. <strong>По умолчанию показываются первые 3 источника.</strong> Если источников больше — кнопка «Показать ещё N источников» раскрывает остальные прямо на месте (без модального окна, без перехода). Повторный клик сворачивает. Состояние expand/collapse — локальное для каждой секции независимо.</div>
+    </div>
+  </div>
+  <div class="src-level">
+    <div class="src-level-num">3</div>
+    <div class="src-level-body">
+      <div class="src-level-title">Кнопка «N источников» в шапке блока — для быстрого обзора <span class="pri pri-should">желательно</span></div>
+      <div class="src-level-desc">В заголовке карточки секции — кнопка с общим числом источников. Клик открывает <strong>правую панель (drawer)</strong> со всеми источниками секции списком, без основного текста. Удобно когда нужно быстро проверить источниковую базу не читая текст. Drawer закрывается крестиком или кликом на затемнение.</div>
+    </div>
+  </div>
+</div>
+
+<h3>Формат строки источника</h3>
+<p>Источник из API — plain-text строка, может содержать несколько URL через <code>;</code>. Логика парсинга:</p>
+<ul>
+  <li>Разбивать по <code>;</code> — каждый фрагмент — отдельная строка в списке</li>
+  <li>Если фрагмент содержит <code>http</code> — рендерить как кликабельную ссылку, отображать укороченный домен + стрелка ↗</li>
+  <li>Если фрагмент не содержит URL — рендерить как обычный текст (нормативный акт, например «UKLR 6.4.1»)</li>
+  <li>Не обрывать источник по длине — показывать полностью</li>
+</ul>
+
+<div class="callout callout-warn">
+  <strong>Важно:</strong> если у секции нет ни одного источника (<code>source: null</code> или пустая строка) — кнопку источников не показывать вообще. Не показывать «0 источников».
+</div>
+
+<h3>Источники в сравнительной таблице</h3>
+<p>В сравнительной таблице на странице «По инструментам» источники в ячейках не отображаются — только значения параметров. Источники доступны в детальном виде конкретного режима (<code>/venues/:venue_key/:cell_id</code>). Исключение: tooltip при hover на ячейку — можно показать ссылку «Источник: [url]» если источник у параметра один и короткий.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s6">
+<h2><span class="snum">06</span> Страница площадки — ключевые решения</h2>
+
+<p>Подробная реализация — в прототипе <code>venues/venue.html</code>. Здесь — решения, которые не очевидны из прототипа.</p>
+
+<h3>Иерархия данных: venue → instrument → tier → phase</h3>
+<pre><code>venue_key  (HKEX_GEM, LSE_Main_Market, ...)
+ └── instrument_class  (equity, bond, fund, depositary_receipt)
+      └── tier / cell_id  (flat или именованный тир)
+           └── phase  (admission, continuing, suspension, delisting)
+                └── sections[]  (текстовые блоки с источниками)
+                └── parameters[]  (П01–П41 с значениями)</code></pre>
+
+<p>Sticky-вкладки инструментов — переключают видимую секцию на странице, <strong>не меняют URL venue_key</strong>. Карточки тиров — переход на <code>/venues/:venue_key/:cell_id</code>.</p>
+
+<h3>Нумерация фаз</h3>
+<p>В данных фазы имеют <code>row_index</code> от 1 до 4. Текущий UI показывает 2/3/4/5 — это артефакт. Нужно использовать <code>row_key</code> как идентификатор и <code>row_label</code> как отображаемое название. Числовой префикс в UI не показывать.</p>
+
+<h3>Статусы верификации</h3>
+<table class="dt">
+  <tr><th>Код API</th><th>Отображение</th><th>Цвет бейджа</th></tr>
+  <tr><td><code>green</code></td><td>Верифицировано</td><td>Зелёный (<code>sb-green</code>)</td></tr>
+  <tr><td><code>yellow</code></td><td>Проверить источники</td><td>Оранжевый (<code>sb-yellow</code>)</td></tr>
+  <tr><td><code>red</code></td><td>Ненадёжно</td><td>Красный (<code>sb-red</code>)</td></tr>
+  <tr><td><code>unknown</code></td><td>Статус неизвестен</td><td>Серый, без точки</td></tr>
+</table>
+<p>Статус агрегируется по принципу worst-case: если хотя бы одна фаза red — итоговый red; если есть yellow — yellow; только если все green — итоговый green.</p>
+
+<h3>Переключатель «Вид: матрица / Вид: вкладки»</h3>
+<p>Кнопка в правом верхнем углу детального вида. Матричный вид — таблица phase × aspect, в ячейках — те же параметровые пилюли. Клик на ячейку матрицы переключает на вкладочный вид с открытой нужной фазой. Аспекты (столбцы матрицы) фиксированы: Требования / Процедуры / Мониторинг и надзор / Санкции / Раскрытие информации. Ячейки «Не применимо» — <code>status: not_applicable</code> из API, отображаются тире и некликабельны.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s7">
+<h2><span class="snum">07</span> Страница «По инструментам» — ключевые решения</h2>
+
+<p>Подробная реализация — в прототипе <code>instruments/instruments.html</code>. Дополнения:</p>
+
+<h3>Layout: полная ширина окна</h3>
+<p>В отличие от страниц площадки, где контент ограничен <code>max-width: 1060px</code>, страница инструментов использует <code>max-width: 1600px</code> — из-за широкой сравнительной таблицы и левой панели. Левая панель — <strong>280px фиксированная ширина</strong>, sticky, высота = viewport минус nav минус sticky-карточки инструментов. Правая область — оставшееся пространство, горизонтальный скролл таблицы при необходимости.</p>
+
+<h3>Карточки инструментов (sticky)</h3>
+<p>Четыре карточки — одновременно обзорная информация и переключатель активного инструмента. Карточка показывает: количество юрисдикций, количество листинговых режимов, топ-3 параметра по частоте встречаемости (из каталога параметров, поле «встречается в ячейках»). При смене инструмента — автоматически выбираются первые 3 режима для сравнения, сбрасывается поиск в левой панели, обновляется таблица.</p>
+
+<h3>Левая панель: логика фильтрации</h3>
+<ul>
+  <li>Фильтры по правовой семье и типу площадки — мультиселект (можно выбрать несколько). При выборе «Все» — остальные сбрасываются.</li>
+  <li>Поиск — мгновенный (debounce 150ms), ищет по названию площадки и юрисдикции.</li>
+  <li>Чекбоксы режимов — без ограничения на количество выбранных. При выборе 0 — таблица показывает empty state.</li>
+  <li>Счётчик выбранных режимов обновляется в реальном времени.</li>
+</ul>
+
+<h3>Сравнительная таблица</h3>
+<p>Строки — выбранные листинговые режимы (venue + tier). Первая колонка — sticky по горизонтали при скролле таблицы. Столбцы — параметры, выбранные кнопками над таблицей. По умолчанию — топ-параметры для текущего инструмента и фазы (из частоты встречаемости). Значения параметров — строковые, ранжирование не предусмотрено. Пустое значение → тире.</p>
+
+<div class="callout">
+  <strong>Ограничение текущей реализации:</strong> данные в прототипе — заглушки. При реализации столбцы-параметры формируются динамически из реальных данных по выбранному инструменту и фазе. Набор параметров может существенно отличаться по инструментам.
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="section" id="s8">
+<h2><span class="snum">08</span> Общие требования к реализации</h2>
+
+<h3>CSS-токены</h3>
+<p>Все CSS-переменные из прототипов (<code>--accent</code>, <code>--bg</code>, <code>--font-mono</code> и т.д.) переносятся в глобальный <code>:root</code> без изменений. Шрифты: IBM Plex Sans, IBM Plex Mono, Newsreader — подключать через Google Fonts или локально.</p>
+
+<h3>Адаптивность</h3>
+<p>Прототипы спроектированы для десктопа (min-width ~1100px). Мобильная адаптация — вне текущего скоупа, но верстка не должна ломаться на 768px: допустим горизонтальный скролл таблиц, collapsed левая панель.</p>
+
+<h3>Состояния загрузки</h3>
+<p>Каждый компонент, получающий данные асинхронно, должен иметь skeleton-состояние (серые placeholder-блоки нужной формы). Не использовать спиннер на весь экран — только локально в изменяющемся блоке.</p>
+
+<h3>Пустые состояния</h3>
+<p>Если по выбранным фильтрам нет данных — показывать информативный empty state с объяснением причины и призывом к действию (например, «Нет режимов — снимите фильтры»). Пустой блок без сообщения — недопустим.</p>
+
+<h3>Доступность</h3>
+<p>Интерактивные элементы (<code>div onclick=...</code> в прототипе) в продакшене реализовывать через <code>&lt;button&gt;</code> или <code>&lt;a&gt;</code> с корректными <code>aria-</code> атрибутами. Таблицы — с <code>&lt;th scope&gt;</code>. Sticky-элементы не должны перекрывать фокус при Tab-навигации.</p>
+
+<div class="callout callout-green">
+  <strong>Приоритет реализации:</strong> (1) venue.html — страница площадки, (2) instruments.html — сравнительный вид. Страница площадки — критический путь, через неё проходит основная часть пользовательских сценариев.
+</div>
+</div>
+
+</div><!-- /wrap -->
+</body>
+</html>

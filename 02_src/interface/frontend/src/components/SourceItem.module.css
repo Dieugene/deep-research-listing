@@ -15,7 +15,7 @@
 
 /* Title and link */
 .srcTitle { font-size: 13px; color: var(--text-mid); flex: 1; line-height: 1.4; }
-.srcLink { font-family: var(--font-mono); font-size: 10.5px; color: var(--accent); white-space: nowrap; flex-shrink: 0; text-decoration: none; }
+.srcLink { font-family: var(--font-mono); font-size: 10.5px; color: var(--accent); text-decoration: none; overflow-wrap: anywhere; min-width: 0; }
 .srcLink:hover { text-decoration: underline; }
 
 /* Excerpt toggle button */
@@ -23,6 +23,6 @@
 
 /* Excerpts panel */
 .excerpts { background: #FAFBFF; border-top: 1px solid var(--border); padding: 0; }
-.excerptItem { padding: 10px 14px 10px 26px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--text-mid); line-height: 1.65; font-family: var(--font-serif); font-style: italic; position: relative; }
+.excerptItem { padding: 10px 14px 10px 26px; border-bottom: 1px solid var(--border); font-size: 12.5px; color: var(--text-mid); line-height: 1.65; font-family: var(--font-serif); font-style: italic; position: relative; white-space: pre-wrap; }
 .excerptItem:last-child { border-bottom: none; }
 .excerptItem::before { content: '\201C'; position: absolute; left: 10px; top: 8px; font-size: 20px; color: var(--border2); font-family: var(--font-serif); line-height: 1; }

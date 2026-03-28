@@ -98,6 +98,11 @@ def extract_sources_from_raw(raw_file_path: Path) -> list[dict]:
     if not data:
         return []
     parallel_output = data.get("parallel_output", {})
+    # Handle L3 files where parallel_output is stored under "content" key
+    if not parallel_output:
+        content = data.get("content", {})
+        if isinstance(content, dict) and "basis" in content and "type" in content:
+            parallel_output = content
     if not parallel_output:
         return []
     basis = parallel_output.get("basis") or []
@@ -306,8 +311,16 @@ def _enrich_content_with_reasoning(raw_data: dict) -> bool:
     Returns True if any changes were made.
     """
     parallel_output = raw_data.get("parallel_output", {})
+    # Handle L3 files where parallel_output is stored under "content" key
+    if not parallel_output:
+        wrapper = raw_data.get("content", {})
+        if isinstance(wrapper, dict) and "basis" in wrapper and "type" in wrapper:
+            parallel_output = wrapper
     basis = parallel_output.get("basis") or []
+    # For content sections, use the inner content (unwrap if needed)
     content = raw_data.get("content", {})
+    if isinstance(content, dict) and "basis" in content and "content" in content:
+        content = content.get("content", {})
     if not basis or not content:
         return False
 
@@ -332,7 +345,14 @@ def _add_citations_to_raw_file(
 ) -> None:
     """Add citations field to a single raw file that has parallel_output.basis."""
     raw_data = _load_json(raw_path)
-    if not raw_data or "parallel_output" not in raw_data:
+    if not raw_data:
+        stats.skipped_no_parallel_output += 1
+        return
+    # Accept files with parallel_output key OR files where content is the parallel_output wrapper
+    has_po = "parallel_output" in raw_data
+    content = raw_data.get("content", {})
+    has_po_in_content = isinstance(content, dict) and "basis" in content and "type" in content
+    if not has_po and not has_po_in_content:
         stats.skipped_no_parallel_output += 1
         return
 

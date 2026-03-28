@@ -140,12 +140,18 @@ interface ParamStripProps {
   parameters: CellParameters | null
 }
 
+// Map display phase key → parameter lifecycle_phase_key(s)
+const PHASE_KEY_ALIASES: Record<string, string[]> = {
+  admission: ['admission'],
+  maintenance: ['continuing', 'maintenance'],
+  delisting: ['delisting'],
+}
+
 function ParamStrip({ phase, parameters }: ParamStripProps) {
   if (!parameters) return null
+  const aliases = PHASE_KEY_ALIASES[phase] ?? [phase]
   const filtered = parameters.parameters.filter(
-    (p) =>
-      (p.lifecycle_phase_key === phase || (p as ParameterValue & { phase_key?: string }).phase_key === phase) &&
-      p.status === 'found',
+    (p) => aliases.includes(p.lifecycle_phase_key) && p.status === 'found',
   )
   if (filtered.length === 0) return null
 
@@ -216,6 +222,35 @@ const COL_SECTION_PATTERNS: Record<string, string[]> = {
   ],
 }
 
+// Column color accent classes (CSS module keys)
+const COL_ACCENT_CLASS: Record<string, string> = {
+  procedures: 'mxColProc',
+  monitoring: 'mxColMon',
+  sanctions: 'mxColSanc',
+  disclosure: 'mxColDisc',
+}
+
+/** Truncate text to ~maxLen chars on a word boundary, add ellipsis. */
+function truncateText(text: string, maxLen = 150): string {
+  if (text.length <= maxLen) return text
+  const cut = text.lastIndexOf(' ', maxLen)
+  return text.slice(0, cut > 0 ? cut : maxLen) + '…'
+}
+
+interface MicroExcerpt {
+  text: string
+  hint: string | null
+}
+
+/** Build micro-excerpt from MatrixColumn snippet (populated by backend from matrix.json). */
+function microExcerptFromCol(col: { snippet?: string | null; snippet_hint?: string | null }): MicroExcerpt | null {
+  if (!col.snippet) return null
+  return {
+    text: col.snippet,
+    hint: col.snippet_hint ?? null,
+  }
+}
+
 /** Assigns each parameter to exactly one column per phase, in column order. */
 function buildPhaseColPills(
   params: ParameterValue[],
@@ -283,6 +318,9 @@ function MatrixViewPanel({ matrix, cellParameters, onCellClick }: MatrixViewPane
                 </td>
                 {row.columns.map((col) => {
                   const tabKey = MATRIX_ROW_TO_TAB[row.row_key] ?? row.row_key
+                  const accentCls = COL_ACCENT_CLASS[col.col_key]
+                    ? styles[COL_ACCENT_CLASS[col.col_key]]
+                    : ''
 
                   if (col.status === 'not_applicable') {
                     return (
@@ -294,28 +332,60 @@ function MatrixViewPanel({ matrix, cellParameters, onCellClick }: MatrixViewPane
 
                   if (col.status === 'filled') {
                     const pills = (colPills?.get(col.col_key) ?? []).slice(0, 3)
+                    const isReqCol = col.col_key === 'requirements'
+                    const micro = !isReqCol
+                      ? microExcerptFromCol(col)
+                      : null
+
                     return (
                       <td
                         key={col.col_key}
-                        className={styles.mxCell}
+                        className={`${styles.mxCell} ${accentCls}`}
                         onClick={() => onCellClick(tabKey)}
                       >
-                        <div className={styles.mxPills}>
-                          {pills.length > 0 ? (
-                            pills.map((p) => (
-                              <div key={`${p.parameter_id}|${p.lifecycle_phase_key}`} className={styles.mxPill}>
-                                <span className={styles.mxPillCode}>{p.parameter_id}</span>
-                                <span className={styles.mxPillVal}>{p.value}</span>
+                        {isReqCol ? (
+                          /* Requirements — parameter pills */
+                          <div className={styles.mxPills}>
+                            {pills.length > 0 ? (
+                              pills.map((p) => (
+                                <div key={`${p.parameter_id}|${p.lifecycle_phase_key}`} className={styles.mxPill}>
+                                  <span className={styles.mxPillCode}>{p.parameter_id}</span>
+                                  <span className={styles.mxPillVal}>{p.value}</span>
+                                </div>
+                              ))
+                            ) : (
+                              <div className={styles.mxPill}>
+                                <span className={styles.mxPillVal} style={{ color: 'var(--text-dim)', fontStyle: 'italic' }}>
+                                  данные есть
+                                </span>
                               </div>
-                            ))
-                          ) : (
-                            <div className={styles.mxPill}>
-                              <span className={styles.mxPillVal} style={{ color: 'var(--text-dim)', fontStyle: 'italic' }}>
-                                данные есть
-                              </span>
-                            </div>
-                          )}
-                        </div>
+                            )}
+                          </div>
+                        ) : micro ? (
+                          /* Other columns — micro-excerpt */
+                          <div className={styles.mxMicro}>
+                            <div className={styles.mxMicroText}>{micro.text}</div>
+                            {micro.hint && <div className={styles.mxSrcHint}>→ {micro.hint}</div>}
+                          </div>
+                        ) : (
+                          /* Fallback — pills if available, else "данные есть" */
+                          <div className={styles.mxPills}>
+                            {pills.length > 0 ? (
+                              pills.map((p) => (
+                                <div key={`${p.parameter_id}|${p.lifecycle_phase_key}`} className={styles.mxPill}>
+                                  <span className={styles.mxPillCode}>{p.parameter_id}</span>
+                                  <span className={styles.mxPillVal}>{p.value}</span>
+                                </div>
+                              ))
+                            ) : (
+                              <div className={styles.mxPill}>
+                                <span className={styles.mxPillVal} style={{ color: 'var(--text-dim)', fontStyle: 'italic' }}>
+                                  данные есть
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </td>
                     )
                   }
@@ -333,7 +403,23 @@ function MatrixViewPanel({ matrix, cellParameters, onCellClick }: MatrixViewPane
       <div className={styles.mxLegend}>
         <span className={styles.mxLegendItem}>
           <span className={styles.mxLegendDotFilled} />
-          Данные есть — кликните для просмотра
+          Требования — параметры
+        </span>
+        <span className={styles.mxLegendItem}>
+          <span className={styles.mxLegendDotProc} />
+          Процедуры
+        </span>
+        <span className={styles.mxLegendItem}>
+          <span className={styles.mxLegendDotMon} />
+          Мониторинг
+        </span>
+        <span className={styles.mxLegendItem}>
+          <span className={styles.mxLegendDotSanc} />
+          Санкции
+        </span>
+        <span className={styles.mxLegendItem}>
+          <span className={styles.mxLegendDotDisc} />
+          Раскрытие
         </span>
         <span className={styles.mxLegendItem}>
           <span className={styles.mxLegendDotNa} />
@@ -575,13 +661,13 @@ export default function CellDetailPage() {
         )}
         <Link to={`/venues/${encodeURIComponent(venueKey ?? '')}`}>{venueName}</Link>
         <span className={styles.breadcrumbSep}>→</span>
-        <span>{cellContent.tier}</span>
+        <span>{cellContent.tier_ru ?? cellContent.tier}</span>
       </nav>
 
       {/* Detail header */}
       <div className={styles.detailHd}>
         <div>
-          <h1 className={styles.detailTitle}>{cellContent.tier}</h1>
+          <h1 className={styles.detailTitle}>{cellContent.tier_ru ?? cellContent.tier}</h1>
           <div className={styles.detailSub}>
             {cellContent.instrument_class_label} · {venueName}
           </div>
@@ -634,21 +720,28 @@ export default function CellDetailPage() {
             if (!activePhaseContent.has_data) {
               return <div className={styles.emptyPhase}>Данные в работе</div>
             }
+            const phaseCitations = activePhaseContent.citations ?? []
             return (
-              <>
-                {activePhaseContent.sections.map((s) => {
-                  const sectionParams = (cellParameters?.parameters ?? []).filter(
-                    (p) => p.status === 'found' && p.section_keys?.includes(s.section_key),
-                  )
-                  return (
+              <div className={styles.phaseLayout}>
+                <div className={styles.phaseMain}>
+                  <ParamStrip phase={activePhaseKey} parameters={cellParameters} />
+                  {activePhaseContent.sections.map((s) => (
                     <SectionCard
                       key={s.section_key}
                       section={s}
-                      parameters={sectionParams}
                     />
-                  )
-                })}
-              </>
+                  ))}
+                </div>
+                {phaseCitations.length > 0 && (
+                  <aside className={styles.phaseSidebar}>
+                    <SourceBlock
+                      sources={phaseCitations}
+                      blockId={`phase-${activePhaseKey}`}
+                      defaultOpen
+                    />
+                  </aside>
+                )}
+              </div>
             )
           })()}
         </>

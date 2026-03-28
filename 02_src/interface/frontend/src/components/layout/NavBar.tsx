@@ -53,10 +53,14 @@ export default function NavBar({ isHome, variant }: NavBarProps) {
           </li>
 
           <li>
-            <span className={`${styles.link} ${styles.inactiveLink}`}>
+            <NavLink
+              to="/analysis"
+              className={({ isActive }) =>
+                `${styles.link} ${isActive ? styles.active : ''}`
+              }
+            >
               Анализ
-              <span className={styles.navBadge}>SOON</span>
-            </span>
+            </NavLink>
           </li>
 
           <li>
@@ -64,6 +68,17 @@ export default function NavBar({ isHome, variant }: NavBarProps) {
               Ассистент
               <span className={styles.navBadge}>SOON</span>
             </span>
+          </li>
+
+          <li>
+            <NavLink
+              to="/methodology"
+              className={({ isActive }) =>
+                `${styles.link} ${isActive ? styles.active : ''}`
+              }
+            >
+              Методология
+            </NavLink>
           </li>
         </ul>
       </div>

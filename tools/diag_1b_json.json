@@ -1,0 +1,411 @@
+{
+  "output": {
+    "type": "json",
+    "content": {
+      "qualitative_factors": {
+        "F9_investor_base": {
+          "institutional_share_pct": "Non-residents hold roughly half of CAC 40 and about 46% of all listed French shares in 2024.",
+          "value": "predominantly institutional (mixed with strong non-resident share)",
+          "source": "Banque de France bulletin (2024: non-residents 50% of CAC 40; 46% of all listed shares on Euronext Paris)."
+        },
+        "F12_exchange_as_sro": {
+          "assessment": "partial",
+          "value": "Partial SRO",
+          "source": "Euronext Rule Book (disciplinary measures); AMF General Regulation (AMF suspension powers and oversight)."
+        },
+        "F3_private_enforcement": {
+          "assessment": "medium",
+          "value": "medium",
+          "source": "Legifrance (2025 group action law, Art. 16); IBA Minority Shareholder Rights (derivative action details); AMF/secondary sources on enforcement landscape."
+        },
+        "F8_ownership_concentration": {
+          "assessment": "concentrated",
+          "value": "Concentrated",
+          "source": "OECD Corporate Governance Factbook 2023 (loyalty/double voting rights in France); Banque de France (non-resident holdings ~46% of listed shares overall; 50% in CAC 40); French APE annual report (portfolio value and listed holdings count).",
+          "state_share_pct": "The APE portfolio was valued at —179.5bn as of 30 June 2024 (10 listed companies among 85 entities), implying a low single-digit share of total market capitalization."
+        }
+      },
+      "preloaded_verification": {
+        "F11_regulator_type": {
+          "confirmed": true,
+          "source": "AMF website (role); AMF governance page (board/enforcement committee).",
+          "corrected_value": null
+        },
+        "F1_legal_family": {
+          "confirmed": true,
+          "source": "Georgetown Law Library (French Legal System overview).",
+          "corrected_value": null
+        },
+        "F7_market_depth": {
+          "confirmed": false,
+          "source": "CEIC (France Market Capitalization: % of GDP); World Bank WDI series reference (indicator CM.MKT.LCAP.GD.ZS).",
+          "corrected_value": "Approximately 100% in 2024; peaked higher in 2022–2023"
+        }
+      },
+      "jurisdiction": "France"
+    },
+    "basis": [
+      {
+        "field": "qualitative_factors",
+        "reasoning": "The qualitative factors for France's securities markets were extracted directly from the provided answer. Each factor's assessment, value, and source were identified and mapped to the corresponding fields in the schema. The state share percentage for F8 was also extracted.",
+        "confidence": "medium",
+        "citations": [
+          {
+            "url": "https://www.lexology.com/library/detail.aspx?g=8503c0ff-4f79-47ef-8758-f4e486947937",
+            "excerpts": [
+              "May 21, 2024 — The AMF has been empowered by French statute to investigate market abuse and other infringements to its General Regulation, and impose financial ...Read more May 21, 2024 — A general introduction to securities litigation in France, focusing on practical implications and commercial impacts."
+            ],
+            "title": "A general introduction to securities litigation in France - Lexology"
+          },
+          {
+            "url": "https://www.amf-france.org/en",
+            "excerpts": [
+              "Section Title: ... > An influential authority at the heart of the financial markets\nContent:\nThe AMF regulates the French financial market and works to ensure that financial markets are\nrobust, protective and useful to the economy.\nDiscover the AMF"
+            ],
+            "title": "Autorité des marchés financiers (AMF): Protection of savings, Investors' information and proper functioning of financial markets | AMF"
+          },
+          {
+            "url": "https://www.gide.com/en/news-insights/new-french-legal-framework-for-class-actions-and-transposition-of-directive-eu-2020-1828-on-representative-actions/",
+            "excerpts": [
+              "Apr 28, 2025 — On the occasion of the transposition of Directive (EU) 2020/1828 on representative actions, an ambitious reform of the legal regime for class ...Read more",
+              "Apr 28, 2025 — This law institutes a common legal frame for class actions, replacing the sector-based approach that previously prevailed."
+            ],
+            "title": "New French legal framework for class actions and transposition of directive (EU) 2020/1828 on representative actions Gide"
+          },
+          {
+            "url": "https://www.aoshearman.com/en/insights/class-action-reform-key-changes-introduced-by-the-law-of-april-30-2025",
+            "excerpts": [
+              "Jun 26, 2025 — The DDADUE 5 Act of April 30, 2025 (hereinafter the \"April 30, 2025 Act\") transposes the Directive 2020/1828 on representative actions and ...Read more Jun 26, 2025 — This reform brings several changes and simplifications that could lead to an increase of class actions brought before French courts.Read more"
+            ],
+            "title": "French Class action reform: key changes introduced by the law of April 30, 2025"
+          },
+          {
+            "url": "https://www.banque-france.fr/en/publications-and-statistics/publications/non-resident-ownership-french-cac-40-shares-remained-stable-2023",
+            "excerpts": [
+              "Feb 6, 2025 — Moreover, the dispersion of non resident ownership rates for French CAC 40 stocks remained stable in 2023 (see Chart 4). The average ownership ...Read more"
+            ],
+            "title": "Non resident ownership of French CAC 40 shares ..."
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Autorit%C3%A9_des_March%C3%A9s_Financiers_(France)",
+            "excerpts": [
+              "The AMF is an independent public body that is responsible for safeguarding investments in financial instruments and in all other savings and investments, as well as maintaining orderly financial markets ",
+              "It falls under the European regulatory umbrella of the Markets in Financial Instruments Directive (MiFID).",
+              "It is a voting member of the Board of Supervisors of the European Securities and Markets Authority (ESMA)."
+            ],
+            "title": "Autorité des Marchés Financiers (France) - Wikipedia"
+          },
+          {
+            "url": "https://data.worldbank.org/indicator/CM.MKT.LCAP.GD.ZS",
+            "excerpts": [
+              "Market capitalization of listed domestic companies (% of GDP)",
+              "World Federation of Exchanges database, World Federation of Exchanges ( WFE )",
+              "*License* : CC BY-4.0",
+              "Line Bar Map",
+              "Share Details",
+              "Label",
+              "**1975** - **2024**"
+            ],
+            "title": "Market capitalization of listed domestic companies (% of GDP) | Data"
+          },
+          {
+            "url": "https://www.ibanet.org/document?id=Minority-Shareholder-Rights-France-22",
+            "excerpts": [
+              "\nThe laws of France protect minority shareholders in a number of ways. As a civil law country, most of the\nrights and protections are codified, most specifically in the French Commercial Code (Code de\nCommerce) and Civil Code (Code civil). A number of protections are subject to modification in companies’\narticles of association, so laws must always be considered alongside the articles of association of the\ncompany in question.\n",
+              "Public companies are subject to additional requirements, which are found in the General Regulation of\nthe French Financial Markets Authority (Règlement général de l’Autorité des Marchés Financiers, or\nRGAMF). Court decisions enforcing minority shareholders’ rights also provide further colour regarding\nprotections available to them.",
+              "French listed companies must either comply with the provisions of a corporate governance code prepared\nby a corporate association or provide an explanation in their annual report for any non-compliance. In\nthe event that the company does adhere to such a corporate governance code, the annual report must\nalso provide an explanation of the reason for failing to follow any provisions of that code. A significant\npercentage of French listed companies adhere to the AFEP-MEDEF governance code.",
+              "Shareholders, as well as certain associations of shareholders, can seek remedies on behalf of the\ncompany against the directors or the executive manager (directeur général), through a derivative action\n(the action sociale ut singuli, Article L.225-252 of the French Commercial Code).",
+              "Shareholder litigation on the merits (stock drop suits, etc), while in principle possible under French law,\nis burdensome; although it may have some nuisance value, it is generally relatively uninteresting in terms\nof recovery potential. For example, the cost of the French derivative action (the action sociale ut singuli\nreferred to above) is borne entirely by the plaintiffs, while any recovery is allocated to the company. A\npersonal cause of action is also available; however, the plaintiff must demonstrate that the relevant loss\nis personal to them, and distinct from any loss incurred by the company or the other shareholders.",
+              "In the event of a contemplated litigation, a right available generally under French civil procedure permits\n‘any interested party’ (including a minority shareholder) to seek, on an ex parte basis, the seizure of\nevidence that may be necessary for a contemplated litigation (Article 145 of the French Civil Procedure\nCode). This procedure must be exercised prior to the initiation of the litigation.",
+              "In a société à responsibilité limitée (limited company or SARL) company, shareholders owning at least\n10 per cent of the share capital of the company may also ask the judge for the appointment of an\n\nexpert, without being required to inquire in writing of the managers first (L.223-37 of the French\nCommercial Code). If appointed by the judge, the expert establishes a report which is published and\nattached to the statutory auditor’s report at the next general meeting of shareholders.",
+              "he courts may intervene to appoint directors where\nexceptional circumstances render the regular functioning of the company impossible and where the\ncompany is threatened with imminent harm. However, this measure is not intended to protect the\ninterests of the minority shareholders in particular, but those of the company in exceptional situations.\n",
+              "AMF is also tasked with, among other things, reviewing the terms of the offer and the offer documentation\nto ensure compliance with applicable regulations, and under certain conditions like the event of a\ncompeting offer, assessing the offer price (or the exchange ratio in an exchange offer).",
+              "In the event of a takeover bid over a listed company in France, the offer must be made for the totality of\nthe issued and outstanding securities of the company (Article 231-6 of the RGAMF). This ensures that\nminority shareholders have the opportunity to sell their securities if they wish.",
+              "French associations representing minority shareholders occasionally initiate litigation to attempt to gain\npublicity and exert pressure on listed companies. Such associations are entitled to ‘bring legal\nproceedings before any court, including through the filing of civil actions, in relation to facts prejudicing\nthe collective interests of investors in general or to certain categories of investors’, (Article L.452-1 of the\nFrench Financial Market Code) and they have repeatedly brought suit before the Paris Court of appeal\nin connection with AMF decisions (Article R.621-45 of the French Financial Markets Code).",
+              "Such lawsuits are rarely successful but can in certain (increasingly limited) cases delay a takeover bid\nprocess."
+            ],
+            "title": "France Minority Shareholder Rights IBA Corporate and ..."
+          },
+          {
+            "url": "https://iclg.com/practice-areas/class-and-group-actions-laws-and-regulations/france",
+            "excerpts": [
+              "Contrary to the previous state of the law, the new French group action scheme resulting from French Law No. 2025-391 of 30 April 2025 applies to all areas and aims at compensating all types of damages.",
+              "However, three limitations remain, which are the following:",
+              "the defendant shall be sued for its business activity only;",
+              "concerning public health issues, a group action can solely be initiated when it concerns one of the drugs listed in paragraph II of Article L. 5311-1 of the French Public Health Code ( *Code de la santé publique* ); and\nw",
+              "when it comes to the cross-border group action provided by Directive (EU) 2020/1828, such cross-border action is only admissible in the areas mentioned in Annex I to the Directive ( *e.g.* , consumer affairs, environmental issues, public health, data protection, transportations…)."
+            ],
+            "title": "Class and Group Actions Laws and Regulations Report 2026 France"
+          },
+          {
+            "url": "https://www.banque-france.fr/system/files/2026-01/825117_BDF261_EN_3_CAC_40_Vfinale.pdf",
+            "excerpts": [
+              "At the end of 2024, non-residents held EUR 1,083 billion worth of shares in French CAC 40 firms, out of\na total stock market capitalisation of EUR 2,165 billion.",
+              "The rate of non-resident ownership therefore stood\nat 50%, representing a slight rise of 0.5 percentage point compared with 2023.",
+              "Consequently, the rate of non-resident ownership of all\nFrench shares listed on Euronext was 46% in 2024",
+              "Non-resident holdings consist primarily of portfolio\ninvestments (92.9%), with direct investments accounting\nfor just 7.1% of the total (see Chart 2)."
+            ],
+            "title": "Bulletin"
+          },
+          {
+            "url": "https://www.economie.gouv.fr/files/files/directions_services/agence-participations-etat/Documents/Rapports-de-l-Etat-actionnaire/2024/REA-24-ENG-web-page.pdf",
+            "excerpts": [
+              "the portfolio now consists of 85 entities,\nincluding 10 listed companies, with a total\nvalue of €179.5bn as at 30 June 202",
+              "A key\nmilestone in the APE’s evolution was the\n2014 Government Order, which aligned\npublic company governance more closely\nwith general corporate law, clarifying the\nGovernment’s role within governance\nbodies.",
+              "In early 2011, the Agency was placed under\nthe direct authority of the Minister for the\nEconomy, further raising the professional\nstandards of its functions.",
+              "Over the years,\nthe APE has gained expertise through\nactive management of its holdings,\nregular capital market interventions, and\nexperience in acquisitions and disposals.",
+              "In the past two decades, the APE has\nsupported significant sectoral reforms\nand industrial consolidations aimed at\nreorganising public services, restructuring\nkey industries, and safeguarding France’s\nsovereignty in strategic sectors.",
+              "The Government as\nShareholder has also played a crucial role\nin bailout plans, implementing rescue plans\nto mitigate systemic risks during financial,"
+            ],
+            "title": "APE : rapport d'activité 2021"
+          },
+          {
+            "url": "https://www.oecd.org/content/dam/oecd/en/publications/reports/2023/09/oecd-corporate-governance-factbook-2023_6bae0258/6d912314-en.pdf",
+            "excerpts": [
+              "arty. In **France** , the Autorité des Marchés Financiers (AMF)\nhas one of the largest boards with 16 members, including judges from the Supreme courts (Cour de\nCassation and Conseil d’État).",
+              "France** is one of the jurisdictions that automatically grants double voting rights for shares\nheld for at least two years by the same person, provided that the company does not opt out by prohibiting\ndouble-voting rights in its bylaws, following a two-thirds majority vote in a general shareholder meetin"
+            ],
+            "title": "OECD Corporate Governance Factbook 2023"
+          },
+          {
+            "url": "https://guides.ll.georgetown.edu/francelegalresearch/legalsystem",
+            "excerpts": [
+              "France has a civil law system, which thus has a greater emphasis on statutes as found within various codes rather than case law. The idea of *stare decisis* does not come into play in civil law systems as each case is decided on an individual basis according to how it relates to the codified law and how the judge interprets that law—thus two cases on the same topic could have very different outcomes."
+            ],
+            "title": "Legal System - French Legal Research Guide - Guides at Georgetown Law Library"
+          },
+          {
+            "url": "https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000051539065",
+            "excerpts": [
+              ".\nContent:\nI.-A.-Une action de groupe est exercée en justice par un demandeur mentionné au C du présent I pour le compte de plusieurs personnes physiques ou morales, placées dans une situation similaire, résultant d'un même manquement ou d'un manquement de même nature à ses obligations légales ou contractuelles commis par une personne agissant dans l'exercice ou à l'occasion de son activité professionnelle, par une personne morale de droit public ou par un organisme de droit privé chargé de la gestion d'un service public. L'action de groupe est exercée afin d'obtenir soit la cessation du manquement mentionné au premier alinéa du présent A, soit la réparation des préjudices, quelle qu'en soit la nature, subis du fait de ce manquement, soit la satisfaction de ces deux prétentions. B.-Par dérogation au A",
+              "..\nContent:\nX.-A.-Pour l'application du présent X, on entend par action de groupe transfrontière une action de groupe intentée devant une juridiction ou une autorité compétente d'un Etat membre de l'Union européenne autre que celui dans lequel le demandeur a été désigné, en application de l'article 4 de la directive (UE) 2020/1828 du Parlement européen et du Conseil du 25 novembre 2020 relative aux actions représentatives visant à protéger les intérêts collectifs des consommateurs et abrogeant la directive 2009/22/ CE.\n ... \nSection Title:"
+            ],
+            "title": "Article 16 - LOI n° 2025-391 du 30 avril 2025 portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de transport, de santé et de circulation des personnes (1) - Légifrance"
+          },
+          {
+            "url": "https://www.legifrance.gouv.fr/dossierlegislatif/JORFDOLE000050427907/?detailType=EXPOSE_MOTIFS&detailId=",
+            "excerpts": [
+              "L’article 15** modifie le chapitre X du titre VII du livre VII du code de justice administrative, relatif à l’action de groupe, en adaptant les dispositions de ce chapitre aux exigences de la directive (UE) 2020/1828, à l’instar des modifications opérées pour le juge judiciaire. Ainsi, les règles de recevabilité relatives à l’action de groupe sont adaptées afin d’ouvrir cette voie de recours aux « entités qualifiées » et de permettre au juge de prononcer l’irrecevabilité d’une action lorsque le demandeur se trouve en situation de conflit d’intérêt. Le",
+              "’article 16** modifie la loi n° 78-17 du 6 janvier 1978 relative à l’informatique, aux fichiers et aux libertés en y ajoutant un nouveau 4° au IV de l’article 37 pour prévoir que les organismes disposant d’un agrément transfrontière dont la liste est publiée au *Journal officiel* de l’Union européenne peuvent exercer des actions de groupe dans le domaine de la protection des données devant le juge compétent"
+            ],
+            "title": "LOI n° 2025-391 du 30 avril 2025 portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de transport, de santé et de circulation des personnes - Exposé des motifs - Dossiers législatifs - Légifrance"
+          }
+        ]
+      },
+      {
+        "field": "preloaded_verification",
+        "reasoning": "The pre-loaded values for legal family, regulator type, and market depth were verified against the provided answer. The 'confirmed' status, source, and corrected value (if applicable) were extracted for each.",
+        "confidence": "medium",
+        "citations": [
+          {
+            "url": "https://www.amf-france.org/en",
+            "excerpts": [
+              "Section Title: ... > An influential authority at the heart of the financial markets\nContent:\nThe AMF regulates the French financial market and works to ensure that financial markets are\nrobust, protective and useful to the economy.\nDiscover the AMF"
+            ],
+            "title": "Autorité des marchés financiers (AMF): Protection of savings, Investors' information and proper functioning of financial markets | AMF"
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Autorit%C3%A9_des_March%C3%A9s_Financiers_(France)",
+            "excerpts": [
+              "The AMF was established by the Financial Security Act of 1 August 2003, as an independent public body with legal personality and financial autonomy, with the duty of: [[ 4 ]]()"
+            ],
+            "title": "Autorité des Marchés Financiers (France) - Wikipedia"
+          },
+          {
+            "url": "https://www.ibanet.org/document?id=Minority-Shareholder-Rights-France-22",
+            "excerpts": [
+              "The\nAMF is also tasked with, among other things, reviewing the terms of the offer and the offer documentation\nto ensure compliance with applicable regulations, and under certain conditions like the event of a\ncompeting offer, assessing the offer price (or the exchange ratio in an exchange offer).",
+              "In a société à responsibilité limitée (limited company or SARL) company, shareholders owning at least\n10 per cent of the share capital of the company may also ask the judge for the appointment of an\n\nexpert, without being required to inquire in writing of the managers first (L.223-37 of the French\nCommercial Code)"
+            ],
+            "title": "France Minority Shareholder Rights IBA Corporate and ..."
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Law_of_France",
+            "excerpts": [
+              "Section Title: Law of France > Private law\nContent:\nThe term *civil law* in France refers to private law (laws between private citizens, and should be distinguished from the group of legal systems descended from Roman Law known as civil law\") , as opposed to common law .\nThe major private law codes include:\nThe Civil Code ,\nThe Code of Civil Procedure ,\nThe Commercial Code, and\nThe Intellectual Property Code."
+            ],
+            "title": "Law of France - Wikipedia"
+          },
+          {
+            "url": "http://databank.worldbank.org/data/reports.aspx?source=2&series=CM.MKT.LCAP.GD.ZS&country=FRA,TUR",
+            "excerpts": [
+              "World Development Indicators (WDI) is the primary World Bank collection of development indicators, compiled from officially recognized international sources ... Add Time 12. Market capitalization of listed domestic companies (% of GDP) ... 2020. 2021. 2022. 2023. 2024. France, 24.8, 106.3, 85.5, 87.4, 106.2, 85.1 .. .. ..Read more"
+            ],
+            "title": "World Development Indicators | DataBank"
+          },
+          {
+            "url": "https://fred.stlouisfed.org/series/DDDM01FRA156NWDB/1000",
+            "excerpts": [
+              "Stock Market Capitalization to GDP for France (DDDM01FRA156NWDB)",
+              "Total value of all listed shares in a stock market as a percentage of GDP.",
+              "**Source:** [World Bank](http://www.worldbank.org/)",
+              "**Release:** [Global Financial Development](https://www.worldbank.org/en/publication/gfdr)",
+              "**Units:** Percent , Not Seasonally Adjusted",
+              "**Frequency:** Annual",
+              "Observations",
+              "2020: 209.14090"
+            ],
+            "title": "Stock Market Capitalization to GDP for France (DDDM01FRA156NWDB) | FRED | St. Louis Fed"
+          }
+        ]
+      },
+      {
+        "field": "jurisdiction",
+        "reasoning": "The jurisdiction was explicitly stated in the provided answer.",
+        "confidence": "high",
+        "citations": [
+          {
+            "url": "https://en.wikipedia.org/wiki/Autorit%C3%A9_des_March%C3%A9s_Financiers_(France)",
+            "excerpts": [
+              "Jurisdiction |France",
+              "ty\") is the securities commission in France . The AMF is an independent public body that is responsible for safeguarding investments in financial instruments and in all other savings and investments, as well as maintaining orderly financial markets .\n",
+              "It falls under the European regulatory umbrella of the Markets in Financial Instruments Directive (MiFID).",
+              "It is a voting member of the Board of Supervisors of the European Securities and Markets Authority (ESMA)."
+            ],
+            "title": "Autorité des Marchés Financiers (France) - Wikipedia"
+          },
+          {
+            "url": "https://www.amf-france.org/en",
+            "excerpts": [
+              "Section Title: ... > An influential authority at the heart of the financial markets\nContent:\nThe AMF regulates the French financial market and works to ensure that financial markets are\nrobust, protective and useful to the economy.\nDiscover the AMF"
+            ],
+            "title": "Autorité des marchés financiers (AMF): Protection of savings, Investors' information and proper functioning of financial markets | AMF"
+          },
+          {
+            "url": "https://www.amf-france.org/en/amf/our-organisation/our-governance",
+            "excerpts": [
+              "The Autorité des Marchés Financiers has two distinct collegial bodies: the Board, chaired by the AMF Chair, and the Enforcement Committee.",
+              "Section Title: Our Governance"
+            ],
+            "title": "Our Governance | AMF"
+          },
+          {
+            "url": "https://iclg.com/practice-areas/class-and-group-actions-laws-and-regulations/france",
+            "excerpts": [
+              "Section Title: Class and Group Actions Laws and Regulations France 2026 > Chapter Content Free Access > 1. **Class / Group Actions**"
+            ],
+            "title": "Class and Group Actions Laws and Regulations Report 2026 France"
+          },
+          {
+            "url": "https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000051539065",
+            "excerpts": [
+              " ... \nSection Title: LOI n° 2025-391 du 30 avril 2025 portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, envir...\nContent:\nI.-A.-Une action de groupe est exercée en justice par un demandeur mentionné au C du présent I pour le compte de plusieurs personnes physiques ou morales, placées dans une situation similaire, résultant d'un même manquement ou d'un manquement de même nature à ses obligations légales ou contractuelles commis par une personne agissant dans l'exercice ou à l'occasion de son activité professionnelle, par une personne morale de droit public ou par un organisme de droit privé chargé de la gestion d'un service public. L'action de groupe est exercée afin d'obtenir soit la cessation du manquement mentionné au premier alinéa du présent A, soit la réparation des préjudices, quelle qu'en soit la nature, subis du fait de ce manquement, soit la satisfaction de ces deux prétentions. B.-Par dérogation au A du présent I, lorsq",
+              "iale\nLOI n° 2025-391 du 30 avril 2025 portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de transport, de santé et de circulation des personnes (1)\nNaviguer d"
+            ],
+            "title": "Article 16 - LOI n° 2025-391 du 30 avril 2025 portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de transport, de santé et de circulation des personnes (1) - Légifrance"
+          },
+          {
+            "url": "https://www.banque-france.fr/en/publications-and-statistics/publications/non-resident-ownership-french-cac-40-shares-remained-stable-2023",
+            "excerpts": [
+              "Feb 6, 2025 — Moreover, the dispersion of non resident ownership rates for French CAC 40 stocks remained stable in 2023 (see Chart 4). The average ownership ...Read more"
+            ],
+            "title": "Non resident ownership of French CAC 40 shares ..."
+          },
+          {
+            "url": "https://fred.stlouisfed.org/series/DDDM01FRA156NWDB/1000",
+            "excerpts": [
+              "Stock Market Capitalization to GDP for France (DDDM01FRA156NWDB)",
+              "France"
+            ],
+            "title": "Stock Market Capitalization to GDP for France (DDDM01FRA156NWDB) | FRED | St. Louis Fed"
+          },
+          {
+            "url": "https://www.ibanet.org/document?id=Minority-Shareholder-Rights-France-22",
+            "excerpts": [
+              "France"
+            ],
+            "title": "France Minority Shareholder Rights IBA Corporate and ..."
+          },
+          {
+            "url": "https://guides.ll.georgetown.edu/francelegalresearch/legalsystem",
+            "excerpts": [
+              "France is a republic and is currently governed by the Constitution of the Fifth Republic, which was passed October 4, 1958. Reforms to the Constitution in July 2008 altered the law-making process, giving the Parliament a stronger vote in passing laws."
+            ],
+            "title": "Legal System - French Legal Research Guide - Guides at Georgetown Law Library"
+          }
+        ]
+      }
+    ],
+    "beta_fields": null,
+    "output_schema": null
+  },
+  "run": {
+    "created_at": "2026-03-13T15:17:56.619382Z",
+    "is_active": false,
+    "modified_at": "2026-03-13T15:28:43.074929Z",
+    "processor": "pro",
+    "run_id": "trun_e0411a24b2694910b6ee444f30d7ab61",
+    "status": "completed",
+    "error": null,
+    "metadata": {},
+    "task_group_id": null,
+    "warnings": [
+      {
+        "message": "The field 'source' is already provided in the FieldBasis object (which includes reasoning, citations, excerpts, confidence). Use FieldBasis in the run output instead of duplicating these fields in your output schema.",
+        "type": "spec_validation_warning",
+        "detail": {
+          "path": "properties.qualitative_factors.properties.F3_private_enforcement.properties.source",
+          "documentation_url": "https://docs.parallel.ai/task-api/guides/specify-a-task"
+        }
+      },
+      {
+        "message": "The field 'source' is already provided in the FieldBasis object (which includes reasoning, citations, excerpts, confidence). Use FieldBasis in the run output instead of duplicating these fields in your output schema.",
+        "type": "spec_validation_warning",
+        "detail": {
+          "path": "properties.qualitative_factors.properties.F8_ownership_concentration.properties.source",
+          "documentation_url": "https://docs.parallel.ai/task-api/guides/specify-a-task"
+        }
+      },
+      {
+        "message": "The field 'source' is already provided in the FieldBasis object (which includes reasoning, citations, excerpts, confidence). Use FieldBasis in the run output instead of duplicating these fields in your output schema.",
+        "type": "spec_validation_warning",
+        "detail": {
+          "path": "properties.qualitative_factors.properties.F9_investor_base.properties.source",
+          "documentation_url": "https://docs.parallel.ai/task-api/guides/specify-a-task"
+        }
+      },
+      {
+        "message": "The field 'source' is already provided in the FieldBasis object (which includes reasoning, citations, excerpts, confidence). Use FieldBasis in the run output instead of duplicating these fields in your output schema.",
+        "type": "spec_validation_warning",
+        "detail": {
+          "path": "properties.qualitative_factors.properties.F12_exchange_as_sro.properties.source",
+          "documentation_url": "https://docs.parallel.ai/task-api/guides/specify-a-task"
+        }
+      },
+      {
+        "message": "The field 'source' is already provided in the FieldBasis object (which includes reasoning, citations, excerpts, confidence). Use FieldBasis in the run output instead of duplicating these fields in your output schema.",
+        "type": "spec_validation_warning",
+        "detail": {
+          "path": "properties.preloaded_verification.properties.F1_legal_family.properties.source",
+          "documentation_url": "https://docs.parallel.ai/task-api/guides/specify-a-task"
+        }
+      },
+      {
+        "message": "The field 'source' is already provided in the FieldBasis object (which includes reasoning, citations, excerpts, confidence). Use FieldBasis in the run output instead of duplicating these fields in your output schema.",
+        "type": "spec_validation_warning",
+        "detail": {
+          "path": "properties.preloaded_verification.properties.F11_regulator_type.properties.source",
+          "documentation_url": "https://docs.parallel.ai/task-api/guides/specify-a-task"
+        }
+      },
+      {
+        "message": "The field 'source' is already provided in the FieldBasis object (which includes reasoning, citations, excerpts, confidence). Use FieldBasis in the run output instead of duplicating these fields in your output schema.",
+        "type": "spec_validation_warning",
+        "detail": {
+          "path": "properties.preloaded_verification.properties.F7_market_depth.properties.source",
+          "documentation_url": "https://docs.parallel.ai/task-api/guides/specify-a-task"
+        }
+      },
+      {
+        "message": "This task may be too complex for pro processor. Consider using https://platform.parallel.ai/play to optimize your task schema.",
+        "type": "spec_validation_warning",
+        "detail": {
+          "documentation_url": "https://docs.parallel.ai/task-api/guides/specify-a-task",
+          "recommended_max_properties": 20.0,
+          "total_properties": 32.0
+        }
+      }
+    ],
+    "interaction_id": "trun_e0411a24b2694910b6ee444f30d7ab61"
+  }
+}

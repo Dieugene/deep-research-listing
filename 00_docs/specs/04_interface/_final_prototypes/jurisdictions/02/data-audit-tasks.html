@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — Задачи по аудиту данных</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA;--bg2:#fff;--bg3:#F0F2F7;
+  --border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.16);
+  --text:#111827;--text-mid:#374151;--text-dim:#6B7280;
+  --accent:#2563EB;--accent-bg:rgba(37,99,235,0.06);
+  --green:#059669;--green-bg:rgba(5,150,105,0.07);
+  --red:#DC2626;--red-bg:rgba(220,38,38,0.05);
+  --orange:#D97706;--orange-bg:rgba(217,119,6,0.06);
+  --purple:#7C3AED;--purple-bg:rgba(124,58,237,0.06);
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --r:8px;--r-lg:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);
+  font-size:14.5px;line-height:1.7;padding:48px}
+.wrap{max-width:820px;margin:0 auto}
+h1{font-size:26px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+.meta{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);
+  letter-spacing:.06em;text-transform:uppercase;margin-bottom:36px}
+h2{font-size:17px;font-weight:600;margin:40px 0 14px;padding-bottom:10px;
+  border-bottom:2px solid var(--border)}
+h3{font-size:14px;font-weight:600;margin:18px 0 7px}
+p{color:var(--text-mid);font-size:14px;line-height:1.75;margin-bottom:10px}
+p strong{color:var(--text);font-weight:500}
+ul,ol{color:var(--text-mid);font-size:14px;line-height:1.75;padding-left:20px;margin-bottom:10px}
+li{margin-bottom:4px}
+li strong{color:var(--text);font-weight:500}
+code{font-family:var(--font-mono);font-size:12px;background:var(--bg3);
+  border:1px solid var(--border2);border-radius:4px;padding:1px 5px}
+
+.callout{border-radius:var(--r);padding:12px 16px;margin:12px 0;font-size:13.5px;line-height:1.7;border:1px solid}
+.callout p{margin:0;font-size:13.5px}
+.c-blue{background:var(--accent-bg);border-color:rgba(37,99,235,.18);color:#1E40AF}
+.c-green{background:var(--green-bg);border-color:rgba(5,150,105,.18);color:#065F46}
+.c-orange{background:var(--orange-bg);border-color:rgba(217,119,6,.2);color:#92400E}
+
+.task{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);
+  overflow:hidden;margin-bottom:10px}
+.task-hd{display:flex;align-items:center;gap:10px;padding:11px 16px;
+  background:var(--bg3);border-bottom:1px solid var(--border)}
+.task-num{font-family:var(--font-mono);font-size:10px;background:var(--bg2);
+  border:1px solid var(--border2);border-radius:4px;padding:2px 7px;
+  color:var(--text-dim);flex-shrink:0}
+.task-title{font-size:13.5px;font-weight:600;color:var(--text)}
+.task-body{padding:14px 16px}
+.task-body p,.task-body ul{margin-bottom:8px}
+
+.priority{margin-left:auto;font-family:var(--font-mono);font-size:9.5px;
+  letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;
+  border-radius:4px;flex-shrink:0;border:1px solid;white-space:nowrap}
+.p-high{background:var(--red-bg);color:var(--red);border-color:rgba(220,38,38,.2)}
+.p-med{background:var(--orange-bg);color:var(--orange);border-color:rgba(217,119,6,.2)}
+.p-low{background:var(--accent-bg);color:var(--accent);border-color:rgba(37,99,235,.2)}
+.p-bug{background:#FEF3C7;color:#92400E;border-color:#FDE68A;font-weight:700}
+
+pre{background:#1E2433;color:#E2E8F4;border-radius:var(--r);padding:14px 16px;
+  font-family:var(--font-mono);font-size:12.5px;line-height:1.65;overflow-x:auto;margin:10px 0}
+pre code{background:none;border:none;padding:0;color:inherit}
+.cm{color:#6B7A99}.cs{color:#A5D6A7}.ck{color:#80DEEA}
+
+.mock{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);
+  padding:14px 16px;margin:10px 0;font-size:13px}
+.mock-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--text-dim);margin-bottom:8px}
+.mock-field{display:flex;gap:8px;margin-bottom:6px;align-items:baseline}
+.mock-key{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);
+  width:160px;flex-shrink:0}
+.mock-val{font-size:13px;color:var(--text-mid)}
+
+.tag-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.tag{font-family:var(--font-mono);font-size:11px;padding:2px 8px;border-radius:4px;
+  background:var(--bg2);border:1px solid var(--border2);color:var(--text-mid)}
+
+.section-badge{display:inline-block;font-family:var(--font-mono);font-size:10px;
+  letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;
+  border:1px solid;margin-bottom:4px}
+.sb-card{background:var(--accent-bg);color:var(--accent);border-color:rgba(37,99,235,.2)}
+.sb-drawer{background:var(--purple-bg);color:var(--purple);border-color:rgba(124,58,237,.2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Задачи по аудиту данных: карточка юрисдикции</h1>
+<div class="meta">Источник: аудит разработчика · март 2026</div>
+
+<div class="callout c-blue">
+  <p><strong>Контекст:</strong> в ходе аудита разработчик выявил поля, которые есть в API и данных, но не отображаются в UI. Все они содержат ценную аналитическую информацию — игнорировать их не следует. Задачи сгруппированы по месту отображения.</p>
+</div>
+
+<!-- ═══════════════════════════════
+     ГРУППА 1: jurisdiction_card.json
+════════════════════════════════ -->
+<h2>Группа 1 — поля <code>jurisdiction_card.json</code>, рендеринга нет</h2>
+
+<!-- listing_authority -->
+<div class="task">
+  <div class="task-hd">
+    <span class="task-num">А-1</span>
+    <span class="task-title"><code>listing_authority</code> — орган листинга в регулятор-стрипе</span>
+    <span class="priority p-high">Высокий</span>
+  </div>
+  <div class="task-body">
+    <p><span class="section-badge sb-card">Вкладка «Юрисдикция»</span></p>
+    <p>Поле содержит описание органа листинга — <strong>не всегда совпадающего с регулятором</strong>. Германия — наглядный пример: <code>BaFin</code> регулирует рынок, но листинговым органом является <code>Börsengeschäftsführung</code> (биржевое управление). Без этого разграничения пользователь делает неверный вывод об архитектуре допуска.</p>
+    <p>Добавить как дополнительный атрибут в горизонтальный регулятор-стрип — после типа, до правовой семьи:</p>
+    <div class="mock">
+      <div class="mock-label">Регулятор-стрип (до и после)</div>
+      <div class="mock-field"><span class="mock-key">Наименование</span><span class="mock-val">Financial Conduct Authority (FCA)</span></div>
+      <div class="mock-field"><span class="mock-key">Тип</span><span class="mock-val"><span class="tag">commission</span></span></div>
+      <div class="mock-field" style="background:rgba(37,99,235,.04);border-radius:4px;padding:4px 6px;margin:-2px"><span class="mock-key" style="color:var(--accent)">Орган листинга ← новое</span><span class="mock-val" style="color:var(--accent)">Financial Conduct Authority (FCA)</span></div>
+      <div class="mock-field"><span class="mock-key">Правовая семья</span><span class="mock-val"><span class="tag">common law</span></span></div>
+    </div>
+    <p>Поле <code>listing_authority</code> — длинный текст, обрезать до первых ~60 символов с <code>title</code>-атрибутом для полного текста при hover. Если поле совпадает с названием регулятора — показывать как есть без сокращения.</p>
+  </div>
+</div>
+
+<!-- market_types -->
+<div class="task">
+  <div class="task-hd">
+    <span class="task-num">А-2</span>
+    <span class="task-title"><code>market_types</code> — типы рынков юрисдикции</span>
+    <span class="priority p-low">Низкий</span>
+  </div>
+  <div class="task-body">
+    <p><span class="section-badge sb-card">Вкладка «Юрисдикция»</span></p>
+    <p>Массив типов рынков, присутствующих в юрисдикции: <code>["Regulated Market", "MTF (Freiverkehr)", "OTF"]</code>. Полезен как быстрый справочник — не нужно изучать все площадки чтобы понять структуру.</p>
+    <p>Добавить как строку тегов в конец регулятор-стрипа, после правовой семьи:</p>
+    <div class="mock">
+      <div class="mock-label">Добавить строку в стрип</div>
+      <div class="mock-field"><span class="mock-key">Типы рынков</span>
+        <span class="mock-val"><span class="tag">Regulated Market</span> <span class="tag">MTF</span> <span class="tag">OTF</span></span>
+      </div>
+    </div>
+    <p>Теги — нейтральный стиль (серый чип). Не кликабельны.</p>
+  </div>
+</div>
+
+<!-- supranational -->
+<div class="task">
+  <div class="task-hd">
+    <span class="task-num">А-3</span>
+    <span class="task-title"><code>supranational_flag</code> + <code>supranational_framework</code> — наднациональный контекст</span>
+    <span class="priority p-med">Средний</span>
+  </div>
+  <div class="task-body">
+    <p><span class="section-badge sb-card">Вкладка «Юрисдикция»</span></p>
+    <p>Для юрисдикций-членов ЕС (<code>supranational_flag === true</code>) национальный режим существует внутри европейского. Игнорировать это — значит давать неполную картину. Пользователь должен знать, что немецкие требования к проспектам определяются EU Regulation 2017/1129, а не только BörsG.</p>
+    <p>Отображать как отдельный информационный блок на вкладке «Юрисдикция» — <strong>только если</strong> <code>supranational_flag === true</code>. Для UK, США, HK — блок не показывается.</p>
+    <div class="mock">
+      <div class="mock-label">Блок «Наднациональный контекст» (показывать условно)</div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+        <div style="padding:10px 14px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px">
+          <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)">Наднациональный контекст</span>
+          <span style="font-family:var(--font-mono);font-size:10px;padding:1px 7px;border-radius:3px;background:rgba(37,99,235,.08);color:var(--accent);border:1px solid rgba(37,99,235,.2)">EU</span>
+        </div>
+        <div style="padding:12px 14px;font-size:13px;color:var(--text-mid);line-height:1.7">
+          European Union: Prospectus Regulation (EU) 2017/1129; MiFID II/MiFIR; MAR
+        </div>
+      </div>
+    </div>
+    <p>Разместить под блоком «Архитектура допуска + Регулятор», в той же левой колонке, до блока метрик ВБ.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     ГРУППА 2: level4.json метаполя
+════════════════════════════════ -->
+<h2>Группа 2 — метаполя <code>level4.json</code>, UI игнорирует</h2>
+
+<div class="callout c-orange">
+  <p><strong>Контекст:</strong> все эти поля отображаются в drawer при клике на элемент таймлайна или строку списка. Карточка юрисдикции их не касается — только компонент drawer регуляторного анализа.</p>
+</div>
+
+<!-- resolution_ru -->
+<div class="task">
+  <div class="task-hd">
+    <span class="task-num">Б-1</span>
+    <span class="task-title"><code>resolution_ru</code> — русский текст разрешения противоречия</span>
+    <span class="priority p-bug">Баг</span>
+  </div>
+  <div class="task-body">
+    <p><span class="section-badge sb-drawer">Drawer · contradictions</span></p>
+    <p>В данных для <code>contradictions</code> есть поле <code>resolution_ru</code> с русским текстом разрешения — но сейчас используется <code>resolution</code> (английский). Это баг: весь интерфейс на русском, а блок разрешения — единственный на английском.</p>
+    <p>Исправление — одна строка: заменить <code>event.resolution</code> на <code>event.resolution_ru ?? event.resolution</code> (fallback на английский если русского нет).</p>
+  </div>
+</div>
+
+<!-- articulated_by -->
+<div class="task">
+  <div class="task-hd">
+    <span class="task-num">Б-2</span>
+    <span class="task-title"><code>articulated_by</code> — кто поставил проблему</span>
+    <span class="priority p-med">Средний</span>
+  </div>
+  <div class="task-body">
+    <p><span class="section-badge sb-drawer">Drawer · problems</span></p>
+    <p>Поле содержит массив источников проблемы: <code>["government", "academic", "regulator"]</code>. Для аналитика, изучающего политический контекст реформ, это важный атрибут — регуляторная проблема, поднятая академическим сообществом, и проблема, инициированная самим регулятором — имеют разный вес.</p>
+    <p>Отображать в drawer под основным текстом, перед источниками, как строку тегов:</p>
+    <div class="mock">
+      <div class="mock-label">В drawer для проблем</div>
+      <div class="mock-field">
+        <span class="mock-key">Поставили проблему</span>
+        <span class="mock-val">
+          <span class="tag">регулятор</span>
+          <span class="tag">академическое сообщество</span>
+        </span>
+      </div>
+    </div>
+    <p>Значения локализовать: <code>government</code> → «правительство», <code>academic</code> → «академическое сообщество», <code>regulator</code> → «регулятор», <code>market_participants</code> → «участники рынка».</p>
+  </div>
+</div>
+
+<!-- problem_addressed + calibration_debate -->
+<div class="task">
+  <div class="task-hd">
+    <span class="task-num">Б-3</span>
+    <span class="task-title"><code>problem_addressed</code> + <code>calibration_debate</code> — контекст параметра как инструмента</span>
+    <span class="priority p-med">Средний</span>
+  </div>
+  <div class="task-body">
+    <p><span class="section-badge sb-drawer">Drawer · parameters_as_tools</span></p>
+    <p>Два взаимосвязанных поля, которые делают раздел «Параметры как инструменты» по-настоящему аналитическим:</p>
+    <ul>
+      <li><code>problem_addressed</code> — какую проблему решает данный параметр («High barriers for SME listings in EU markets»)</li>
+      <li><code>calibration_debate</code> — как шла дискуссия о числовых значениях («Set to €1.0m floor to match EU minimums…»)</li>
+    </ul>
+    <p>Отображать в drawer как отдельные секции под основным текстом:</p>
+    <div class="mock">
+      <div class="mock-label">Структура drawer для parameters_as_tools</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:10px 12px">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px">Какую проблему решает</div>
+          <div style="font-size:12.5px;color:var(--text-mid)">High barriers for SME listings in EU markets</div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:10px 12px">
+          <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px">Дискуссия о настройке</div>
+          <div style="font-size:12.5px;color:var(--text-mid)">Set to €1.0m floor to match EU minimums...</div>
+        </div>
+      </div>
+    </div>
+    <p>Показывать секцию только если поле не пустое.</p>
+  </div>
+</div>
+
+<!-- opposition -->
+<div class="task">
+  <div class="task-hd">
+    <span class="task-num">Б-4</span>
+    <span class="task-title"><code>opposition</code> — контраргументы к реформе</span>
+    <span class="priority p-med">Средний</span>
+  </div>
+  <div class="task-body">
+    <p><span class="section-badge sb-drawer">Drawer · reforms</span></p>
+    <p>Поле содержит позицию противников реформы — академические данные, опасения участников рынка, критику со стороны инвесторов. Без этого drawer реформы показывает только обоснование (одностороннюю картину), что снижает аналитическую ценность.</p>
+    <p>Добавить в drawer реформы как отдельную секцию после основного текста, перед источниками:</p>
+    <div class="mock">
+      <div class="mock-label">Секция в drawer для reforms</div>
+      <div style="background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.15);border-radius:var(--r);padding:10px 12px">
+        <div style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--red);margin-bottom:4px">Контраргументы</div>
+        <div style="font-size:12.5px;color:var(--text-mid)">Later academic evidence showed deterioration of the information environment...</div>
+      </div>
+    </div>
+    <p>Показывать секцию только если поле не пустое. Лёгкий красный фон — сигнал «осторожно, есть противоположная позиция», не тревога.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     ЧТО НЕ ДЕЛАТЬ
+════════════════════════════════ -->
+<h2>Что не добавлять</h2>
+<p>Из аудита разработчик отметил два пункта как ненужные — комментирую:</p>
+<ul>
+  <li><strong>Данные площадок (<code>venue_card.json</code>)</strong> на карточке юрисдикции — намеренно не показываются. Переход на площадку — следующий уровень иерархии.</li>
+  <li><strong>Источники уровня карточки</strong> — отсутствуют в <code>jurisdiction_card.json</code> структурно. Это проблема пайплайна, над которой ведется отдельная работа - потеряно большое количество ссылок на источники. Ведется работа над восстановлением данных, после чего будет возврат к тому, чтобы корректно отображать источники</li>
+</ul>
+
+<div class="callout c-green">
+  <p><strong>Порядок выполнения:</strong> начать с Б-1 (баг, одна строка). Затем А-1 (высокий приоритет, важно для понимания архитектуры допуска). Остальные — по очереди в рамках текущего спринта.</p>
+</div>
+
+</div>
+</body>
+</html>

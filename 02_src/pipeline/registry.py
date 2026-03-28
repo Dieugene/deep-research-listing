@@ -97,6 +97,18 @@ def discover_venues_for_jurisdiction(
     # --- Priority 1: existing venue_card.json files in level_2/ ---
     level2_dir = countries_dir / name_ru / "level_2"
     if level2_dir.exists():
+        # Load research_priority lookup from venues_list.json
+        _vl_path = countries_dir / name_ru / "level_1" / "venues_list.json"
+        _priority_map = {}
+        if _vl_path.exists():
+            try:
+                with open(_vl_path, encoding="utf-8") as f:
+                    _vl_data = json.load(f)
+                for _v in _vl_data.get("venues", []):
+                    _priority_map[slugify_venue_name(_v.get("name_english", ""))] = _v.get("research_priority", "primary")
+            except Exception:
+                pass
+
         existing_venues = []
         for venue_dir in sorted(level2_dir.iterdir()):
             if not venue_dir.is_dir():
@@ -117,6 +129,7 @@ def discover_venues_for_jurisdiction(
                     "venue_name_english": card.get("venue_name_english", ""),
                     "venue_name_local": card.get("venue_name_local", ""),
                     "market_type": _normalize_market_type(card.get("venue_type", "")),
+                    "research_priority": _priority_map.get(venue_key, "primary"),
                 })
             except Exception:
                 pass
@@ -152,6 +165,7 @@ def discover_venues_for_jurisdiction(
             "venue_name_english": venue_name_english,
             "venue_name_local": v.get("name_local", venue_name_english),
             "market_type": _normalize_market_type(v.get("type", "")),
+            "research_priority": v.get("research_priority", "primary"),
         })
 
     return venue_configs

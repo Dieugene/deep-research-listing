@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — Global Listing Regimes</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+:root{
+  --bg:#080E1C;--bg2:#0D1628;--bg3:#111D35;--bg4:#162040;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --text:#E2E8F4;--text-dim:#6B7A99;--text-mid:#9AABC8;
+  --accent:#3B82F6;--accent2:#60A5FA;--accent-bg:rgba(59,130,246,0.1);
+  --green:#34D399;--green-bg:rgba(52,211,153,0.08);
+  --font-serif:'Newsreader',Georgia,serif;
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.6}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:56px;display:flex;align-items:center;
+  padding:0 48px;
+  background:rgba(8,14,28,0.85);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo-mark{width:30px;height:30px;background:var(--accent);border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:11px;font-weight:500;color:white}
+.nav-logo-text{font-size:14px;font-weight:500;color:var(--text)}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:auto}
+.nav-link{padding:6px 14px;border-radius:6px;font-size:13.5px;color:var(--text-mid);
+  text-decoration:none;transition:color .15s,background .15s;
+  display:flex;align-items:center;gap:6px;cursor:pointer;position:relative}
+.nav-link:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.nav-link.has-dropdown{user-select:none}
+.nav-badge{font-size:10px;font-family:var(--font-mono);color:var(--text-dim);
+  background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+
+/* DROPDOWN */
+.dropdown{position:absolute;top:calc(100% + 6px);left:0;min-width:220px;
+  background:var(--bg2);border:1px solid var(--border2);border-radius:10px;
+  padding:6px;box-shadow:0 8px 24px rgba(0,0,0,.4);
+  opacity:0;pointer-events:none;transform:translateY(-4px);
+  transition:opacity .15s,transform .15s;z-index:200}
+.nav-link.has-dropdown:hover .dropdown,
+.nav-link.has-dropdown:focus-within .dropdown{opacity:1;pointer-events:all;transform:translateY(0)}
+.dropdown-item{display:flex;align-items:center;gap:10px;padding:9px 12px;
+  border-radius:6px;text-decoration:none;color:var(--text-mid);font-size:13.5px;
+  transition:background .12s,color .12s;white-space:nowrap}
+.dropdown-item:hover{background:rgba(255,255,255,0.06);color:var(--text)}
+.dropdown-item-icon{width:22px;height:22px;border-radius:5px;
+  background:rgba(59,130,246,0.12);display:flex;align-items:center;
+  justify-content:center;font-size:12px;flex-shrink:0}
+.dropdown-item-text{}
+.dropdown-item-sub{font-size:11px;color:var(--text-dim);margin-top:1px;font-family:var(--font-mono)}
+.dropdown-sep{height:1px;background:var(--border);margin:4px 0}
+.dropdown-chevron{margin-left:3px;font-size:10px;opacity:.5;transition:transform .15s}
+.nav-link.has-dropdown:hover .dropdown-chevron{transform:rotate(180deg)}
+
+/* ── HERO ── */
+.hero{
+  position:relative;height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding-top:56px;overflow:hidden;
+}
+
+/* dot-grid */
+.hero-grid{position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(59,130,246,0.13) 1px,transparent 1px);
+  background-size:32px 32px;opacity:.45;pointer-events:none}
+
+/* world map */
+.hero-map{position:absolute;inset:0;opacity:.17;pointer-events:none}
+.hero-map svg{width:100%;height:100%;object-fit:cover}
+
+/* gradient overlay */
+.hero-overlay{position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 55% 80% at 0% 50%, rgba(8,14,28,1) 0%, transparent 70%),
+    radial-gradient(ellipse 35% 60% at 85% 90%, rgba(8,14,28,.7) 0%, transparent 60%),
+    linear-gradient(to bottom, rgba(8,14,28,0) 55%, rgba(8,14,28,1) 100%);
+  pointer-events:none}
+
+.hero-inner{
+  position:relative;z-index:2;
+  /* Same left edge as nav logo = 48px */
+  padding:0 48px;
+  max-width:1280px;
+  width:100%;
+}
+
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent2);background:rgba(59,130,246,.1);
+  border:1px solid rgba(59,130,246,.25);border-radius:20px;padding:5px 14px;margin-bottom:28px}
+.hero-eyebrow::before{content:'';display:block;width:6px;height:6px;
+  background:var(--accent);border-radius:50%;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+.hero-title{
+  font-family:var(--font-serif);
+  font-size:clamp(40px,5vw,68px);
+  font-weight:400;line-height:1.08;letter-spacing:-.02em;
+  max-width:580px;margin-bottom:20px}
+.hero-title em{font-style:italic;color:var(--accent2)}
+
+.hero-subtitle{
+  font-size:15px;color:var(--text-mid);max-width:500px;
+  line-height:1.68;margin-bottom:36px;font-weight:300}
+
+.hero-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:52px}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;
+  background:var(--accent);color:white;border-radius:8px;font-size:14px;font-weight:500;
+  text-decoration:none;border:none;cursor:pointer;transition:background .15s,transform .1s}
+.btn-primary:hover{background:#2563EB;transform:translateY(-1px)}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;
+  background:transparent;color:var(--text-mid);border-radius:8px;font-size:14px;
+  text-decoration:none;border:1px solid var(--border2);transition:border-color .15s,color .15s}
+.btn-secondary:hover{border-color:rgba(255,255,255,.25);color:var(--text)}
+
+/* ── STATS STRIP ── */
+.stats-strip{
+  display:inline-flex;
+  gap:0;
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:10px;overflow:hidden;
+}
+.stat-item{
+  padding:18px 28px;
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;gap:5px;
+}
+.stat-item:last-child{border-right:none}
+.stat-val{
+  font-family:var(--font-mono);font-size:32px;font-weight:500;
+  color:var(--text);letter-spacing:-.025em;line-height:1}
+.stat-val .tilde{color:var(--text-mid);font-size:22px;font-weight:400;margin-right:1px}
+.stat-label{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--text-dim)}
+
+/* ── PREVIEW CARD ── */
+.preview-panel{
+  position:absolute;right:48px;top:50%;transform:translateY(-50%);
+  width:272px;background:var(--bg3);border:1px solid var(--border2);
+  border-radius:12px;padding:18px 20px;z-index:3;
+  box-shadow:0 24px 64px rgba(0,0,0,.5);
+  animation:fadeInUp .7s .3s ease both;
+}
+.preview-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.preview-title{font-size:14px;font-weight:600;color:var(--text)}
+.preview-verified{font-size:10px;font-family:var(--font-mono);color:var(--green);
+  background:var(--green-bg);border:1px solid rgba(52,211,153,.2);
+  border-radius:4px;padding:2px 7px;display:inline-flex;align-items:center;gap:4px}
+.preview-verified::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green)}
+.preview-sub{font-size:11px;color:var(--text-dim);font-family:var(--font-mono);margin-bottom:14px}
+.preview-row{display:flex;justify-content:space-between;align-items:center;
+  padding:7px 0;border-top:1px solid var(--border);font-size:12px}
+.preview-row-label{color:var(--text-dim)}
+.preview-row-val{color:var(--text);font-weight:500}
+.venue-list{margin-top:14px;display:flex;flex-direction:column;gap:5px}
+.venue-chip{display:flex;align-items:center;justify-content:space-between;
+  padding:7px 11px;background:var(--bg2);border-radius:6px;border:1px solid var(--border);font-size:11.5px}
+.venue-chip-name{color:var(--text-mid)}
+.venue-chip-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:.05em;
+  color:var(--accent2);background:rgba(59,130,246,.1);border-radius:3px;padding:2px 6px}
+
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.hero-inner{animation:fadeInUp .6s ease both}
+
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark">LR</div>
+    <span class="nav-logo-text">Listing Research</span>
+  </a>
+  <div class="nav-links">
+
+    <!-- Справочник с dropdown -->
+    <div class="nav-link has-dropdown" tabindex="0">
+      Справочник
+      <span class="dropdown-chevron">▾</span>
+      <div class="dropdown">
+        <a class="dropdown-item" href="#">
+          <div class="dropdown-item-icon">🗂</div>
+          <div class="dropdown-item-text">
+            <div>По юрисдикциям</div>
+            <div class="dropdown-item-sub">47 юрисдикций в периметре</div>
+          </div>
+        </a>
+        <div class="dropdown-sep"></div>
+        <a class="dropdown-item" href="#">
+          <div class="dropdown-item-icon">📋</div>
+          <div class="dropdown-item-text">
+            <div>По инструментам</div>
+            <div class="dropdown-item-sub">Акции, облигации, фонды, DR</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <a class="nav-link" href="#">Анализ <span class="nav-badge">SOON</span></a>
+    <a class="nav-link" href="#">Ассистент <span class="nav-badge">SOON</span></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+
+  <!-- SVG world map -->
+  <div class="hero-map">
+    <svg viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <g fill="rgba(59,130,246,0.35)" stroke="none">
+        <path d="M95 80 Q180 70 220 90 Q260 110 280 150 Q290 180 270 210 Q250 240 220 260 Q190 270 170 250 Q140 230 120 200 Q90 170 85 140 Q80 110 95 80Z"/>
+        <path d="M200 280 Q250 270 270 300 Q290 330 280 380 Q270 420 240 440 Q210 450 190 430 Q170 410 165 370 Q160 330 175 300 Q185 285 200 280Z"/>
+        <path d="M520 60 Q580 50 610 80 Q630 100 620 130 Q610 150 580 160 Q550 165 530 145 Q510 125 515 95 Q518 72 520 60Z"/>
+        <path d="M530 160 Q590 150 620 180 Q650 220 650 280 Q648 340 620 380 Q590 410 555 410 Q520 405 500 370 Q480 330 485 270 Q490 210 510 180 Q520 162 530 160Z"/>
+        <path d="M640 55 Q780 45 900 70 Q980 90 1020 120 Q1060 150 1040 200 Q1020 240 960 260 Q880 280 800 260 Q720 240 680 200 Q640 160 635 110 Q633 75 640 55Z"/>
+        <path d="M900 300 Q970 285 1010 310 Q1050 340 1045 390 Q1038 430 1000 445 Q960 455 930 435 Q895 410 890 370 Q885 330 900 300Z"/>
+      </g>
+      <!-- Venue dots -->
+      <g>
+        <circle cx="532" cy="88" r="3.5" fill="rgba(96,165,250,0.9)"/><!-- London -->
+        <circle cx="895" cy="175" r="3.5" fill="rgba(96,165,250,0.9)"/><!-- HK -->
+        <circle cx="890" cy="232" r="3" fill="rgba(96,165,250,0.7)"/><!-- Singapore -->
+        <circle cx="245" cy="120" r="3" fill="rgba(240,160,48,0.8)"/><!-- NY -->
+        <circle cx="960" cy="122" r="3" fill="rgba(96,165,250,0.6)"/><!-- Tokyo -->
+        <circle cx="570" cy="92" r="2.5" fill="rgba(96,165,250,0.5)"/><!-- Frankfurt -->
+        <circle cx="555" cy="85" r="2.5" fill="rgba(96,165,250,0.5)"/><!-- Paris -->
+      </g>
+      <!-- Connection lines -->
+      <g stroke="rgba(59,130,246,0.18)" stroke-width="1" fill="none" stroke-dasharray="4 7">
+        <path d="M532 88 Q390 55 245 120"/>
+        <path d="M532 88 Q720 55 895 175"/>
+        <path d="M532 88 Q700 200 890 232"/>
+        <path d="M245 120 Q600 60 960 122"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Research Database</div>
+
+    <h1 class="hero-title">
+      Глобальный справочник<br>
+      <em>листинговых режимов</em>
+    </h1>
+
+    <p class="hero-subtitle">
+      Структурированная аналитическая база регуляторных требований к листингу ценных бумаг: акций, облигаций, фондов, депозитарных расписок. Охватывает весь жизненный цикл: допуск, поддержание, исключение.
+    </p>
+
+    <div class="hero-actions">
+      <a class="btn-primary" href="#">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Юрисдикции
+      </a>
+      <a class="btn-secondary" href="#">
+        Инструменты
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- STATS STRIP -->
+    <div class="stats-strip">
+      <div class="stat-item">
+        <div class="stat-val">47</div>
+        <div class="stat-label">Юрисдикций</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">65</div>
+        <div class="stat-label">Площадок</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">4</div>
+        <div class="stat-label">Класса инстр.</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val"><span class="tilde">~</span>1000</div>
+        <div class="stat-label">Режимов</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREVIEW CARD -->
+  <div class="preview-panel">
+    <div class="preview-header">
+      <div>
+        <div class="preview-title">Великобритания</div>
+      </div>
+      <span class="preview-verified">Верифицировано</span>
+    </div>
+    <div class="preview-sub">United Kingdom · common law</div>
+    <div class="preview-row">
+      <span class="preview-row-label">Торговых площадок</span>
+      <span class="preview-row-val">3</span>
+    </div>
+    <div class="preview-row">
+      <span class="preview-row-label">Орган листинга</span>
+      <span class="preview-row-val">FCA</span>
+    </div>
+    <div class="venue-list">
+      <div class="venue-chip">
+        <span class="venue-chip-name">London Stock Exchange</span>
+        <span class="venue-chip-tag">REG</span>
+      </div>
+      <div class="venue-chip">
+        <span class="venue-chip-name">AIM</span>
+        <span class="venue-chip-tag">MTF</span>
+      </div>
+      <div class="venue-chip">
+        <span class="venue-chip-name">Aquis Stock Exchange</span>
+        <span class="venue-chip-tag">REG</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+</body>
+</html>

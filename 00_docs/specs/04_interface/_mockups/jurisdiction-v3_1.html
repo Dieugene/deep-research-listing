@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Великобритания — Listing Research</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA;--bg2:#FFFFFF;--bg3:#F0F2F7;--bg4:#E4E8F2;
+  --border:rgba(0,0,0,0.11);--border2:rgba(0,0,0,0.18);
+  --text:#111827;--text-dim:#9CA3AF;--text-mid:#4B5563;
+  --accent:#2563EB;--accent2:#3B82F6;--accent-bg:rgba(37,99,235,0.06);--accent-bg2:rgba(37,99,235,0.12);
+  --green:#059669;--green-bg:rgba(5,150,105,0.07);--green-border:rgba(5,150,105,0.2);
+  --orange:#D97706;--orange-bg:rgba(217,119,6,0.07);
+  --red:#DC2626;--red-bg:rgba(220,38,38,0.06);
+  --yellow:#B45309;--yellow-bg:rgba(245,158,11,0.08);
+  --font-serif:'Newsreader',Georgia,serif;
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --r:8px;--r-lg:12px;
+}
+html,body{overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.6}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;height:56px;display:flex;align-items:center;padding:0 40px;
+  background:rgba(255,255,255,0.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo-mark{width:30px;height:30px;background:var(--accent);border-radius:7px;display:flex;
+  align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:#fff;font-weight:500}
+.nav-logo-text{font-size:14px;font-weight:500}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:auto}
+.nav-link{padding:6px 14px;border-radius:6px;font-size:13.5px;color:var(--text-mid);
+  transition:color .15s,background .15s;display:flex;align-items:center;gap:6px}
+.nav-link:hover{color:var(--text);background:var(--bg3)}
+.nav-link.active{color:var(--accent);background:var(--accent-bg);font-weight:500}
+.nav-badge{font-size:10px;font-family:var(--font-mono);color:var(--text-dim);background:var(--bg3);
+  border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+
+/* BREADCRUMB */
+.breadcrumb{max-width:1280px;margin:0 auto;padding:18px 40px 0;display:flex;align-items:center;
+  gap:7px;font-size:12px;font-family:var(--font-mono);color:var(--text-dim)}
+.breadcrumb a:hover{color:var(--accent)}
+.bc-sep{color:var(--border2)}
+
+/* PAGE HEADER */
+.page-header{max-width:1280px;margin:0 auto;padding:24px 40px 28px;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.ph-left{display:flex;align-items:center;gap:20px}
+.ph-flag{flex-shrink:0;line-height:1}
+.ph-flag svg{display:block}
+.ph-title{font-family:var(--font-serif);font-size:40px;font-weight:400;letter-spacing:-.025em;line-height:1.1;margin-bottom:4px}
+.ph-sub{font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);letter-spacing:.07em;text-transform:uppercase}
+.verified-badge{display:inline-flex;align-items:center;gap:7px;background:var(--green-bg);
+  border:1px solid var(--green-border);border-radius:var(--r);padding:9px 16px;
+  font-size:12px;color:var(--green);font-family:var(--font-mono);white-space:nowrap;flex-shrink:0;margin-bottom:4px}
+.verified-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* PAGE TABS */
+.page-tabs-wrap{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:56px;z-index:100}
+.page-tabs{max-width:1280px;margin:0 auto;padding:0 40px;display:flex}
+.page-tab{padding:13px 20px;font-size:13.5px;color:var(--text-mid);cursor:pointer;
+  border-bottom:2px solid transparent;transition:color .15s,border-color .15s;
+  display:flex;align-items:center;gap:7px;white-space:nowrap;user-select:none}
+.page-tab:hover{color:var(--text)}
+.page-tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500}
+.tab-count{font-family:var(--font-mono);font-size:11px;background:var(--bg3);
+  border:1px solid var(--border2);border-radius:10px;padding:1px 7px;color:var(--text-dim)}
+.page-tab.active .tab-count{background:var(--accent-bg);border-color:rgba(37,99,235,.2);color:var(--accent)}
+
+/* TAB PANELS */
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* CONTENT */
+.content{max-width:1280px;margin:0 auto;padding:28px 40px 80px}
+
+/* CARD */
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;
+  box-shadow:0 1px 4px rgba(0,0,0,.08),0 0 0 0.5px rgba(0,0,0,.04)}
+.card-hd{padding:14px 22px;border-bottom:1px solid var(--border);background:var(--bg);
+  display:flex;align-items:center;justify-content:space-between}
+.card-title{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)}
+.card-body{padding:22px 24px}
+.card-divider{height:1px;background:var(--border);margin:0 24px}
+
+/* SOURCE SYSTEM */
+sup.cite{font-family:var(--font-mono);font-size:9px;color:var(--accent);background:var(--accent-bg);
+  border-radius:3px;padding:1px 4px;margin-left:1px;vertical-align:super;line-height:0;
+  border:1px solid rgba(37,99,235,.15);cursor:pointer}
+sup.cite:hover{background:var(--accent-bg2)}
+.src-btn{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;
+  color:var(--text-dim);background:var(--bg3);border:1px solid var(--border2);
+  border-radius:5px;padding:3px 9px;cursor:pointer;text-decoration:none;transition:color .12s,border-color .12s}
+.src-btn:hover{color:var(--accent);border-color:rgba(37,99,235,.3)}
+.sources-list{border-top:1px solid var(--border);padding:14px 24px;
+  display:flex;flex-direction:column;gap:7px;background:var(--bg)}
+.src-item{display:flex;align-items:baseline;gap:10px;font-size:12px}
+.src-num{font-family:var(--font-mono);font-size:10px;color:var(--accent);background:var(--accent-bg);
+  border:1px solid rgba(37,99,235,.15);border-radius:3px;padding:1px 5px;flex-shrink:0}
+.src-text{color:var(--text-mid);line-height:1.5}
+.src-link{color:var(--accent);font-family:var(--font-mono);font-size:11px}
+.src-link:hover{text-decoration:underline}
+
+/* ARCH TEXT */
+.arch-text{font-size:14px;line-height:1.78;color:var(--text-mid);font-weight:300;margin-bottom:14px}
+.arch-text strong{color:var(--text);font-weight:500}
+.arch-note{font-style:italic;font-size:12.5px;color:var(--text-dim);border-left:2px solid var(--border2);
+  padding:8px 0 8px 14px;margin-top:10px;font-family:var(--font-serif);line-height:1.7}
+
+/* REGULATOR MINI TABLE */
+.reg-table{width:100%;border-collapse:collapse}
+.reg-table tr{border-bottom:1px solid var(--border)}
+.reg-table tr:last-child{border-bottom:none}
+.reg-table td{padding:10px 0;font-size:13.5px;vertical-align:top}
+.reg-table td:first-child{color:var(--text-dim);font-family:var(--font-mono);font-size:10.5px;
+  letter-spacing:.05em;text-transform:uppercase;width:150px;padding-top:12px}
+
+/* ── VENUE MINI-CARDS (right column) ── */
+.venue-mini{display:flex;flex-direction:column;gap:8px}
+.venue-mini-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);
+  padding:14px 16px;cursor:pointer;transition:border-color .15s,box-shadow .15s,background .12s;
+  display:flex;flex-direction:column;gap:10px}
+.venue-mini-card:hover{border-color:var(--accent2);box-shadow:0 2px 10px rgba(37,99,235,.09);background:#FAFBFF}
+.venue-mini-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.venue-mini-name{font-size:13px;font-weight:500;color:var(--text);line-height:1.3}
+.venue-mini-en{font-size:10.5px;color:var(--text-dim);margin-top:2px;font-family:var(--font-mono)}
+.vtype{font-family:var(--font-mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 7px;border-radius:4px;flex-shrink:0;margin-top:1px;white-space:nowrap}
+.vtype.reg{background:var(--accent-bg);color:var(--accent);border:1px solid rgba(37,99,235,.2)}
+.vtype.mtf{background:var(--yellow-bg);color:var(--yellow);border:1px solid rgba(217,119,6,.2)}
+.venue-mini-foot{display:flex;align-items:center;justify-content:space-between}
+.venue-mini-stats{display:flex;gap:12px;font-size:11.5px;color:var(--text-dim)}
+.vms-val{font-family:var(--font-mono);color:var(--text-mid)}
+.venue-mini-arrow{font-size:12px;color:var(--text-dim);transition:color .12s,transform .12s}
+.venue-mini-card:hover .venue-mini-arrow{color:var(--accent);transform:translateX(2px)}
+
+.venues-col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.venues-col-title{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)}
+.venues-col-count{font-family:var(--font-mono);font-size:11px;background:var(--bg3);
+  border:1px solid var(--border2);border-radius:10px;padding:1px 7px;color:var(--text-dim)}
+
+/* FIRST SCREEN GRID */
+.first-screen{display:grid;grid-template-columns:1fr 340px;gap:20px;margin-bottom:20px;align-items:start}
+
+/* METRICS */
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.metric-card{background:var(--bg3);border-radius:var(--r);padding:14px 16px}
+.metric-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:6px}
+.metric-value{font-size:22px;font-weight:500;font-family:var(--font-mono);color:var(--text);letter-spacing:-.02em}
+.metric-sub{font-size:11px;color:var(--text-dim);margin-top:3px}
+.metric-bar-wrap{margin-top:8px;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.metric-bar{height:100%;border-radius:2px;background:var(--accent2)}
+
+/* CLUSTER */
+.cluster-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.cluster-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;
+  background:var(--bg3);border:1px solid var(--border2);border-radius:6px;
+  font-size:12.5px;color:var(--text-mid);cursor:pointer;transition:border-color .12s,color .12s}
+.cluster-chip:hover{border-color:var(--accent2);color:var(--accent)}
+.cluster-chip .flag{font-size:14px}
+.cluster-chip .sim{font-family:var(--font-mono);font-size:10px;color:var(--text-dim)}
+
+/* BOTTOM GRID */
+.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+/* MAP TABLE */
+.map-table{width:100%;border-collapse:collapse}
+.map-table thead tr{border-bottom:1px solid var(--border2)}
+.map-table thead th{padding:0 0 11px;text-align:left;font-family:var(--font-mono);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);font-weight:400}
+.map-table tbody tr{border-bottom:1px solid var(--border)}
+.map-table tbody tr:last-child{border-bottom:none}
+.map-table tbody tr:hover{background:var(--bg)}
+.map-table td{padding:9px 0;font-size:13px}
+.map-table td:first-child{font-style:italic;color:var(--text-mid);width:45%;padding-right:20px;font-family:var(--font-serif)}
+.map-table td:last-child{color:var(--text-mid);font-weight:300}
+
+/* TERMS ACCORDION */
+.terms-toggle{width:100%;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;
+  background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);cursor:pointer;
+  font-size:14px;font-weight:500;color:var(--text);transition:background .12s;text-align:left;margin-bottom:2px}
+.terms-toggle:hover{background:var(--bg3)}
+.terms-toggle .arrow{font-size:12px;color:var(--text-dim);transition:transform .2s}
+.terms-toggle.open .arrow{transform:rotate(180deg)}
+.terms-toggle.open{border-radius:var(--r-lg) var(--r-lg) 0 0;margin-bottom:0}
+.terms-body{display:none;border:1px solid var(--border);border-top:none;
+  border-radius:0 0 var(--r-lg) var(--r-lg);overflow:hidden;margin-bottom:10px}
+.terms-body.open{display:block}
+
+/* ANALYSIS */
+.analysis-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.view-toggle{display:flex;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:3px;gap:2px}
+.vt-btn{padding:6px 14px;border-radius:6px;font-size:12.5px;color:var(--text-mid);cursor:pointer;
+  border:none;background:none;transition:all .15s;display:flex;align-items:center;gap:6px;font-family:var(--font-sans)}
+.vt-btn.active{background:#fff;color:var(--accent);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+
+.analysis-type-section{margin-bottom:24px}
+.type-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.type-label{font-size:15px;font-weight:500;color:var(--text)}
+.count-badge{font-family:var(--font-mono);font-size:11px;border-radius:10px;padding:2px 8px;border:1px solid}
+.cb-red{background:var(--red-bg);color:var(--red);border-color:rgba(220,38,38,.2)}
+.cb-orange{background:var(--orange-bg);color:var(--orange);border-color:rgba(217,119,6,.2)}
+.cb-blue{background:var(--accent-bg);color:var(--accent);border-color:rgba(37,99,235,.2)}
+.cb-gray{background:var(--bg3);color:var(--text-dim);border-color:var(--border2)}
+
+.analysis-entry{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:20px 22px;margin-bottom:10px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.entry-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:12px}
+.entry-title{font-size:14px;font-weight:500;color:var(--text);flex:1}
+.period-tag{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;
+  color:var(--accent);background:var(--accent-bg);border:1px solid rgba(37,99,235,.15);
+  border-radius:4px;padding:2px 8px;white-space:nowrap;flex-shrink:0}
+.period-tag::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.5;flex-shrink:0}
+.entry-text{font-size:13.5px;line-height:1.75;color:var(--text-mid);font-weight:300;margin-bottom:12px}
+.entry-text strong{color:var(--text);font-weight:500}
+
+.conflict-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.conf-side{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.conf-side-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:5px}
+.conf-side-text{font-size:12.5px;color:var(--text-mid);line-height:1.65;font-weight:300}
+.resolution{background:rgba(5,150,105,.05);border:1px solid rgba(5,150,105,.15);border-radius:var(--r);padding:12px 14px;margin-bottom:12px}
+.resolution-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:5px}
+.resolution-text{font-size:12.5px;color:var(--text-mid);line-height:1.65;font-weight:300}
+
+.entry-sources{display:flex;flex-wrap:wrap;gap:6px}
+.esrc{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);cursor:pointer;
+  border-bottom:1px dashed var(--border2);transition:color .12s,border-color .12s;line-height:1.8}
+.esrc:hover{color:var(--accent);border-color:var(--accent)}
+
+/* TIMELINE */
+.tl-legend{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.tl-leg{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-mid)}
+.tl-leg-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+
+.tl-axis-wrap{position:relative;height:28px;margin-bottom:2px}
+.tl-axis-line{position:absolute;left:0;right:0;top:14px;height:1px;background:var(--border2)}
+.tl-year{position:absolute;font-size:11px;font-family:var(--font-mono);color:var(--text-dim);
+  transform:translateX(-50%);top:0;user-select:none}
+.tl-tick{position:absolute;width:1px;height:6px;background:var(--border2);top:9px;transform:translateX(-50%)}
+
+/* Single chronological canvas */
+.tl-canvas{position:relative;overflow:visible}
+
+/* Bar (period event — wide enough for label) */
+.tl-bar{position:absolute;height:26px;border-radius:5px;cursor:pointer;
+  display:flex;align-items:center;padding:0 8px;
+  font-size:11px;font-weight:500;white-space:nowrap;overflow:hidden;
+  border:1px solid transparent;user-select:none;
+  transition:filter .15s,transform .1s,box-shadow .1s}
+.tl-bar:hover{filter:brightness(.92);transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.tl-bar.sel{transform:translateY(-1px);box-shadow:0 2px 10px rgba(0,0,0,.14);outline:2px solid rgba(37,99,235,.3);outline-offset:1px}
+.tl-bar.problem{background:#FEE2E2;color:#991B1B;border-color:#FECACA}
+.tl-bar.contra {background:#FEF3C7;color:#92400E;border-color:#FDE68A}
+.tl-bar.reform {background:#DBEAFE;color:#1E40AF;border-color:#BFDBFE}
+.tl-bar.tool   {background:#D1FAE5;color:#065F46;border-color:#A7F3D0}
+
+/* Segment (short period — rendered as line with end-dots) */
+.tl-seg{position:absolute;cursor:pointer;user-select:none}
+.tl-seg-line{position:absolute;height:2px;border-radius:1px;
+  transition:opacity .15s,transform .1s}
+.tl-seg:hover .tl-seg-line{opacity:.75;transform:translateY(-1px)}
+.tl-seg.sel .tl-seg-line{outline:none}
+.tl-seg-dot{position:absolute;width:7px;height:7px;border-radius:50%;
+  border:2px solid #fff;top:50%;transform:translateY(-50%);
+  box-shadow:0 1px 3px rgba(0,0,0,.15);
+  transition:transform .1s}
+.tl-seg:hover .tl-seg-dot{transform:translateY(-50%) scale(1.3)}
+.tl-seg.sel .tl-seg-dot{transform:translateY(-50%) scale(1.35);box-shadow:0 0 0 3px rgba(37,99,235,.2)}
+.tl-seg.problem .tl-seg-line{background:#EF4444}
+.tl-seg.problem .tl-seg-dot{background:#EF4444}
+.tl-seg.contra  .tl-seg-line{background:#F59E0B}
+.tl-seg.contra  .tl-seg-dot{background:#F59E0B}
+.tl-seg.reform  .tl-seg-line{background:#3B82F6}
+.tl-seg.reform  .tl-seg-dot{background:#3B82F6}
+.tl-seg.tool    .tl-seg-line{background:#10B981}
+.tl-seg.tool    .tl-seg-dot{background:#10B981}
+
+/* Floating label above (for segments + short bars) */
+.tl-float-label{position:absolute;font-size:10.5px;font-weight:500;
+  white-space:nowrap;pointer-events:none;line-height:1}
+.tl-float-label.problem{color:#991B1B}
+.tl-float-label.contra {color:#92400E}
+.tl-float-label.reform {color:#1E40AF}
+.tl-float-label.tool   {color:#065F46}
+.tl-leader{position:absolute;width:1px;pointer-events:none}
+.tl-leader.problem{background:#FECACA}
+.tl-leader.contra {background:#FDE68A}
+.tl-leader.reform {background:#BFDBFE}
+.tl-leader.tool   {background:#A7F3D0}
+
+/* Point (single year) — diamond marker */
+.tl-diamond{position:absolute;width:10px;height:10px;cursor:pointer;
+  transform:translateX(-50%) rotate(45deg);
+  border:1.5px solid #fff;
+  transition:transform .1s,box-shadow .1s;
+  box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.tl-diamond:hover{transform:translateX(-50%) rotate(45deg) scale(1.4)}
+.tl-diamond.sel{transform:translateX(-50%) rotate(45deg) scale(1.25);
+  box-shadow:0 0 0 3px rgba(37,99,235,.25)}
+.tl-diamond.problem{background:#EF4444}
+.tl-diamond.contra {background:#F59E0B}
+.tl-diamond.reform {background:#3B82F6}
+.tl-diamond.tool   {background:#10B981}
+
+/* ── DRAWER OVERLAY ── */
+.drawer-backdrop{position:fixed;top:112px;left:0;right:0;bottom:0;background:rgba(0,0,0,0);z-index:400;
+  pointer-events:none;transition:background .25s;visibility:hidden}
+.drawer-backdrop.open{background:rgba(0,0,0,0.12);pointer-events:all;visibility:visible}
+.drawer{position:fixed;top:112px;right:0;bottom:0;width:420px;
+  background:#fff;border-left:1px solid var(--border);
+  z-index:401;transform:translateX(110%);visibility:hidden;
+  transition:transform .28s cubic-bezier(.4,0,.2,1), visibility 0s linear .28s;
+  display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:-4px 0 24px rgba(0,0,0,.08)}
+.drawer.open{transform:translateX(0);visibility:visible;
+  transition:transform .28s cubic-bezier(.4,0,.2,1), visibility 0s linear 0s}
+.drawer.open{transform:translateX(0)}
+.drawer-hd{padding:20px 24px 16px;border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-shrink:0}
+.drawer-hd-left{flex:1;min-width:0}
+.drawer-title{font-size:15px;font-weight:500;color:var(--text);line-height:1.35;margin-bottom:8px}
+.drawer-badges{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.drawer-close{width:30px;height:30px;border-radius:6px;border:1px solid var(--border2);
+  background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--text-dim);font-size:16px;flex-shrink:0;transition:background .12s,color .12s;
+  line-height:1}
+.drawer-close:hover{background:var(--bg3);color:var(--text)}
+.drawer-body{padding:20px 24px;overflow-y:auto;flex:1}
+.drawer-text{font-size:13.5px;line-height:1.78;color:var(--text-mid);font-weight:300;margin-bottom:16px}
+.drawer-text strong{color:var(--text);font-weight:500}
+.drawer-conflict{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.drawer-conf-side{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.drawer-conf-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--text-dim);margin-bottom:5px}
+.drawer-conf-text{font-size:12.5px;color:var(--text-mid);line-height:1.65;font-weight:300}
+.drawer-resolution{background:rgba(5,150,105,.05);border:1px solid rgba(5,150,105,.15);
+  border-radius:var(--r);padding:12px 14px;margin-bottom:14px}
+.drawer-res-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--green);margin-bottom:5px}
+.drawer-res-text{font-size:12.5px;color:var(--text-mid);line-height:1.65;font-weight:300}
+.drawer-sources-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--text-dim);margin-bottom:8px}
+.drawer-sources{display:flex;flex-direction:column;gap:5px}
+.drawer-src{font-family:var(--font-mono);font-size:11.5px;color:var(--accent);
+  cursor:pointer;text-decoration:none;line-height:1.6}
+.drawer-src:hover{text-decoration:underline}
+
+.tl-cat{font-size:9.5px;font-family:var(--font-mono);letter-spacing:.08em;text-transform:uppercase;
+  padding:2px 8px;border-radius:4px;flex-shrink:0}
+.tl-cat.problem{background:var(--red-bg);color:var(--red)}
+.tl-cat.contra {background:var(--yellow-bg);color:var(--yellow)}
+.tl-cat.reform {background:var(--accent-bg);color:var(--accent)}
+.tl-cat.tool   {background:var(--green-bg);color:var(--green)}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+@keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.page-header{animation:fadeInUp .4s ease both}
+.page-tabs-wrap{animation:fadeInUp .4s .05s ease both}
+.content{animation:fadeInUp .4s .1s ease both}
+
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark">LR</div>
+    <span class="nav-logo-text">Listing Research</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="#">Главная</a>
+    <a class="nav-link active" href="#">Справочник</a>
+    <a class="nav-link" href="#">Каталог параметров</a>
+    <a class="nav-link" href="#">Анализ <span class="nav-badge">SOON</span></a>
+    <a class="nav-link" href="#">Ассистент <span class="nav-badge">SOON</span></a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="#">Главная</a><span class="bc-sep">›</span>
+  <a href="#">Справочник</a><span class="bc-sep">›</span>
+  <span style="color:var(--text-mid)">Великобритания</span>
+</div>
+
+<div class="page-header">
+  <div class="ph-left">
+    <div class="ph-flag">
+      <svg width="48" height="48" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" style="border-radius:5px;display:block">
+        <rect width="60" height="40" fill="#012169"/>
+        <path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/>
+        <path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="5"/>
+        <path d="M30,0 V40 M0,20 H60" stroke="#fff" stroke-width="12"/>
+        <path d="M30,0 V40 M0,20 H60" stroke="#C8102E" stroke-width="8"/>
+      </svg>
+    </div>
+    <div>
+      <h1 class="ph-title">Великобритания</h1>
+      <div class="ph-sub">United Kingdom · Common Law · Western Europe</div>
+    </div>
+  </div>
+  <div class="verified-badge">Верифицировано</div>
+</div>
+
+<div class="page-tabs-wrap">
+  <div class="page-tabs">
+    <div class="page-tab active" onclick="switchTab('juri',this)">Юрисдикция</div>
+    <div class="page-tab" onclick="switchTab('analysis',this)">Регуляторный анализ <span class="tab-count">18</span></div>
+    <div class="page-tab" onclick="switchTab('terms',this)">Термины <span class="tab-count">12</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     TAB: ЮРИСДИКЦИЯ
+══════════════════════════════════ -->
+<div id="tab-juri" class="tab-panel active">
+<div class="content">
+
+  <!-- ПЕРВЫЙ ЭКРАН: архитектура+регулятор слева, площадки справа -->
+  <div class="first-screen">
+
+    <!-- ЛЕВАЯ КОЛОНКА: архитектура + регулятор -->
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Архитектура допуска</span>
+        <a class="src-btn" href="#">
+          <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          3 источника
+        </a>
+      </div>
+      <div class="card-body">
+        <p class="arch-text">Раздельная модель <strong>«двух ворот»</strong>:<sup class="cite"><a href="#src-a1">1</a></sup> FCA (компетентный орган по FSMA 2000, Часть VI) ведёт Official List и принимает решения об официальном листинге; допуск к торгам на конкретную площадку решает каждая Recognised Investment Exchange (RIE) по своим правилам.<sup class="cite"><a href="#src-a2">2</a></sup></p>
+        <p class="arch-text">Ряд MTF-сегментов (AIM, PSM, ISM) допускают ценные бумаги без включения в Official List. Проспекты и публичные предложения регулируются POATRs (с 19.01.2026)<sup class="cite"><a href="#src-a3">3</a></sup> и руководством FCA PRM.</p>
+        <p class="arch-note">Separate two-gate model: the FCA maintains the Official List and decides official listing; admission to trading is decided by each RIE under its own rulebook.</p>
+      </div>
+
+      <!-- РЕГУЛЯТОР — компактная плашка -->
+      <div class="card-divider"></div>
+      <div style="padding:14px 24px;display:flex;flex-wrap:wrap;gap:0;background:var(--bg)">
+        <div style="display:flex;align-items:baseline;gap:0;flex-wrap:wrap;gap:20px;width:100%">
+          <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);flex-shrink:0;align-self:center">Регулятор</span>
+          <span style="font-size:13.5px;font-weight:500;color:var(--text)">Financial Conduct Authority (FCA)</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:11px;color:var(--text-dim);background:#fff;border:1px solid var(--border2);border-radius:4px;padding:2px 8px">commission</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:11px;color:var(--text-dim);background:#fff;border:1px solid var(--border2);border-radius:4px;padding:2px 8px">common law</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:11px;color:var(--text-dim);background:#fff;border:1px solid var(--border2);border-radius:4px;padding:2px 8px">осн. 2013</span>
+        </div>
+      </div>
+
+      <div class="sources-list">
+        <div id="src-a1" class="src-item"><span class="src-num">1</span><span class="src-text">FSMA 2000, Part VI — <a class="src-link" href="#">legislation.gov.uk ↗</a></span></div>
+        <div id="src-a2" class="src-item"><span class="src-num">2</span><span class="src-text">FCA UK Listing Rules (UKLR) — <a class="src-link" href="#">fca.org.uk ↗</a></span></div>
+        <div id="src-a3" class="src-item"><span class="src-num">3</span><span class="src-text">Public Offers and Admissions to Trading Regulations 2024 — <a class="src-link" href="#">legislation.gov.uk ↗</a></span></div>
+      </div>
+    </div>
+
+    <!-- ПРАВАЯ КОЛОНКА: площадки -->
+    <div>
+      <div class="venues-col-header">
+        <span class="venues-col-title">Торговые площадки</span>
+        <span class="venues-col-count">3</span>
+      </div>
+      <div class="venue-mini">
+
+        <div class="venue-mini-card">
+          <div class="venue-mini-hd">
+            <div>
+              <div class="venue-mini-name">LSE — Основной рынок</div>
+              <div class="venue-mini-en">London Stock Exchange — Main Market</div>
+            </div>
+            <span class="vtype reg">Regulated</span>
+          </div>
+          <div class="venue-mini-foot">
+            <div class="venue-mini-stats">
+              <span>Параметров: <span class="vms-val">10</span></span>
+              <span>Сегментов: <span class="vms-val">4</span></span>
+            </div>
+            <span class="venue-mini-arrow">→</span>
+          </div>
+        </div>
+
+        <div class="venue-mini-card">
+          <div class="venue-mini-hd">
+            <div>
+              <div class="venue-mini-name">AIM</div>
+              <div class="venue-mini-en">AIM — London Stock Exchange</div>
+            </div>
+            <span class="vtype mtf">MTF</span>
+          </div>
+          <div class="venue-mini-foot">
+            <div class="venue-mini-stats">
+              <span>Параметров: <span class="vms-val">2</span></span>
+              <span>Сегментов: <span class="vms-val">1</span></span>
+            </div>
+            <span class="venue-mini-arrow">→</span>
+          </div>
+        </div>
+
+        <div class="venue-mini-card">
+          <div class="venue-mini-hd">
+            <div>
+              <div class="venue-mini-name">Фондовая биржа Aquis</div>
+              <div class="venue-mini-en">Aquis Stock Exchange</div>
+            </div>
+            <span class="vtype reg">Regulated</span>
+          </div>
+          <div class="venue-mini-foot">
+            <div class="venue-mini-stats">
+              <span>Параметров: <span class="vms-val">6</span></span>
+              <span>Сегментов: <span class="vms-val">2</span></span>
+            </div>
+            <span class="venue-mini-arrow">→</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ВТОРОЙ ЭКРАН: метрики + кластеры -->
+  <div class="bottom-grid">
+
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Институциональные метрики</span>
+        <span style="font-size:11px;font-family:var(--font-mono);color:var(--text-dim)">World Bank WGI · WDI · placeholder</span>
+      </div>
+      <div class="card-body">
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label">Rule of Law</div>
+            <div class="metric-value">1.74</div>
+            <div class="metric-sub">WGI 2022, p92</div>
+            <div class="metric-bar-wrap"><div class="metric-bar" style="width:92%"></div></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Reg. Quality</div>
+            <div class="metric-value">1.68</div>
+            <div class="metric-sub">WGI 2022, p90</div>
+            <div class="metric-bar-wrap"><div class="metric-bar" style="width:90%"></div></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Gov. Effect.</div>
+            <div class="metric-value">1.42</div>
+            <div class="metric-sub">WGI 2022, p88</div>
+            <div class="metric-bar-wrap"><div class="metric-bar" style="width:88%"></div></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Market Cap/GDP</div>
+            <div class="metric-value">96%</div>
+            <div class="metric-sub">WDI 2022</div>
+            <div class="metric-bar-wrap"><div class="metric-bar" style="width:62%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd">
+        <span class="card-title">Схожие юрисдикции</span>
+        <span style="font-size:11px;font-family:var(--font-mono);color:var(--text-dim)">по институциональным факторам</span>
+      </div>
+      <div class="card-body">
+        <p style="font-size:13px;color:var(--text-mid);margin-bottom:14px;font-weight:300;line-height:1.65">Common law, высокие WGI, развитые рынки капитала. Используется для сравнительного анализа при выборе режима листинга.</p>
+        <div class="cluster-list">
+          <div class="cluster-chip"><span class="flag">🇭🇰</span> Гонконг <span class="sim">0.91</span></div>
+          <div class="cluster-chip"><span class="flag">🇦🇺</span> Австралия <span class="sim">0.87</span></div>
+          <div class="cluster-chip"><span class="flag">🇸🇬</span> Сингапур <span class="sim">0.85</span></div>
+          <div class="cluster-chip"><span class="flag">🇨🇦</span> Канада <span class="sim">0.82</span></div>
+          <div class="cluster-chip"><span class="flag">🇺🇸</span> США <span class="sim">0.78</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════
+     TAB: РЕГУЛЯТОРНЫЙ АНАЛИЗ
+══════════════════════════════════ -->
+<div id="tab-analysis" class="tab-panel">
+<div class="content">
+
+  <div class="analysis-toolbar">
+    <div class="view-toggle">
+      <button class="vt-btn" id="btn-list" onclick="switchView('list')">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        Список
+      </button>
+      <button class="vt-btn active" id="btn-tl" onclick="switchView('timeline')">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><circle cx="8" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="16" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="13" cy="17" r="2" fill="currentColor" stroke="none"/></svg>
+        Таймлайн
+      </button>
+    </div>
+    <button style="padding:6px 12px;font-size:12px;border:1px solid var(--border2);background:var(--bg3);border-radius:var(--r);color:var(--text-mid);cursor:pointer;font-family:var(--font-sans)">Все типы ▾</button>
+  </div>
+
+  <!-- LIST VIEW (скрыт по умолчанию) -->
+  <div id="list-view" style="display:none">
+    <div class="analysis-type-section">
+      <div class="type-header"><span class="type-label">Проблемы</span><span class="count-badge cb-red">6</span></div>
+      <div class="analysis-entry">
+        <div class="entry-top">
+          <div class="entry-title">Снижение конкурентоспособности рынка публичного капитала</div>
+          <span class="period-tag">2015 – 2021</span>
+        </div>
+        <div class="entry-text">Рынок публичного капитала Великобритании сжимался. <strong>~40% сокращение</strong> числа компаний, допущенных к листингу, по сравнению с пиком 2008 года; лишь ~5% доли в глобальных IPO в 2015–2020.</div>
+        <div class="entry-sources"><span class="esrc">PS21/22: Primary Market Effectiveness Review ↗</span><span class="esrc">UK Listings Review (Lord Hill) ↗</span></div>
+      </div>
+      <div class="analysis-entry">
+        <div class="entry-top">
+          <div class="entry-title">Слабость защиты миноритариев в компаниях с контролирующим акционером</div>
+          <span class="period-tag">2013 – 2014</span>
+        </div>
+        <div class="entry-text">После провалов корпоративного управления в ENRC и Bumi FCA зафиксировала серьёзные недостатки: советы директоров не сдерживали контролирующих акционеров.</div>
+        <div class="entry-sources"><span class="esrc">FCA CP13/15 Consultation Paper ↗</span></div>
+      </div>
+    </div>
+    <div class="analysis-type-section">
+      <div class="type-header"><span class="type-label">Противоречия</span><span class="count-badge cb-orange">4</span></div>
+      <div class="analysis-entry">
+        <div class="entry-top">
+          <div class="entry-title">Защита инвесторов vs привлечение эмитентов</div>
+          <span class="period-tag">2013 – 2024</span>
+        </div>
+        <div class="conflict-grid">
+          <div class="conf-side"><div class="conf-side-label">Цель А — Защита инвесторов</div><div class="conf-side-text">С 2013–2014 FCA приоритизировала защиту через структурные гарантии для компаний с контролирующими акционерами.</div></div>
+          <div class="conf-side"><div class="conf-side-label">Цель Б — Привлечение эмитентов</div><div class="conf-side-text">С 2021 приоритет сместился к привлечению эмитентов: разрешены DCSS, убрано деление на сегменты.</div></div>
+        </div>
+        <div class="resolution"><div class="resolution-label">Разрешение</div><div class="resolution-text">FCA допустила DCSS и заменила деление на сегменты единой категорией с раскрытием — перенастройка, а не полная дерегуляция.</div></div>
+        <div class="entry-sources"><span class="esrc">FCA: stricter rules for premium listed companies ↗</span><span class="esrc">Davis Polk: Capital markets reform in the UK ↗</span></div>
+      </div>
+    </div>
+    <div class="analysis-type-section">
+      <div class="type-header"><span class="type-label">Реформы</span><span class="count-badge cb-blue">8</span></div>
+      <div class="analysis-entry">
+        <div class="entry-top"><div class="entry-title">UKLR 2024: единая категория вместо деления на сегменты</div><span class="period-tag">2024</span></div>
+        <div class="entry-text">Замена премиального/стандартного деления единой категорией. Разрешены DCSS-структуры для коммерческих компаний.</div>
+        <div class="entry-sources"><span class="esrc">FCA UKLR sourcebook ↗</span></div>
+      </div>
+      <div class="analysis-entry">
+        <div class="entry-top"><div class="entry-title">POATRs 2024: новый режим проспектов</div><span class="period-tag">2024 – 2026</span></div>
+        <div class="entry-text">Public Offers and Admissions to Trading Regulations 2024 — заменяет UK Prospectus Regulation. Вступил в силу 19 января 2026.</div>
+        <div class="entry-sources"><span class="esrc">legislation.gov.uk ↗</span></div>
+      </div>
+    </div>
+    <div class="analysis-type-section">
+      <div class="type-header"><span class="type-label">Параметры как инструменты</span><span class="count-badge cb-gray">8</span></div>
+      <div class="analysis-entry">
+        <div class="entry-top"><div class="entry-title">Минимальный free float как инструмент балансировки</div><span class="period-tag">2021</span></div>
+        <div class="entry-text">Снижение с 25% до 10% открывает рынок для founder-led компаний. Одновременное повышение порогов капитализации отсекает микрокапы.</div>
+        <div class="entry-sources"><span class="esrc">PS21/22 ↗</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE VIEW (по умолчанию) -->
+  <div id="timeline-view">
+    <div class="tl-legend">
+      <span class="tl-leg"><span class="tl-leg-dot" style="background:#EF4444"></span>Проблемы</span>
+      <span class="tl-leg"><span class="tl-leg-dot" style="background:#F59E0B"></span>Противоречия</span>
+      <span class="tl-leg"><span class="tl-leg-dot" style="background:#3B82F6"></span>Реформы</span>
+      <span class="tl-leg"><span class="tl-leg-dot" style="background:#10B981"></span>Инструменты</span>
+    </div>
+    <div id="tl-root"></div>
+  </div>
+
+<!-- DRAWER BACKDROP -->
+<div class="drawer-backdrop" id="drawer-backdrop" onclick="closeDrawer()"></div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-hd">
+    <div class="drawer-hd-left">
+      <div class="drawer-title" id="drawer-title"></div>
+      <div class="drawer-badges" id="drawer-badges"></div>
+    </div>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════
+     TAB: ТЕРМИНЫ
+══════════════════════════════════ -->
+<div id="tab-terms" class="tab-panel">
+<div class="content">
+  <button class="terms-toggle open" onclick="toggleTerms(this)">
+    <span>Архитектурные понятия <span style="font-size:12px;color:var(--text-dim);font-weight:400;margin-left:8px">8 терминов</span></span>
+    <span class="arrow">▼</span>
+  </button>
+  <div class="terms-body open">
+    <div style="padding:20px 24px">
+      <table class="map-table">
+        <thead><tr><th>Местный термин</th><th>Определение / Расшифровка</th></tr></thead>
+        <tbody>
+          <tr><td>Official listing</td><td>Inclusion on the FCA's Official List under FSMA Part VI</td></tr>
+          <tr><td>Admission to trading</td><td>Admission to trading on a specific venue under its rulebook</td></tr>
+          <tr><td>Recognised Investment Exchange (RIE)</td><td>Recognised Investment Exchange</td></tr>
+          <tr><td>UK Listing Rules (UKLR)</td><td>FCA UK Listing Rules sourcebook</td></tr>
+          <tr><td>Equity Shares (ICSL)</td><td>UKLR secondary listing category for overseas issuers</td></tr>
+          <tr><td>AIM (Alternative Investment Market)</td><td>LSE MTF for growth companies; SME Growth Market</td></tr>
+          <tr><td>SME Growth Market</td><td>MAR 5.10 designation for certain MTFs</td></tr>
+          <tr><td>Admission and Disclosure Standards</td><td>LSE Admission and Disclosure Standards</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <button class="terms-toggle" onclick="toggleTerms(this)">
+    <span>Прочие термины <span style="font-size:12px;color:var(--text-dim);font-weight:400;margin-left:8px">4 термина</span></span>
+    <span class="arrow">▼</span>
+  </button>
+  <div class="terms-body">
+    <div style="padding:20px 24px">
+      <table class="map-table">
+        <thead><tr><th>Местный термин</th><th>Определение / Расшифровка</th></tr></thead>
+        <tbody>
+          <tr><td>Official List</td><td>Official List (FCA-maintained)</td></tr>
+          <tr><td>Equity Shares (Commercial Companies)</td><td>UKLR category for operating commercial companies</td></tr>
+          <tr><td>Equity Shares (Transition)</td><td>UKLR category for legacy Standard segment issuers</td></tr>
+          <tr><td>Closed Ended Investment Funds</td><td>UKLR category for investment trusts/funds</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+/* TABS */
+function switchTab(id, el) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  el.classList.add('active');
+}
+
+/* TERMS */
+function toggleTerms(btn) {
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+
+/* CITE SCROLL */
+document.querySelectorAll('sup.cite a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (!t) return;
+    t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    t.style.transition = 'background .2s';
+    t.style.background = 'rgba(37,99,235,0.1)';
+    t.style.borderRadius = '5px';
+    setTimeout(() => { t.style.background = ''; }, 1600);
+  });
+});
+
+/* VIEW TOGGLE */
+function switchView(v) {
+  document.getElementById('list-view').style.display = v === 'list' ? 'block' : 'none';
+  document.getElementById('timeline-view').style.display = v === 'timeline' ? 'block' : 'none';
+  document.getElementById('btn-list').classList.toggle('active', v === 'list');
+  document.getElementById('btn-tl').classList.toggle('active', v === 'timeline');
+  if (v === 'timeline' && !tlRendered) renderTimeline();
+}
+
+/* TIMELINE DATA */
+const TL_EVENTS = [
+  { id:1, type:'problem', start:2008, end:2021, label:'Конкурентоспособность рынка',
+    title:'Снижение конкурентоспособности рынка публичного капитала',
+    text:'~40% сокращение числа компаний с пика 2008 года, лишь ~5% доли в глобальных IPO 2015–2020. Рынок не привлекал инновационные и быстрорастущие компании.',
+    sources:['PS21/22: Primary Market Effectiveness Review','UK Listings Review (Lord Hill)'] },
+  { id:2, type:'problem', start:2013, end:2014, label:'Корп. управление ENRC/Bumi',
+    title:'Слабость защиты миноритариев в компаниях с контролирующим акционером',
+    text:'После провалов корпоративного управления в ENRC и Bumi FCA зафиксировала серьёзные недостатки: советы директоров не сдерживали контролирующих акционеров.',
+    sources:['FCA CP13/15 Consultation Paper'] },
+  { id:3, type:'contra', start:2013, end:2024, label:'Защита vs привлечение эмитентов',
+    title:'Противоречие: защита инвесторов vs привлечение эмитентов',
+    text:'С 2013–2014 приоритет — защита через структурные гарантии для компаний с контролирующими акционерами: обязательные соглашения, двойное голосование. С 2021 в рамках UKLR 2024 приоритет сместился к привлечению: разрешены DCSS, убрано деление на сегменты.',
+    conflict:{ a:{ label:'Цель А — Защита инвесторов', text:'С 2013–2014 FCA приоритизировала защиту через структурные гарантии для компаний с контролирующими акционерами.' }, b:{ label:'Цель Б — Привлечение эмитентов', text:'С 2021 приоритет сместился к привлечению эмитентов: разрешены DCSS, убрано деление на сегменты.' } },
+    resolution:'FCA допустила DCSS и заменила деление на сегменты единой категорией с раскрытием — перенастройка, а не полная дерегуляция.',
+    sources:['FCA: stricter rules for premium listed companies','Davis Polk: Capital markets reform in the UK'] },
+  { id:4, type:'reform', start:2021, end:2021, label:'Free float 25%→10%',
+    title:'Снижение минимального free float с 25% до 10%',
+    text:'FCA снизила минимальный free float, одновременно повысив пороги рыночной капитализации — сбалансированный подход к качеству и доступности.',
+    sources:['PS21/22'] },
+  { id:5, type:'reform', start:2024, end:2024, label:'UKLR 2024',
+    title:'Реформа UKLR: единая категория вместо деления на сегменты',
+    text:'Замена премиального/стандартного деления единой категорией UKLR. Разрешены DCSS-структуры для коммерческих компаний. Принципиальное изменение архитектуры допуска.',
+    sources:['FCA UKLR sourcebook'] },
+  { id:6, type:'reform', start:2024, end:2026, label:'POATRs 2024–2026',
+    title:'Новый режим проспектов: POATRs',
+    text:'Public Offers and Admissions to Trading Regulations 2024 заменяет UK Prospectus Regulation. Вступил в силу 19 января 2026.',
+    sources:['legislation.gov.uk: POATRs 2024'] },
+  { id:7, type:'tool', start:2021, end:2021, label:'Free float как инструмент',
+    title:'Free float как инструмент политики',
+    text:'Порог free float — параметр балансировки: снижение открывает рынок для founder-led компаний, повышение порогов капитализации отсекает микрокапы.',
+    sources:['PS21/22'] },
+];
+
+const CAT_LABELS = {problem:'Проблема',contra:'Противоречие',reform:'Реформа',tool:'Инструмент'};
+const Y0 = 2008, Y1 = 2027;
+const SPAN = Y1 - Y0;
+let tlActive = null, tlRendered = false;
+
+function pct(y){ return ((y - Y0) / SPAN * 100).toFixed(3) + '%' }
+function pctNum(y){ return (y - Y0) / SPAN * 100 }
+
+/* Assign one lane per event, sorted chronologically */
+function assignLanes(evs) {
+  const sorted = [...evs].sort((a,b) => a.start !== b.start ? a.start - b.start : a.end - b.end);
+  sorted.forEach((ev, i) => { ev._lane = i; });
+  return sorted.length;
+}
+
+function renderTimeline() {
+  tlRendered = true;
+  const root = document.getElementById('tl-root');
+
+  /* Axis */
+  let html = `<div class="tl-axis-wrap"><div class="tl-axis-line"></div>`;
+  for (let y = Y0; y <= Y1; y += 2) {
+    const p = pctNum(y).toFixed(2);
+    html += `<div class="tl-tick" style="left:${p}%"></div>`;
+    html += `<div class="tl-year" style="left:${p}%">${y}</div>`;
+  }
+  html += `</div>`;
+
+  const laneCount = assignLanes(TL_EVENTS);
+  const LANE_H    = 36;
+  const TOP_PAD   = 24;
+  const canvasH   = TOP_PAD + laneCount * LANE_H + 8;
+
+  html += `<div class="tl-canvas" style="height:${canvasH}px;position:relative;overflow:visible;margin-top:4px">`;
+
+  TL_EVENTS.forEach(ev => {
+    const sel = tlActive === ev.id ? ' sel' : '';
+    const barMid    = TOP_PAD + ev._lane * LANE_H + Math.floor(LANE_H * 0.62);
+    const isPoint   = ev.start === ev.end;
+
+    /* Segments: tight gap so label sits close to the line */
+    const TICK_H_SEG  = 4;
+    const LABEL_H     = 12;
+    const GAP_SEG     = 3;
+    /* Points: larger gap so leader doesn't overlap the diamond */
+    const TICK_H_PT   = 4;
+    const GAP_PT      = 12;
+
+    const TICK_H    = isPoint ? TICK_H_PT  : TICK_H_SEG;
+    const GAP       = isPoint ? GAP_PT     : GAP_SEG;
+    const labelTop  = barMid - GAP - TICK_H - LABEL_H;
+    const leaderTop = barMid - GAP - TICK_H;
+
+    if (isPoint) {
+      /* ── DIAMOND ── */
+      const lp = pctNum(ev.start);
+      const nearRight = lp > 90;
+      html += `<div class="tl-diamond ${ev.type}${sel}"
+        style="left:${lp.toFixed(3)}%;top:${barMid - 5}px"
+        onclick="tlSelect(${ev.id})"></div>`;
+      html += `<div class="tl-leader ${ev.type}" style="left:${lp.toFixed(3)}%;top:${leaderTop}px;height:${TICK_H}px"></div>`;
+      const ls = nearRight
+        ? `right:${(100 - lp).toFixed(2)}%;text-align:right`
+        : `left:${lp.toFixed(3)}%;transform:translateX(-50%);text-align:center`;
+      html += `<div class="tl-float-label ${ev.type}" style="${ls};top:${labelTop}px">${ev.label}</div>`;
+
+    } else {
+      const sp  = pctNum(ev.start);
+      const wp  = pctNum(ev.end) - sp;
+      /* Use segment style when: bar too narrow for label, OR near right edge and short */
+      const SEG_THRESHOLD = 13;
+      const nearRight = sp + wp > 91;
+      const useSegment = wp < SEG_THRESHOLD || (nearRight && wp < 20);
+
+      if (useSegment) {
+        /* ── SEGMENT: line + dots ── */
+        const anchor = nearRight ? sp : sp + wp / 2;
+        html += `<div class="tl-seg ${ev.type}${sel}"
+          style="position:absolute;left:${sp.toFixed(3)}%;width:${Math.max(wp,0.5).toFixed(3)}%;top:${barMid - 1}px;height:2px"
+          onclick="tlSelect(${ev.id})">
+          <div class="tl-seg-line" style="position:absolute;top:0;left:0;right:0;height:2px;border-radius:1px"></div>
+          <div class="tl-seg-dot" style="position:absolute;left:0;transform:translate(-50%,-50%);top:50%"></div>
+          <div class="tl-seg-dot" style="position:absolute;right:0;transform:translate(50%,-50%);top:50%"></div>
+        </div>`;
+        html += `<div class="tl-leader ${ev.type}" style="left:${anchor.toFixed(3)}%;top:${leaderTop}px;height:${TICK_H}px"></div>`;
+        const ls = nearRight
+          ? `right:${(100 - sp).toFixed(2)}%;text-align:right`
+          : `left:${anchor.toFixed(3)}%;transform:translateX(-50%);text-align:center`;
+        html += `<div class="tl-float-label ${ev.type}" style="${ls};top:${labelTop}px">${ev.label}</div>`;
+
+      } else if (nearRight) {
+        /* ── BAR near right edge: no inline label, float above ── */
+        html += `<div class="tl-bar ${ev.type}${sel}"
+          style="left:${sp.toFixed(3)}%;width:${wp.toFixed(3)}%;top:${barMid - 13}px"
+          onclick="tlSelect(${ev.id})"></div>`;
+        html += `<div class="tl-leader ${ev.type}" style="left:${sp.toFixed(3)}%;top:${leaderTop}px;height:${TICK_H}px"></div>`;
+        html += `<div class="tl-float-label ${ev.type}" style="right:${(100 - sp).toFixed(2)}%;text-align:right;top:${labelTop}px">${ev.label}</div>`;
+
+      } else {
+        /* ── NORMAL BAR with inline label ── */
+        html += `<div class="tl-bar ${ev.type}${sel}"
+          style="left:${sp.toFixed(3)}%;width:${wp.toFixed(3)}%;top:${barMid - 13}px"
+          onclick="tlSelect(${ev.id})">${ev.label}</div>`;
+      }
+    }
+  });
+
+  html += `</div>`;
+  root.innerHTML = html;
+}
+
+/* ── DRAWER ── */
+function openDrawer(ev) {
+  const period = ev.start === ev.end ? String(ev.start) : `${ev.start} – ${ev.end}`;
+  document.getElementById('drawer-title').textContent = ev.title;
+  document.getElementById('drawer-badges').innerHTML =
+    `<span class="period-tag">${period}</span><span class="tl-cat ${ev.type}">${CAT_LABELS[ev.type]}</span>`;
+
+  let body = '';
+  if (ev.conflict) {
+    body += `<div class="drawer-conflict">
+      <div class="drawer-conf-side"><div class="drawer-conf-label">${ev.conflict.a.label}</div><div class="drawer-conf-text">${ev.conflict.a.text}</div></div>
+      <div class="drawer-conf-side"><div class="drawer-conf-label">${ev.conflict.b.label}</div><div class="drawer-conf-text">${ev.conflict.b.text}</div></div>
+    </div>`;
+    if (ev.resolution) {
+      body += `<div class="drawer-resolution"><div class="drawer-res-label">Разрешение</div><div class="drawer-res-text">${ev.resolution}</div></div>`;
+    }
+  } else {
+    body += `<div class="drawer-text">${ev.text}</div>`;
+  }
+  if (ev.sources && ev.sources.length) {
+    body += `<div class="drawer-sources-label">Источники</div><div class="drawer-sources">`;
+    ev.sources.forEach(s => { body += `<a class="drawer-src" href="#">${s} ↗</a>`; });
+    body += `</div>`;
+  }
+  document.getElementById('drawer-body').innerHTML = body;
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer-backdrop').classList.add('open');
+}
+
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-backdrop').classList.remove('open');
+  tlActive = null;
+  renderTimeline();
+}
+
+window.tlSelect = function(id) {
+  if (tlActive === id) { closeDrawer(); return; }
+  tlActive = id;
+  renderTimeline();
+  const ev = TL_EVENTS.find(e => e.id === id);
+  openDrawer(ev);
+};
+
+/* Render timeline on load */
+renderTimeline();
+</script>
+
+</body>
+</html>

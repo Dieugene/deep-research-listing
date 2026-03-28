@@ -84,9 +84,9 @@ function getEventLabel(type: EventType, item: Level4Item): string {
       return truncate(a && b ? `${a} vs ${b}` : a || b)
     }
     case 'parameter':
-      return truncate(item.parameter_description as string)
+      return truncate((item.parameter_description_ru as string) || (item.parameter_description as string))
     case 'reform':
-      return truncate((item.driver as string) || (item.description as string))
+      return truncate((item.driver_ru as string) || (item.driver as string) || (item.description as string))
   }
 }
 
@@ -463,10 +463,10 @@ function ListEntry({
       break
     }
     case 'parameter':
-      titleText = (item.parameter_description as string | undefined) || description
+      titleText = (item.parameter_description_ru as string | undefined) || (item.parameter_description as string | undefined) || description
       break
     case 'reform':
-      titleText = (item.driver as string | undefined) || description
+      titleText = (item.driver_ru as string | undefined) || (item.driver as string | undefined) || description
       break
   }
 
@@ -495,10 +495,10 @@ function ListEntry({
               )}
             </div>
           )}
-          {(item.resolution as string | undefined) && (
+          {((item.resolution_ru ?? item.resolution) as string | undefined) && (
             <div className={styles.resolution}>
               <div className={styles.resolutionLabel}>Разрешение</div>
-              <div className={styles.resolutionText}>{item.resolution as string}</div>
+              <div className={styles.resolutionText}>{String(item.resolution_ru ?? item.resolution)}</div>
             </div>
           )}
           {description && (
@@ -534,19 +534,19 @@ function ListEntry({
               </div>
             </div>
           )}
-          {type === 'parameter' && Boolean(item.problem_addressed) && (
+          {type === 'parameter' && Boolean(item.problem_addressed_ru ?? item.problem_addressed) && (
             <div className={styles.confSide} style={{ marginTop: '8px' }}>
               <div className={styles.confSideLabel}>Какую проблему решает</div>
-              <p className={styles.confSideText}>{String(item.problem_addressed)}</p>
+              <p className={styles.confSideText}>{String(item.problem_addressed_ru ?? item.problem_addressed)}</p>
             </div>
           )}
-          {type === 'parameter' && Boolean(item.calibration_debate) && (
+          {type === 'parameter' && Boolean(item.calibration_debate_ru ?? item.calibration_debate) && (
             <div className={styles.confSide} style={{ marginTop: '8px' }}>
               <div className={styles.confSideLabel}>Дискуссия о настройке</div>
-              <p className={styles.confSideText}>{String(item.calibration_debate)}</p>
+              <p className={styles.confSideText}>{String(item.calibration_debate_ru ?? item.calibration_debate)}</p>
             </div>
           )}
-          {type === 'reform' && Boolean(item.opposition) && (
+          {type === 'reform' && Boolean(item.opposition_ru ?? item.opposition) && (
             <div style={{
               background: 'rgba(220,38,38,0.04)',
               border: '1px solid rgba(220,38,38,0.15)',
@@ -562,7 +562,7 @@ function ListEntry({
                 Контраргументы
               </div>
               <p style={{ fontSize: '12.5px', color: 'var(--text-mid)', lineHeight: '1.65', fontWeight: 300 }}>
-                {String(item.opposition)}
+                {String(item.opposition_ru ?? item.opposition)}
               </p>
             </div>
           )}
@@ -711,9 +711,9 @@ function EventDrawerContent({
           ? `${item.objective_a} vs ${item.objective_b}`
           : truncateWords(description))
       : type === 'parameter'
-      ? (item.parameter_description as string | undefined) || truncateWords(description)
+      ? (item.parameter_description_ru as string | undefined) || (item.parameter_description as string | undefined) || truncateWords(description)
       : type === 'reform'
-      ? (item.driver as string | undefined) || truncateWords(description)
+      ? (item.driver_ru as string | undefined) || (item.driver as string | undefined) || truncateWords(description)
       : truncateWords(description))
 
   return (
@@ -762,19 +762,19 @@ function EventDrawerContent({
         ) : (
           <>
             {description && <div className={styles.drawerText}>{description}</div>}
-            {type === 'parameter' && Boolean(item.problem_addressed) && (
+            {type === 'parameter' && Boolean(item.problem_addressed_ru ?? item.problem_addressed) && (
               <div className={styles.confSide} style={{ marginBottom: '10px' }}>
                 <div className={styles.confSideLabel}>Какую проблему решает</div>
-                <p className={styles.confSideText}>{String(item.problem_addressed)}</p>
+                <p className={styles.confSideText}>{String(item.problem_addressed_ru ?? item.problem_addressed)}</p>
               </div>
             )}
-            {type === 'parameter' && Boolean(item.calibration_debate) && (
+            {type === 'parameter' && Boolean(item.calibration_debate_ru ?? item.calibration_debate) && (
               <div className={styles.confSide} style={{ marginBottom: '10px' }}>
                 <div className={styles.confSideLabel}>Дискуссия о настройке</div>
-                <p className={styles.confSideText}>{String(item.calibration_debate)}</p>
+                <p className={styles.confSideText}>{String(item.calibration_debate_ru ?? item.calibration_debate)}</p>
               </div>
             )}
-            {type === 'reform' && Boolean(item.opposition) && (
+            {type === 'reform' && Boolean(item.opposition_ru ?? item.opposition) && (
               <div style={{
                 background: 'rgba(220,38,38,0.04)',
                 border: '1px solid rgba(220,38,38,0.15)',
@@ -790,7 +790,7 @@ function EventDrawerContent({
                   Контраргументы
                 </div>
                 <p style={{ fontSize: '12.5px', color: 'var(--text-secondary)', lineHeight: '1.65', fontWeight: 300 }}>
-                  {String(item.opposition)}
+                  {String(item.opposition_ru ?? item.opposition)}
                 </p>
               </div>
             )}
@@ -1006,16 +1006,9 @@ function JurisdictionTab({ data }: { data: JurisdictionCard }) {
 
           <div className={styles.cardBody}>
             {hasArch ? (
-              <>
-                <p className={styles.archText}>
-                  {data.admission_architecture_ru || data.admission_architecture}
-                </p>
-                {data.admission_architecture_ru &&
-                  data.admission_architecture &&
-                  data.admission_architecture !== data.admission_architecture_ru && (
-                    <p className={styles.archNote}>{data.admission_architecture}</p>
-                  )}
-              </>
+              <p className={styles.archText}>
+                {data.admission_architecture_ru ?? data.admission_architecture}
+              </p>
             ) : (
               <p className={styles.archEmpty}>Архитектура допуска не заполнена</p>
             )}
@@ -1102,31 +1095,45 @@ function JurisdictionTab({ data }: { data: JurisdictionCard }) {
           {data.venues.length === 0 ? (
             <p className={styles.emptySection}>Площадки не найдены</p>
           ) : (
-            data.venues.map((venue) => (
-              <div
-                key={venue.venue_key}
-                className={styles.venueCard}
-                onClick={() => navigate(`/venues/${encodeURIComponent(venue.venue_key)}`)}
-              >
-                <div className={styles.venueCardHd}>
-                  <div>
-                    <div className={styles.venueCardName}>{venue.name_ru || venue.name}</div>
-                    <div className={styles.venueCardEn}>{venue.name}</div>
+            [...data.venues].sort((a, b) => {
+              const pa = a.research_priority === 'deferred' ? 1 : 0
+              const pb = b.research_priority === 'deferred' ? 1 : 0
+              return pa - pb
+            }).map((venue) => {
+              const isDeferred = venue.research_priority === 'deferred'
+              return (
+                <div
+                  key={venue.venue_key}
+                  className={`${styles.venueCard} ${isDeferred ? styles.venueCardDeferred : ''}`}
+                  onClick={() => navigate(`/venues/${encodeURIComponent(venue.venue_key)}`)}
+                >
+                  <div className={styles.venueCardHd}>
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <div className={styles.venueCardName}>{venue.name_ru || venue.name}</div>
+                      <div className={styles.venueCardEn}>{venue.name}</div>
+                    </div>
+                    <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexShrink: 0 }}>
+                      {isDeferred && <span className={styles.deferredBadge}>Детализация отложена</span>}
+                      <VenueTypeBadge venueType={venue.venue_type} />
+                    </div>
                   </div>
-                  <VenueTypeBadge venueType={venue.venue_type} />
-                </div>
-                <div className={styles.venueCardFoot}>
-                  <div className={styles.venueCardStats}>
-                    <span>
-                      Ячеек:{' '}
-                      <span className={styles.venueCardStatsVal}>{venue.cell_count}</span>
-                    </span>
+                  <div className={styles.venueCardFoot}>
+                    <div className={styles.venueCardStats}>
+                      {isDeferred ? (
+                        <span className={styles.deferredHint}>Обзорные данные</span>
+                      ) : (
+                        <span>
+                          Ячеек:{' '}
+                          <span className={styles.venueCardStatsVal}>{venue.cell_count}</span>
+                        </span>
+                      )}
+                    </div>
+                    <span className={styles.venueCardArrow}>→</span>
                   </div>
-                  <span className={styles.venueCardArrow}>→</span>
                 </div>
-              </div>
-            ))
-          )}
+              )
+            }))
+          }
         </div>
       </div>
 
@@ -1145,33 +1152,93 @@ function JurisdictionTab({ data }: { data: JurisdictionCard }) {
         </div>
       )}
 
-      {/* Bottom grid: placeholder cards */}
+      {/* Bottom grid: institutional metrics + similar jurisdictions */}
       <div className={styles.bottomGrid}>
-        {/* World Bank metrics placeholder */}
-        <div className={styles.placeholderCard}>
+        {/* Institutional metrics */}
+        <div className={styles.card}>
           <div className={styles.cardHd}>
-            <span className={styles.cardTitle}>Метрики Мирового Банка</span>
+            <span className={styles.cardTitle}>Институциональные метрики</span>
           </div>
-          <div className={styles.placeholderBody}>
-            <div className={styles.placeholderMetrics}>
-              {['Rule of Law', 'Reg. Quality', 'Gov. Eff.', 'M.Cap/GDP'].map((label) => (
-                <div key={label} className={styles.placeholderMetric}>
-                  <div className={styles.placeholderMetricLabel}>{label}</div>
-                  <div className={styles.placeholderMetricVal}>—</div>
-                </div>
-              ))}
-            </div>
-            <div>В разработке</div>
+          <div className={styles.cardBody} style={{ padding: '16px 20px' }}>
+            {data.institutional_metrics ? (() => {
+              const im = data.institutional_metrics!
+              const metrics = [
+                { label: 'Rule of Law', val: im.rule_of_law?.value, pct: im.rule_of_law?.percentile },
+                { label: 'Reg. Quality', val: im.regulatory_quality?.value, pct: im.regulatory_quality?.percentile },
+                { label: 'Pol. Stability', val: im.political_stability?.value, pct: im.political_stability?.percentile },
+                { label: 'M.Cap/GDP', val: im.market_cap_gdp_pct?.value, pct: null },
+              ]
+              return (
+                <>
+                  <div className={styles.placeholderMetrics}>
+                    {metrics.map((m) => (
+                      <div key={m.label} className={styles.placeholderMetric}>
+                        <div className={styles.placeholderMetricLabel}>{m.label}</div>
+                        <div className={styles.instMetricVal}>
+                          {m.val != null ? (m.label === 'M.Cap/GDP' ? `${Math.round(m.val)}%` : m.val.toFixed(2)) : '—'}
+                        </div>
+                        {m.pct != null && (
+                          <div className={styles.instMetricPct}>P{m.pct}</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  {im.investor_protection && (
+                    <div style={{ marginTop: 14, borderTop: '1px solid var(--border)', paddingTop: 12 }}>
+                      <div className={styles.placeholderMetricLabel} style={{ marginBottom: 8 }}>Защита инвесторов (Doing Business)</div>
+                      <div style={{ display: 'flex', gap: 16, fontSize: '12px', color: 'var(--text-secondary)' }}>
+                        <span>Раскрытие: <strong>{im.investor_protection.disclosure ?? '—'}</strong>/10</span>
+                        <span>Ответственность: <strong>{im.investor_protection.director_liability ?? '—'}</strong>/10</span>
+                        <span>Иски: <strong>{im.investor_protection.shareholder_suits ?? '—'}</strong>/10</span>
+                      </div>
+                    </div>
+                  )}
+                  {data.cluster_label && (
+                    <div style={{ marginTop: 12 }}>
+                      <span className={styles.placeholderMetricLabel}>Кластер: </span>
+                      <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{data.cluster_label}</span>
+                    </div>
+                  )}
+                </>
+              )
+            })() : (
+              <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>Данные отсутствуют</div>
+            )}
           </div>
         </div>
 
-        {/* Similar jurisdictions placeholder */}
-        <div className={styles.placeholderCard}>
+        {/* Similar jurisdictions */}
+        <div className={styles.card}>
           <div className={styles.cardHd}>
             <span className={styles.cardTitle}>Похожие юрисдикции</span>
           </div>
-          <div className={styles.placeholderBody}>
-            В разработке
+          <div className={styles.cardBody} style={{ padding: '12px 20px' }}>
+            {data.similar_jurisdictions && data.similar_jurisdictions.length > 0 ? (
+              <div className={styles.similarList}>
+                {data.similar_jurisdictions.map((sj, i) => (
+                  <div key={sj.iso_code} className={styles.similarItem}>
+                    <span className={styles.similarRank}>{i + 1}</span>
+                    <div className={styles.similarInfo}>
+                      <div className={styles.similarName}>
+                        {sj.name_ru || sj.name_en}
+                        {sj.score != null && (
+                          <span className={styles.similarScore}>{Math.round(sj.score * 100)}%</span>
+                        )}
+                      </div>
+                      {sj.common_traits && sj.common_traits.length > 0 && (
+                        <div className={styles.similarTraits}>
+                          {sj.common_traits.map((t) => (
+                            <span key={t} className={styles.similarTrait}>{t}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ color: 'var(--text-muted)', fontSize: '13px' }}>Данные отсутствуют</div>
+            )}
           </div>
         </div>
       </div>
@@ -1190,16 +1257,15 @@ const SOURCE_TYPES = [
   { key: 'government', label: 'Регулятор' },
   { key: 'consultation', label: 'Консультация' },
   { key: 'research', label: 'Исследование' },
+  { key: 'other', label: 'Другое' },
 ]
 
 function SourcesTab({ sources }: { sources: SourceCitation[] }) {
   const [search, setSearch] = useState('')
   const [showAll, setShowAll] = useState(false)
-  const [activeType, setActiveType] = useState<string | null>(null)
   const INITIAL_SHOW = 15
 
   const filtered = sources
-    .filter(s => activeType === null || s.type === activeType)
     .filter(s => {
       if (!search) return true
       const q = search.toLowerCase()
@@ -1224,19 +1290,6 @@ function SourcesTab({ sources }: { sources: SourceCitation[] }) {
             onChange={e => { setSearch(e.target.value); setShowAll(false) }}
           />
         </div>
-      </div>
-
-      {/* Type filter chips */}
-      <div className={styles.typeFilters}>
-        {SOURCE_TYPES.map(({ key, label }) => (
-          <button
-            key={String(key)}
-            className={[styles.typeChip, activeType === key ? styles.typeChipActive : ''].filter(Boolean).join(' ')}
-            onClick={() => { setActiveType(key); setShowAll(false) }}
-          >
-            {label}
-          </button>
-        ))}
       </div>
 
       {/* Source list using SourceItem */}
@@ -1271,7 +1324,7 @@ function L4SourcesSection({ sources }: { sources: SourceCitation[] }) {
   const shown = expanded ? sources : sources.slice(0, PREVIEW)
 
   return (
-    <div style={{ maxWidth: '720px' }}>
+    <div>
       <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '10px' }}>
         Источники анализа · {sources.length}
       </div>
@@ -1281,11 +1334,14 @@ function L4SourcesSection({ sources }: { sources: SourceCitation[] }) {
           return (
             <div key={i} style={{ display: 'flex', alignItems: 'baseline', gap: '10px', fontSize: '12.5px' }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--text-muted)', width: '20px', textAlign: 'right', flexShrink: 0 }}>{i + 1}</span>
-              <span style={{ flex: 1, color: 'var(--text-secondary)' }}>{label}</span>
-              <a href={src.url ?? '#'} target="_blank" rel="noopener noreferrer"
-                style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--accent)', whiteSpace: 'nowrap', flexShrink: 0 }}>
-                {(() => { try { return new URL(src.url ?? '').hostname } catch { return '↗' } })()} ↗
-              </a>
+              {src.url ? (
+                <a href={src.url} target="_blank" rel="noopener noreferrer"
+                  style={{ flex: 1, color: 'var(--accent)', textDecoration: 'none', fontWeight: 500, minWidth: 0 }}>
+                  {label} ↗
+                </a>
+              ) : (
+                <span style={{ flex: 1, color: 'var(--text-secondary)' }}>{label}</span>
+              )}
             </div>
           )
         })}
@@ -1395,7 +1451,7 @@ export default function JurisdictionPage() {
             <div>
               <h1 className={styles.title}>{data.name_ru}</h1>
               <div className={styles.titleSub}>
-                {[data.name_en, data.legal_family].filter(Boolean).join(' · ')}
+                {[data.name_en, data.legal_family, data.market_type].filter(Boolean).join(' · ')}
               </div>
             </div>
           </div>
@@ -1509,38 +1565,45 @@ export default function JurisdictionPage() {
                   />
                 )}
 
-                {/* List view */}
+                {/* List view — two-column: content + sources sidebar */}
                 {viewMode === 'list' && (
-                  <div>
-                    <ListSection
-                      label="Проблемы"
-                      type="problem"
-                      badgeCls={styles.countBadgeRed}
-                      items={data.level4.problems}
-                    />
-                    <ListSection
-                      label="Противоречия"
-                      type="contradiction"
-                      badgeCls={styles.countBadgeOrange}
-                      items={data.level4.contradictions}
-                    />
-                    <ListSection
-                      label="Параметры как инструменты"
-                      type="parameter"
-                      badgeCls={styles.countBadgeGray}
-                      items={data.level4.parameters_as_tools}
-                    />
-                    <ListSection
-                      label="Реформы"
-                      type="reform"
-                      badgeCls={styles.countBadgeBlue}
-                      items={data.level4.reforms}
-                    />
+                  <div className={styles.analysisLayout}>
+                    <div className={styles.analysisMain}>
+                      <ListSection
+                        label="Проблемы"
+                        type="problem"
+                        badgeCls={styles.countBadgeRed}
+                        items={data.level4.problems}
+                      />
+                      <ListSection
+                        label="Противоречия"
+                        type="contradiction"
+                        badgeCls={styles.countBadgeOrange}
+                        items={data.level4.contradictions}
+                      />
+                      <ListSection
+                        label="Параметры как инструменты"
+                        type="parameter"
+                        badgeCls={styles.countBadgeGray}
+                        items={data.level4.parameters_as_tools}
+                      />
+                      <ListSection
+                        label="Реформы"
+                        type="reform"
+                        badgeCls={styles.countBadgeBlue}
+                        items={data.level4.reforms}
+                      />
+                    </div>
+                    {l4SourcesCount > 0 && data.level4?.sources && (
+                      <aside className={styles.analysisSidebar}>
+                        <L4SourcesSection sources={data.level4.sources} />
+                      </aside>
+                    )}
                   </div>
                 )}
 
-                {/* Источники анализа */}
-                {l4SourcesCount > 0 && data.level4?.sources && (
+                {/* Timeline view — sources below (no two-column) */}
+                {viewMode === 'timeline' && l4SourcesCount > 0 && data.level4?.sources && (
                   <div style={{ marginTop: '32px' }}>
                     <L4SourcesSection sources={data.level4.sources} />
                   </div>

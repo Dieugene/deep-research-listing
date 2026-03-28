@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — По инструментам</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA;--bg2:#fff;--bg3:#F0F2F7;--bg4:#E4E8F2;
+  --border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.17);
+  --text:#111827;--text-mid:#4B5563;--text-dim:#9CA3AF;
+  --accent:#2563EB;--accent-bg:rgba(37,99,235,0.06);
+  --green:#059669;--green-bg:rgba(5,150,105,0.07);--green-border:rgba(5,150,105,0.2);
+  --yellow:#B45309;--yellow-bg:rgba(217,119,6,0.07);
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-serif:'Newsreader',Georgia,serif;
+  --r:8px;--r-lg:12px;
+  --nav-h:56px;
+  --cards-h:148px; /* instrument cards strip height */
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.6;min-height:100vh;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:300;height:var(--nav-h);
+  background:rgba(255,255,255,0.94);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 28px;gap:4px;
+}
+.nav-logo{width:28px;height:28px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:#fff;font-weight:500;margin-right:8px}
+.nav-brand{font-size:13px;font-weight:500;margin-right:auto}
+.nav-link{padding:5px 11px;border-radius:5px;font-size:12.5px;color:var(--text-mid)}
+.nav-link.active{color:var(--accent);background:var(--accent-bg);font-weight:500}
+.nav-soon{font-size:9px;font-family:var(--font-mono);color:var(--text-dim);background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:1px 4px;margin-left:3px}
+
+/* ── PAGE HEADER (full width, contained) ── */
+.page-hd{
+  max-width:1600px;margin:0 auto;
+  padding:20px 28px 0;
+}
+.breadcrumb{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);display:flex;align-items:center;gap:6px;margin-bottom:14px}
+.breadcrumb a{color:var(--accent);text-decoration:none}
+.page-title{font-family:var(--font-serif);font-size:30px;font-weight:400;letter-spacing:-.015em;margin-bottom:4px}
+.page-sub{font-size:13px;color:var(--text-dim);font-weight:300;margin-bottom:20px}
+
+/* ── INSTRUMENT CARDS STRIP ── */
+.instr-strip-wrap{
+  position:sticky;
+  top:var(--nav-h);
+  z-index:200;
+  background:rgba(247,248,250,0.97);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  transition:box-shadow .15s;
+}
+.instr-strip-wrap.stuck{box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.instr-strip{
+  max-width:1600px;margin:0 auto;
+  padding:12px 28px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+
+/* instrument card */
+.icard{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:12px 16px;cursor:pointer;
+  transition:border-color .15s,box-shadow .15s;
+  display:flex;flex-direction:column;gap:6px;
+  position:relative;overflow:hidden;
+}
+.icard::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--border);border-radius:3px 3px 0 0;
+  transition:background .15s;
+}
+.icard:hover{border-color:rgba(37,99,235,.25);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.icard.active{border-color:rgba(37,99,235,.35);box-shadow:0 2px 12px rgba(37,99,235,.12)}
+.icard.active::after{background:var(--accent)}
+
+.icard-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.icard-name{font-size:13px;font-weight:500;color:var(--text)}
+.icard-icon{font-size:18px;line-height:1;flex-shrink:0}
+.icard-stats{display:flex;gap:12px}
+.icard-stat{display:flex;flex-direction:column;gap:1px}
+.icard-stat-val{font-family:var(--font-mono);font-size:14px;font-weight:500;color:var(--text);line-height:1}
+.icard-stat-lbl{font-family:var(--font-mono);font-size:9px;color:var(--text-dim);letter-spacing:.04em;text-transform:uppercase}
+.icard-params{display:flex;flex-wrap:wrap;gap:4px;margin-top:2px}
+.icard-param{
+  font-family:var(--font-mono);font-size:9px;
+  padding:2px 6px;border-radius:4px;
+  background:var(--accent-bg);color:var(--accent);
+  border:1px solid rgba(37,99,235,.15);
+}
+.icard.active .icard-param{background:rgba(37,99,235,.12)}
+
+/* ── MAIN CONTENT — full width split layout ── */
+.main-wrap{
+  max-width:1600px;margin:0 auto;
+  padding:0 28px 60px;
+  display:flex;
+  gap:0;
+  /* top offset: nav + sticky cards */
+}
+
+/* ── LEFT PANEL ── */
+.left-panel{
+  width:280px;
+  flex-shrink:0;
+  padding:16px 0 0;
+  border-right:1px solid var(--border);
+  position:sticky;
+  top:calc(var(--nav-h) + var(--cards-h));
+  height:calc(100vh - var(--nav-h) - var(--cards-h));
+  overflow-y:auto;
+  display:flex;flex-direction:column;gap:0;
+}
+.panel-section{padding:0 16px 16px;border-bottom:1px solid var(--border)}
+.panel-section:last-child{border-bottom:none;flex:1}
+.panel-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px;font-weight:500}
+
+/* filter buttons */
+.filter-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.filter-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 10px;border-radius:20px;font-size:11.5px;
+  border:1px solid var(--border2);color:var(--text-mid);
+  cursor:pointer;background:transparent;font-family:var(--font-sans);
+  transition:all .12s;
+}
+.filter-chip:hover{border-color:var(--accent);color:var(--accent)}
+.filter-chip.active{background:var(--accent-bg);border-color:rgba(37,99,235,.25);color:var(--accent);font-weight:500}
+
+/* venue list */
+.venue-list{display:flex;flex-direction:column;gap:2px;overflow-y:auto;flex:1}
+.venue-item{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 10px;border-radius:var(--r);cursor:pointer;
+  transition:background .1s;
+}
+.venue-item:hover{background:var(--bg3)}
+.venue-item.checked{background:var(--accent-bg)}
+.venue-cb{
+  width:14px;height:14px;border-radius:3px;flex-shrink:0;
+  border:1.5px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .12s;background:var(--bg2);
+}
+.venue-item.checked .venue-cb{background:var(--accent);border-color:var(--accent)}
+.venue-cb-check{color:#fff;font-size:10px;line-height:1;display:none}
+.venue-item.checked .venue-cb-check{display:block}
+.venue-info{flex:1;min-width:0}
+.venue-name{font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.venue-jur{font-family:var(--font-mono);font-size:9.5px;color:var(--text-dim)}
+.venue-tier-name{font-size:11px;color:var(--text-mid);font-weight:300;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* search in panel */
+.panel-search{
+  display:flex;align-items:center;gap:7px;
+  padding:7px 10px;border:1px solid var(--border);border-radius:var(--r);
+  background:var(--bg2);margin-bottom:10px;
+}
+.panel-search svg{flex-shrink:0;color:var(--text-dim)}
+.panel-search input{border:none;outline:none;font-size:12.5px;color:var(--text);background:transparent;width:100%;font-family:var(--font-sans)}
+.panel-search input::placeholder{color:var(--text-dim)}
+
+/* ── RIGHT TABLE AREA ── */
+.right-area{
+  flex:1;
+  min-width:0;
+  padding:16px 0 0 0;
+  overflow-x:auto;
+}
+.table-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:12px;padding:0 16px;
+}
+.table-header-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.table-title{font-size:14px;font-weight:500;color:var(--text)}
+.table-count{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:2px 8px}
+
+/* param column selector */
+.param-cols{display:flex;gap:5px;flex-wrap:wrap}
+.param-col-btn{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 9px;border-radius:20px;font-size:11px;
+  border:1px solid var(--border2);color:var(--text-mid);
+  cursor:pointer;background:transparent;font-family:var(--font-mono);
+  transition:all .12s;
+}
+.param-col-btn.active{background:var(--accent-bg);border-color:rgba(37,99,235,.25);color:var(--accent)}
+
+/* comparison table */
+.cmp-table-wrap{padding:0 16px;overflow-x:auto}
+.cmp-table{
+  width:100%;border-collapse:collapse;
+  font-size:12.5px;
+  min-width:700px;
+}
+.cmp-table th{
+  position:sticky;top:0;
+  font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-dim);font-weight:400;
+  padding:10px 12px;text-align:left;
+  background:var(--bg);
+  border-bottom:1px solid var(--border2);
+  white-space:nowrap;
+}
+.cmp-table th:first-child{
+  width:220px;position:sticky;left:0;z-index:2;
+  background:var(--bg);border-right:1px solid var(--border2);
+}
+.cmp-table th.ph-admission{color:#1E40AF}
+.cmp-table th.ph-maintenance{color:#065F46}
+.cmp-table th.ph-delisting{color:#7C2D12}
+
+/* phase group header */
+.cmp-table .phase-group-hd td{
+  padding:6px 12px 4px;
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--bg3);border-top:2px solid var(--border);
+  font-weight:500;
+}
+.cmp-table .phase-group-hd td.g-admission{color:#1E40AF;border-top-color:#BFDBFE}
+.cmp-table .phase-group-hd td.g-maintenance{color:#065F46;border-top-color:#A7F3D0}
+.cmp-table .phase-group-hd td.g-delisting{color:#7C2D12;border-top-color:#FECACA}
+
+/* data rows */
+.cmp-table tr.data-row td{
+  padding:10px 12px;
+  border-bottom:1px solid var(--border);
+  vertical-align:top;
+  line-height:1.5;
+}
+.cmp-table tr.data-row:hover td{background:rgba(37,99,235,.025)}
+.cmp-table tr.data-row td:first-child{
+  position:sticky;left:0;z-index:1;
+  background:var(--bg2);border-right:1px solid var(--border2);
+  min-width:220px;
+}
+.cmp-table tr.data-row:hover td:first-child{background:rgba(37,99,235,.03)}
+
+.cell-venue{font-weight:500;color:var(--text);font-size:12px;display:block;line-height:1.3}
+.cell-tier{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);display:block;margin-top:2px}
+.cell-jur{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10px;color:var(--text-dim);margin-top:3px;
+}
+
+.cell-val{color:var(--text-mid);font-size:12px}
+.cell-val strong{color:var(--text);font-weight:500}
+.cell-na{color:var(--border2);font-family:var(--font-mono);font-size:11px}
+.cell-empty{color:var(--bg4);font-family:var(--font-mono);font-size:10px;font-style:italic}
+
+/* status dot */
+.status-dot{width:6px;height:6px;border-radius:50%;display:inline-block;flex-shrink:0;margin-top:3px}
+.dot-green{background:var(--green)}.dot-yellow{background:var(--yellow)}.dot-red{background:#DC2626}
+
+/* phase tab strip in right area */
+.phase-strip{
+  display:flex;gap:0;border-bottom:2px solid var(--border);
+  margin:0 16px 16px;
+}
+.phase-tab-btn{
+  padding:8px 16px;font-size:12.5px;color:var(--text-dim);
+  border-bottom:2px solid transparent;margin-bottom:-2px;
+  cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;
+  font-family:var(--font-sans);display:flex;align-items:center;gap:7px;
+  transition:color .12s;
+}
+.phase-tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500}
+.phase-tab-btn:hover:not(.active){color:var(--text-mid)}
+.ptdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ptblue{background:#3B82F6}.ptgreen{background:#10B981}.ptred{background:#F87171}
+
+/* empty state */
+.empty-state{padding:48px 24px;text-align:center;color:var(--text-dim)}
+.empty-state-icon{font-size:32px;margin-bottom:12px}
+.empty-state-title{font-size:14px;font-weight:500;color:var(--text-mid);margin-bottom:6px}
+.empty-state-sub{font-size:13px;font-weight:300}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">LR</div>
+  <span class="nav-brand">Listing Research</span>
+  <a class="nav-link">Главная</a>
+  <a class="nav-link active">Справочник</a>
+  <a class="nav-link">Каталог параметров</a>
+  <a class="nav-link">Анализ <span class="nav-soon">SOON</span></a>
+  <a class="nav-link">Ассистент <span class="nav-soon">SOON</span></a>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-hd">
+  <div class="breadcrumb">
+    <a href="#">Справочник</a> <span>→</span> По инструментам
+  </div>
+  <div class="page-title">Сравнение по инструментам</div>
+  <div class="page-sub">Выберите инструмент → отберите листинговые режимы → сравните параметры регулирования</div>
+</div>
+
+<!-- INSTRUMENT CARDS STRIP (sticky) -->
+<div class="instr-strip-wrap" id="instr-strip-wrap">
+  <div class="instr-strip">
+
+    <!-- АКЦИИ — active by default -->
+    <div class="icard active" id="icard-equity" onclick="selectInstr('equity')">
+      <div class="icard-top">
+        <div class="icard-name">Акции</div>
+        <div class="icard-icon">📈</div>
+      </div>
+      <div class="icard-stats">
+        <div class="icard-stat">
+          <div class="icard-stat-val">42</div>
+          <div class="icard-stat-lbl">юрисдикции</div>
+        </div>
+        <div class="icard-stat">
+          <div class="icard-stat-val">98</div>
+          <div class="icard-stat-lbl">режима</div>
+        </div>
+      </div>
+      <div class="icard-params">
+        <span class="icard-param">П01 Free float</span>
+        <span class="icard-param">П02 Market cap</span>
+        <span class="icard-param">П07 История</span>
+        <span class="icard-param">+18</span>
+      </div>
+    </div>
+
+    <!-- ОБЛИГАЦИИ -->
+    <div class="icard" id="icard-bond" onclick="selectInstr('bond')">
+      <div class="icard-top">
+        <div class="icard-name">Облигации</div>
+        <div class="icard-icon">📄</div>
+      </div>
+      <div class="icard-stats">
+        <div class="icard-stat">
+          <div class="icard-stat-val">31</div>
+          <div class="icard-stat-lbl">юрисдикция</div>
+        </div>
+        <div class="icard-stat">
+          <div class="icard-stat-val">54</div>
+          <div class="icard-stat-lbl">режима</div>
+        </div>
+      </div>
+      <div class="icard-params">
+        <span class="icard-param">П01 Free float</span>
+        <span class="icard-param">П09 Проспект</span>
+        <span class="icard-param">+11</span>
+      </div>
+    </div>
+
+    <!-- ФОНДЫ -->
+    <div class="icard" id="icard-fund" onclick="selectInstr('fund')">
+      <div class="icard-top">
+        <div class="icard-name">Фонды</div>
+        <div class="icard-icon">🏦</div>
+      </div>
+      <div class="icard-stats">
+        <div class="icard-stat">
+          <div class="icard-stat-val">18</div>
+          <div class="icard-stat-lbl">юрисдикций</div>
+        </div>
+        <div class="icard-stat">
+          <div class="icard-stat-val">29</div>
+          <div class="icard-stat-lbl">режима</div>
+        </div>
+      </div>
+      <div class="icard-params">
+        <span class="icard-param">П21 Инв. политика</span>
+        <span class="icard-param">П31 Леверидж</span>
+        <span class="icard-param">+8</span>
+      </div>
+    </div>
+
+    <!-- ДР -->
+    <div class="icard" id="icard-dr" onclick="selectInstr('dr')">
+      <div class="icard-top">
+        <div class="icard-name">Депозитарные расписки</div>
+        <div class="icard-icon">🔗</div>
+      </div>
+      <div class="icard-stats">
+        <div class="icard-stat">
+          <div class="icard-stat-val">14</div>
+          <div class="icard-stat-lbl">юрисдикций</div>
+        </div>
+        <div class="icard-stat">
+          <div class="icard-stat-val">19</div>
+          <div class="icard-stat-lbl">режимов</div>
+        </div>
+      </div>
+      <div class="icard-params">
+        <span class="icard-param">П23 Базовые акции</span>
+        <span class="icard-param">П24 Депозитарий</span>
+        <span class="icard-param">+6</span>
+      </div>
+    </div>
+
+  </div><!-- /instr-strip -->
+</div><!-- /instr-strip-wrap -->
+
+<!-- MAIN: LEFT PANEL + RIGHT TABLE -->
+<div class="main-wrap">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel" id="left-panel">
+
+    <!-- Filters -->
+    <div class="panel-section">
+      <div class="panel-label">Правовая семья</div>
+      <div class="filter-row">
+        <button class="filter-chip active" onclick="toggleFilter(this)">Все</button>
+        <button class="filter-chip" onclick="toggleFilter(this)">Common law</button>
+        <button class="filter-chip" onclick="toggleFilter(this)">Civil law</button>
+        <button class="filter-chip" onclick="toggleFilter(this)">Mixed</button>
+      </div>
+      <div class="panel-label" style="margin-top:8px">Тип площадки</div>
+      <div class="filter-row">
+        <button class="filter-chip active" onclick="toggleFilter(this)">Все</button>
+        <button class="filter-chip" onclick="toggleFilter(this)">Regulated</button>
+        <button class="filter-chip" onclick="toggleFilter(this)">MTF</button>
+      </div>
+    </div>
+
+    <!-- Venue search + list -->
+    <div class="panel-section" style="flex:1;display:flex;flex-direction:column;gap:10px;padding-bottom:0">
+      <div class="panel-label" style="margin-bottom:0">Листинговые режимы</div>
+      <div class="panel-search">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Поиск площадки..." oninput="filterVenues(this.value)">
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);font-family:var(--font-mono);padding:0 2px">
+        Выбрано: <strong id="selected-count" style="color:var(--accent)">3</strong> из 98
+      </div>
+      <div class="venue-list" id="venue-list">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+  </div><!-- /left-panel -->
+
+  <!-- RIGHT AREA -->
+  <div class="right-area">
+
+    <!-- Phase tabs -->
+    <div class="phase-strip">
+      <button class="phase-tab-btn active" onclick="selectPhase('admission',this)">
+        <span class="ptdot ptblue"></span>Допуск
+      </button>
+      <button class="phase-tab-btn" onclick="selectPhase('maintenance',this)">
+        <span class="ptdot ptgreen"></span>Поддержание
+      </button>
+      <button class="phase-tab-btn" onclick="selectPhase('delisting',this)">
+        <span class="ptdot ptred"></span>Исключение
+      </button>
+    </div>
+
+    <!-- Table header: param column selector -->
+    <div class="table-header">
+      <div class="table-header-left">
+        <span class="table-title" id="table-title">Акции — Допуск</span>
+        <span class="table-count" id="table-count">3 режима</span>
+      </div>
+      <div class="param-cols" id="param-cols">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <!-- Comparison table -->
+    <div class="cmp-table-wrap">
+      <table class="cmp-table" id="cmp-table">
+        <thead id="cmp-thead"></thead>
+        <tbody id="cmp-tbody"></tbody>
+      </table>
+      <div id="empty-state" style="display:none" class="empty-state">
+        <div class="empty-state-icon">⬜</div>
+        <div class="empty-state-title">Нет выбранных режимов</div>
+        <div class="empty-state-sub">Отметьте листинговые режимы в панели слева</div>
+      </div>
+    </div>
+
+  </div><!-- /right-area -->
+
+</div><!-- /main-wrap -->
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const VENUES = [
+  // equity
+  {id:'lse-escc', instr:'equity', jur:'Великобритания', flag:'🇬🇧', venue:'LSE Main Market', tier:'Equity Shares (Commercial Companies)', type:'Regulated', law:'common',
+   admission:{P01:'Split — FCA + LSE ADS',P02:'≥ £30 млн',P05:'≥ 10%',P07:'≥ 3 года',P09:'Проспект (POATRs 2024)'},
+   maintenance:{P25:'Годовая + полугодовая',P27:'MAR Art. 17 — немедленно',P30:'Class 1 ≥ 25%'},
+   delisting:{P38:'≥ 75% акционеров',P39:'Выговор / штраф / запрет'},
+   status:'yellow'},
+  {id:'lse-intl', instr:'equity', jur:'Великобритания', flag:'🇬🇧', venue:'LSE Main Market', tier:'Equity Shares (International) — Secondary', type:'Regulated', law:'common',
+   admission:{P01:'UKLR гл. 18 — вторичный',P05:'Сокращённые требования',P09:'Упрощённый проспект'},
+   maintenance:{P25:'Синхронизация с домашним рынком',P28:'Поддержание листинга на домашней бирже'},
+   delisting:{P38:'Потеря статуса на домашней бирже'},
+   status:'yellow'},
+  {id:'hkex-gem-eq', instr:'equity', jur:'Гонконг', flag:'🇭🇰', venue:'HKEX GEM', tier:'Flat structure', type:'Regulated', law:'common',
+   admission:{P01:'Объединённая (SEHK)',P02:'≥ HK$150 млн',P05:'≥ 10% или HK$15 млн',P07:'≥ 2 года (GEM гл. 11)',P09:'Листинговый документ'},
+   maintenance:{P25:'Полугодовая + годовая',P27:'Немедленно',P30:'Существенные сделки'},
+   delisting:{P38:'По решению SEHK',P41:'Перевод на Main Board (Rule 9.24)'},
+   status:'green'},
+  {id:'hkex-main-eq', instr:'equity', jur:'Гонконг', flag:'🇭🇰', venue:'HKEX Main Board', tier:'Equity Shares (Commercial Companies)', type:'Regulated', law:'common',
+   admission:{P01:'Объединённая (SEHK)',P02:'≥ HK$500 млн',P05:'≥ 25%',P07:'≥ 3 года',P09:'Листинговый документ / проспект'},
+   maintenance:{P25:'Годовая + промежуточная',P27:'Немедленно (SFC)',P30:'Существенные сделки и связанные стороны'},
+   delisting:{P38:'По решению SEHK'},
+   status:'green'},
+  {id:'nyse-eq', instr:'equity', jur:'США', flag:'🇺🇸', venue:'NYSE', tier:'Domestic Listed Company', type:'Regulated', law:'common',
+   admission:{P01:'SEC + NYSE self-listing',P02:'≥ $200 млн',P05:'≥ 400 акционеров',P07:'Прибыль / денежный поток / выручка'},
+   maintenance:{P25:'10-K + 10-Q (SEC)',P27:'Form 8-K — немедленно'},
+   delisting:{P38:'По правилам NYSE / SEC'},
+   status:'yellow'},
+  {id:'euronext-eq', instr:'equity', jur:'Франция', flag:'🇫🇷', venue:'Euronext Paris', tier:'Regulated Market (A/B/C)', type:'Regulated', law:'civil',
+   admission:{P01:'AMF + Euronext',P02:'≥ €1 млн',P05:'≥ 25%',P09:'Проспект (EU Prospectus Reg.)'},
+   maintenance:{P25:'Годовая + полугодовая',P27:'MAR — немедленно'},
+   delisting:{P38:'По решению Euronext / AMF'},
+   status:'yellow'},
+  // bonds
+  {id:'lse-bond', instr:'bond', jur:'Великобритания', flag:'🇬🇧', venue:'LSE Main Market', tier:'Debt and debt-like securities', type:'Regulated', law:'common',
+   admission:{P01:'Split — FCA + LSE',P09:'UK Prospectus Regulation',P20:'UKLR гл. 20'},
+   maintenance:{P25:'Годовой отчёт',P27:'По MAR',P29:'Уведомления о купонах'},
+   delisting:{P38:'Погашение / выкуп',P39:'Меры FCA при дефолте'},
+   status:'green'},
+  {id:'hkex-bond', instr:'bond', jur:'Гонконг', flag:'🇭🇰', venue:'HKEX Main Board', tier:'Debt securities', type:'Regulated', law:'common',
+   admission:{P01:'Объединённая (SEHK)',P09:'Listing Document'},
+   maintenance:{P25:'Полугодовая'},
+   delisting:{P38:'При погашении'},
+   status:'yellow'},
+  // funds
+  {id:'lse-ceif', instr:'fund', jur:'Великобритания', flag:'🇬🇧', venue:'LSE Main Market', tier:'Closed Ended Investment Funds', type:'Regulated', law:'common',
+   admission:{P01:'UKLR гл. 15',P21:'Инвестиционная политика'},
+   maintenance:{P25:'NAV — ежегодно',P31:'Ограничения по займам'},
+   delisting:{P38:'При ликвидации'},
+   status:'red'},
+  // dr
+  {id:'lse-dr', instr:'dr', jur:'Великобритания', flag:'🇬🇧', venue:'LSE Main Market', tier:'Depositary Receipts', type:'Regulated', law:'common',
+   admission:{P01:'UKLR гл. 22',P23:'Листинг базовых акций',P24:'Соглашение с депозитарием'},
+   maintenance:{P25:'Синхронизация с базовым рынком',P28:'Поддержание листинга базовых акций'},
+   delisting:{P38:'Закрытие программы ДР'},
+   status:'yellow'},
+];
+
+const PARAMS = {
+  P01:'Процедура / архитектура',P02:'Рыночная капитализация',P05:'Free float',
+  P07:'История / трек-рекорд',P09:'Проспект / документ',P20:'Стандарт',
+  P21:'Инв. политика',P23:'Базовые ценные бумаги',P24:'Депозитарий',
+  P25:'Отчётность',P27:'Раскрытие инсайд. информации',P28:'Листинг базовых',
+  P29:'Выплаты',P30:'Существенные сделки',P31:'Леверидж',
+  P38:'Основания исключения',P39:'Санкции',P40:'Приостановка',
+  P41:'Перевод / редомицилирование',
+};
+
+// phase → default visible params
+const PHASE_PARAMS = {
+  admission:['P01','P02','P05','P07','P09'],
+  maintenance:['P25','P27','P30'],
+  delisting:['P38','P39'],
+};
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let currentInstr = 'equity';
+let currentPhase = 'admission';
+let checkedIds = new Set(['lse-escc','hkex-gem-eq','hkex-main-eq']);
+let activeParams = new Set(PHASE_PARAMS.admission);
+let searchQuery = '';
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  renderVenueList();
+  renderTable();
+  renderParamCols();
+  initShadow();
+});
+
+// ── INSTRUMENT SWITCH ─────────────────────────────────────────────────────────
+function selectInstr(instr) {
+  currentInstr = instr;
+  document.querySelectorAll('.icard').forEach(c => c.classList.remove('active'));
+  document.getElementById('icard-'+instr).classList.add('active');
+  // auto-select first 3 venues of this instr
+  const venues = VENUES.filter(v=>v.instr===instr);
+  checkedIds = new Set(venues.slice(0,3).map(v=>v.id));
+  activeParams = new Set(PHASE_PARAMS[currentPhase]);
+  renderVenueList();
+  renderTable();
+  renderParamCols();
+}
+
+// ── PHASE SWITCH ──────────────────────────────────────────────────────────────
+function selectPhase(phase, btn) {
+  currentPhase = phase;
+  document.querySelectorAll('.phase-tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  activeParams = new Set(PHASE_PARAMS[phase]);
+  renderTable();
+  renderParamCols();
+}
+
+// ── VENUE LIST ────────────────────────────────────────────────────────────────
+function renderVenueList() {
+  const list = document.getElementById('venue-list');
+  const venues = VENUES.filter(v => v.instr === currentInstr &&
+    (searchQuery === '' || v.venue.toLowerCase().includes(searchQuery) || v.jur.toLowerCase().includes(searchQuery)));
+
+  if (venues.length === 0) {
+    list.innerHTML = '<div style="padding:16px;text-align:center;font-size:12px;color:var(--text-dim)">Ничего не найдено</div>';
+    return;
+  }
+
+  list.innerHTML = venues.map(v => `
+    <div class="venue-item ${checkedIds.has(v.id)?'checked':''}" onclick="toggleVenue('${v.id}')">
+      <div class="venue-cb"><span class="venue-cb-check">✓</span></div>
+      <div class="venue-info">
+        <span class="venue-name">${v.flag} ${v.venue}</span>
+        <span class="venue-tier-name">${v.tier}</span>
+        <span class="cell-jur">${v.jur}</span>
+      </div>
+      <span style="font-size:9px;font-family:var(--font-mono);color:${v.status==='green'?'var(--green)':v.status==='yellow'?'var(--yellow)':'#DC2626'};flex-shrink:0">●</span>
+    </div>
+  `).join('');
+  document.getElementById('selected-count').textContent = checkedIds.size;
+}
+
+function toggleVenue(id) {
+  if (checkedIds.has(id)) checkedIds.delete(id);
+  else checkedIds.add(id);
+  renderVenueList();
+  renderTable();
+}
+
+function filterVenues(q) {
+  searchQuery = q.toLowerCase();
+  renderVenueList();
+}
+
+// ── PARAM COLS ────────────────────────────────────────────────────────────────
+function renderParamCols() {
+  const container = document.getElementById('param-cols');
+  // collect all params that appear in current instr + phase
+  const allParams = new Set();
+  VENUES.filter(v=>v.instr===currentInstr).forEach(v => {
+    Object.keys(v[currentPhase]||{}).forEach(p => allParams.add(p));
+  });
+  container.innerHTML = Array.from(allParams).sort().map(p => `
+    <button class="param-col-btn ${activeParams.has(p)?'active':''}" onclick="toggleParam('${p}')">
+      <span style="font-size:9px;opacity:.7">${p}</span> ${PARAMS[p]||p}
+    </button>
+  `).join('');
+}
+
+function toggleParam(p) {
+  if (activeParams.has(p)) { if(activeParams.size>1) activeParams.delete(p); }
+  else activeParams.add(p);
+  renderParamCols();
+  renderTable();
+}
+
+// ── TABLE ─────────────────────────────────────────────────────────────────────
+function renderTable() {
+  const rows = VENUES.filter(v => v.instr===currentInstr && checkedIds.has(v.id));
+  const params = Array.from(activeParams).sort();
+  const instrNames = {equity:'Акции',bond:'Облигации',fund:'Фонды',dr:'Депозитарные расписки'};
+  const phaseNames = {admission:'Допуск',maintenance:'Поддержание',delisting:'Исключение'};
+
+  document.getElementById('table-title').textContent = `${instrNames[currentInstr]} — ${phaseNames[currentPhase]}`;
+  document.getElementById('table-count').textContent = `${rows.length} ${rows.length===1?'режим':rows.length<5?'режима':'режимов'}`;
+
+  const empty = document.getElementById('empty-state');
+  const table = document.getElementById('cmp-table');
+
+  if (rows.length === 0) {
+    empty.style.display = 'block'; table.style.display = 'none'; return;
+  }
+  empty.style.display = 'none'; table.style.display = '';
+
+  // HEADER
+  document.getElementById('cmp-thead').innerHTML = `<tr>
+    <th>Листинговый режим</th>
+    ${params.map(p=>`<th class="ph-${currentPhase}">${p}<br><span style="font-weight:300;font-size:9px;opacity:.75">${PARAMS[p]||''}</span></th>`).join('')}
+  </tr>`;
+
+  // BODY
+  document.getElementById('cmp-tbody').innerHTML = rows.map(v => {
+    const phaseData = v[currentPhase] || {};
+    const statusColor = v.status==='green'?'var(--green)':v.status==='yellow'?'var(--yellow)':'#DC2626';
+    return `<tr class="data-row">
+      <td>
+        <span class="cell-venue">${v.flag} ${v.venue}</span>
+        <span class="cell-tier">${v.tier}</span>
+        <span class="cell-jur" style="margin-top:4px">
+          <span class="status-dot" style="background:${statusColor}"></span>
+          ${v.jur} · ${v.type}
+        </span>
+      </td>
+      ${params.map(p => {
+        const val = phaseData[p];
+        if (!val) return `<td><span class="cell-na">—</span></td>`;
+        return `<td><span class="cell-val">${val}</span></td>`;
+      }).join('')}
+    </tr>`;
+  }).join('');
+}
+
+// ── FILTERS ───────────────────────────────────────────────────────────────────
+function toggleFilter(btn) {
+  // simple toggle for demo
+  btn.closest('.filter-row').querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── STICKY SHADOW ─────────────────────────────────────────────────────────────
+function initShadow() {
+  const wrap = document.getElementById('instr-strip-wrap');
+  const sentinel = document.createElement('div');
+  sentinel.style.cssText = 'height:1px;margin-top:-1px;pointer-events:none';
+  wrap.parentNode.insertBefore(sentinel, wrap);
+  new IntersectionObserver(([e])=>wrap.classList.toggle('stuck',e.intersectionRatio<1),
+    {threshold:[1],rootMargin:'-57px 0px 0px 0px'}).observe(sentinel);
+}
+</script>
+</body>
+</html>

@@ -439,6 +439,17 @@ def form_groups(state: dict) -> dict:
     all_jurisdictions = load_jurisdictions()
     all_venues = discover_all_venues(all_jurisdictions, COUNTRIES_DIR)
 
+    # Filter out deferred venues
+    _deferred_venue_keys = {
+        v["venue_key"] for v in all_venues
+        if v.get("research_priority") == "deferred"
+    }
+    if _deferred_venue_keys:
+        logger.info(
+            "Deferred venues filter: %d venues will be skipped", len(_deferred_venue_keys)
+        )
+    all_venues = [v for v in all_venues if v["venue_key"] not in _deferred_venue_keys]
+
     for venue in all_venues:
         venue_key = venue["venue_key"]
         name_ru = venue["name_ru"]

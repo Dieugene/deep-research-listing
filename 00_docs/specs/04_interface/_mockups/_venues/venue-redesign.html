@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — Страница площадки (Редизайн)</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA; --bg2:#fff; --bg3:#F0F2F7; --bg4:#E4E8F2;
+  --border:rgba(0,0,0,0.11); --border2:rgba(0,0,0,0.18);
+  --text:#111827; --text-mid:#4B5563; --text-dim:#9CA3AF;
+  --accent:#2563EB; --accent2:#3B82F6; --accent-bg:rgba(37,99,235,0.06);
+  --green:#059669; --green-bg:rgba(5,150,105,0.07);
+  --red:#DC2626; --red-bg:rgba(220,38,38,0.07);
+  --orange:#D97706; --orange-bg:rgba(217,119,6,0.07);
+  --yellow:#B45309;
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-serif:'Newsreader',Georgia,serif;
+  --r:8px; --r-lg:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.7;min-height:100vh}
+
+/* ── NAV ─────────────────────────────────────────── */
+nav{
+  position:sticky;top:0;z-index:200;height:56px;
+  background:rgba(255,255,255,0.93);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 28px;gap:4px;
+}
+.nav-logo{
+  width:28px;height:28px;background:var(--accent);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:11px;color:#fff;font-weight:500;
+  margin-right:8px;flex-shrink:0;
+}
+.nav-brand{font-size:13px;font-weight:500;margin-right:auto}
+.nav-link{padding:5px 11px;border-radius:5px;font-size:12.5px;color:var(--text-mid);cursor:pointer;text-decoration:none}
+.nav-link.active{color:var(--accent);background:var(--accent-bg);font-weight:500}
+.nav-badge{font-size:9px;font-family:var(--font-mono);color:var(--text-dim);
+  background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:1px 4px;margin-left:3px}
+
+/* ── VIEW SWITCHER (демо) ────────────────────────── */
+.demo-switcher{
+  background:#1E2433;padding:10px 28px;
+  display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;
+}
+.demo-switcher-label{color:#6B7A99;letter-spacing:.06em;text-transform:uppercase;margin-right:4px}
+.demo-btn{
+  padding:4px 12px;border-radius:4px;border:1px solid #3A4460;color:#9BA8CC;
+  cursor:pointer;background:transparent;font-family:var(--font-mono);font-size:11px;
+  transition:all .15s;
+}
+.demo-btn:hover{border-color:#5B6A99;color:#C5CEE8}
+.demo-btn.active{background:#2563EB;border-color:#2563EB;color:#fff}
+
+/* ── LAYOUT ──────────────────────────────────────── */
+.page{max-width:1100px;margin:0 auto;padding:0 32px 80px}
+
+/* ── BREADCRUMB ──────────────────────────────────── */
+.breadcrumb{
+  padding:16px 0 0;
+  font-family:var(--font-mono);font-size:11px;color:var(--text-dim);
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+}
+.breadcrumb a{color:var(--accent);text-decoration:none}
+.breadcrumb a:hover{text-decoration:underline}
+.breadcrumb span{opacity:.5}
+
+/* ── PAGE HEADER ─────────────────────────────────── */
+.page-header{padding:20px 0 0}
+.page-header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.page-header-left{}
+.venue-title{
+  font-family:var(--font-serif);font-size:38px;font-weight:400;
+  letter-spacing:-.02em;line-height:1.15;color:var(--text);
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.badge-reg{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;
+  padding:4px 9px;border-radius:5px;display:inline-flex;align-items:center;
+  background:var(--accent-bg);color:var(--accent);border:1px solid rgba(37,99,235,.2);
+  font-weight:500;white-space:nowrap;vertical-align:middle;margin-top:4px;
+}
+.badge-mtf{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;
+  padding:4px 9px;border-radius:5px;display:inline-flex;align-items:center;
+  background:rgba(245,158,11,.08);color:var(--yellow);border:1px solid rgba(217,119,6,.2);
+  font-weight:500;white-space:nowrap;vertical-align:middle;margin-top:4px;
+}
+.venue-name-local{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);margin-top:4px}
+.venue-name-en{font-size:13px;color:var(--text-dim);font-weight:300;margin-top:2px}
+
+.status-badge-verified{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 14px;border-radius:var(--r);font-size:12px;font-weight:500;font-family:var(--font-mono);
+  background:var(--green-bg);color:var(--green);border:1px solid rgba(5,150,105,.2);
+  white-space:nowrap;
+}
+.status-badge-verified::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* ── META BAR ────────────────────────────────────── */
+.meta-bar{
+  display:flex;align-items:center;gap:0;
+  border:1px solid var(--border);border-radius:var(--r);
+  background:var(--bg2);overflow:hidden;
+  margin:20px 0;
+}
+.meta-item{
+  padding:11px 20px;display:flex;flex-direction:column;gap:3px;
+  border-right:1px solid var(--border);flex:1;
+}
+.meta-item:last-child{border-right:none}
+.meta-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)}
+.meta-value{font-size:13px;font-weight:500;color:var(--text)}
+.meta-value a{color:var(--accent);text-decoration:none}
+.meta-value a:hover{text-decoration:underline}
+.meta-tag{
+  display:inline-flex;font-family:var(--font-mono);font-size:10px;
+  background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:2px 7px;
+  color:var(--text-mid);
+}
+
+/* ── DESCRIPTION ─────────────────────────────────── */
+.description-block{
+  border-left:3px solid var(--accent-bg);
+  border:1px solid rgba(37,99,235,.12);
+  background:rgba(37,99,235,.025);
+  border-radius:var(--r);
+  padding:16px 20px;
+  margin-bottom:32px;
+  position:relative;
+}
+.description-block::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--accent);border-radius:3px 0 0 3px;opacity:.4;
+}
+.description-text{font-size:13.5px;color:var(--text-mid);line-height:1.78;font-weight:300}
+.description-text strong{color:var(--text);font-weight:500}
+.src-btn{
+  display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;
+  color:var(--text-dim);background:var(--bg3);border:1px solid var(--border2);
+  border-radius:5px;padding:3px 9px;cursor:pointer;margin-top:10px;
+}
+.src-btn:hover{color:var(--accent);border-color:rgba(37,99,235,.3)}
+
+/* ── SECTION ─────────────────────────────────────── */
+.section-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);
+}
+.section-title{
+  font-family:var(--font-mono);font-size:11px;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);
+  display:flex;align-items:center;gap:8px;
+}
+.section-count{
+  background:var(--bg3);border:1px solid var(--border2);border-radius:4px;
+  padding:1px 7px;font-size:10px;color:var(--text-dim);
+}
+
+/* ── INSTRUMENT CARD ─────────────────────────────── */
+.instrument-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);
+  overflow:hidden;margin-bottom:12px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06),0 0 0 0.5px rgba(0,0,0,.03);
+  transition:box-shadow .15s;
+}
+.instrument-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.09),0 0 0 0.5px rgba(0,0,0,.05)}
+.instrument-card-hd{
+  padding:14px 20px;background:var(--bg3);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.instrument-name{font-size:13px;font-weight:500;color:var(--text);display:flex;align-items:center;gap:10px}
+.instrument-en{font-family:var(--font-mono);font-size:10.5px;color:var(--text-dim);margin-top:2px}
+.instrument-hd-right{display:flex;align-items:center;gap:10px}
+
+/* ── LIFECYCLE GRID ──────────────────────────────── */
+.lifecycle-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  padding:16px 20px;gap:8px;
+}
+.phase-cell{
+  border:1px solid var(--border);border-radius:var(--r);
+  cursor:pointer;transition:all .15s;overflow:hidden;
+  text-decoration:none;
+}
+.phase-cell:hover .phase-cell-inner{background:rgba(37,99,235,.04)}
+.phase-cell-inner{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.phase-label{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--text-dim);
+}
+.phase-name{font-size:12.5px;font-weight:500;color:var(--text);line-height:1.3}
+.phase-status-row{display:flex;align-items:center;gap:5px;margin-top:4px;flex-wrap:wrap}
+.aspect-dot{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+}
+.aspect-dot-verified{background:var(--green)}
+.aspect-dot-partial{background:var(--orange)}
+.aspect-dot-na{background:var(--bg4);border:1px solid var(--border2)}
+.phase-count{font-family:var(--font-mono);font-size:9px;color:var(--text-dim);margin-left:2px}
+.phase-cell-verified .phase-cell-inner{border-top:2px solid var(--green)}
+.phase-cell-partial .phase-cell-inner{border-top:2px solid var(--orange)}
+.phase-cell-na .phase-cell-inner{border-top:2px solid var(--bg4)}
+.phase-cell-verified{border-color:rgba(5,150,105,.2)}
+.phase-cell-partial{border-color:rgba(217,119,6,.2)}
+
+/* ── INSTRUMENT FOOTER ───────────────────────────── */
+.instrument-footer{
+  padding:10px 20px;border-top:1px solid var(--border);background:var(--bg);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.instr-stats{display:flex;gap:20px;font-size:11.5px;color:var(--text-dim)}
+.instr-stats strong{color:var(--text-mid);font-weight:500}
+.open-matrix-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:500;color:var(--accent);
+  cursor:pointer;padding:5px 12px;border-radius:5px;border:1px solid rgba(37,99,235,.2);
+  background:var(--accent-bg);font-family:var(--font-sans);
+  transition:all .15s;
+}
+.open-matrix-btn:hover{background:rgba(37,99,235,.12);border-color:rgba(37,99,235,.35)}
+
+/* ═══════════════════════════════════════════════════
+   MATRIX VIEW
+   ═══════════════════════════════════════════════════ */
+#view-matrix{display:none}
+.matrix-header{padding:24px 0 0}
+.matrix-title{
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  font-family:var(--font-serif);font-size:28px;font-weight:400;
+  letter-spacing:-.015em;color:var(--text);margin-bottom:6px;
+}
+.matrix-title-sep{color:var(--text-dim);font-weight:300}
+.matrix-title-instrument{color:var(--accent)}
+.code-tag{
+  font-family:var(--font-mono);font-size:10px;background:var(--bg3);
+  border:1px solid var(--border2);border-radius:4px;padding:2px 8px;color:var(--text-dim);
+}
+
+.matrix-hint{
+  display:flex;align-items:center;gap:8px;
+  background:var(--accent-bg);border:1px solid rgba(37,99,235,.12);
+  border-radius:var(--r);padding:10px 16px;margin:16px 0;
+  font-size:13px;color:var(--text-mid);
+}
+.matrix-hint svg{flex-shrink:0;color:var(--accent)}
+
+/* ── MATRIX TABLE ────────────────────────────────── */
+.matrix-wrap{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);
+  overflow:hidden;margin-bottom:16px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.matrix-table{width:100%;border-collapse:collapse}
+.matrix-table th{
+  font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text-dim);
+  padding:12px 16px;text-align:center;font-weight:400;
+  background:var(--bg3);border-bottom:1px solid var(--border2);
+}
+.matrix-table th:first-child{text-align:left;width:180px}
+.matrix-table td{border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
+.matrix-table tr:last-child td{border-bottom:none}
+.matrix-table td:last-child{border-right:none}
+.phase-row-label{
+  padding:14px 16px;
+  font-size:13px;font-weight:500;color:var(--text);
+  background:var(--bg);
+  display:flex;flex-direction:column;gap:3px;
+}
+.phase-row-num{font-family:var(--font-mono);font-size:9px;color:var(--text-dim)}
+.phase-row-name{font-size:13px;font-weight:500;color:var(--text)}
+
+/* ── MATRIX CELL ─────────────────────────────────── */
+.matrix-cell{
+  padding:10px 12px;text-align:center;cursor:pointer;
+  transition:background .12s;position:relative;
+}
+.matrix-cell:hover .mc-inner{transform:scale(1.03)}
+.mc-inner{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:8px 12px;border-radius:6px;transition:transform .12s;
+}
+
+/* verified */
+.mc-verified .mc-inner{background:rgba(5,150,105,.09);border:1px solid rgba(5,150,105,.2)}
+.mc-verified .mc-icon{color:var(--green)}
+.mc-verified .mc-label{color:var(--green);font-weight:500}
+
+/* partial */
+.mc-partial .mc-inner{background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.2)}
+.mc-partial .mc-icon{color:var(--orange)}
+.mc-partial .mc-label{color:var(--orange)}
+
+/* not-applicable */
+.mc-na .mc-inner{background:var(--bg3);border:1px dashed var(--border2)}
+.mc-na .mc-icon{color:var(--text-dim)}
+.mc-na .mc-label{color:var(--text-dim)}
+.mc-na{cursor:default}
+
+.mc-icon{width:18px;height:18px;flex-shrink:0}
+.mc-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.04em;text-transform:uppercase}
+.mc-aspects{display:flex;gap:3px;margin-top:2px}
+.mc-asp-dot{width:5px;height:5px;border-radius:50%}
+.mc-asp-dot.on{background:currentColor}
+.mc-asp-dot.off{background:var(--border2)}
+.mc-asp-dot.na{background:var(--border2);opacity:.4}
+
+/* ── MATRIX LEGEND ───────────────────────────────── */
+.matrix-legend{
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+  padding:12px 20px;background:var(--bg);border-top:1px solid var(--border);
+  font-size:11.5px;color:var(--text-dim);
+}
+.legend-item{display:flex;align-items:center;gap:6px}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.legend-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.04em}
+
+/* ── MATRIX STATS ────────────────────────────────── */
+.matrix-stats{
+  display:flex;gap:28px;padding:12px 20px;
+  border:1px solid var(--border);border-radius:var(--r);
+  background:var(--bg2);margin-bottom:24px;
+  font-size:12.5px;color:var(--text-dim);
+}
+.matrix-stat strong{color:var(--text-mid);font-weight:500}
+
+/* ═══════════════════════════════════════════════════
+   DRAWER
+   ═══════════════════════════════════════════════════ */
+.drawer-backdrop{
+  position:fixed;inset:0;top:112px;
+  background:rgba(0,0,0,.25);z-index:100;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.drawer-backdrop.open{opacity:1;pointer-events:auto}
+.drawer{
+  position:fixed;top:112px;right:0;bottom:0;
+  width:480px;background:var(--bg2);
+  border-left:1px solid var(--border);
+  z-index:101;
+  transform:translateX(110%);visibility:hidden;
+  transition:transform .28s cubic-bezier(.4,0,.2,1),visibility 0s linear .28s;
+  display:flex;flex-direction:column;
+}
+.drawer.open{
+  transform:translateX(0);visibility:visible;
+  transition:transform .28s cubic-bezier(.4,0,.2,1),visibility 0s linear 0s;
+}
+.drawer-hd{
+  padding:16px 20px;border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  flex-shrink:0;background:var(--bg);
+}
+.drawer-context{display:flex;flex-direction:column;gap:4px}
+.drawer-phase{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim)}
+.drawer-title{font-size:15px;font-weight:500;color:var(--text)}
+.drawer-aspect{
+  display:inline-flex;font-family:var(--font-mono);font-size:10px;
+  background:var(--accent-bg);color:var(--accent);
+  border:1px solid rgba(37,99,235,.2);border-radius:4px;padding:2px 8px;margin-top:4px;
+}
+.drawer-close{
+  width:28px;height:28px;border-radius:5px;border:1px solid var(--border2);
+  background:var(--bg3);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;color:var(--text-dim);transition:all .12s;
+}
+.drawer-close:hover{background:var(--bg4);color:var(--text)}
+
+/* Drawer tabs */
+.drawer-tabs{
+  display:flex;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.drawer-tab{
+  padding:10px 18px;font-size:13px;color:var(--text-dim);
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  cursor:pointer;display:flex;align-items:center;gap:6px;transition:color .12s;
+}
+.drawer-tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500}
+.drawer-tab:hover:not(.active){color:var(--text-mid)}
+.tab-count{
+  font-family:var(--font-mono);font-size:10px;background:var(--bg3);
+  border:1px solid var(--border2);border-radius:8px;padding:1px 6px;color:var(--text-dim);
+}
+.drawer-tab.active .tab-count{background:var(--accent-bg);border-color:rgba(37,99,235,.2);color:var(--accent)}
+
+/* Drawer body */
+.drawer-body{overflow-y:auto;flex:1}
+.tab-content{display:none;padding:20px}
+.tab-content.active{display:block}
+
+/* ── ПАРАМЕТРЫ tab ───────────────────────────────── */
+.param-group{margin-bottom:24px}
+.param-group-title{
+  font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:10px;padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+.param-row{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:9px 0;border-bottom:1px solid var(--border);
+}
+.param-row:last-child{border-bottom:none}
+.param-code{
+  font-family:var(--font-mono);font-size:10px;color:var(--accent);
+  background:var(--accent-bg);border:1px solid rgba(37,99,235,.15);
+  border-radius:3px;padding:2px 6px;flex-shrink:0;margin-top:2px;
+  min-width:38px;text-align:center;
+}
+.param-content{flex:1;min-width:0}
+.param-name{font-size:12px;font-weight:500;color:var(--text);line-height:1.4}
+.param-value{font-size:12px;color:var(--text-mid);font-weight:300;line-height:1.6;margin-top:3px}
+sup.cite{
+  font-family:var(--font-mono);font-size:9px;color:var(--accent);
+  background:var(--accent-bg);border-radius:3px;padding:1px 3px;
+  margin-left:1px;vertical-align:super;line-height:0;
+  border:1px solid rgba(37,99,235,.15);cursor:pointer;
+}
+
+/* ── КОНТЕКСТ tab ────────────────────────────────── */
+.context-section{margin-bottom:20px}
+.context-section-title{
+  font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:8px;padding-bottom:6px;
+  border-bottom:1px solid var(--border);
+}
+.context-text{font-size:13px;color:var(--text-mid);line-height:1.78;font-weight:300}
+.context-text + .context-text{margin-top:8px}
+.arch-note{
+  font-family:var(--font-serif);font-style:italic;font-size:12.5px;
+  color:var(--text-dim);border-left:2px solid var(--border2);
+  padding-left:12px;margin-top:10px;line-height:1.6;
+}
+
+/* Sources */
+.sources-block{
+  margin-top:16px;border-top:1px solid var(--border);padding-top:12px;
+}
+.sources-title{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px}
+.source-item{display:flex;align-items:baseline;gap:8px;padding:5px 0;font-size:12px}
+.source-num{
+  font-family:var(--font-mono);font-size:9px;color:var(--accent);
+  background:var(--accent-bg);border:1px solid rgba(37,99,235,.15);
+  border-radius:3px;padding:1px 5px;flex-shrink:0;
+}
+.source-text{color:var(--text-mid)}
+.source-link{color:var(--accent);font-family:var(--font-mono);font-size:10.5px}
+
+/* ── ANNOTATIONS ─────────────────────────────────── */
+.annotation-bar{
+  background:#1E2433;padding:10px 0;
+  font-family:var(--font-mono);font-size:11px;
+  display:flex;gap:0;overflow-x:auto;
+}
+.ann{
+  padding:6px 20px;border-right:1px solid rgba(255,255,255,.06);
+  color:#6B7A99;display:flex;align-items:center;gap:8px;white-space:nowrap;
+  flex-shrink:0;
+}
+.ann-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ann-new{background:#059669}.ann-mod{background:#2563EB}.ann-rem{background:#DC2626}
+.ann-label{color:#9BA8CC}
+</style>
+</head>
+<body>
+
+<!-- DEMO SWITCHER -->
+<div class="demo-switcher">
+  <span class="demo-switcher-label">Просмотр:</span>
+  <button class="demo-btn active" onclick="showView('venue')">① Страница площадки</button>
+  <button class="demo-btn" onclick="showView('matrix')">② Матрица ячеек</button>
+  <span style="color:#3A4460;margin-left:8px">← нажми на ячейку матрицы, чтобы открыть drawer →</span>
+</div>
+
+<!-- ANNOTATION BAR -->
+<div class="annotation-bar">
+  <div class="ann"><span class="ann-dot ann-new"></span><span class="ann-label">новый элемент</span></div>
+  <div class="ann"><span class="ann-dot ann-mod"></span><span class="ann-label">изменён</span></div>
+  <div class="ann"><span class="ann-dot ann-rem"></span><span class="ann-label">убран</span></div>
+  <div class="ann" style="color:#C5CEE8">Ключевые изменения:</div>
+  <div class="ann" style="color:#80DEEA">① Meta-bar вместо разрозненных полей</div>
+  <div class="ann" style="color:#80DEEA">② Lifecycle-grid вместо точек Д/П/М/#</div>
+  <div class="ann" style="color:#80DEEA">③ Статусные ячейки вместо 10.3k</div>
+  <div class="ann" style="color:#80DEEA">④ Drawer: параметры отделены от контекста</div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">LR</div>
+  <span class="nav-brand">Listing Research</span>
+  <a class="nav-link">Главная</a>
+  <a class="nav-link active">Справочник</a>
+  <a class="nav-link">Каталог параметров</a>
+  <a class="nav-link">Анализ <span class="nav-badge">SOON</span></a>
+  <a class="nav-link">Ассистент <span class="nav-badge">SOON</span></a>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════
+     VIEW 1: VENUE PAGE
+     ═══════════════════════════════════════════════════ -->
+<div id="view-venue">
+<div class="page">
+
+  <nav class="breadcrumb">
+    <a href="#">Справочник</a>
+    <span>→</span>
+    <a href="#">Гонконг</a>
+    <span>→</span>
+    HKEX GEM (Growth Enterprise Market)
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-top">
+      <div class="page-header-left">
+        <div class="venue-title">
+          HKEX GEM <span class="badge-reg">Regulated Market</span>
+        </div>
+        <div class="venue-name-local">香港聯合交易所創業板 (GEM)</div>
+        <div class="venue-name-en">HKEX GEM (Growth Enterprise Market)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Meta bar -->
+  <div class="meta-bar">
+    <div class="meta-item">
+      <div class="meta-label">Юрисдикция</div>
+      <div class="meta-value"><a href="#">Гонконг</a></div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Оператор</div>
+      <div class="meta-value">The Stock Exchange of Hong Kong Limited (SEHK)</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Тип</div>
+      <div class="meta-value"><span class="meta-tag">Regulated Market</span></div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Вторичный листинг</div>
+      <div class="meta-value" style="color:var(--text-dim);font-weight:300">Не предусмотрен</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Платформа допуска</div>
+      <div class="meta-value" style="font-size:12px">FINI HKSCC</div>
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div class="description-block">
+    <div class="description-text">
+      HKEX GEM — это признанный рынок ценных бумаг, управляемый SEHK, с <strong>объединённой процедурой допуска</strong>: листинг и разрешение на обращение предоставляются одновременно по Правилам листинга GEM; SEHK выступает фронт-лайн органом по листингу, при этом SFC сохраняет установленное законом право возражения по Cap.571V s.6. GEM функционирует как <strong>одноуровневая площадка</strong> без тематических сегментов. Существенный модификатор — упрощённый перевод эмитента с GEM на Main Board без назначения спонсора при выполнении критериев (Правило GEM 9.24).<sup class="cite">1</sup>
+    </div>
+    <div class="arch-note">Single-tier venue, merged listing/admission process. SEHK as frontline listing authority; SFC retains statutory objection right under Cap.571V s.6.</div>
+    <button class="src-btn">
+      <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      3 источника
+    </button>
+  </div>
+
+  <!-- Instruments -->
+  <div class="section-header">
+    <div class="section-title">
+      Инструменты и фазы жизненного цикла
+      <span class="section-count">2 инструмента</span>
+    </div>
+  </div>
+
+  <!-- АКЦИИ -->
+  <div class="instrument-card">
+    <div class="instrument-card-hd">
+      <div>
+        <div class="instrument-name">
+          Акции
+          <span class="status-badge-verified">Верифицировано</span>
+        </div>
+        <div class="instrument-en">Equity Securities · HK_HKEX_GEM_equity</div>
+      </div>
+      <div class="instrument-hd-right">
+      </div>
+    </div>
+
+    <div class="lifecycle-grid">
+
+      <!-- Первичный допуск -->
+      <div class="phase-cell phase-cell-verified" onclick="openDrawer('admission','requirements')">
+        <div class="phase-cell-inner">
+          <div class="phase-label">Фаза 1</div>
+          <div class="phase-name">Первичный допуск</div>
+          <div class="phase-status-row">
+            <span class="aspect-dot aspect-dot-verified" title="Требования"></span>
+            <span class="aspect-dot aspect-dot-verified" title="Процедуры"></span>
+            <span class="aspect-dot aspect-dot-na" title="Мониторинг"></span>
+            <span class="aspect-dot aspect-dot-na" title="Санкции"></span>
+            <span class="aspect-dot aspect-dot-verified" title="Раскрытие"></span>
+          </div>
+          <div class="phase-count">3 из 5 аспектов</div>
+        </div>
+      </div>
+
+      <!-- Поддержание -->
+      <div class="phase-cell phase-cell-verified" onclick="openDrawer('maintenance','requirements')">
+        <div class="phase-cell-inner">
+          <div class="phase-label">Фаза 2</div>
+          <div class="phase-name">Поддержание листинга</div>
+          <div class="phase-status-row">
+            <span class="aspect-dot aspect-dot-verified" title="Требования"></span>
+            <span class="aspect-dot aspect-dot-verified" title="Процедуры"></span>
+            <span class="aspect-dot aspect-dot-verified" title="Мониторинг"></span>
+            <span class="aspect-dot aspect-dot-verified" title="Санкции"></span>
+            <span class="aspect-dot aspect-dot-verified" title="Раскрытие"></span>
+          </div>
+          <div class="phase-count">5 из 5 аспектов</div>
+        </div>
+      </div>
+
+      <!-- Приостановка -->
+      <div class="phase-cell phase-cell-verified" onclick="openDrawer('suspension','requirements')">
+        <div class="phase-cell-inner">
+          <div class="phase-label">Фаза 3</div>
+          <div class="phase-name">Приостановка</div>
+          <div class="phase-status-row">
+            <span class="aspect-dot aspect-dot-verified" title="Требования"></span>
+            <span class="aspect-dot aspect-dot-verified" title="Процедуры"></span>
+            <span class="aspect-dot aspect-dot-verified" title="Мониторинг"></span>
+            <span class="aspect-dot aspect-dot-verified" title="Санкции"></span>
+            <span class="aspect-dot aspect-dot-na" title="Раскрытие"></span>
+          </div>
+          <div class="phase-count">4 из 5 аспектов</div>
+        </div>
+      </div>
+
+      <!-- Исключение -->
+      <div class="phase-cell phase-cell-verified" onclick="openDrawer('delisting','requirements')">
+        <div class="phase-cell-inner">
+          <div class="phase-label">Фаза 4</div>
+          <div class="phase-name">Исключение из списка</div>
+          <div class="phase-status-row">
+            <span class="aspect-dot aspect-dot-verified" title="Требования"></span>
+            <span class="aspect-dot aspect-dot-verified" title="Процедуры"></span>
+            <span class="aspect-dot aspect-dot-na" title="Мониторинг"></span>
+            <span class="aspect-dot aspect-dot-verified" title="Санкции"></span>
+            <span class="aspect-dot aspect-dot-na" title="Раскрытие"></span>
+          </div>
+          <div class="phase-count">3 из 5 аспектов</div>
+        </div>
+      </div>
+
+      <!-- Открыть полную матрицу -->
+      <div class="phase-cell" style="cursor:pointer;opacity:.6" onclick="showView('matrix')">
+        <div class="phase-cell-inner" style="align-items:center;justify-content:center;height:100%;text-align:center">
+          <svg width="20" height="20" fill="none" stroke="var(--text-dim)" stroke-width="1.5" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+          <div class="phase-label" style="margin-top:6px;text-align:center">Полная матрица</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:3px">все аспекты →</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="instrument-footer">
+      <div class="instr-stats">
+        <span>Параметров: <strong>29</strong></span>
+        <span>Аспектов: <strong>5</strong></span>
+        <span>Фаз: <strong>4</strong></span>
+      </div>
+      <button class="open-matrix-btn" onclick="showView('matrix')">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        Открыть матрицу требований
+      </button>
+    </div>
+  </div>
+
+  <!-- ОБЛИГАЦИИ -->
+  <div class="instrument-card">
+    <div class="instrument-card-hd">
+      <div>
+        <div class="instrument-name">
+          Облигации
+          <span style="display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:var(--r);font-size:11.5px;font-weight:500;font-family:var(--font-mono);background:var(--red-bg);color:var(--red);border:1px solid rgba(220,38,38,.2)">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--red);display:inline-block;flex-shrink:0"></span>
+            Ненадёжно
+          </span>
+        </div>
+        <div class="instrument-en">Debt Securities · HK_HKEX_GEM_bond</div>
+      </div>
+    </div>
+
+    <div class="lifecycle-grid">
+      <div class="phase-cell phase-cell-partial">
+        <div class="phase-cell-inner">
+          <div class="phase-label">Фаза 1</div>
+          <div class="phase-name">Первичный допуск</div>
+          <div class="phase-status-row">
+            <span class="aspect-dot aspect-dot-partial"></span>
+            <span class="aspect-dot aspect-dot-partial"></span>
+            <span class="aspect-dot aspect-dot-na"></span>
+            <span class="aspect-dot aspect-dot-na"></span>
+            <span class="aspect-dot aspect-dot-partial"></span>
+          </div>
+          <div class="phase-count" style="color:var(--orange)">Требует проверки</div>
+        </div>
+      </div>
+      <div class="phase-cell phase-cell-partial">
+        <div class="phase-cell-inner">
+          <div class="phase-label">Фаза 2</div>
+          <div class="phase-name">Поддержание листинга</div>
+          <div class="phase-status-row">
+            <span class="aspect-dot aspect-dot-partial"></span>
+            <span class="aspect-dot aspect-dot-partial"></span>
+            <span class="aspect-dot aspect-dot-partial"></span>
+            <span class="aspect-dot aspect-dot-partial"></span>
+            <span class="aspect-dot aspect-dot-partial"></span>
+          </div>
+          <div class="phase-count" style="color:var(--orange)">Требует проверки</div>
+        </div>
+      </div>
+      <div class="phase-cell phase-cell-partial">
+        <div class="phase-cell-inner">
+          <div class="phase-label">Фаза 3</div>
+          <div class="phase-name">Приостановка</div>
+          <div class="phase-status-row">
+            <span class="aspect-dot aspect-dot-partial"></span>
+            <span class="aspect-dot aspect-dot-partial"></span>
+            <span class="aspect-dot aspect-dot-partial"></span>
+            <span class="aspect-dot aspect-dot-partial"></span>
+            <span class="aspect-dot aspect-dot-na"></span>
+          </div>
+          <div class="phase-count" style="color:var(--orange)">Требует проверки</div>
+        </div>
+      </div>
+      <div class="phase-cell phase-cell-partial">
+        <div class="phase-cell-inner">
+          <div class="phase-label">Фаза 4</div>
+          <div class="phase-name">Исключение из списка</div>
+          <div class="phase-status-row">
+            <span class="aspect-dot aspect-dot-partial"></span>
+            <span class="aspect-dot aspect-dot-partial"></span>
+            <span class="aspect-dot aspect-dot-na"></span>
+            <span class="aspect-dot aspect-dot-partial"></span>
+            <span class="aspect-dot aspect-dot-na"></span>
+          </div>
+          <div class="phase-count" style="color:var(--orange)">Требует проверки</div>
+        </div>
+      </div>
+      <div class="phase-cell" style="cursor:pointer;opacity:.5">
+        <div class="phase-cell-inner" style="align-items:center;justify-content:center;height:100%;text-align:center">
+          <svg width="20" height="20" fill="none" stroke="var(--text-dim)" stroke-width="1.5" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+          <div class="phase-label" style="margin-top:6px;text-align:center">Полная матрица</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="instrument-footer">
+      <div class="instr-stats">
+        <span>Параметров: <strong>18</strong></span>
+        <span>Аспектов: <strong>5</strong></span>
+        <span>Фаз: <strong>4</strong></span>
+      </div>
+      <button class="open-matrix-btn" style="opacity:.5;cursor:default">
+        Открыть матрицу требований
+      </button>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     VIEW 2: MATRIX PAGE
+     ═══════════════════════════════════════════════════ -->
+<div id="view-matrix" style="display:none">
+<div class="page">
+
+  <nav class="breadcrumb">
+    <a href="#" onclick="showView('venue');return false">Справочник</a>
+    <span>→</span>
+    <a href="#" onclick="showView('venue');return false">Гонконг</a>
+    <span>→</span>
+    <a href="#" onclick="showView('venue');return false">HKEX_GEM</a>
+    <span>→</span>
+    Акции · Матрица требований
+  </nav>
+
+  <div class="matrix-header">
+    <div class="matrix-title">
+      HKEX GEM
+      <span class="matrix-title-sep">/</span>
+      <span class="matrix-title-instrument">Акции</span>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <span class="code-tag">HK_HKEX_GEM_equity</span>
+      <span class="code-tag">HKEX_GEM</span>
+      <span class="status-badge-verified" style="font-size:11.5px">Верифицировано</span>
+    </div>
+  </div>
+
+  <div class="matrix-hint">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    Нажмите на заполненную ячейку — откроется панель с параметрами и текстом
+  </div>
+
+  <div class="matrix-wrap">
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Фаза жизненного цикла</th>
+          <th>Требования</th>
+          <th>Процедуры</th>
+          <th>Мониторинг и надзор</th>
+          <th>Санкции</th>
+          <th>Раскрытие информации</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Первичный допуск -->
+        <tr>
+          <td><div class="phase-row-label">
+            <div class="phase-row-num">Фаза 1</div>
+            <div class="phase-row-name">Первичный допуск</div>
+          </div></td>
+          <td class="matrix-cell" onclick="openDrawer('admission','requirements')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+              <div class="mc-aspects mc-verified"><span class="mc-asp-dot on"></span><span class="mc-asp-dot on"></span><span class="mc-asp-dot on"></span></div>
+            </div>
+          </td>
+          <td class="matrix-cell" onclick="openDrawer('admission','procedures')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+            </div>
+          </td>
+          <td class="matrix-cell mc-na">
+            <div class="mc-inner mc-na">
+              <span style="font-family:var(--font-mono);font-size:14px;color:var(--border2)">—</span>
+              <span class="mc-label">Не применимо</span>
+            </div>
+          </td>
+          <td class="matrix-cell mc-na">
+            <div class="mc-inner mc-na">
+              <span style="font-family:var(--font-mono);font-size:14px;color:var(--border2)">—</span>
+              <span class="mc-label">Не применимо</span>
+            </div>
+          </td>
+          <td class="matrix-cell" onclick="openDrawer('admission','disclosure')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+            </div>
+          </td>
+        </tr>
+        <!-- Поддержание -->
+        <tr>
+          <td><div class="phase-row-label">
+            <div class="phase-row-num">Фаза 2</div>
+            <div class="phase-row-name">Поддержание листинга</div>
+          </div></td>
+          <td class="matrix-cell" onclick="openDrawer('maintenance','requirements')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+            </div>
+          </td>
+          <td class="matrix-cell" onclick="openDrawer('maintenance','procedures')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+            </div>
+          </td>
+          <td class="matrix-cell" onclick="openDrawer('maintenance','monitoring')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+            </div>
+          </td>
+          <td class="matrix-cell" onclick="openDrawer('maintenance','sanctions')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+            </div>
+          </td>
+          <td class="matrix-cell" onclick="openDrawer('maintenance','disclosure')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+            </div>
+          </td>
+        </tr>
+        <!-- Приостановка -->
+        <tr>
+          <td><div class="phase-row-label">
+            <div class="phase-row-num">Фаза 3</div>
+            <div class="phase-row-name">Приостановка</div>
+          </div></td>
+          <td class="matrix-cell" onclick="openDrawer('suspension','requirements')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+            </div>
+          </td>
+          <td class="matrix-cell" onclick="openDrawer('suspension','procedures')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+            </div>
+          </td>
+          <td class="matrix-cell" onclick="openDrawer('suspension','monitoring')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+            </div>
+          </td>
+          <td class="matrix-cell" onclick="openDrawer('suspension','sanctions')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+            </div>
+          </td>
+          <td class="matrix-cell mc-na">
+            <div class="mc-inner mc-na">
+              <span style="font-family:var(--font-mono);font-size:14px;color:var(--border2)">—</span>
+              <span class="mc-label">Не применимо</span>
+            </div>
+          </td>
+        </tr>
+        <!-- Исключение -->
+        <tr>
+          <td><div class="phase-row-label">
+            <div class="phase-row-num">Фаза 4</div>
+            <div class="phase-row-name">Исключение из списка</div>
+          </div></td>
+          <td class="matrix-cell" onclick="openDrawer('delisting','requirements')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+            </div>
+          </td>
+          <td class="matrix-cell" onclick="openDrawer('delisting','procedures')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+            </div>
+          </td>
+          <td class="matrix-cell mc-na">
+            <div class="mc-inner mc-na">
+              <span style="font-family:var(--font-mono);font-size:14px;color:var(--border2)">—</span>
+              <span class="mc-label">Не применимо</span>
+            </div>
+          </td>
+          <td class="matrix-cell" onclick="openDrawer('delisting','sanctions')">
+            <div class="mc-inner mc-verified">
+              <svg class="mc-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mc-label">Верифицировано</span>
+            </div>
+          </td>
+          <td class="matrix-cell mc-na">
+            <div class="mc-inner mc-na">
+              <span style="font-family:var(--font-mono);font-size:14px;color:var(--border2)">—</span>
+              <span class="mc-label">Не применимо</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="matrix-legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--green)"></div>
+        <span class="legend-label">Верифицировано</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--orange)"></div>
+        <span class="legend-label">Частично / требует проверки</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--bg4);border:1px solid var(--border2)"></div>
+        <span class="legend-label">Не применимо</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--bg3);border:1px dashed var(--border2)"></div>
+        <span class="legend-label">Нет данных</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="matrix-stats">
+    <span>Фаз: <strong>4</strong></span>
+    <span>Аспектов: <strong>5</strong></span>
+    <span>Заполнено: <strong>15 из 20</strong></span>
+    <span>Параметров: <strong>29</strong></span>
+    <span>Не применимо: <strong>5</strong></span>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     DRAWER
+     ═══════════════════════════════════════════════════ -->
+<div class="drawer-backdrop" id="backdrop" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+
+  <div class="drawer-hd">
+    <div class="drawer-context">
+      <div class="drawer-phase" id="drawer-phase">Первичный допуск · Фаза 1</div>
+      <div class="drawer-title" id="drawer-title">Требования к листингу</div>
+      <div>
+        <span class="drawer-aspect" id="drawer-aspect">requirements</span>
+        <span style="font-family:var(--font-mono);font-size:9.5px;color:var(--text-dim);margin-left:8px">HK_HKEX_GEM_equity</span>
+      </div>
+    </div>
+    <div class="drawer-close" onclick="closeDrawer()">
+      <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </div>
+  </div>
+
+  <div class="drawer-tabs">
+    <div class="drawer-tab active" onclick="switchTab('params')">
+      Параметры <span class="tab-count" id="param-count">11</span>
+    </div>
+    <div class="drawer-tab" onclick="switchTab('context')">
+      Контекст <span class="tab-count">2</span>
+    </div>
+  </div>
+
+  <div class="drawer-body">
+
+    <!-- ПАРАМЕТРЫ TAB -->
+    <div class="tab-content active" id="tab-params">
+
+      <!-- Группа: Требования к инструменту -->
+      <div class="param-group">
+        <div class="param-group-title">Требования к инструменту</div>
+
+        <div class="param-row">
+          <span class="param-code">П05</span>
+          <div class="param-content">
+            <div class="param-name">Free float (минимальный)</div>
+            <div class="param-value">≥10% от рыночной стоимости листингованных акций (≥HK$15 млн) или ≥100 акционеров.<sup class="cite">1</sup> Либо: рыночная стоимость свободно обращающихся акций ≥HK$30 млн при любом free float.</div>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <span class="param-code">П06</span>
+          <div class="param-content">
+            <div class="param-name">Минимальная рыночная капитализация</div>
+            <div class="param-value">HK$150 млн (по всем выпущенным акциям, за вычетом казначейских).<sup class="cite">1</sup></div>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <span class="param-code">П07</span>
+          <div class="param-content">
+            <div class="param-name">Публичные акционеры (min)</div>
+            <div class="param-value">Не менее 100 публичных держателей (включая CCASS nominees).<sup class="cite">1</sup></div>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <span class="param-code">П08</span>
+          <div class="param-content">
+            <div class="param-name">Минимальная цена размещения</div>
+            <div class="param-value">Не установлена явно; определяется через рыночную капитализацию и free float threshold.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Группа: Требования к эмитенту -->
+      <div class="param-group">
+        <div class="param-group-title">Требования к эмитенту</div>
+
+        <div class="param-row">
+          <span class="param-code">П12</span>
+          <div class="param-content">
+            <div class="param-name">История торгового учёта (Trading Record)</div>
+            <div class="param-value">Два полных финансовых года под фактически тем же менеджментом, включая последний год.<sup class="cite">2</sup> Допустимо сокращение для инфраструктурных, горнодобывающих и специальных проектов по GEM Rule 11.14.</div>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <span class="param-code">П13</span>
+          <div class="param-content">
+            <div class="param-name">Тест на финансовую пригодность</div>
+            <div class="param-value">
+              Один из трёх путей (GEM Chapter 11):<br/>
+              (1) Cash flow ≥HK$30 млн за 2 года; или<br/>
+              (2) Market-cap ≥HK$250 млн + Revenue ≥HK$100 млн с ростом год к году; или<br/>
+              (3) R&D ≥HK$30 млн + ≥15% операционных расходов ежегодно.<sup class="cite">2</sup>
+            </div>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <span class="param-code">П15</span>
+          <div class="param-content">
+            <div class="param-name">Аудит и стандарты</div>
+            <div class="param-value">Принятые стандарты бухучёта: HKFRS, IFRS, US PCAOB (GEM Rule 11.12A).<sup class="cite">3</sup></div>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <span class="param-code">П16</span>
+          <div class="param-content">
+            <div class="param-name">Корпоративное управление</div>
+            <div class="param-value">Минимум 3 независимых директора, аудиторский / ревизионный / номинационный комитеты, гендерное разнообразие совета.<sup class="cite">2</sup></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Группа: Процедуры допуска -->
+      <div class="param-group">
+        <div class="param-group-title">Архитектура допуска</div>
+
+        <div class="param-row">
+          <span class="param-code">П01</span>
+          <div class="param-content">
+            <div class="param-name">Тип процедуры</div>
+            <div class="param-value">Объединённая (merged): листинг и разрешение на обращение предоставляются одновременно. Отдельной заявки на допуск к торгам не требуется.<sup class="cite">1</sup></div>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <span class="param-code">П02</span>
+          <div class="param-content">
+            <div class="param-name">Вторичный листинг</div>
+            <div class="param-value">Не предусмотрен на GEM. Зарубежные эмитенты могут подавать на первичный листинг по GEM Chapter 24.<sup class="cite">1</sup></div>
+          </div>
+        </div>
+
+        <div class="param-row">
+          <span class="param-code">П03</span>
+          <div class="param-content">
+            <div class="param-name">Платформа подачи</div>
+            <div class="param-value">FINI (HKSCC) — операционный допуск новых выпусков с 2023 года.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sources in params tab -->
+      <div class="sources-block">
+        <div class="sources-title">Источники</div>
+        <div class="source-item">
+          <span class="source-num">1</span>
+          <span class="source-text">GEM Listing Rules, Rules 11.23–11.23B — <a class="source-link" href="#">en-rules.hkex.com.hk ↗</a></span>
+        </div>
+        <div class="source-item">
+          <span class="source-num">2</span>
+          <span class="source-text">GEM Chapter 11 (Financial Eligibility) — <a class="source-link" href="#">en-rules.hkex.com.hk ↗</a></span>
+        </div>
+        <div class="source-item">
+          <span class="source-num">3</span>
+          <span class="source-text">GEM Rule 11.12A (Accounting Standards) — <a class="source-link" href="#">en-rules.hkex.com.hk ↗</a></span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- КОНТЕКСТ TAB -->
+    <div class="tab-content" id="tab-context">
+
+      <div class="context-section">
+        <div class="context-section-title">Общая архитектура допуска</div>
+        <div class="context-text">
+          GEM использует объединённую процедуру допуска: листинг и разрешение на обращение ценных бумаг предоставляются одновременно на основании Правил листинга GEM.<sup class="cite">1</sup> SEHK выступает фронт-лайн органом, при этом SFC сохраняет установленное законом право возражения по Cap.571V s.6.
+        </div>
+        <div class="arch-note">Single-tier venue with merged listing/admission process. SEHK as frontline listing authority; SFC retains statutory objection right (Cap.571V s.6).</div>
+      </div>
+
+      <div class="context-section">
+        <div class="context-section-title">Особые модификаторы</div>
+        <div class="context-text">
+          Упрощённый перевод с GEM на Main Board без назначения спонсора (GEM Rule 9.24) при соответствии установленным критериям. Начиная с 4 августа 2023 Rule 10.11A требует выделения ≥5% акций публичной части.<sup class="cite">2</sup>
+        </div>
+      </div>
+
+      <div class="sources-block">
+        <div class="sources-title">Источники</div>
+        <div class="source-item">
+          <span class="source-num">1</span>
+          <span class="source-text">HKEX GEM Listing Rules (consolidated) — <a class="source-link" href="#">en-rules.hkex.com.hk ↗</a></span>
+        </div>
+        <div class="source-item">
+          <span class="source-num">2</span>
+          <span class="source-text">Rule 10.11A (Public Tranche, eff. 4 Aug 2023) — <a class="source-link" href="#">hkex.com.hk ↗</a></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const PHASE_LABELS = {
+  admission: 'Первичный допуск · Фаза 1',
+  maintenance: 'Поддержание листинга · Фаза 2',
+  suspension: 'Приостановка · Фаза 3',
+  delisting: 'Исключение из списка · Фаза 4'
+};
+const ASPECT_LABELS = {
+  requirements: 'Требования',
+  procedures: 'Процедуры',
+  monitoring: 'Мониторинг и надзор',
+  sanctions: 'Санкции',
+  disclosure: 'Раскрытие информации'
+};
+const ASPECT_TITLES = {
+  requirements: 'Требования к листингу',
+  procedures: 'Процедуры и регламенты',
+  monitoring: 'Мониторинг и надзор',
+  sanctions: 'Санкционный режим',
+  disclosure: 'Раскрытие информации'
+};
+
+function showView(v) {
+  document.getElementById('view-venue').style.display = v === 'venue' ? 'block' : 'none';
+  document.getElementById('view-matrix').style.display = v === 'matrix' ? 'block' : 'none';
+  document.querySelectorAll('.demo-btn').forEach((b,i) => {
+    b.classList.toggle('active', (i===0 && v==='venue')||(i===1 && v==='matrix'));
+  });
+  closeDrawer();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function openDrawer(phase, aspect) {
+  document.getElementById('drawer-phase').textContent = PHASE_LABELS[phase] || phase;
+  document.getElementById('drawer-title').textContent = ASPECT_TITLES[aspect] || aspect;
+  document.getElementById('drawer-aspect').textContent = ASPECT_LABELS[aspect] || aspect;
+  document.getElementById('backdrop').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+  // reset tabs
+  switchTab('params');
+}
+
+function closeDrawer() {
+  document.getElementById('backdrop').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+}
+
+function switchTab(t) {
+  document.querySelectorAll('.drawer-tab').forEach((el,i) => {
+    el.classList.toggle('active', (i===0 && t==='params')||(i===1 && t==='context'));
+  });
+  document.getElementById('tab-params').classList.toggle('active', t==='params');
+  document.getElementById('tab-context').classList.toggle('active', t==='context');
+}
+
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDrawer(); });
+</script>
+</body>
+</html>

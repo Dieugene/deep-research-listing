@@ -299,6 +299,17 @@ def postprocess_all_venues(state: dict) -> None:
     from pipeline.registry import discover_all_venues, load_jurisdictions
     _all_venues = discover_all_venues(load_jurisdictions(), COUNTRIES_DIR)
 
+    # Filter out deferred venues
+    _deferred_venue_keys = {
+        v["venue_key"] for v in _all_venues
+        if v.get("research_priority") == "deferred"
+    }
+    if _deferred_venue_keys:
+        logger.info(
+            "Deferred venues filter: %d venues will be skipped", len(_deferred_venue_keys)
+        )
+    _all_venues = [v for v in _all_venues if v["venue_key"] not in _deferred_venue_keys]
+
     for venue in _all_venues:
         venue_key = venue["venue_key"]
         name_ru = venue["name_ru"]
@@ -342,6 +353,13 @@ def postprocess_all_venues(state: dict) -> None:
             if not isinstance(content, dict):
                 logger.warning("Unexpected content format in %s — skipping", raw_file)
                 continue
+            # Handle nested parallel_output structure: content may be the full
+            # parallel_output wrapper {basis, content, type, ...} rather than
+            # the actual research data. Unwrap if needed.
+            if "basis" in content and "content" in content and "type" in content:
+                inner = content.get("content", {})
+                if isinstance(inner, dict):
+                    content = inner
 
             tiers = content.get("tiers", [])
             if not tiers:

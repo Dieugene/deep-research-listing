@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — Система источников v2</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA;--bg2:#fff;--bg3:#F0F2F7;--bg4:#E4E8F2;
+  --border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.17);
+  --text:#111827;--text-mid:#4B5563;--text-dim:#9CA3AF;
+  --accent:#2563EB;--accent-bg:rgba(37,99,235,0.06);
+  --green:#059669;--orange:#D97706;--red:#DC2626;
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-serif:'Newsreader',Georgia,serif;
+  --r:8px;--r-lg:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.7;min-height:100vh}
+
+/* NAV */
+nav{height:56px;background:rgba(255,255,255,0.94);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:4px}
+.nav-logo{width:28px;height:28px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:#fff;font-weight:500;margin-right:8px}
+.nav-brand{font-size:13px;font-weight:500}
+
+/* DEMO BAR */
+.demo-bar{background:#16213a;padding:8px 28px;display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px}
+.demo-lbl{color:#4A5880;letter-spacing:.07em;text-transform:uppercase}
+.dbtn{padding:4px 12px;border-radius:4px;border:1px solid #2A3A60;color:#7B8FBF;cursor:pointer;background:transparent;font-family:var(--font-mono);font-size:11px;transition:all .15s}
+.dbtn:hover{border-color:#4A6099;color:#B0BFDF}
+.dbtn.on{background:#2563EB;border-color:#2563EB;color:#fff}
+.demo-sep{color:#2A3A60;margin:0 4px}
+
+/* PAGE */
+.page{max-width:820px;margin:0 auto;padding:32px 28px 80px}
+.section-hd{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.section-gap{margin-bottom:48px}
+
+/* ══════════════════════════════════════════════
+   SECTION CARD (context wrapper)
+   ══════════════════════════════════════════════ */
+.section-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.sc-hd{padding:11px 20px;border-bottom:1px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:space-between}
+.sc-title{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--text-dim);font-weight:500}
+.sc-body{padding:16px 22px;font-size:13.5px;color:var(--text-mid);line-height:1.78;font-weight:300}
+.sc-body strong{color:var(--text);font-weight:500}
+sup.cite{font-family:var(--font-mono);font-size:9px;color:var(--accent);background:var(--accent-bg);border-radius:3px;padding:1px 3px;margin-left:1px;border:1px solid rgba(37,99,235,.15);cursor:pointer;vertical-align:super;line-height:0}
+
+/* ══════════════════════════════════════════════
+   SOURCE BLOCK — the core new component
+   ══════════════════════════════════════════════ */
+.src-block{border-top:1px solid var(--border);background:var(--bg)}
+
+/* header row */
+.src-block-hd{
+  padding:8px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;user-select:none;
+}
+.src-block-hd:hover{background:rgba(0,0,0,.02)}
+.src-block-left{display:flex;align-items:center;gap:8px}
+.src-block-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);font-weight:500}
+.src-count{font-family:var(--font-mono);font-size:10px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;padding:1px 7px;color:var(--text-dim)}
+.src-block.has-excerpts .src-count{background:var(--accent-bg);border-color:rgba(37,99,235,.2);color:var(--accent)}
+.src-chevron{color:var(--text-dim);font-size:11px;transition:transform .15s;font-family:var(--font-mono)}
+.src-block.open .src-chevron{transform:rotate(180deg)}
+
+/* expanded source list */
+.src-list{display:none;border-top:1px solid var(--border);padding:10px 20px 12px}
+.src-block.open .src-list{display:block}
+
+/* individual source row */
+.src-row{padding:8px 0;border-bottom:1px solid var(--border)}
+.src-row:last-child{border-bottom:none}
+
+.src-row-hd{display:flex;align-items:flex-start;gap:10px}
+.src-num{font-family:var(--font-mono);font-size:9px;color:var(--accent);background:var(--accent-bg);border:1px solid rgba(37,99,235,.15);border-radius:3px;padding:1px 5px;flex-shrink:0;margin-top:2px}
+
+.src-meta{flex:1;min-width:0}
+.src-title-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.src-link{color:var(--accent);font-size:13px;font-weight:500;text-decoration:none}
+.src-link:hover{text-decoration:underline}
+
+/* doc type badge */
+.doc-type{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.04em;text-transform:uppercase;
+  padding:2px 7px;border-radius:4px;flex-shrink:0;font-weight:500;
+}
+.dt-legislation{background:#EFF6FF;color:#1E40AF;border:1px solid #BFDBFE}
+.dt-rulebook{background:#F0FDF4;color:#065F46;border:1px solid #A7F3D0}
+.dt-government{background:#ECFEFF;color:#155E75;border:1px solid #A5F3FC}
+.dt-consultation{background:#FFF7ED;color:#9A3412;border:1px solid #FED7AA}
+.dt-research{background:#FAF5FF;color:#6B21A8;border:1px solid #DDD6FE}
+.dt-other{background:var(--bg3);color:var(--text-dim);border:1px solid var(--border2)}
+
+/* excerpt toggle */
+.excerpt-toggle{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--font-mono);font-size:10px;color:var(--text-dim);
+  cursor:pointer;padding:2px 0;margin-top:4px;
+  transition:color .12s;
+}
+.excerpt-toggle:hover{color:var(--accent)}
+.excerpt-toggle.active{color:var(--accent)}
+.excerpt-icon{font-size:11px}
+.excerpt-count{font-family:var(--font-mono);font-size:9px;background:var(--bg4);border:1px solid var(--border2);border-radius:3px;padding:1px 5px;color:var(--text-dim)}
+.excerpt-toggle.active .excerpt-count{background:rgba(37,99,235,.1);border-color:rgba(37,99,235,.2);color:var(--accent)}
+
+/* excerpt quotes */
+.excerpts-wrap{display:none;margin-top:8px;padding-left:16px;border-left:2px solid var(--border2)}
+.excerpts-wrap.open{display:block}
+.excerpt-item{
+  font-family:var(--font-serif);font-style:italic;
+  font-size:12.5px;color:var(--text-mid);line-height:1.72;
+  padding:6px 0;border-bottom:1px dashed var(--border);
+}
+.excerpt-item:last-child{border-bottom:none;padding-bottom:0}
+.excerpt-item::before{content:'\201C';color:var(--text-dim);margin-right:2px;font-size:15px;line-height:0;vertical-align:-3px}
+.excerpt-item::after{content:'\201D';color:var(--text-dim);margin-left:2px;font-size:15px;line-height:0;vertical-align:-3px}
+
+/* ══════════════════════════════════════════════
+   L4 CARD — problem / reform / contradiction
+   ══════════════════════════════════════════════ */
+.l4-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.l4-hd{padding:12px 18px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.l4-type-badge{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;
+  padding:3px 8px;border-radius:4px;font-weight:500;flex-shrink:0;
+}
+.ltype-problem{background:#FEE2E2;color:#991B1B;border:1px solid #FECACA}
+.ltype-reform{background:#DBEAFE;color:#1E40AF;border:1px solid #BFDBFE}
+.ltype-contradiction{background:#FEF3C7;color:#92400E;border:1px solid #FDE68A}
+.ltype-tool{background:#D1FAE5;color:#065F46;border:1px solid #A7F3D0}
+
+.l4-label{font-size:13.5px;font-weight:500;color:var(--text)}
+.l4-meta{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0}
+.l4-period{font-family:var(--font-mono);font-size:10px;color:var(--accent);background:var(--accent-bg);border:1px solid rgba(37,99,235,.15);border-radius:4px;padding:2px 8px;display:flex;align-items:center;gap:5px}
+.l4-period::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.5}
+.l4-by{font-family:var(--font-mono);font-size:9.5px;color:var(--text-dim)}
+
+.l4-body{padding:14px 18px}
+.l4-desc{font-size:13.5px;color:var(--text-mid);line-height:1.78;font-weight:300}
+
+/* contradiction grid */
+.contra-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.contra-side{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px}
+.contra-lbl{font-family:var(--font-mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px}
+.contra-text{font-size:12.5px;color:var(--text-mid);font-weight:300;line-height:1.6}
+.resolution{background:rgba(5,150,105,.05);border:1px solid rgba(5,150,105,.15);border-radius:var(--r);padding:10px 14px}
+.res-lbl{font-family:var(--font-mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--green);margin-bottom:4px}
+.res-text{font-size:12.5px;color:var(--text-mid);font-weight:300;line-height:1.6}
+
+/* l4 sources — simpler, no excerpts */
+.l4-src-footer{padding:8px 18px 10px;border-top:1px solid var(--border);background:var(--bg);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.l4-src-lbl{font-family:var(--font-mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--text-dim)}
+.l4-src-item{display:inline-flex;align-items:center;gap:5px;font-size:12px}
+.l4-src-link{color:var(--accent);text-decoration:none;font-family:var(--font-mono);font-size:10.5px}
+.l4-src-link:hover{text-decoration:underline}
+
+/* ══════════════════════════════════════════════
+   CONTEXT ANNOTATION
+   ══════════════════════════════════════════════ */
+.annotation{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:var(--r);padding:12px 16px;margin-bottom:16px;font-size:13px;color:#1E40AF;line-height:1.65}
+.annotation strong{font-weight:600}
+.annotation code{font-family:var(--font-mono);font-size:11px;background:rgba(37,99,235,.1);border-radius:3px;padding:1px 5px;color:#1E40AF}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">LR</div>
+  <span class="nav-brand">Listing Research — Компонент источников v2</span>
+</nav>
+
+<!-- DEMO BAR -->
+<div class="demo-bar">
+  <span class="demo-lbl">Блок:</span>
+  <button class="dbtn on" onclick="show('l3')">L3 — Детальный вид ячейки</button>
+  <button class="dbtn" onclick="show('l4')">L4 — Регуляторный анализ</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     L3: DETAIL VIEW SOURCES
+     ══════════════════════════════════════════ -->
+<div id="view-l3">
+<div class="page">
+
+  <div class="annotation">
+    <strong>Что показано:</strong> обновлённый компонент источников в детальном виде ячейки.
+    Каждый источник содержит тип документа (бейдж), и при наличии выдержек —
+    раскрываемый блок с дословными цитатами из первоисточника. Источники раскрываются
+    по клику на заголовок блока «Источники». Выдержки раскрываются по отдельному клику
+    на «N выдержек» — независимо для каждого источника.
+  </div>
+
+  <div class="section-hd">Секции детального вида — Допуск · Требования к инструменту</div>
+
+  <!-- Section card 1: instrument requirements — has excerpts -->
+  <div class="section-card">
+    <div class="sc-hd">
+      <span class="sc-title">Требования к инструменту</span>
+    </div>
+    <div class="sc-body">
+      Free Float: At least <strong>10% of shares</strong> must be in "public hands" at admission (UKLR 5.5.2R).<sup class="cite">1</sup>
+      Public Hands Definition: Excludes shares held by directors, connected persons, trustees of employee schemes, persons with board nomination rights, or those in the same group/acting in concert with ≥5% interest.
+      Also excludes shares subject to a lock-up >180 days (UKLR 5.5.3R).<sup class="cite">1</sup>
+      <br><br>
+      Minimum expected aggregate <strong>market capitalisation ≥ £30,000,000</strong> at admission.<sup class="cite">2</sup>
+    </div>
+
+    <!-- SOURCE BLOCK — with excerpts -->
+    <div class="src-block has-excerpts" id="sb1">
+      <div class="src-block-hd" onclick="toggleSrcBlock('sb1')">
+        <div class="src-block-left">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--text-dim);flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span class="src-block-label">Источники</span>
+          <span class="src-count">2 источника · 4 выдержки</span>
+        </div>
+        <span class="src-chevron">▾</span>
+      </div>
+      <div class="src-list">
+
+        <!-- Source 1: rulebook, has excerpts -->
+        <div class="src-row">
+          <div class="src-row-hd">
+            <span class="src-num">1</span>
+            <div class="src-meta">
+              <div class="src-title-row">
+                <a class="src-link" href="https://handbook.fca.org.uk/handbook/UKLR/5/5.html" target="_blank">UKLR 5.5 — Free float requirements ↗</a>
+                <span class="doc-type dt-rulebook">Правила биржи</span>
+              </div>
+              <div class="excerpt-toggle" onclick="toggleExcerpts('ex1')">
+                <span class="excerpt-icon">❝</span>
+                <span>3 выдержки из документа</span>
+                <span class="excerpt-count" id="ex1-count">показать</span>
+              </div>
+              <div class="excerpts-wrap" id="ex1">
+                <div class="excerpt-item">a sufficient number of shares will be taken to have been distributed to the public when 10% of the listed shares are in public hands; and treasury shares are not to be taken into consideration when calculating the number of shares of the class</div>
+                <div class="excerpt-item">UKLR 5.5.2R — A listed company must at all times maintain a sufficient number of shares of each class in public hands</div>
+                <div class="excerpt-item">Shares subject to a lock-up agreement of more than 180 days are not to be treated as being in public hands for the purposes of UKLR 5.5.2R</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Source 2: legislation, has excerpts -->
+        <div class="src-row">
+          <div class="src-row-hd">
+            <span class="src-num">2</span>
+            <div class="src-meta">
+              <div class="src-title-row">
+                <a class="src-link" href="https://handbook.fca.org.uk/handbook/UKLR/3/2.html" target="_blank">UKLR 3.2 — General admission requirements ↗</a>
+                <span class="doc-type dt-legislation">Законодательство</span>
+              </div>
+              <div class="excerpt-toggle" onclick="toggleExcerpts('ex2')">
+                <span class="excerpt-icon">❝</span>
+                <span>1 выдержка из документа</span>
+                <span class="excerpt-count" id="ex2-count">показать</span>
+              </div>
+              <div class="excerpts-wrap" id="ex2">
+                <div class="excerpt-item">Minimum expected aggregate market value at admission is £30 million for shares (UKLR 3.2.7R). The FCA may modify this if an adequate market exists (UKLR 3.2.8R)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /src-list -->
+    </div><!-- /src-block -->
+  </div><!-- /section-card -->
+
+  <!-- Section card 2: procedure — has excerpts -->
+  <div class="section-card">
+    <div class="sc-hd">
+      <span class="sc-title">Процедура и сроки</span>
+    </div>
+    <div class="sc-body">
+      Двухконтурная процедура: <strong>FCA</strong> рассматривает заявку на включение в Official List (~10 рабочих дней);
+      <strong>LSE</strong> параллельно рассматривает заявку на допуск к торгам по ADS.<sup class="cite">1</sup>
+      Для крупных сделок обязательно голосование акционеров (Class 1 transactions).
+    </div>
+    <div class="src-block has-excerpts" id="sb2">
+      <div class="src-block-hd" onclick="toggleSrcBlock('sb2')">
+        <div class="src-block-left">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--text-dim);flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span class="src-block-label">Источники</span>
+          <span class="src-count">1 источник · 2 выдержки</span>
+        </div>
+        <span class="src-chevron">▾</span>
+      </div>
+      <div class="src-list">
+        <div class="src-row">
+          <div class="src-row-hd">
+            <span class="src-num">1</span>
+            <div class="src-meta">
+              <div class="src-title-row">
+                <a class="src-link" href="https://docs.londonstockexchange.com/sites/default/files/documents/admission-and-disclosure-standards.pdf" target="_blank">LSE Admission and Disclosure Standards ↗</a>
+                <span class="doc-type dt-rulebook">Правила биржи</span>
+              </div>
+              <div class="excerpt-toggle" onclick="toggleExcerpts('ex3')">
+                <span class="excerpt-icon">❝</span>
+                <span>2 выдержки из документа</span>
+                <span class="excerpt-count" id="ex3-count">показать</span>
+              </div>
+              <div class="excerpts-wrap" id="ex3">
+                <div class="excerpt-item">Form 1 and draft prospectus submitted to LSE at least 10 business days before the application is considered (LSE ADS Schedule 1, Part A)</div>
+                <div class="excerpt-item">Final Form 1 and approved prospectus submitted by 12:00, 2 business days before admission (LSE ADS Schedule 1, Part B)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section card 3: no excerpts — simplified display -->
+  <div class="section-card">
+    <div class="sc-hd">
+      <span class="sc-title">Спонсор и инфраструктура</span>
+    </div>
+    <div class="sc-body">
+      Для новых заявителей по акциям обязателен <strong>спонсор, одобренный FCA</strong>; он предоставляет в FCA декларацию о соответствии критериям и подтверждения (UKLR 4.2–4.3).<sup class="cite">1</sup>
+    </div>
+    <!-- SOURCE BLOCK — no excerpts, simpler -->
+    <div class="src-block" id="sb3">
+      <div class="src-block-hd" onclick="toggleSrcBlock('sb3')">
+        <div class="src-block-left">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--text-dim);flex-shrink:0"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span class="src-block-label">Источники</span>
+          <span class="src-count">1 источник</span>
+        </div>
+        <span class="src-chevron">▾</span>
+      </div>
+      <div class="src-list">
+        <div class="src-row">
+          <div class="src-row-hd">
+            <span class="src-num">1</span>
+            <div class="src-meta">
+              <div class="src-title-row">
+                <a class="src-link" href="https://handbook.fca.org.uk/handbook/UKLR/4/" target="_blank">UKLR 4 — Sponsors ↗</a>
+                <span class="doc-type dt-rulebook">Правила биржи</span>
+              </div>
+              <div style="font-size:12px;color:var(--text-dim);margin-top:3px;font-family:var(--font-mono)">выдержки недоступны</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /view-l3 -->
+
+<!-- ══════════════════════════════════════════
+     L4: REGULATORY ANALYSIS CARDS
+     ══════════════════════════════════════════ -->
+<div id="view-l4" style="display:none">
+<div class="page">
+
+  <div class="annotation">
+    <strong>Что показано:</strong> карточки регуляторного анализа (L4) — проблемы, реформы, противоречия.
+    У записей L4 источники есть, но без выдержек (excerpts: []) — источники показываются
+    как плоский список ссылок в подвале карточки, без аккордеона.
+    Поля <code>label</code>, <code>period</code>, <code>articulated_by</code> используются в заголовке.
+    Для противоречий — специальная компоновка с двумя сторонами и блоком разрешения.
+  </div>
+
+  <div class="section-hd">Карточки регуляторного анализа · Великобритания</div>
+
+  <!-- Problem -->
+  <div class="l4-card">
+    <div class="l4-hd">
+      <span class="l4-type-badge ltype-problem">Проблема</span>
+      <span class="l4-label">Повысить привлекательность листинга</span>
+      <div class="l4-meta">
+        <span class="l4-period">2015–2021</span>
+        <span class="l4-by">FCA / регулятор</span>
+      </div>
+    </div>
+    <div class="l4-body">
+      <div class="l4-desc">
+        Британские регуляторы и политики, во главе с FCA и при поддержке Обзора листингов (Lord Hill Review), выявили структурную проблему конкурентоспособности: рынок публичного капитала Великобритании сжимался и не привлекал новых эмитентов. В качестве доказательств приводились примерно 40-процентное сокращение числа компаний по сравнению с пиком 2008 года, а также лишь около 5% доли Великобритании в глобальных IPO в 2015–2020 годах.
+      </div>
+    </div>
+    <div class="l4-src-footer">
+      <span class="l4-src-lbl">Источники:</span>
+      <span class="l4-src-item"><a class="l4-src-link" href="http://www.fca.org.uk/publication/policy/ps21-22.pdf" target="_blank">PS21/22: Primary Market Effectiveness Review ↗</a></span>
+      <span style="color:var(--border2)">·</span>
+      <span class="l4-src-item"><a class="l4-src-link" href="https://www.gov.uk/government/publications/uk-listings-review" target="_blank">UK Listings Review — GOV.UK ↗</a></span>
+    </div>
+  </div>
+
+  <!-- Reform -->
+  <div class="l4-card">
+    <div class="l4-hd">
+      <span class="l4-type-badge ltype-reform">Реформа</span>
+      <span class="l4-label">Усилить голос миноритариев</span>
+      <div class="l4-meta">
+        <span class="l4-period">2014</span>
+        <span class="l4-by">FCA / регулятор</span>
+      </div>
+    </div>
+    <div class="l4-body">
+      <div class="l4-desc">
+        В 2014 году FCA реализовала пакет мер защиты для премиального листинга компаний с контролирующими акционерами в ответ на скандалы в ENRC и Bumi. Правила ввели обязательные соглашения о взаимоотношениях между эмитентом и контролирующим акционером и закрепили механизм двойного голосования при избрании независимых директоров, чтобы усилить голос миноритариев.
+      </div>
+    </div>
+    <div class="l4-src-footer">
+      <span class="l4-src-lbl">Источники:</span>
+      <span class="l4-src-item"><a class="l4-src-link" href="https://cms-lawnow.com/en/ealerts/2014/05/fca-introduces-stricter-rules-for-premium-listed-companies-with-a-controlling-shareholder" target="_blank">FCA introduces stricter rules... ↗</a></span>
+      <span style="color:var(--border2)">·</span>
+      <span class="l4-src-item"><a class="l4-src-link" href="http://www.fca.org.uk/publication/consultation/cp13-15.pdf" target="_blank">CP13/15 Consultation Paper ↗</a></span>
+    </div>
+  </div>
+
+  <!-- Contradiction -->
+  <div class="l4-card">
+    <div class="l4-hd">
+      <span class="l4-type-badge ltype-contradiction">Противоречие</span>
+      <span class="l4-label">FCA меняет регулирование акций</span>
+      <div class="l4-meta">
+        <span class="l4-period">2013–2024</span>
+        <span class="l4-by">FCA / регулятор</span>
+      </div>
+    </div>
+    <div class="l4-body">
+      <div class="contra-grid">
+        <div class="contra-side">
+          <div class="contra-lbl">Цель А — Защита инвесторов</div>
+          <div class="contra-text">С 2013–2014 FCA приоритизировала защиту через структурные гарантии для компаний с контролирующими акционерами (PCA, двойное голосование).</div>
+        </div>
+        <div class="contra-side">
+          <div class="contra-lbl">Цель Б — Привлечение эмитентов</div>
+          <div class="contra-text">С 2021 приоритет сместился: FCA разрешила DCSS и заменила деление на сегменты единой категорией на основе раскрытий.</div>
+        </div>
+      </div>
+      <div class="resolution">
+        <div class="res-lbl">Разрешение</div>
+        <div class="res-text">В 2013–2014 годах FCA ответила на скандалы, отдав приоритет защите инвесторов. Начиная с 2021 года приоритет сместился в сторону привлечения эмитентов: разрешены структуры с двойным классом голосов и единая категория вместо Premium/Standard.</div>
+      </div>
+    </div>
+    <div class="l4-src-footer">
+      <span class="l4-src-lbl">Источники:</span>
+      <span class="l4-src-item"><a class="l4-src-link" href="http://www.fca.org.uk/publication/consultation/cp13-15.pdf" target="_blank">CP13/15 Consultation Paper ↗</a></span>
+      <span style="color:var(--border2)">·</span>
+      <span class="l4-src-item"><a class="l4-src-link" href="https://www.afme.eu/publications/consultation-responses/uk-finance-afme-response-to-fca-cp2310/" target="_blank">UK Finance-AFME response to CP23/10 ↗</a></span>
+    </div>
+  </div>
+
+</div>
+</div><!-- /view-l4 -->
+
+<script>
+function show(v) {
+  document.getElementById('view-l3').style.display = v==='l3' ? 'block' : 'none';
+  document.getElementById('view-l4').style.display = v==='l4' ? 'block' : 'none';
+  document.querySelectorAll('.dbtn').forEach((b,i) => b.classList.toggle('on',(i===0&&v==='l3')||(i===1&&v==='l4')));
+}
+function toggleSrcBlock(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+function toggleExcerpts(id) {
+  const wrap = document.getElementById(id);
+  const countEl = document.getElementById(id+'-count');
+  const toggle = wrap.previousElementSibling;
+  const isOpen = wrap.classList.toggle('open');
+  countEl.textContent = isOpen ? 'скрыть' : 'показать';
+  toggle.classList.toggle('active', isOpen);
+}
+</script>
+</body>
+</html>

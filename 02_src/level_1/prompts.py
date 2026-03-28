@@ -273,6 +273,64 @@ SCHEMA_1C = {
     },
 }
 
+SCHEMA_1C_REGISTRY = {
+    "type": "object",
+    "properties": {
+        "jurisdiction": {"type": "string"},
+        "official_register_exists": {"type": "boolean"},
+        "register_source": {"type": "string"},
+        "venues": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "regulatory_status": {"type": "string"},
+                    "operating_entity": {"type": "string"},
+                    "source_url": {"type": "string"},
+                    "primarily_digital_assets": {"type": "boolean"},
+                },
+            },
+        },
+    },
+}
+
+PROMPT_1C_REGISTRY_TEMPLATE = """\
+Find the OFFICIAL REGISTER of licensed/recognized securities trading venues in {jurisdiction}.
+
+Where to look (in order of priority):
+1. National securities regulator's website — register of licensed exchanges, regulated markets, MTFs
+{eu_clause}
+2. Central bank website (if the central bank is the securities regulator)
+3. WFE (World Federation of Exchanges) member directory
+4. National stock exchange association
+
+For each venue found in the register:
+- Official name
+- Regulatory status (regulated market / MTF / OTF / other)
+- Operating entity (if stated)
+- Source: exact URL of the register page
+
+Include ONLY venues that admit securities (equities, bonds, funds, depositary receipts). Exclude commodity-only, derivatives-only, crypto exchanges.
+
+EXCLUDE venues whose PRIMARY business is digital assets, security tokens, or tokenized securities, even if they hold a regulated market or MTF license. Include only venues where the PRIMARY traded instruments are traditional securities (equities, bonds, funds, depositary receipts issued in conventional form).
+
+If uncertain whether a venue is primarily digital or traditional — include it with a flag: "primarily_digital_assets: true". The decision to include or exclude will be made at the next stage.
+
+If no single official register exists — state this and list venues from the most authoritative available source."""
+
+
+def build_prompt_1c_registry(jurisdiction: str, eu_member: bool = False) -> str:
+    """Build the 1C-registry prompt for a given jurisdiction."""
+    eu_clause = ""
+    if eu_member:
+        eu_clause = "\n2. ESMA Register of trading venues (registers.esma.europa.eu) -- filter by country"
+    return PROMPT_1C_REGISTRY_TEMPLATE.format(
+        jurisdiction=jurisdiction,
+        eu_clause=eu_clause,
+    )
+
+
 PROMPT_1C_TEMPLATE = """\
 Provide an overview of all securities trading venues in {jurisdiction}.
 
@@ -428,6 +486,37 @@ def build_prompt_1c(
 ) -> str:
     """Build the 1C prompt for a given jurisdiction."""
     return PROMPT_1C_TEMPLATE.format(
+        jurisdiction=jurisdiction,
+        regulatory_context=regulatory_context,
+    )
+
+
+def build_prompt_1c_structure(
+    jurisdiction: str,
+    regulatory_context: str = "to be determined",
+    registry_venues: list[dict] | None = None,
+) -> str:
+    """Build the 1C-structure prompt, optionally anchored by registry venues."""
+    anchor = ""
+    if registry_venues:
+        lines = []
+        for v in registry_venues:
+            flag = " [PRIMARILY DIGITAL]" if v.get("primarily_digital_assets") else ""
+            lines.append(f"- {v['name']} ({v.get('regulatory_status', '?')}){flag}")
+        anchor = (
+            "ANCHOR -- Known venues from official register:\n"
+            "The following venues were identified from the official regulator "
+            "register for {jurisdiction}:\n\n".format(jurisdiction=jurisdiction)
+            + "\n".join(lines)
+            + "\n\nYour task: for EACH venue in this list, provide the detailed "
+            "structure (tiers, segments, modifiers, instrument classes) as described below.\n\n"
+            "If you discover additional venues NOT in the above list that meet the scope "
+            "criteria -- include them with a note \"not in official register -- discovered "
+            "from [source]\".\n\n"
+            "If a venue from the list appears to no longer operate or to have merged with "
+            "another -- note this explicitly.\n\n"
+        )
+    return anchor + PROMPT_1C_TEMPLATE.format(
         jurisdiction=jurisdiction,
         regulatory_context=regulatory_context,
     )

@@ -2,7 +2,7 @@
    PAGE SHELL
 ────────────────────────────────────────────────────────────── */
 .page {
-  max-width: 1060px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 20px 28px 60px;
   background: var(--bg);
@@ -168,6 +168,7 @@
 
 .sectionCardBody p {
   margin: 0 0 10px;
+  white-space: pre-wrap;
 }
 
 .sectionCardBody p:last-child {
@@ -207,21 +208,19 @@
    PARAMS STRIP
 ────────────────────────────────────────────────────────────── */
 .paramsStrip {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 10px 18px;
-  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: auto minmax(100px, 200px) 1fr;
+  gap: 8px 12px;
+  align-items: baseline;
+  padding: 14px 20px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
   background: var(--bg3);
 }
 
 .paramChip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border: 1px solid var(--border2);
-  border-radius: 5px;
-  padding: 4px 10px;
+  display: contents;
   font-size: 12px;
   color: var(--text-mid);
 }
@@ -234,11 +233,47 @@
   color: var(--accent);
   border-radius: 3px;
   padding: 1px 5px;
+  white-space: nowrap;
 }
 
 .paramVal {
   font-weight: 500;
   color: var(--text);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   PHASE TWO-COLUMN LAYOUT
+────────────────────────────────────────────────────────────── */
+.phaseLayout {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.phaseMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.phaseSidebar {
+  width: 340px;
+  flex-shrink: 0;
+  position: sticky;
+  top: calc(56px + 16px);
+  max-height: calc(100vh - 56px - 32px);
+  overflow-y: auto;
+  padding-top: 4px;
+}
+
+@media (max-width: 960px) {
+  .phaseLayout {
+    flex-direction: column;
+  }
+  .phaseSidebar {
+    width: 100%;
+    position: static;
+    max-height: none;
+  }
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -543,6 +578,88 @@
   border: 1px dashed var(--border2);
   display: inline-block;
   flex-shrink: 0;
+}
+
+.mxLegendDotProc {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: rgba(16, 185, 129, 0.25);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.mxLegendDotMon {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: rgba(99, 102, 241, 0.25);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.mxLegendDotSanc {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: rgba(239, 68, 68, 0.25);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.mxLegendDotDisc {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: rgba(245, 158, 11, 0.25);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Micro-excerpt in matrix cell */
+.mxMicro {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.mxMicroText {
+  font-size: 12px;
+  color: var(--text-mid);
+  font-weight: 300;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mxSrcHint {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* Column color accents — left border on micro-excerpt text */
+.mxColProc .mxMicroText {
+  border-left: 2px solid rgba(16, 185, 129, 0.4);
+  padding-left: 8px;
+}
+
+.mxColMon .mxMicroText {
+  border-left: 2px solid rgba(99, 102, 241, 0.4);
+  padding-left: 8px;
+}
+
+.mxColSanc .mxMicroText {
+  border-left: 2px solid rgba(239, 68, 68, 0.4);
+  padding-left: 8px;
+}
+
+.mxColDisc .mxMicroText {
+  border-left: 2px solid rgba(245, 158, 11, 0.4);
+  padding-left: 8px;
 }
 
 /* ──────────────────────────────────────────────────────────────

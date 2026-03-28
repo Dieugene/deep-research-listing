@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — Страница площадки v2</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA;--bg2:#fff;--bg3:#F0F2F7;--bg4:#E4E8F2;
+  --border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.17);
+  --text:#111827;--text-mid:#4B5563;--text-dim:#9CA3AF;
+  --accent:#2563EB;--accent-bg:rgba(37,99,235,0.06);
+  --green:#059669;--green-bg:rgba(5,150,105,0.07);--green-border:rgba(5,150,105,0.2);
+  --yellow:#B45309;--yellow-bg:rgba(217,119,6,0.07);--yellow-border:rgba(217,119,6,0.22);
+  --red:#DC2626;--red-bg:rgba(220,38,38,0.07);--red-border:rgba(220,38,38,0.2);
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --font-serif:'Newsreader',Georgia,serif;
+  --r:8px;--r-lg:12px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.07),0 0 0 0.5px rgba(0,0,0,.04);
+  --shadow-md:0 2px 8px rgba(0,0,0,.09),0 0 0 0.5px rgba(0,0,0,.05);
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.6;min-height:100vh}
+.demo-bar{background:#16213a;padding:8px 28px;display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px}
+.demo-bar-label{color:#4A5880;letter-spacing:.07em;text-transform:uppercase}
+.dbtn{padding:4px 13px;border-radius:4px;border:1px solid #2A3A60;color:#7B8FBF;cursor:pointer;background:transparent;font-family:var(--font-mono);font-size:11px;transition:all .15s}
+.dbtn:hover{border-color:#4A6099;color:#B0BFDF}
+.dbtn.on{background:#2563EB;border-color:#2563EB;color:#fff}
+nav{position:sticky;top:0;z-index:300;height:56px;background:rgba(255,255,255,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:4px}
+.nav-logo{width:28px;height:28px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:#fff;font-weight:500;margin-right:8px}
+.nav-brand{font-size:13px;font-weight:500;margin-right:auto}
+.nav-link{padding:5px 11px;border-radius:5px;font-size:12.5px;color:var(--text-mid)}
+.nav-link.active{color:var(--accent);background:var(--accent-bg);font-weight:500}
+.nav-soon{font-size:9px;font-family:var(--font-mono);color:var(--text-dim);background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:1px 4px;margin-left:3px}
+.page{max-width:1060px;margin:0 auto;padding:0 28px 80px}
+/* INSTRUMENT TABS — sticky inside .page */
+.instr-tabs{
+  position:sticky;top:56px;z-index:200;
+  background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);
+  border-bottom:2px solid var(--border);
+  display:flex;align-items:flex-end;
+  transition:box-shadow .15s;
+}
+.instr-tabs.stuck{box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.instr-tab{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;font-size:13px;color:var(--text-dim);cursor:pointer;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;background:transparent;font-family:var(--font-sans);white-space:nowrap;transition:color .12s}
+.instr-tab:hover:not(.active){color:var(--text-mid)}
+.instr-tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:500}
+.instr-tab-count{font-family:var(--font-mono);font-size:10px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:1px 6px;color:var(--text-dim);transition:all .12s}
+.instr-tab.active .instr-tab-count{background:var(--accent-bg);border-color:rgba(37,99,235,.2);color:var(--accent)}
+.tabs-spacer{display:none}
+.tabs-total{display:none}
+.breadcrumb{padding:16px 0 0;font-family:var(--font-mono);font-size:11px;color:var(--text-dim);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--accent);text-decoration:none}
+.breadcrumb a:hover{text-decoration:underline}
+.venue-title{font-family:var(--font-serif);font-size:36px;font-weight:400;letter-spacing:-.02em;line-height:1.15;display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0 5px}
+.venue-sub{font-size:12.5px;color:var(--text-dim);font-weight:300;margin-bottom:20px}
+.chip{display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:5px;font-weight:500;white-space:nowrap;vertical-align:middle}
+.chip-reg{background:var(--accent-bg);color:var(--accent);border:1px solid rgba(37,99,235,.2)}
+.chip-split{background:#F0FDF4;color:#15803D;border:1px solid #BBF7D0}
+.chip-secondary{font-family:var(--font-mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:rgba(139,92,246,.08);color:#6D28D9;border:1px solid rgba(139,92,246,.2)}
+.chip-legacy{font-family:var(--font-mono);font-size:9px;padding:2px 7px;border-radius:4px;background:#FEF3C7;color:#92400E;border:1px solid #FDE68A}
+.meta-bar{display:flex;border:1px solid var(--border);border-radius:var(--r);background:var(--bg2);overflow:hidden;margin-bottom:20px}
+.meta-item{padding:10px 18px;display:flex;flex-direction:column;gap:3px;border-right:1px solid var(--border);flex:1}
+.meta-item:last-child{border-right:none}
+.meta-lbl{font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim)}
+.meta-val{font-size:12.5px;font-weight:500;color:var(--text)}
+.meta-val a{color:var(--accent);text-decoration:none}
+.desc-block{border:1px solid rgba(37,99,235,.11);border-left-color:transparent;background:rgba(37,99,235,.025);border-radius:var(--r);padding:15px 20px;margin-bottom:24px;position:relative}
+.desc-block::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);border-radius:3px 0 0 3px;opacity:.35}
+.desc-text{font-size:13.5px;color:var(--text-mid);line-height:1.78;font-weight:300}
+.desc-en{font-family:var(--font-serif);font-style:italic;font-size:12.5px;color:var(--text-dim);border-left:2px solid var(--border2);padding-left:12px;margin-top:10px;line-height:1.65}
+sup.cite{font-family:var(--font-mono);font-size:9px;color:var(--accent);background:var(--accent-bg);border-radius:3px;padding:1px 3px;margin-left:1px;border:1px solid rgba(37,99,235,.15);cursor:pointer}
+.src-btn{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;color:var(--text-dim);background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:3px 9px;cursor:pointer;margin-top:10px}
+.src-btn:hover{color:var(--accent)}
+.instr-section{padding-top:12px}
+.status-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;font-weight:500;padding:4px 10px;border-radius:5px;white-space:nowrap}
+.status-badge::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sb-green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}.sb-green::before{background:var(--green)}
+.sb-yellow{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border)}.sb-yellow::before{background:var(--yellow)}
+.sb-red{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}.sb-red::before{background:var(--red)}
+.tier-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:10px;box-shadow:var(--shadow-sm);transition:box-shadow .15s,border-color .15s;cursor:pointer}
+.tier-card:hover{box-shadow:var(--shadow-md);border-color:rgba(37,99,235,.2)}
+.tc-hd{padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border);background:var(--bg)}
+.tc-hd-left{display:flex;flex-direction:column;gap:3px}
+.tc-tier-name{font-size:13.5px;font-weight:500;color:var(--text)}
+.tc-tier-en{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);margin-top:1px}
+.tc-hd-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.tc-arrow{color:var(--text-dim);font-size:16px;transition:transform .15s,color .15s}
+.tier-card:hover .tc-arrow{transform:translateX(3px);color:var(--accent)}
+.tc-body{display:grid;grid-template-columns:1fr 1fr 1fr}
+.tc-col{padding:12px 16px;border-right:1px solid var(--border)}
+.tc-col:last-child{border-right:none}
+.tc-col-name{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+.col-admission{background:rgba(219,234,254,.15)}.col-admission .tc-col-name{color:#1E40AF}
+.col-maintenance{background:rgba(209,250,229,.10)}.col-maintenance .tc-col-name{color:#065F46}
+.col-delisting{background:rgba(254,226,226,.09)}.col-delisting .tc-col-name{color:#7C2D12}
+.tc-pills{display:flex;flex-direction:column;gap:5px}
+.tc-pill{display:flex;align-items:baseline;gap:6px;font-size:12px;line-height:1.45}
+.tc-pill-code{font-family:var(--font-mono);font-size:9px;padding:1px 5px;border-radius:3px;flex-shrink:0;white-space:nowrap;border:1px solid}
+.col-admission .tc-pill-code{color:#1E40AF;background:rgba(219,234,254,.6);border-color:rgba(37,99,235,.2)}
+.col-maintenance .tc-pill-code{color:#065F46;background:rgba(209,250,229,.6);border-color:rgba(5,150,105,.2)}
+.col-delisting .tc-pill-code{color:#7C2D12;background:rgba(254,226,226,.6);border-color:rgba(220,38,38,.2)}
+.tc-pill-name{color:var(--text-dim);font-weight:300;flex-shrink:0}
+.tc-pill-val{color:var(--text);font-weight:500}
+/* DETAIL */
+.detail-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px 0 0;margin-bottom:20px}
+.detail-title{font-family:var(--font-serif);font-size:30px;font-weight:400;letter-spacing:-.015em;color:var(--text);line-height:1.2}
+.detail-sub{font-size:12.5px;color:var(--text-dim);margin-top:5px;font-weight:300}
+.matrix-btn{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--accent);cursor:pointer;padding:6px 12px;border-radius:5px;border:1px solid rgba(37,99,235,.2);background:var(--accent-bg);font-family:var(--font-sans);transition:all .15s;white-space:nowrap;flex-shrink:0}
+.matrix-btn:hover{background:rgba(37,99,235,.12);border-color:rgba(37,99,235,.35)}
+/* MATRIX VIEW */
+.matrix-view{display:none}
+.matrix-view.active{display:block}
+.tabs-view{display:block}
+.tabs-view.hidden{display:none}
+.mx-table{width:100%;border-collapse:collapse;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-sm)}
+.mx-table th{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--text-dim);padding:11px 14px;text-align:left;font-weight:400;background:var(--bg3);border-bottom:1px solid var(--border2)}
+.mx-table th:first-child{width:160px;border-right:1px solid var(--border2)}
+.mx-table td{border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:top}
+.mx-table tr:last-child td{border-bottom:none}
+.mx-table td:last-child{border-right:none}
+.mx-phase-label{padding:12px 14px;display:flex;flex-direction:column;gap:3px;border-right:1px solid var(--border2)}
+.mx-phase-name{font-size:12.5px;font-weight:500;color:var(--text)}
+.mx-cell{padding:10px 12px;cursor:pointer;transition:background .12s;min-height:80px}
+.mx-cell:hover{background:var(--accent-bg)}
+.mx-cell.na{background:var(--bg3);cursor:default}
+.mx-cell.na:hover{background:var(--bg3)}
+.mx-cell-pills{display:flex;flex-direction:column;gap:4px}
+.mx-pill{display:flex;align-items:baseline;gap:5px;font-size:11.5px;line-height:1.4}
+.mx-pill-code{font-family:var(--font-mono);font-size:8.5px;padding:1px 4px;border-radius:3px;flex-shrink:0;border:1px solid rgba(37,99,235,.2);color:var(--accent);background:var(--accent-bg)}
+.mx-pill-val{color:var(--text-mid);font-weight:300}
+.mx-na-label{font-family:var(--font-mono);font-size:10px;color:var(--border2);letter-spacing:.04em}
+.mx-cell-active{background:var(--accent-bg);outline:2px solid var(--accent);outline-offset:-2px}
+.phase-tabs{display:flex;border-bottom:2px solid var(--border);margin-bottom:20px}
+.phase-tab{padding:11px 20px;font-size:13.5px;color:var(--text-dim);border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:color .12s;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--font-sans)}
+.phase-tab:hover:not(.active){color:var(--text-mid)}
+.phase-tab.active{font-weight:500;border-bottom-color:var(--accent);color:var(--accent)}
+.pt-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.pt-blue{background:#3B82F6}.pt-green{background:#10B981}.pt-red{background:#F87171}
+.phase-content{display:none}.phase-content.active{display:block}
+.section-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:12px;box-shadow:var(--shadow-sm)}
+.section-card-hd{padding:11px 20px;border-bottom:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:space-between}
+.section-card-title{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--text-dim);font-weight:500}
+.section-card-body{padding:16px 22px;font-size:13.5px;color:var(--text-mid);line-height:1.78;font-weight:300}
+.section-card-body strong{color:var(--text);font-weight:500}
+.params-strip{display:flex;flex-wrap:wrap;gap:8px;padding:10px 18px;border-top:1px solid var(--border);background:var(--bg)}
+.param-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border2);border-radius:5px;padding:4px 10px;font-size:12px;color:var(--text-mid);background:var(--bg2)}
+.param-code{font-family:var(--font-mono);font-size:9.5px;color:var(--accent);background:var(--accent-bg);border:1px solid rgba(37,99,235,.15);border-radius:3px;padding:1px 5px}
+.param-val{font-weight:500;color:var(--text)}
+.sources-footer{padding:10px 20px;border-top:1px solid var(--border);background:var(--bg);display:flex;flex-direction:column;gap:4px}
+.source-row{display:flex;align-items:baseline;gap:8px;font-size:12px}
+.src-num{font-family:var(--font-mono);font-size:9px;color:var(--accent);background:var(--accent-bg);border:1px solid rgba(37,99,235,.15);border-radius:3px;padding:1px 5px;flex-shrink:0}
+.src-txt{color:var(--text-mid)}
+.src-lnk{color:var(--accent);font-family:var(--font-mono);font-size:10.5px}
+
+</style>
+</head>
+<body>
+
+<div class="demo-bar">
+  <span class="demo-bar-label">Пример:</span>
+  <button class="dbtn on" onclick="showView('lse')">LSE Main Market (с тирами)</button>
+  <button class="dbtn" onclick="showView('gem')">HKEX GEM (плоская структура)</button>
+</div>
+<nav>
+  <div class="nav-logo">LR</div>
+  <span class="nav-brand">Listing Research</span>
+  <a class="nav-link">Главная</a>
+  <a class="nav-link active">Справочник</a>
+  <a class="nav-link">Каталог параметров</a>
+  <a class="nav-link">Анализ <span class="nav-soon">SOON</span></a>
+  <a class="nav-link">Ассистент <span class="nav-soon">SOON</span></a>
+</nav>
+
+<!-- LSE -->
+<div id="view-lse"><div class="page">
+  <div class="breadcrumb"><a href="#">Справочник</a> <span>&#x2192;</span> <a href="#">Великобритания</a> <span>&#x2192;</span> London Stock Exchange &#x2013; Main Market</div>
+  <div class="venue-title">Лондонская фондовая биржа &#x2014; Основной рынок <span class="chip chip-reg">Regulated Market</span></div>
+  <div class="venue-sub">London Stock Exchange &#x2013; Main Market &#xb7; Великобритания</div>
+  <div class="meta-bar">
+    <div class="meta-item"><div class="meta-lbl">Юрисдикция</div><div class="meta-val"><a href="#">Великобритания</a></div></div>
+    <div class="meta-item"><div class="meta-lbl">Оператор</div><div class="meta-val">London Stock Exchange plc</div></div>
+    <div class="meta-item"><div class="meta-lbl">Архитектура допуска</div><div class="meta-val"><span class="chip chip-split">Split (двухконтурная)</span></div></div>
+    <div class="meta-item"><div class="meta-lbl">Вторичный листинг</div><div class="meta-val" style="color:var(--green)">&#x2713; Предусмотрен</div></div>
+    <div class="meta-item"><div class="meta-lbl">Категорий</div><div class="meta-val">10 (4 инструмента)</div></div>
+  </div>
+  <div class="desc-block">
+    <div class="desc-text">Двухконтурная модель: <strong>FCA</strong> принимает решения о включении в Official List (UKLR по FSMA, Часть VI); <strong>LSE</strong> решает допуск к торгам по ADS. Поддерживаются акции (ESCC), закрытые фонды, облигации и депозитарные расписки.<sup class="cite">1</sup></div>
+    <div class="desc-en">Split model: FCA maintains the Official List under FSMA Part VI; LSE grants admission to trading under ADS. Secondary listing route available for overseas commercial companies under UKLR.</div>
+    <button class="src-btn"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 4 источника</button>
+  </div>
+  <div class="instr-tabs" id="tabs-lse">
+    <button class="instr-tab active" onclick="switchInstr('lse','equity',this)">Акции <span class="instr-tab-count">4</span></button>
+    <button class="instr-tab" onclick="switchInstr('lse','bond',this)">Облигации <span class="instr-tab-count">2</span></button>
+    <button class="instr-tab" onclick="switchInstr('lse','fund',this)">Фонды <span class="instr-tab-count">2</span></button>
+    <button class="instr-tab" onclick="switchInstr('lse','dr',this)">Депозитарные расписки <span class="instr-tab-count">2</span></button>
+    <div class="tabs-spacer"></div><span class="tabs-total">10 категорий</span>
+  </div>
+  <div class="instr-section" id="lse-equity" data-instr="lse-equity">
+    
+    <div class="tier-card" onclick="openDetail('escc')">
+      <div class="tc-hd">
+        <div class="tc-hd-left">
+          <div class="tc-tier-name">Акции коммерческих компаний</div>
+          <div class="tc-tier-en">Equity Shares (Commercial Companies) · ESCC</div>
+        </div>
+        <div class="tc-hd-right"><span class="status-badge sb-yellow">Проверить источники</span><span class="tc-arrow">&#x2192;</span></div>
+      </div>
+      <div class="tc-body"><div class="tc-col col-admission"><div class="tc-col-name">Допуск</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П01</span><span class="tc-pill-name">Процедура:</span><span class="tc-pill-val">Split — FCA + LSE ADS</span></div><div class="tc-pill"><span class="tc-pill-code">П05</span><span class="tc-pill-name">Free float:</span><span class="tc-pill-val">&#x2265; 10%</span></div><div class="tc-pill"><span class="tc-pill-code">П06</span><span class="tc-pill-name">Market cap:</span><span class="tc-pill-val">&#x2265; &#xa3;30 млн</span></div><div class="tc-pill"><span class="tc-pill-code">П12</span><span class="tc-pill-name">История:</span><span class="tc-pill-val">&#x2265; 3 года</span></div><div class="tc-pill"><span class="tc-pill-code">П15</span><span class="tc-pill-name">Аудит:</span><span class="tc-pill-val">IFRS / UK GAAP / US GAAP</span></div></div></div><div class="tc-col col-maintenance"><div class="tc-col-name">Поддержание</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П25</span><span class="tc-pill-name">Отчётность:</span><span class="tc-pill-val">Годовая + полугодовая</span></div><div class="tc-pill"><span class="tc-pill-code">П27</span><span class="tc-pill-name">Инсайд. раскрытие:</span><span class="tc-pill-val">MAR Art. 17 — немедленно</span></div><div class="tc-pill"><span class="tc-pill-code">П30</span><span class="tc-pill-name">Крупные сделки:</span><span class="tc-pill-val">Class 1 &#x2265; 25%</span></div><div class="tc-pill"><span class="tc-pill-code">П16</span><span class="tc-pill-name">КУ:</span><span class="tc-pill-val">UK CG Code</span></div></div></div><div class="tc-col col-delisting"><div class="tc-col-name">Исключение</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П38</span><span class="tc-pill-name">Добров. исключение:</span><span class="tc-pill-val">&#x2265; 75% акционеров</span></div><div class="tc-pill"><span class="tc-pill-code">П39</span><span class="tc-pill-name">Санкции FCA:</span><span class="tc-pill-val">Выговор / штраф / запрет</span></div><div class="tc-pill"><span class="tc-pill-code">П40</span><span class="tc-pill-name">Приостановка:</span><span class="tc-pill-val">По решению FCA или LSE</span></div></div></div></div>
+    </div>
+    
+    <div class="tier-card" onclick="openDetail('intl')">
+      <div class="tc-hd">
+        <div class="tc-hd-left">
+          <div class="tc-tier-name">Зарубежные коммерческие компании <span class='chip-secondary' style='margin-left:6px;vertical-align:middle'>Вторичный листинг</span></div>
+          <div class="tc-tier-en">Equity Shares (International Commercial Companies Secondary Listing)</div>
+        </div>
+        <div class="tc-hd-right"><span class="status-badge sb-yellow">Проверить источники</span><span class="tc-arrow">&#x2192;</span></div>
+      </div>
+      <div class="tc-body"><div class="tc-col col-admission"><div class="tc-col-name">Допуск</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П01</span><span class="tc-pill-name">Стандарт:</span><span class="tc-pill-val">UKLR гл. 18</span></div><div class="tc-pill"><span class="tc-pill-code">П02</span><span class="tc-pill-name">Статус:</span><span class="tc-pill-val">Первичный листинг на домашней бирже</span></div><div class="tc-pill"><span class="tc-pill-code">П05</span><span class="tc-pill-name">Free float:</span><span class="tc-pill-val">Сокращённые требования</span></div><div class="tc-pill"><span class="tc-pill-code">П09</span><span class="tc-pill-name">Проспект:</span><span class="tc-pill-val">Упрощённый формат</span></div></div></div><div class="tc-col col-maintenance"><div class="tc-col-name">Поддержание</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П25</span><span class="tc-pill-name">Отчётность:</span><span class="tc-pill-val">Синхронизация с домашним рынком</span></div><div class="tc-pill"><span class="tc-pill-code">П28</span><span class="tc-pill-name">Статус:</span><span class="tc-pill-val">Поддержание листинга на домашней бирже</span></div></div></div><div class="tc-col col-delisting"><div class="tc-col-name">Исключение</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П38</span><span class="tc-pill-name">Основание:</span><span class="tc-pill-val">Потеря статуса на домашней бирже</span></div><div class="tc-pill"><span class="tc-pill-code">П41</span><span class="tc-pill-name">Добров. исключение:</span><span class="tc-pill-val">По заявлению эмитента</span></div></div></div></div>
+    </div>
+    
+    <div class="tier-card" onclick="openDetail('transition')">
+      <div class="tc-hd">
+        <div class="tc-hd-left">
+          <div class="tc-tier-name">Переходный режим <span class='chip-legacy' style='margin-left:6px;vertical-align:middle'>Устаревающий</span></div>
+          <div class="tc-tier-en">Equity Shares (Transition) · post-UKLR 2024</div>
+        </div>
+        <div class="tc-hd-right"><span class="status-badge sb-yellow">Проверить источники</span><span class="tc-arrow">&#x2192;</span></div>
+      </div>
+      <div class="tc-body"><div class="tc-col col-admission"><div class="tc-col-name">Допуск</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П01</span><span class="tc-pill-name">Процедура:</span><span class="tc-pill-val">Автоперевод из Premium/Standard</span></div><div class="tc-pill"><span class="tc-pill-code">П02</span><span class="tc-pill-name">Основание:</span><span class="tc-pill-val">Реформа UKLR 2024</span></div><div class="tc-pill"><span class="tc-pill-code">П10</span><span class="tc-pill-name">Условие:</span><span class="tc-pill-val">Соответствие критериям перехода</span></div></div></div><div class="tc-col col-maintenance"><div class="tc-col-name">Поддержание</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П25</span><span class="tc-pill-name">Отчётность:</span><span class="tc-pill-val">Требования сохранены</span></div><div class="tc-pill"><span class="tc-pill-code">П26</span><span class="tc-pill-name">Раскрытие:</span><span class="tc-pill-val">Ограниченный набор UKLR</span></div></div></div><div class="tc-col col-delisting"><div class="tc-col-name">Исключение</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code" style="opacity:.5">П40</span><span class="tc-pill-name">Статус:</span><span class="tc-pill-val" style="color:var(--text-dim);font-weight:300;font-style:italic">Данные в работе</span></div></div></div></div>
+    </div>
+    
+    <div class="tier-card" onclick="openDetail('att')">
+      <div class="tc-hd">
+        <div class="tc-hd-left">
+          <div class="tc-tier-name">Только допуск к торгам (без Official List)</div>
+          <div class="tc-tier-en">Admission to Trading Only (ATT Only) · ADS Schedule 6</div>
+        </div>
+        <div class="tc-hd-right"><span class="status-badge sb-red">Ненадёжно</span><span class="tc-arrow">&#x2192;</span></div>
+      </div>
+      <div class="tc-body"><div class="tc-col col-admission"><div class="tc-col-name">Допуск</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П01</span><span class="tc-pill-name">Процедура:</span><span class="tc-pill-val">Только ADS — без Official List</span></div><div class="tc-pill"><span class="tc-pill-code">П09</span><span class="tc-pill-name">Проспект:</span><span class="tc-pill-val">По усмотрению LSE</span></div><div class="tc-pill"><span class="tc-pill-code">П11</span><span class="tc-pill-name">Назначение:</span><span class="tc-pill-val">Инструменты, листингованные в другом месте</span></div></div></div><div class="tc-col col-maintenance"><div class="tc-col-name">Поддержание</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П25</span><span class="tc-pill-name">Раскрытие:</span><span class="tc-pill-val">Требования LSE ADS</span></div><div class="tc-pill"><span class="tc-pill-code">П28</span><span class="tc-pill-name">Статус:</span><span class="tc-pill-val">Статус на основном рынке листинга</span></div></div></div><div class="tc-col col-delisting"><div class="tc-col-name">Исключение</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П40</span><span class="tc-pill-name">Прекращение:</span><span class="tc-pill-val">По решению LSE</span></div></div></div></div>
+    </div>
+  </div>
+  <div class="instr-section" id="lse-bond" data-instr="lse-bond">
+    
+    <div class="tier-card" onclick="openDetail('bond')">
+      <div class="tc-hd">
+        <div class="tc-hd-left">
+          <div class="tc-tier-name">Долговые и квазидолговые ценные бумаги</div>
+          <div class="tc-tier-en">Debt and debt-like securities</div>
+        </div>
+        <div class="tc-hd-right"><span class="status-badge sb-green">Верифицировано</span><span class="tc-arrow">&#x2192;</span></div>
+      </div>
+      <div class="tc-body"><div class="tc-col col-admission"><div class="tc-col-name">Допуск</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П01</span><span class="tc-pill-name">Процедура:</span><span class="tc-pill-val">Split — FCA Official List + LSE ADS</span></div><div class="tc-pill"><span class="tc-pill-code">П09</span><span class="tc-pill-name">Проспект:</span><span class="tc-pill-val">UK Prospectus Regulation (POATRs 2024)</span></div><div class="tc-pill"><span class="tc-pill-code">П20</span><span class="tc-pill-name">Стандарт:</span><span class="tc-pill-val">UKLR гл. 20</span></div></div></div><div class="tc-col col-maintenance"><div class="tc-col-name">Поддержание</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П25</span><span class="tc-pill-name">Отчётность:</span><span class="tc-pill-val">Годовой отчёт эмитента</span></div><div class="tc-pill"><span class="tc-pill-code">П27</span><span class="tc-pill-name">Раскрытие:</span><span class="tc-pill-val">По MAR — инсайд. информация</span></div><div class="tc-pill"><span class="tc-pill-code">П29</span><span class="tc-pill-name">Купоны:</span><span class="tc-pill-val">Уведомления о выплатах</span></div></div></div><div class="tc-col col-delisting"><div class="tc-col-name">Исключение</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П38</span><span class="tc-pill-name">Погашение:</span><span class="tc-pill-val">Выкуп / досрочное погашение</span></div><div class="tc-pill"><span class="tc-pill-code">П39</span><span class="tc-pill-name">Санкции:</span><span class="tc-pill-val">Меры FCA при дефолте</span></div></div></div></div>
+    </div>
+    
+    <div class="tier-card" style="opacity:0.8" onclick="openDetail('att')">
+      <div class="tc-hd">
+        <div class="tc-hd-left">
+          <div class="tc-tier-name">Только допуск к торгам (без Official List)</div>
+          <div class="tc-tier-en">Admission to Trading Only (ATT Only) · Bonds</div>
+        </div>
+        <div class="tc-hd-right"><span class="status-badge sb-red">Ненадёжно</span><span class="tc-arrow">&#x2192;</span></div>
+      </div>
+      <div class="tc-body"><div class="tc-col col-admission"><div class="tc-col-name">Допуск</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П01</span><span class="tc-pill-name">Процедура:</span><span class="tc-pill-val">ADS без Official List для долговых инстр.</span></div></div></div><div class="tc-col col-maintenance"><div class="tc-col-name">Поддержание</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П25</span><span class="tc-pill-name">Раскрытие:</span><span class="tc-pill-val">Минимальные требования ADS</span></div></div></div><div class="tc-col col-delisting"><div class="tc-col-name">Исключение</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П40</span><span class="tc-pill-name">Прекращение:</span><span class="tc-pill-val">По решению LSE</span></div></div></div></div>
+    </div>
+  </div>
+  <div class="instr-section" id="lse-fund" data-instr="lse-fund">
+    
+    <div class="tier-card" onclick="openDetail('ceif')">
+      <div class="tc-hd">
+        <div class="tc-hd-left">
+          <div class="tc-tier-name">Закрытые инвестиционные фонды</div>
+          <div class="tc-tier-en">Closed Ended Investment Funds (CEIF)</div>
+        </div>
+        <div class="tc-hd-right"><span class="status-badge sb-red">Ненадёжно</span><span class="tc-arrow">&#x2192;</span></div>
+      </div>
+      <div class="tc-body"><div class="tc-col col-admission"><div class="tc-col-name">Допуск</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П01</span><span class="tc-pill-name">Стандарт:</span><span class="tc-pill-val">UKLR гл. 15 — Investment Companies</span></div><div class="tc-pill"><span class="tc-pill-code">П21</span><span class="tc-pill-name">Политика:</span><span class="tc-pill-val">Инвестиционная политика и диверсификация</span></div></div></div><div class="tc-col col-maintenance"><div class="tc-col-name">Поддержание</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П25</span><span class="tc-pill-name">Отчётность:</span><span class="tc-pill-val">NAV — ежегодно</span></div><div class="tc-pill"><span class="tc-pill-code">П31</span><span class="tc-pill-name">Леверидж:</span><span class="tc-pill-val">Ограничения по займам</span></div></div></div><div class="tc-col col-delisting"><div class="tc-col-name">Исключение</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П38</span><span class="tc-pill-name">Ликвидация:</span><span class="tc-pill-val">При реструктуризации фонда</span></div></div></div></div>
+    </div>
+    
+    <div class="tier-card" onclick="openDetail('sfs')">
+      <div class="tc-hd">
+        <div class="tc-hd-left">
+          <div class="tc-tier-name">Специализированный фондовый сегмент</div>
+          <div class="tc-tier-en">Specialist Fund Segment (SFS) · без Official List</div>
+        </div>
+        <div class="tc-hd-right"><span class="status-badge sb-red">Ненадёжно</span><span class="tc-arrow">&#x2192;</span></div>
+      </div>
+      <div class="tc-body"><div class="tc-col col-admission"><div class="tc-col-name">Допуск</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П01</span><span class="tc-pill-name">Процедура:</span><span class="tc-pill-val">LSE SFS — без UKLR</span></div><div class="tc-pill"><span class="tc-pill-code">П22</span><span class="tc-pill-name">Инвесторы:</span><span class="tc-pill-val">Только профессиональные</span></div></div></div><div class="tc-col col-maintenance"><div class="tc-col-name">Поддержание</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П25</span><span class="tc-pill-name">Раскрытие:</span><span class="tc-pill-val">Требования SFS</span></div></div></div><div class="tc-col col-delisting"><div class="tc-col-name">Исключение</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П40</span><span class="tc-pill-name">Прекращение:</span><span class="tc-pill-val">По правилам SFS</span></div></div></div></div>
+    </div>
+  </div>
+  <div class="instr-section" id="lse-dr" data-instr="lse-dr">
+    
+    <div class="tier-card" onclick="openDetail('dr')">
+      <div class="tc-hd">
+        <div class="tc-hd-left">
+          <div class="tc-tier-name">Депозитарные расписки</div>
+          <div class="tc-tier-en">Depositary Receipts · IOB (International Order Book)</div>
+        </div>
+        <div class="tc-hd-right"><span class="status-badge sb-yellow">Проверить источники</span><span class="tc-arrow">&#x2192;</span></div>
+      </div>
+      <div class="tc-body"><div class="tc-col col-admission"><div class="tc-col-name">Допуск</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П01</span><span class="tc-pill-name">Стандарт:</span><span class="tc-pill-val">UKLR гл. 22</span></div><div class="tc-pill"><span class="tc-pill-code">П23</span><span class="tc-pill-name">Базовые акции:</span><span class="tc-pill-val">Листинг на приемлемой иностр. бирже</span></div><div class="tc-pill"><span class="tc-pill-code">П24</span><span class="tc-pill-name">Депозитарий:</span><span class="tc-pill-val">Соглашение с депозитарием</span></div></div></div><div class="tc-col col-maintenance"><div class="tc-col-name">Поддержание</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П25</span><span class="tc-pill-name">Раскрытие:</span><span class="tc-pill-val">Синхронизация с базовым рынком</span></div><div class="tc-pill"><span class="tc-pill-code">П28</span><span class="tc-pill-name">Статус:</span><span class="tc-pill-val">Поддержание листинга базовых акций</span></div></div></div><div class="tc-col col-delisting"><div class="tc-col-name">Исключение</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П38</span><span class="tc-pill-name">Прекращение:</span><span class="tc-pill-val">Закрытие программы ДР</span></div></div></div></div>
+    </div>
+    
+    <div class="tier-card" style="opacity:0.75" onclick="openDetail('att')">
+      <div class="tc-hd">
+        <div class="tc-hd-left">
+          <div class="tc-tier-name">Только допуск к торгам (ДР без Official List)</div>
+          <div class="tc-tier-en">Admission to Trading Only (ATT Only) · Depositary Receipts</div>
+        </div>
+        <div class="tc-hd-right"><span class="status-badge sb-red">Ненадёжно</span><span class="tc-arrow">&#x2192;</span></div>
+      </div>
+      <div class="tc-body"><div class="tc-col col-admission"><div class="tc-col-name">Допуск</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П01</span><span class="tc-pill-name">Процедура:</span><span class="tc-pill-val">ADS без Official List — для ДР</span></div><div class="tc-pill"><span class="tc-pill-code">П09</span><span class="tc-pill-name">Проспект:</span><span class="tc-pill-val">По усмотрению LSE</span></div></div></div><div class="tc-col col-maintenance"><div class="tc-col-name">Поддержание</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П25</span><span class="tc-pill-name">Раскрытие:</span><span class="tc-pill-val">Минимальные требования ADS</span></div></div></div><div class="tc-col col-delisting"><div class="tc-col-name">Исключение</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П40</span><span class="tc-pill-name">Прекращение:</span><span class="tc-pill-val">По решению LSE</span></div></div></div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- GEM -->
+<div id="view-gem" style="display:none"><div class="page">
+  <div class="breadcrumb"><a href="#">Справочник</a> <span>&#x2192;</span> <a href="#">Гонконг</a> <span>&#x2192;</span> HKEX GEM</div>
+  <div class="venue-title">HKEX GEM &#x2014; Рынок для компаний роста <span class="chip chip-reg">Regulated Market</span></div>
+  <div class="venue-sub">&#x9999;&#x6e2f;&#x806f;&#x5408;&#x4ea4;&#x6613;&#x6240;&#x5275;&#x696d;&#x677f; (GEM) &#xb7; Гонконг</div>
+  <div class="meta-bar">
+    <div class="meta-item"><div class="meta-lbl">Юрисдикция</div><div class="meta-val"><a href="#">Гонконг</a></div></div>
+    <div class="meta-item"><div class="meta-lbl">Оператор</div><div class="meta-val">The Stock Exchange of Hong Kong Ltd (SEHK)</div></div>
+    <div class="meta-item"><div class="meta-lbl">Архитектура допуска</div><div class="meta-val"><span class="chip chip-split">Объединённая</span></div></div>
+    <div class="meta-item"><div class="meta-lbl">Вторичный листинг</div><div class="meta-val" style="color:var(--text-dim);font-weight:300">Не предусмотрен</div></div>
+    <div class="meta-item"><div class="meta-lbl">Платформа</div><div class="meta-val">FINI (HKSCC)</div></div>
+  </div>
+  <div class="desc-block">
+    <div class="desc-text">Одноуровневая площадка с <strong>объединённой процедурой допуска</strong>: листинг и разрешение на обращение предоставляются одновременно. SEHK выступает фронт-лайн органом, SFC сохраняет право возражения по Cap.571V s.6.<sup class="cite">1</sup></div>
+    <div class="desc-en">Single-tier venue, merged admission process. SEHK as frontline listing authority; SFC retains statutory objection right (Cap.571V s.6).</div>
+    <button class="src-btn"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> 3 источника</button>
+  </div>
+  <div class="instr-tabs" id="tabs-gem">
+    <button class="instr-tab active" onclick="switchInstr('gem','equity',this)">Акции <span class="instr-tab-count">1</span></button>
+    <button class="instr-tab" onclick="switchInstr('gem','bond',this)">Облигации <span class="instr-tab-count">1</span></button>
+    <div class="tabs-spacer"></div><span class="tabs-total">2 категории</span>
+  </div>
+  <div class="instr-section" id="gem-equity" data-instr="gem-equity">
+    
+    <div class="tier-card" onclick="openDetail('gem-eq')">
+      <div class="tc-hd">
+        <div class="tc-hd-left">
+          <div class="tc-tier-name">Акции (первичный листинг)</div>
+          <div class="tc-tier-en">Equity Securities &#xb7; GEM Listing Rules &#xb7; HK_HKEX_GEM_equity</div>
+        </div>
+        <div class="tc-hd-right"><span class="status-badge sb-green">Верифицировано</span><span class="tc-arrow">&#x2192;</span></div>
+      </div>
+      <div class="tc-body"><div class="tc-col col-admission"><div class="tc-col-name">Допуск</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П01</span><span class="tc-pill-name">Процедура:</span><span class="tc-pill-val">Объединённая — листинг + торги одновременно</span></div><div class="tc-pill"><span class="tc-pill-code">П05</span><span class="tc-pill-name">Free float:</span><span class="tc-pill-val">&#x2265; 10% или market value &#x2265; HK$15 млн</span></div><div class="tc-pill"><span class="tc-pill-code">П06</span><span class="tc-pill-name">Market cap:</span><span class="tc-pill-val">&#x2265; HK$150 млн</span></div><div class="tc-pill"><span class="tc-pill-code">П12</span><span class="tc-pill-name">История:</span><span class="tc-pill-val">&#x2265; 2 года (тест GEM гл. 11)</span></div><div class="tc-pill"><span class="tc-pill-code">П03</span><span class="tc-pill-name">Платформа:</span><span class="tc-pill-val">FINI HKSCC</span></div></div></div><div class="tc-col col-maintenance"><div class="tc-col-name">Поддержание</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П25</span><span class="tc-pill-name">Отчётность:</span><span class="tc-pill-val">Полугодовая + годовая</span></div><div class="tc-pill"><span class="tc-pill-code">П27</span><span class="tc-pill-name">Раскрытие:</span><span class="tc-pill-val">Инсайд. информация — немедленно</span></div><div class="tc-pill"><span class="tc-pill-code">П30</span><span class="tc-pill-name">Сделки:</span><span class="tc-pill-val">Существенные сделки и связанные стороны</span></div></div></div><div class="tc-col col-delisting"><div class="tc-col-name">Исключение</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П38</span><span class="tc-pill-name">Приостановка:</span><span class="tc-pill-val">По решению SEHK</span></div><div class="tc-pill"><span class="tc-pill-code">П41</span><span class="tc-pill-name">Перевод:</span><span class="tc-pill-val">На Main Board (GEM Rule 9.24)</span></div></div></div></div>
+    </div>
+  </div>
+  <div class="instr-section" id="gem-bond" data-instr="gem-bond">
+    
+    <div class="tier-card" style="opacity:0.8" onclick="openDetail('gem-bond')">
+      <div class="tc-hd">
+        <div class="tc-hd-left">
+          <div class="tc-tier-name">Долговые ценные бумаги эмитентов GEM</div>
+          <div class="tc-tier-en">Debt Securities &#xb7; GEM debt chapters &#xb7; HK_HKEX_GEM_bond</div>
+        </div>
+        <div class="tc-hd-right"><span class="status-badge sb-red">Ненадёжно</span><span class="tc-arrow">&#x2192;</span></div>
+      </div>
+      <div class="tc-body"><div class="tc-col col-admission"><div class="tc-col-name">Допуск</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П01</span><span class="tc-pill-name">Стандарт:</span><span class="tc-pill-val">GEM гл. 30/31</span></div><div class="tc-pill"><span class="tc-pill-code">П11</span><span class="tc-pill-name">Ограничение:</span><span class="tc-pill-val">Только для эмитентов GEM</span></div></div></div><div class="tc-col col-maintenance"><div class="tc-col-name">Поддержание</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П25</span><span class="tc-pill-name">Раскрытие:</span><span class="tc-pill-val">Требования GEM</span></div></div></div><div class="tc-col col-delisting"><div class="tc-col-name">Исключение</div><div class="tc-pills"><div class="tc-pill"><span class="tc-pill-code">П38</span><span class="tc-pill-name">Прекращение:</span><span class="tc-pill-val">Погашение / исключение</span></div></div></div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- DETAIL -->
+<div id="view-detail" style="display:none"><div class="page">
+  <div class="breadcrumb"><a href="#" onclick="goBack();return false">&#x2190; Назад к площадке</a></div>
+  <div class="detail-hd">
+    <div>
+      <div class="detail-title" id="detail-title">Акции коммерческих компаний</div>
+      <div class="detail-sub" id="detail-sub">Equity Shares (Commercial Companies) &#xb7; ESCC</div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <span class="status-badge sb-yellow" id="detail-status">Проверить источники</span>
+        <span class="chip chip-reg">Regulated Market</span>
+      </div>
+    </div>
+    <button class="matrix-btn" id="view-toggle-btn" onclick="toggleMatrixView()">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span id="view-toggle-label">Вид: матрица</span>
+    </button>
+  </div>
+  <div class="tabs-view" id="tabs-view">
+  <div class="phase-tabs">
+    <button class="phase-tab active" onclick="switchPhase('admission')"><span class="pt-dot pt-blue"></span>Допуск</button>
+    <button class="phase-tab" onclick="switchPhase('maintenance')"><span class="pt-dot pt-green"></span>Поддержание</button>
+    <button class="phase-tab" onclick="switchPhase('delisting')"><span class="pt-dot pt-red"></span>Исключение</button>
+  </div>
+  <div class="phase-content active" id="phase-admission">
+    <div class="section-card">
+      <div class="section-card-hd"><span class="section-card-title">Требования к эмитенту</span><button class="src-btn">3 источника</button></div>
+      <div class="section-card-body">Претендент должен иметь <strong>подтверждённую историю деятельности не менее 3 лет</strong> при фактически том же руководстве.<sup class="cite">1</sup> Финансовая отчётность должна быть подготовлена в соответствии с UK GAAP, IFRS или US GAAP и аудирована аудитором, одобренным FCA.<sup class="cite">2</sup></div>
+      <div class="params-strip">
+        <div class="param-chip"><span class="param-code">П12</span><span>Торговая история:</span><span class="param-val">&#x2265; 3 года</span></div>
+        <div class="param-chip"><span class="param-code">П15</span><span>Аудит:</span><span class="param-val">IFRS / UK GAAP / US GAAP</span></div>
+        <div class="param-chip"><span class="param-code">П16</span><span>Независ. директора:</span><span class="param-val">&#x2265; 2</span></div>
+      </div>
+      <div class="sources-footer">
+        <div class="source-row"><span class="src-num">1</span><span class="src-txt">UKLR 6.4.1 &#x2014; <a class="src-lnk" href="#">fca.org.uk &#x2197;</a></span></div>
+        <div class="source-row"><span class="src-num">2</span><span class="src-txt">UKLR 6.6 (accounts) &#x2014; <a class="src-lnk" href="#">fca.org.uk &#x2197;</a></span></div>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="section-card-hd"><span class="section-card-title">Требования к инструменту</span><button class="src-btn">2 источника</button></div>
+      <div class="section-card-body">Минимальная <strong>рыночная капитализация при листинге &#x2014; &#xa3;30 млн</strong>.<sup class="cite">1</sup> Ожидаемый free float в руках публики &#x2014; <strong>не менее 10%</strong> от акций каждого класса.<sup class="cite">2</sup></div>
+      <div class="params-strip">
+        <div class="param-chip"><span class="param-code">П05</span><span>Free float:</span><span class="param-val">&#x2265; 10%</span></div>
+        <div class="param-chip"><span class="param-code">П06</span><span>Market cap:</span><span class="param-val">&#x2265; &#xa3;30 млн</span></div>
+      </div>
+      <div class="sources-footer">
+        <div class="source-row"><span class="src-num">1</span><span class="src-txt">UKLR 6.1.4 &#x2014; <a class="src-lnk" href="#">fca.org.uk &#x2197;</a></span></div>
+        <div class="source-row"><span class="src-num">2</span><span class="src-txt">UKLR 6.1.19 &#x2014; <a class="src-lnk" href="#">fca.org.uk &#x2197;</a></span></div>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="section-card-hd"><span class="section-card-title">Процедура и сроки</span><button class="src-btn">1 источник</button></div>
+      <div class="section-card-body">Двухконтурная процедура: <strong>FCA</strong> рассматривает заявку на включение в Official List (~10 рабочих дней); <strong>LSE</strong> параллельно рассматривает заявку на допуск к торгам по ADS.<sup class="cite">1</sup></div>
+      <div class="params-strip">
+        <div class="param-chip"><span class="param-code">П01</span><span>Тип процедуры:</span><span class="param-val">Split (FCA + LSE ADS)</span></div>
+        <div class="param-chip"><span class="param-code">П03</span><span>Срок FCA:</span><span class="param-val">~10 р.д.</span></div>
+      </div>
+      <div class="sources-footer"><div class="source-row"><span class="src-num">1</span><span class="src-txt">UKLR 3 (listing process) &#x2014; <a class="src-lnk" href="#">fca.org.uk &#x2197;</a></span></div></div>
+    </div>
+  </div>
+  <div class="phase-content" id="phase-maintenance">
+    <div class="section-card">
+      <div class="section-card-hd"><span class="section-card-title">Постоянные обязательства эмитента</span><button class="src-btn">2 источника</button></div>
+      <div class="section-card-body">Немедленное раскрытие инсайдерской информации (MAR Art. 17), уведомление о существенных изменениях в бизнесе, поддержание инфраструктуры корпоративного управления.<sup class="cite">1</sup> Применяется <strong>UK Corporate Governance Code</strong> &#x2014; «соблюдай или объясняй».<sup class="cite">2</sup></div>
+      <div class="params-strip">
+        <div class="param-chip"><span class="param-code">П25</span><span>Отчётность:</span><span class="param-val">Годовая + полугодовая</span></div>
+        <div class="param-chip"><span class="param-code">П27</span><span>Инсайд. раскрытие:</span><span class="param-val">Немедленно (MAR)</span></div>
+        <div class="param-chip"><span class="param-code">П30</span><span>Крупные сделки:</span><span class="param-val">Class 1 &#x2265; 25%</span></div>
+      </div>
+      <div class="sources-footer">
+        <div class="source-row"><span class="src-num">1</span><span class="src-txt">UKLR 9&#x2013;11 (ongoing obligations) &#x2014; <a class="src-lnk" href="#">fca.org.uk &#x2197;</a></span></div>
+        <div class="source-row"><span class="src-num">2</span><span class="src-txt">UK Corporate Governance Code 2024 &#x2014; <a class="src-lnk" href="#">frc.org.uk &#x2197;</a></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="phase-content" id="phase-delisting">
+    <div class="section-card">
+      <div class="section-card-hd"><span class="section-card-title">Основания для приостановки и исключения</span><button class="src-btn">2 источника</button></div>
+      <div class="section-card-body">FCA вправе приостановить или аннулировать листинг при нарушении требований.<sup class="cite">1</sup> Добровольное исключение требует одобрения <strong>не менее 75% независимых акционеров</strong>.<sup class="cite">2</sup></div>
+      <div class="params-strip">
+        <div class="param-chip"><span class="param-code">П38</span><span>Добров. исключение:</span><span class="param-val">&#x2265; 75% акционеров</span></div>
+        <div class="param-chip"><span class="param-code">П39</span><span>Санкции:</span><span class="param-val">Выговор / штраф / запрет</span></div>
+      </div>
+      <div class="sources-footer">
+        <div class="source-row"><span class="src-num">1</span><span class="src-txt">UKLR 5.4 &#x2014; <a class="src-lnk" href="#">fca.org.uk &#x2197;</a></span></div>
+        <div class="source-row"><span class="src-num">2</span><span class="src-txt">UKLR 5.5 &#x2014; <a class="src-lnk" href="#">fca.org.uk &#x2197;</a></span></div>
+      </div>
+    </div>
+  </div>
+  </div><!-- /tabs-view -->
+
+  <!-- MATRIX VIEW -->
+  <div class="matrix-view" id="matrix-view">
+    <table class="mx-table">
+      <thead>
+        <tr>
+          <th>Фаза</th>
+          <th>Требования</th>
+          <th>Процедуры</th>
+          <th>Мониторинг и надзор</th>
+          <th>Санкции</th>
+          <th>Раскрытие информации</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="mx-phase-label"><div class="mx-phase-name">Допуск</div></div></td>
+          <td class="mx-cell" onclick="switchToTab('admission')">
+            <div class="mx-cell-pills">
+              <div class="mx-pill"><span class="mx-pill-code">П05</span><span class="mx-pill-val">Free float &#x2265; 10%</span></div>
+              <div class="mx-pill"><span class="mx-pill-code">П06</span><span class="mx-pill-val">Market cap &#x2265; &#xa3;30 млн</span></div>
+              <div class="mx-pill"><span class="mx-pill-code">П12</span><span class="mx-pill-val">История &#x2265; 3 года</span></div>
+            </div>
+          </td>
+          <td class="mx-cell" onclick="switchToTab('admission')">
+            <div class="mx-cell-pills">
+              <div class="mx-pill"><span class="mx-pill-code">П01</span><span class="mx-pill-val">Split — FCA + LSE ADS</span></div>
+              <div class="mx-pill"><span class="mx-pill-code">П03</span><span class="mx-pill-val">Срок FCA ~10 р.д.</span></div>
+            </div>
+          </td>
+          <td class="mx-cell na"><span class="mx-na-label">&#x2014;</span></td>
+          <td class="mx-cell na"><span class="mx-na-label">&#x2014;</span></td>
+          <td class="mx-cell" onclick="switchToTab('admission')">
+            <div class="mx-cell-pills">
+              <div class="mx-pill"><span class="mx-pill-code">П09</span><span class="mx-pill-val">Проспект (POATRs 2024)</span></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><div class="mx-phase-label"><div class="mx-phase-name">Поддержание</div></div></td>
+          <td class="mx-cell" onclick="switchToTab('maintenance')">
+            <div class="mx-cell-pills">
+              <div class="mx-pill"><span class="mx-pill-code">П25</span><span class="mx-pill-val">Годовая + полугодовая отчётность</span></div>
+              <div class="mx-pill"><span class="mx-pill-code">П16</span><span class="mx-pill-val">UK CG Code</span></div>
+            </div>
+          </td>
+          <td class="mx-cell" onclick="switchToTab('maintenance')">
+            <div class="mx-cell-pills">
+              <div class="mx-pill"><span class="mx-pill-code">П30</span><span class="mx-pill-val">Class 1 сделки &#x2265; 25%</span></div>
+            </div>
+          </td>
+          <td class="mx-cell" onclick="switchToTab('maintenance')">
+            <div class="mx-cell-pills">
+              <div class="mx-pill"><span class="mx-pill-code">П27</span><span class="mx-pill-val">Инсайд. информация — немедленно (MAR)</span></div>
+            </div>
+          </td>
+          <td class="mx-cell na"><span class="mx-na-label">&#x2014;</span></td>
+          <td class="mx-cell" onclick="switchToTab('maintenance')">
+            <div class="mx-cell-pills">
+              <div class="mx-pill"><span class="mx-pill-code">П27</span><span class="mx-pill-val">MAR Art. 17</span></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><div class="mx-phase-label"><div class="mx-phase-name">Исключение</div></div></td>
+          <td class="mx-cell" onclick="switchToTab('delisting')">
+            <div class="mx-cell-pills">
+              <div class="mx-pill"><span class="mx-pill-code">П38</span><span class="mx-pill-val">Добров. исключение &#x2265; 75% акционеров</span></div>
+            </div>
+          </td>
+          <td class="mx-cell" onclick="switchToTab('delisting')">
+            <div class="mx-cell-pills">
+              <div class="mx-pill"><span class="mx-pill-code">П40</span><span class="mx-pill-val">По решению FCA или LSE</span></div>
+            </div>
+          </td>
+          <td class="mx-cell" onclick="switchToTab('delisting')">
+            <div class="mx-cell-pills">
+              <div class="mx-pill"><span class="mx-pill-code">П40</span><span class="mx-pill-val">Основания приостановки</span></div>
+            </div>
+          </td>
+          <td class="mx-cell" onclick="switchToTab('delisting')">
+            <div class="mx-cell-pills">
+              <div class="mx-pill"><span class="mx-pill-code">П39</span><span class="mx-pill-val">Выговор / штраф / запрет</span></div>
+            </div>
+          </td>
+          <td class="mx-cell na"><span class="mx-na-label">&#x2014;</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px;display:flex;align-items:center;gap:16px;font-size:11.5px;color:var(--text-dim);font-family:var(--font-mono)">
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:var(--accent-bg);border:1px solid rgba(37,99,235,.2);display:inline-block"></span>Данные есть — кликните для просмотра</span>
+      <span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:var(--bg3);border:1px dashed var(--border2);display:inline-block"></span>Не применимо</span>
+    </div>
+  </div><!-- /matrix-view -->
+
+</div></div>
+
+<script>
+
+let fromView = 'lse';
+function showView(v) {
+  ['lse','gem','detail'].forEach(id => {
+    document.getElementById('view-'+id).style.display = v===id ? 'block' : 'none';
+  });
+  document.querySelectorAll('.dbtn').forEach((b,i) => {
+    b.classList.toggle('on',(i===0&&v==='lse')||(i===1&&v==='gem'));
+  });
+  window.scrollTo({top:0,behavior:'instant'});
+}
+function switchInstr(venue,instr,btn) {
+  document.querySelectorAll('[data-instr^="'+venue+'-"]').forEach(el => {
+    el.style.display = el.getAttribute('data-instr')===venue+'-'+instr?'block':'none';
+  });
+  document.getElementById('tabs-'+venue).querySelectorAll('.instr-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function initShadow(id) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  const s = document.createElement('div');
+  s.style.cssText = 'height:1px;margin-top:-1px;pointer-events:none';
+  el.parentNode.insertBefore(s,el);
+  new IntersectionObserver(([e])=>el.classList.toggle('stuck',e.intersectionRatio<1),
+    {threshold:[1],rootMargin:'-57px 0px 0px 0px'}).observe(s);
+}
+window.addEventListener('load',()=>{
+  ['lse','gem'].forEach(venue=>{
+    document.querySelectorAll('[data-instr^="'+venue+'-"]').forEach((el,i)=>el.style.display=i===0?'block':'none');
+    initShadow('tabs-'+venue);
+  });
+});
+function openDetail(type) {
+  fromView = document.getElementById('view-gem').style.display!=='none'?'gem':'lse';
+  const m = {
+    escc:       ['Акции коммерческих компаний','Equity Shares (Commercial Companies) \u00b7 ESCC','sb-yellow','Проверить источники'],
+    intl:       ['Зарубежные коммерческие компании','Equity Shares (International) Secondary Listing','sb-yellow','Проверить источники'],
+    transition: ['Переходный режим (post-UKLR 2024)','Equity Shares (Transition)','sb-yellow','Проверить источники'],
+    att:        ['Только допуск к торгам','ATT Only \u00b7 ADS Schedule 6','sb-red','Ненадёжно'],
+    bond:       ['Долговые и квазидолговые ценные бумаги','Debt and debt-like securities','sb-green','Верифицировано'],
+    ceif:       ['Закрытые инвестиционные фонды','Closed Ended Investment Funds (CEIF)','sb-red','Ненадёжно'],
+    sfs:        ['Специализированный фондовый сегмент','Specialist Fund Segment (SFS)','sb-red','Ненадёжно'],
+    dr:         ['Депозитарные расписки','Depositary Receipts \u00b7 IOB','sb-yellow','Проверить источники'],
+    'gem-eq':   ['Акции (первичный листинг GEM)','Equity Securities \u00b7 GEM \u00b7 HK_HKEX_GEM_equity','sb-green','Верифицировано'],
+    'gem-bond': ['Долговые ценные бумаги GEM','Debt Securities \u00b7 GEM debt chapters','sb-red','Ненадёжно'],
+  };
+  const d = m[type]||m.escc;
+  document.getElementById('detail-title').textContent = d[0];
+  document.getElementById('detail-sub').textContent   = d[1];
+  const sb = document.getElementById('detail-status');
+  sb.className = 'status-badge '+d[2];
+  sb.textContent = d[3];
+  switchPhase('admission');
+  // reset to tabs view
+  isMatrixView = false;
+  document.getElementById('tabs-view').classList.remove('hidden');
+  document.getElementById('matrix-view').classList.remove('active');
+  document.getElementById('view-toggle-label').textContent = 'Вид: матрица';
+  showView('detail');
+}
+function goBack(){showView(fromView);}
+
+let isMatrixView = false;
+function toggleMatrixView() {
+  isMatrixView = !isMatrixView;
+  document.getElementById('tabs-view').classList.toggle('hidden', isMatrixView);
+  document.getElementById('matrix-view').classList.toggle('active', isMatrixView);
+  const lbl = document.getElementById('view-toggle-label');
+  lbl.textContent = isMatrixView ? 'Вид: вкладки' : 'Вид: матрица';
+  // swap icon
+  const btn = document.getElementById('view-toggle-btn');
+  btn.querySelector('svg').innerHTML = isMatrixView
+    ? '<path d="M9 3H4a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1z"/><path d="M4 14h5M4 18h5M14 4v5M18 4v5M14 14h5v5h-5z"/>'
+    : '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>';
+}
+function switchToTab(phase) {
+  // switch back to tabs view and open the right tab
+  isMatrixView = false;
+  document.getElementById('tabs-view').classList.remove('hidden');
+  document.getElementById('matrix-view').classList.remove('active');
+  document.getElementById('view-toggle-label').textContent = 'Вид: матрица';
+  switchPhase(phase);
+}
+function switchPhase(p){
+  ['admission','maintenance','delisting'].forEach((ph,i)=>{
+    document.querySelectorAll('.phase-tab')[i].classList.toggle('active',ph===p);
+  });
+  document.querySelectorAll('.phase-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('phase-'+p).classList.add('active');
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,2848 @@
+[
+  {
+    "jurisdiction": "Australia",
+    "iso_code": "AU",
+    "market_group": "DM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.47,
+        "year": 2024,
+        "percentile": 76
+      },
+      "regulatory_quality": {
+        "value": 1.72,
+        "year": 2024,
+        "percentile": 84
+      },
+      "political_stability": {
+        "value": 0.79,
+        "year": 2024,
+        "percentile": 80
+      },
+      "wgi_composite": {
+        "value": 1.33,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 98.9,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 26.4,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 8,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 2,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 8,
+          "max": 10
+        },
+        "composite": {
+          "value": 6.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.79,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Austria",
+    "iso_code": "AT",
+    "market_group": "DM",
+    "legal_origin": "German",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.68,
+        "year": 2024,
+        "percentile": 86
+      },
+      "regulatory_quality": {
+        "value": 1.35,
+        "year": 2024,
+        "percentile": 68
+      },
+      "political_stability": {
+        "value": 0.49,
+        "year": 2024,
+        "percentile": 59
+      },
+      "wgi_composite": {
+        "value": 1.17,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 22.6,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 26.3,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 5,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 5,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 7,
+          "max": 10
+        },
+        "composite": {
+          "value": 5.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.21,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Belgium",
+    "iso_code": "BE",
+    "market_group": "DM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.28,
+        "year": 2024,
+        "percentile": 68
+      },
+      "regulatory_quality": {
+        "value": 1.24,
+        "year": 2024,
+        "percentile": 61
+      },
+      "political_stability": {
+        "value": 0.12,
+        "year": 2024,
+        "percentile": 41
+      },
+      "wgi_composite": {
+        "value": 0.88,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 59.2,
+        "year": 2018
+      },
+      "savings_gdp_pct": {
+        "value": 24.1,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 8,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 6,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 7,
+          "max": 10
+        },
+        "composite": {
+          "value": 7.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.54,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Brazil",
+    "iso_code": "BR",
+    "market_group": "EM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": -0.45,
+        "year": 2024,
+        "percentile": 18
+      },
+      "regulatory_quality": {
+        "value": -0.29,
+        "year": 2024,
+        "percentile": 5
+      },
+      "political_stability": {
+        "value": -0.52,
+        "year": 2024,
+        "percentile": 26
+      },
+      "wgi_composite": {
+        "value": -0.42,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 30.1,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 17.3,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 5,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 8,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 4,
+          "max": 10
+        },
+        "composite": {
+          "value": 5.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.29,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Canada",
+    "iso_code": "CA",
+    "market_group": "DM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.46,
+        "year": 2024,
+        "percentile": 74
+      },
+      "regulatory_quality": {
+        "value": 1.36,
+        "year": 2024,
+        "percentile": 72
+      },
+      "political_stability": {
+        "value": 0.6,
+        "year": 2024,
+        "percentile": 66
+      },
+      "wgi_composite": {
+        "value": 1.14,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 150.4,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 23.0,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 8,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 9,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 9,
+          "max": 10
+        },
+        "composite": {
+          "value": 8.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.65,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Chile",
+    "iso_code": "CL",
+    "market_group": "EM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.69,
+        "year": 2024,
+        "percentile": 49
+      },
+      "regulatory_quality": {
+        "value": 0.78,
+        "year": 2024,
+        "percentile": 47
+      },
+      "political_stability": {
+        "value": 0.12,
+        "year": 2024,
+        "percentile": 39
+      },
+      "wgi_composite": {
+        "value": 0.53,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 79.3,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 26.8,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 8,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 6,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 7,
+          "max": 10
+        },
+        "composite": {
+          "value": 7.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.62,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "China",
+    "iso_code": "CN",
+    "market_group": "EM",
+    "legal_origin": "German",
+    "metrics": {
+      "rule_of_law": {
+        "value": -0.58,
+        "year": 2024,
+        "percentile": 9
+      },
+      "regulatory_quality": {
+        "value": -0.07,
+        "year": 2024,
+        "percentile": 14
+      },
+      "political_stability": {
+        "value": -0.15,
+        "year": 2024,
+        "percentile": 30
+      },
+      "wgi_composite": {
+        "value": -0.27,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 62.7,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 43.4,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 10,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 4,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 5,
+          "max": 10
+        },
+        "composite": {
+          "value": 6.3,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.78,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Colombia",
+    "iso_code": "CO",
+    "market_group": "EM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": -0.56,
+        "year": 2024,
+        "percentile": 14
+      },
+      "regulatory_quality": {
+        "value": 0.01,
+        "year": 2024,
+        "percentile": 18
+      },
+      "political_stability": {
+        "value": -0.97,
+        "year": 2024,
+        "percentile": 5
+      },
+      "wgi_composite": {
+        "value": -0.51,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 17.3,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 12.0,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 9,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 7,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 8,
+          "max": 10
+        },
+        "composite": {
+          "value": 8.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.58,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Czech Republic",
+    "iso_code": "CZ",
+    "market_group": "EM",
+    "legal_origin": "German",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.19,
+        "year": 2024,
+        "percentile": 64
+      },
+      "regulatory_quality": {
+        "value": 1.23,
+        "year": 2024,
+        "percentile": 59
+      },
+      "political_stability": {
+        "value": 0.97,
+        "year": 2024,
+        "percentile": 91
+      },
+      "wgi_composite": {
+        "value": 1.13,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 10.0,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 32.6,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 2,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 6,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 9,
+          "max": 10
+        },
+        "composite": {
+          "value": 5.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.34,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Denmark",
+    "iso_code": "DK",
+    "market_group": "DM",
+    "legal_origin": "Scandinavian",
+    "metrics": {
+      "rule_of_law": {
+        "value": 2.0,
+        "year": 2024,
+        "percentile": 97
+      },
+      "regulatory_quality": {
+        "value": 1.93,
+        "year": 2024,
+        "percentile": 95
+      },
+      "political_stability": {
+        "value": 0.77,
+        "year": 2024,
+        "percentile": 76
+      },
+      "wgi_composite": {
+        "value": 1.57,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": null,
+      "savings_gdp_pct": {
+        "value": 33.4,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 7,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 5,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 8,
+          "max": 10
+        },
+        "composite": {
+          "value": 6.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.47,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Egypt",
+    "iso_code": "EG",
+    "market_group": "EM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": -0.75,
+        "year": 2024,
+        "percentile": 7
+      },
+      "regulatory_quality": {
+        "value": -0.5,
+        "year": 2024,
+        "percentile": 3
+      },
+      "political_stability": {
+        "value": -0.98,
+        "year": 2024,
+        "percentile": 3
+      },
+      "wgi_composite": {
+        "value": -0.74,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 10.9,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 6.1,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 8,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 3,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 3,
+          "max": 10
+        },
+        "composite": {
+          "value": 4.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.49,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Finland",
+    "iso_code": "FI",
+    "market_group": "DM",
+    "legal_origin": "Scandinavian",
+    "metrics": {
+      "rule_of_law": {
+        "value": 2.02,
+        "year": 2024,
+        "percentile": 99
+      },
+      "regulatory_quality": {
+        "value": 1.96,
+        "year": 2024,
+        "percentile": 97
+      },
+      "political_stability": {
+        "value": 0.83,
+        "year": 2024,
+        "percentile": 82
+      },
+      "wgi_composite": {
+        "value": 1.61,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": null,
+      "savings_gdp_pct": {
+        "value": 22.8,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 6,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 4,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 8,
+          "max": 10
+        },
+        "composite": {
+          "value": 6.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.46,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "France",
+    "iso_code": "FR",
+    "market_group": "DM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.98,
+        "year": 2024,
+        "percentile": 57
+      },
+      "regulatory_quality": {
+        "value": 1.15,
+        "year": 2024,
+        "percentile": 57
+      },
+      "political_stability": {
+        "value": -0.24,
+        "year": 2024,
+        "percentile": 28
+      },
+      "wgi_composite": {
+        "value": 0.63,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 85.1,
+        "year": 2018
+      },
+      "savings_gdp_pct": {
+        "value": 21.2,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 8,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 3,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 6,
+          "max": 10
+        },
+        "composite": {
+          "value": 5.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.38,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Germany",
+    "iso_code": "DE",
+    "market_group": "DM",
+    "legal_origin": "German",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.63,
+        "year": 2024,
+        "percentile": 82
+      },
+      "regulatory_quality": {
+        "value": 1.5,
+        "year": 2024,
+        "percentile": 74
+      },
+      "political_stability": {
+        "value": 0.12,
+        "year": 2024,
+        "percentile": 43
+      },
+      "wgi_composite": {
+        "value": 1.08,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 43.6,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 25.3,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 5,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 5,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 5,
+          "max": 10
+        },
+        "composite": {
+          "value": 5.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.28,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Greece",
+    "iso_code": "GR",
+    "market_group": "EM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.3,
+        "year": 2024,
+        "percentile": 34
+      },
+      "regulatory_quality": {
+        "value": 0.48,
+        "year": 2024,
+        "percentile": 32
+      },
+      "political_stability": {
+        "value": 0.14,
+        "year": 2024,
+        "percentile": 45
+      },
+      "wgi_composite": {
+        "value": 0.31,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 32.5,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 12.7,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 9,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 4,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 5,
+          "max": 10
+        },
+        "composite": {
+          "value": 6.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.23,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Hong Kong",
+    "iso_code": "HK",
+    "market_group": "DM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.92,
+        "year": 2024,
+        "percentile": 51
+      },
+      "regulatory_quality": {
+        "value": 1.74,
+        "year": 2024,
+        "percentile": 86
+      },
+      "political_stability": {
+        "value": 0.63,
+        "year": 2024,
+        "percentile": 70
+      },
+      "wgi_composite": {
+        "value": 1.1,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 1118.2,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 19.9,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 10,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 8,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 9,
+          "max": 10
+        },
+        "composite": {
+          "value": 9.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.96,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Hungary",
+    "iso_code": "HU",
+    "market_group": "EM",
+    "legal_origin": "German",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.19,
+        "year": 2024,
+        "percentile": 28
+      },
+      "regulatory_quality": {
+        "value": 0.34,
+        "year": 2024,
+        "percentile": 28
+      },
+      "political_stability": {
+        "value": 0.44,
+        "year": 2024,
+        "percentile": 57
+      },
+      "wgi_composite": {
+        "value": 0.32,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 18.7,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 27.7,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 2,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 4,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 7,
+          "max": 10
+        },
+        "composite": {
+          "value": 4.3,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.2,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "India",
+    "iso_code": "IN",
+    "market_group": "EM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": -0.04,
+        "year": 2024,
+        "percentile": 24
+      },
+      "regulatory_quality": {
+        "value": -0.1,
+        "year": 2024,
+        "percentile": 11
+      },
+      "political_stability": {
+        "value": -0.79,
+        "year": 2024,
+        "percentile": 11
+      },
+      "wgi_composite": {
+        "value": -0.31,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 131.2,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 28.6,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 8,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 7,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 7,
+          "max": 10
+        },
+        "composite": {
+          "value": 7.3,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.55,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Indonesia",
+    "iso_code": "ID",
+    "market_group": "EM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": -0.21,
+        "year": 2024,
+        "percentile": 22
+      },
+      "regulatory_quality": {
+        "value": 0.12,
+        "year": 2024,
+        "percentile": 26
+      },
+      "political_stability": {
+        "value": -0.61,
+        "year": 2024,
+        "percentile": 24
+      },
+      "wgi_composite": {
+        "value": -0.23,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 55.3,
+        "year": 2023
+      },
+      "savings_gdp_pct": {
+        "value": 36.9,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 10,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 5,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 2,
+          "max": 10
+        },
+        "composite": {
+          "value": 5.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.68,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Ireland",
+    "iso_code": "IE",
+    "market_group": "DM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.59,
+        "year": 2024,
+        "percentile": 80
+      },
+      "regulatory_quality": {
+        "value": 1.79,
+        "year": 2024,
+        "percentile": 91
+      },
+      "political_stability": {
+        "value": 0.71,
+        "year": 2024,
+        "percentile": 74
+      },
+      "wgi_composite": {
+        "value": 1.37,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 27.8,
+        "year": 2018
+      },
+      "savings_gdp_pct": {
+        "value": 60.5,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 9,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 8,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 9,
+          "max": 10
+        },
+        "composite": {
+          "value": 8.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.79,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Israel",
+    "iso_code": "IL",
+    "market_group": "DM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.6,
+        "year": 2024,
+        "percentile": 45
+      },
+      "regulatory_quality": {
+        "value": 1.11,
+        "year": 2024,
+        "percentile": 53
+      },
+      "political_stability": {
+        "value": -1.04,
+        "year": 2024,
+        "percentile": 1
+      },
+      "wgi_composite": {
+        "value": 0.23,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 61.2,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 25.9,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 7,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 9,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 9,
+          "max": 10
+        },
+        "composite": {
+          "value": 8.3,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.71,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Italy",
+    "iso_code": "IT",
+    "market_group": "DM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.62,
+        "year": 2024,
+        "percentile": 47
+      },
+      "regulatory_quality": {
+        "value": 0.64,
+        "year": 2024,
+        "percentile": 36
+      },
+      "political_stability": {
+        "value": 0.31,
+        "year": 2024,
+        "percentile": 51
+      },
+      "wgi_composite": {
+        "value": 0.52,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": null,
+      "savings_gdp_pct": {
+        "value": 24.8,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 7,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 4,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 6,
+          "max": 10
+        },
+        "composite": {
+          "value": 5.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.39,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Japan",
+    "iso_code": "JP",
+    "market_group": "DM",
+    "legal_origin": "German",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.51,
+        "year": 2024,
+        "percentile": 78
+      },
+      "regulatory_quality": {
+        "value": 1.33,
+        "year": 2024,
+        "percentile": 66
+      },
+      "political_stability": {
+        "value": 1.13,
+        "year": 2024,
+        "percentile": 95
+      },
+      "wgi_composite": {
+        "value": 1.33,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 156.7,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 25.3,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 7,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 6,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 8,
+          "max": 10
+        },
+        "composite": {
+          "value": 7.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.48,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Kuwait",
+    "iso_code": "KW",
+    "market_group": "EM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.23,
+        "year": 2024,
+        "percentile": 32
+      },
+      "regulatory_quality": {
+        "value": 0.4,
+        "year": 2024,
+        "percentile": 30
+      },
+      "political_stability": {
+        "value": 0.29,
+        "year": 2024,
+        "percentile": 49
+      },
+      "wgi_composite": {
+        "value": 0.31,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 88.3,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 37.1,
+        "year": 2023
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 5,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 9,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 4,
+          "max": 10
+        },
+        "composite": {
+          "value": 6.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": null
+    }
+  },
+  {
+    "jurisdiction": "Malaysia",
+    "iso_code": "MY",
+    "market_group": "EM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.35,
+        "year": 2024,
+        "percentile": 36
+      },
+      "regulatory_quality": {
+        "value": 0.68,
+        "year": 2024,
+        "percentile": 39
+      },
+      "political_stability": {
+        "value": 0.38,
+        "year": 2024,
+        "percentile": 53
+      },
+      "wgi_composite": {
+        "value": 0.47,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 106.5,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 27.3,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 10,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 9,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 8,
+          "max": 10
+        },
+        "composite": {
+          "value": 9.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.95,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Mexico",
+    "iso_code": "MX",
+    "market_group": "EM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": -1.15,
+        "year": 2024,
+        "percentile": 3
+      },
+      "regulatory_quality": {
+        "value": -0.2,
+        "year": 2024,
+        "percentile": 9
+      },
+      "political_stability": {
+        "value": -0.72,
+        "year": 2024,
+        "percentile": 16
+      },
+      "wgi_composite": {
+        "value": -0.69,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 22.5,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 18.6,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 8,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 5,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 5,
+          "max": 10
+        },
+        "composite": {
+          "value": 6.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.18,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Netherlands",
+    "iso_code": "NL",
+    "market_group": "DM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.71,
+        "year": 2024,
+        "percentile": 89
+      },
+      "regulatory_quality": {
+        "value": 1.72,
+        "year": 2024,
+        "percentile": 82
+      },
+      "political_stability": {
+        "value": 0.43,
+        "year": 2024,
+        "percentile": 55
+      },
+      "wgi_composite": {
+        "value": 1.29,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 129.7,
+        "year": 2017
+      },
+      "savings_gdp_pct": {
+        "value": 30.7,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 4,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 4,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 6,
+          "max": 10
+        },
+        "composite": {
+          "value": 4.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.21,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "New Zealand",
+    "iso_code": "NZ",
+    "market_group": "DM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.67,
+        "year": 2024,
+        "percentile": 84
+      },
+      "regulatory_quality": {
+        "value": 1.84,
+        "year": 2024,
+        "percentile": 93
+      },
+      "political_stability": {
+        "value": 1.15,
+        "year": 2024,
+        "percentile": 97
+      },
+      "wgi_composite": {
+        "value": 1.55,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 35.7,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 20.5,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 10,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 9,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 9,
+          "max": 10
+        },
+        "composite": {
+          "value": 9.3,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.95,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Norway",
+    "iso_code": "NO",
+    "market_group": "DM",
+    "legal_origin": "Scandinavian",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.95,
+        "year": 2024,
+        "percentile": 95
+      },
+      "regulatory_quality": {
+        "value": 1.67,
+        "year": 2024,
+        "percentile": 78
+      },
+      "political_stability": {
+        "value": 0.9,
+        "year": 2024,
+        "percentile": 84
+      },
+      "wgi_composite": {
+        "value": 1.51,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 72.3,
+        "year": 2019
+      },
+      "savings_gdp_pct": {
+        "value": 37.8,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 7,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 5,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 8,
+          "max": 10
+        },
+        "composite": {
+          "value": 6.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.44,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Peru",
+    "iso_code": "PE",
+    "market_group": "EM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": -0.51,
+        "year": 2024,
+        "percentile": 16
+      },
+      "regulatory_quality": {
+        "value": 0.08,
+        "year": 2024,
+        "percentile": 22
+      },
+      "political_stability": {
+        "value": -0.65,
+        "year": 2024,
+        "percentile": 20
+      },
+      "wgi_composite": {
+        "value": -0.36,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 28.4,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 25.0,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 9,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 6,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 6,
+          "max": 10
+        },
+        "composite": {
+          "value": 7.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.41,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Philippines",
+    "iso_code": "PH",
+    "market_group": "EM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": -0.57,
+        "year": 2024,
+        "percentile": 11
+      },
+      "regulatory_quality": {
+        "value": 0.08,
+        "year": 2024,
+        "percentile": 20
+      },
+      "political_stability": {
+        "value": -0.77,
+        "year": 2024,
+        "percentile": 14
+      },
+      "wgi_composite": {
+        "value": -0.42,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 54.6,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 9.3,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 9,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 4,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 7,
+          "max": 10
+        },
+        "composite": {
+          "value": 6.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.24,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Poland",
+    "iso_code": "PL",
+    "market_group": "EM",
+    "legal_origin": "German",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.58,
+        "year": 2024,
+        "percentile": 41
+      },
+      "regulatory_quality": {
+        "value": 0.69,
+        "year": 2024,
+        "percentile": 41
+      },
+      "political_stability": {
+        "value": 0.5,
+        "year": 2024,
+        "percentile": 61
+      },
+      "wgi_composite": {
+        "value": 0.59,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 21.5,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 21.8,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 7,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 2,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 9,
+          "max": 10
+        },
+        "composite": {
+          "value": 6.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.3,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Portugal",
+    "iso_code": "PT",
+    "market_group": "DM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.07,
+        "year": 2024,
+        "percentile": 59
+      },
+      "regulatory_quality": {
+        "value": 0.74,
+        "year": 2024,
+        "percentile": 45
+      },
+      "political_stability": {
+        "value": 0.54,
+        "year": 2024,
+        "percentile": 64
+      },
+      "wgi_composite": {
+        "value": 0.78,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 25.6,
+        "year": 2018
+      },
+      "savings_gdp_pct": {
+        "value": 22.2,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 6,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 5,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 7,
+          "max": 10
+        },
+        "composite": {
+          "value": 6.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.49,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Qatar",
+    "iso_code": "QA",
+    "market_group": "EM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.59,
+        "year": 2024,
+        "percentile": 43
+      },
+      "regulatory_quality": {
+        "value": 0.97,
+        "year": 2024,
+        "percentile": 49
+      },
+      "political_stability": {
+        "value": 0.95,
+        "year": 2024,
+        "percentile": 89
+      },
+      "wgi_composite": {
+        "value": 0.84,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 77.7,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 67.6,
+        "year": 2022
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 2,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 2,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 2,
+          "max": 10
+        },
+        "composite": {
+          "value": 2.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": null
+    }
+  },
+  {
+    "jurisdiction": "Russia",
+    "iso_code": "RU",
+    "market_group": "EM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": -1.16,
+        "year": 2024,
+        "percentile": 1
+      },
+      "regulatory_quality": {
+        "value": -1.07,
+        "year": 2024,
+        "percentile": 1
+      },
+      "political_stability": {
+        "value": -0.9,
+        "year": 2024,
+        "percentile": 9
+      },
+      "wgi_composite": {
+        "value": -1.04,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 31.4,
+        "year": 2023
+      },
+      "savings_gdp_pct": {
+        "value": 32.1,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 6,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 2,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 7,
+          "max": 10
+        },
+        "composite": {
+          "value": 5.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.48,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Saudi Arabia",
+    "iso_code": "SA",
+    "market_group": "EM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.21,
+        "year": 2024,
+        "percentile": 30
+      },
+      "regulatory_quality": {
+        "value": 0.71,
+        "year": 2024,
+        "percentile": 43
+      },
+      "political_stability": {
+        "value": -0.05,
+        "year": 2024,
+        "percentile": 34
+      },
+      "wgi_composite": {
+        "value": 0.29,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 220.0,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 33.8,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 9,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 9,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 7,
+          "max": 10
+        },
+        "composite": {
+          "value": 8.3,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": null
+    }
+  },
+  {
+    "jurisdiction": "Singapore",
+    "iso_code": "SG",
+    "market_group": "DM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.43,
+        "year": 2024,
+        "percentile": 72
+      },
+      "regulatory_quality": {
+        "value": 2.13,
+        "year": 2024,
+        "percentile": 99
+      },
+      "political_stability": {
+        "value": 1.23,
+        "year": 2024,
+        "percentile": 99
+      },
+      "wgi_composite": {
+        "value": 1.6,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 116.5,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 57.9,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 10,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 9,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 9,
+          "max": 10
+        },
+        "composite": {
+          "value": 9.3,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 1.0,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "South Africa",
+    "iso_code": "ZA",
+    "market_group": "EM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.02,
+        "year": 2024,
+        "percentile": 26
+      },
+      "regulatory_quality": {
+        "value": -0.06,
+        "year": 2024,
+        "percentile": 16
+      },
+      "political_stability": {
+        "value": -0.62,
+        "year": 2024,
+        "percentile": 22
+      },
+      "wgi_composite": {
+        "value": -0.22,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 245.7,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 16.2,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 8,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 8,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 8,
+          "max": 10
+        },
+        "composite": {
+          "value": 8.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.81,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "South Korea",
+    "iso_code": "KR",
+    "market_group": "EM",
+    "legal_origin": "German",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.12,
+        "year": 2024,
+        "percentile": 61
+      },
+      "regulatory_quality": {
+        "value": 1.01,
+        "year": 2024,
+        "percentile": 51
+      },
+      "political_stability": {
+        "value": 0.64,
+        "year": 2024,
+        "percentile": 72
+      },
+      "wgi_composite": {
+        "value": 0.92,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 83.0,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 34.0,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 8,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 6,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 8,
+          "max": 10
+        },
+        "composite": {
+          "value": 7.3,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.46,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Spain",
+    "iso_code": "ES",
+    "market_group": "DM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.93,
+        "year": 2024,
+        "percentile": 53
+      },
+      "regulatory_quality": {
+        "value": 0.62,
+        "year": 2024,
+        "percentile": 34
+      },
+      "political_stability": {
+        "value": -0.0,
+        "year": 2024,
+        "percentile": 36
+      },
+      "wgi_composite": {
+        "value": 0.52,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 43.7,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 25.3,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 7,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 6,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 6,
+          "max": 10
+        },
+        "composite": {
+          "value": 6.3,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.37,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Sweden",
+    "iso_code": "SE",
+    "market_group": "DM",
+    "legal_origin": "Scandinavian",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.73,
+        "year": 2024,
+        "percentile": 91
+      },
+      "regulatory_quality": {
+        "value": 1.67,
+        "year": 2024,
+        "percentile": 80
+      },
+      "political_stability": {
+        "value": 0.6,
+        "year": 2024,
+        "percentile": 68
+      },
+      "wgi_composite": {
+        "value": 1.33,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": null,
+      "savings_gdp_pct": {
+        "value": 28.1,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 8,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 4,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 7,
+          "max": 10
+        },
+        "composite": {
+          "value": 6.3,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.34,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Switzerland",
+    "iso_code": "CH",
+    "market_group": "DM",
+    "legal_origin": "German",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.76,
+        "year": 2024,
+        "percentile": 93
+      },
+      "regulatory_quality": {
+        "value": 1.77,
+        "year": 2024,
+        "percentile": 89
+      },
+      "political_stability": {
+        "value": 0.98,
+        "year": 2024,
+        "percentile": 93
+      },
+      "wgi_composite": {
+        "value": 1.51,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 210.5,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 37.2,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 0,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 5,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 5,
+          "max": 10
+        },
+        "composite": {
+          "value": 3.3,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.27,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Taiwan",
+    "iso_code": "TW",
+    "market_group": "EM",
+    "legal_origin": "German",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.29,
+        "year": 2024,
+        "percentile": 70
+      },
+      "regulatory_quality": {
+        "value": 1.3,
+        "year": 2024,
+        "percentile": 64
+      },
+      "political_stability": {
+        "value": 0.92,
+        "year": 2024,
+        "percentile": 86
+      },
+      "wgi_composite": {
+        "value": 1.17,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": null,
+      "savings_gdp_pct": null,
+      "investor_protection": {
+        "disclosure": {
+          "value": 9,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 5,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 7,
+          "max": 10
+        },
+        "composite": {
+          "value": 7.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.56,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Thailand",
+    "iso_code": "TH",
+    "market_group": "EM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": -0.22,
+        "year": 2024,
+        "percentile": 20
+      },
+      "regulatory_quality": {
+        "value": 0.11,
+        "year": 2024,
+        "percentile": 24
+      },
+      "political_stability": {
+        "value": -0.68,
+        "year": 2024,
+        "percentile": 18
+      },
+      "wgi_composite": {
+        "value": -0.26,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 98.7,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 25.1,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 10,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 7,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 9,
+          "max": 10
+        },
+        "composite": {
+          "value": 8.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.85,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "Turkey",
+    "iso_code": "TR",
+    "market_group": "EM",
+    "legal_origin": "French",
+    "metrics": {
+      "rule_of_law": {
+        "value": -0.84,
+        "year": 2024,
+        "percentile": 5
+      },
+      "regulatory_quality": {
+        "value": -0.21,
+        "year": 2024,
+        "percentile": 7
+      },
+      "political_stability": {
+        "value": -0.97,
+        "year": 2024,
+        "percentile": 7
+      },
+      "wgi_composite": {
+        "value": -0.68,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 27.9,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 31.3,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 9,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 5,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 6,
+          "max": 10
+        },
+        "composite": {
+          "value": 6.7,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.43,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "United Arab Emirates",
+    "iso_code": "AE",
+    "market_group": "EM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.5,
+        "year": 2024,
+        "percentile": 39
+      },
+      "regulatory_quality": {
+        "value": 1.13,
+        "year": 2024,
+        "percentile": 55
+      },
+      "political_stability": {
+        "value": 0.79,
+        "year": 2024,
+        "percentile": 78
+      },
+      "wgi_composite": {
+        "value": 0.8,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 190.9,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 42.9,
+        "year": 2023
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 10,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 10,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 4,
+          "max": 10
+        },
+        "composite": {
+          "value": 8.0,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": null
+    }
+  },
+  {
+    "jurisdiction": "United Kingdom",
+    "iso_code": "GB",
+    "market_group": "DM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": 1.27,
+        "year": 2024,
+        "percentile": 66
+      },
+      "regulatory_quality": {
+        "value": 1.51,
+        "year": 2024,
+        "percentile": 76
+      },
+      "political_stability": {
+        "value": 0.26,
+        "year": 2024,
+        "percentile": 47
+      },
+      "wgi_composite": {
+        "value": 1.01,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 97.3,
+        "year": 2022
+      },
+      "savings_gdp_pct": {
+        "value": 18.3,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 10,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 7,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 8,
+          "max": 10
+        },
+        "composite": {
+          "value": 8.3,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.93,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  },
+  {
+    "jurisdiction": "United States",
+    "iso_code": "US",
+    "market_group": "DM",
+    "legal_origin": "English",
+    "metrics": {
+      "rule_of_law": {
+        "value": 0.96,
+        "year": 2024,
+        "percentile": 55
+      },
+      "regulatory_quality": {
+        "value": 1.35,
+        "year": 2024,
+        "percentile": 70
+      },
+      "political_stability": {
+        "value": -0.1,
+        "year": 2024,
+        "percentile": 32
+      },
+      "wgi_composite": {
+        "value": 0.74,
+        "year": 2024
+      },
+      "market_cap_gdp_pct": {
+        "value": 216.3,
+        "year": 2024
+      },
+      "savings_gdp_pct": {
+        "value": 17.1,
+        "year": 2024
+      },
+      "investor_protection": {
+        "disclosure": {
+          "value": 7,
+          "max": 10
+        },
+        "director_liability": {
+          "value": 9,
+          "max": 10
+        },
+        "shareholder_suits": {
+          "value": 9,
+          "max": 10
+        },
+        "composite": {
+          "value": 8.3,
+          "max": 10
+        },
+        "source": "Doing Business 2020",
+        "data_date": "2019-05-01"
+      },
+      "asdi": {
+        "value": 0.65,
+        "year": 2003,
+        "source": "Djankov et al. 2008"
+      }
+    }
+  }
+]

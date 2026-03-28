@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Справочник юрисдикций — Listing Research</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden}
+:root{
+  --bg:#F7F8FA;--bg2:#FFFFFF;--bg3:#F0F2F7;--bg4:#E4E8F2;
+  --border:rgba(0,0,0,0.11);--border2:rgba(0,0,0,0.18);
+  --text:#111827;--text-dim:#9CA3AF;--text-mid:#4B5563;
+  --accent:#2563EB;--accent2:#3B82F6;--accent-bg:rgba(37,99,235,0.06);--accent-bg2:rgba(37,99,235,0.12);
+  --green:#059669;--green-bg:rgba(5,150,105,0.07);--green-border:rgba(5,150,105,0.2);
+  --orange:#D97706;--orange-bg:rgba(217,119,6,0.07);
+  --font-serif:'Newsreader',Georgia,serif;
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --r:8px;--r-lg:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.6}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;height:56px;display:flex;align-items:center;padding:0 40px;
+  background:rgba(255,255,255,0.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo-mark{width:30px;height:30px;background:var(--accent);border-radius:7px;display:flex;
+  align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:#fff;font-weight:500}
+.nav-logo-text{font-size:14px;font-weight:500}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:auto}
+.nav-link{padding:6px 14px;border-radius:6px;font-size:13.5px;color:var(--text-mid);
+  transition:color .15s,background .15s;display:flex;align-items:center;gap:6px}
+.nav-link:hover{color:var(--text);background:var(--bg3)}
+.nav-link.active{color:var(--accent);background:var(--accent-bg);font-weight:500}
+.nav-badge{font-size:10px;font-family:var(--font-mono);color:var(--text-dim);background:var(--bg3);
+  border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+
+/* BREADCRUMB */
+.breadcrumb{max-width:1280px;margin:0 auto;padding:18px 40px 0;display:flex;align-items:center;
+  gap:7px;font-size:12px;font-family:var(--font-mono);color:var(--text-dim)}
+.breadcrumb a:hover{color:var(--accent)}
+.bc-sep{color:var(--border2)}
+
+/* PAGE HEADER */
+.page-header{max-width:1280px;margin:0 auto;padding:22px 40px 24px;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+.ph-title{font-family:var(--font-serif);font-size:34px;font-weight:400;
+  letter-spacing:-.025em;line-height:1.1;margin-bottom:4px}
+.ph-sub{font-size:13.5px;color:var(--text-dim);font-weight:300}
+
+/* STATS STRIP */
+.stats-strip{max-width:1280px;margin:0 auto;padding:0 40px 20px;
+  display:flex;gap:10px;align-items:center}
+.stat-pill{display:flex;align-items:baseline;gap:7px;padding:10px 18px;
+  background:#fff;border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.stat-val{font-family:var(--font-mono);font-size:22px;font-weight:500;
+  color:var(--text);letter-spacing:-.02em;line-height:1}
+.stat-label{font-size:12px;color:var(--text-dim)}
+.stat-pill.accent-pill{background:var(--accent-bg);border-color:rgba(37,99,235,.2)}
+.stat-pill.accent-pill .stat-val{color:var(--accent)}
+
+/* FILTER BAR */
+.filter-bar{max-width:1280px;margin:0 auto;padding:0 40px 16px;
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.filter-search-wrap{position:relative;flex-shrink:0}
+.filter-search{height:34px;padding:0 12px 0 32px;background:#fff;
+  border:1px solid var(--border2);border-radius:var(--r);color:var(--text);
+  font-size:13px;font-family:var(--font-sans);outline:none;width:220px;
+  transition:border-color .15s,box-shadow .15s}
+.filter-search:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.08)}
+.filter-search::placeholder{color:var(--text-dim)}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);
+  color:var(--text-dim);pointer-events:none;font-size:13px}
+
+.filter-group{display:flex;gap:4px;background:var(--bg3);border:1px solid var(--border2);
+  border-radius:var(--r);padding:3px}
+.filter-btn{height:28px;padding:0 12px;border-radius:6px;font-size:12.5px;
+  color:var(--text-mid);background:none;border:none;cursor:pointer;
+  font-family:var(--font-sans);transition:all .15s;white-space:nowrap}
+.filter-btn:hover{color:var(--text);background:rgba(0,0,0,.04)}
+.filter-btn.active{background:#fff;color:var(--accent);font-weight:500;
+  box-shadow:0 1px 3px rgba(0,0,0,.08)}
+
+.filter-sep{width:1px;height:28px;background:var(--border);flex-shrink:0;margin:3px 0}
+
+.active-filters{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.active-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 8px 3px 10px;
+  background:var(--accent-bg);border:1px solid rgba(37,99,235,.2);border-radius:12px;
+  font-size:12px;color:var(--accent);font-family:var(--font-mono)}
+.active-tag-remove{cursor:pointer;opacity:.6;font-size:14px;line-height:1;
+  padding:0 2px;transition:opacity .12s}
+.active-tag-remove:hover{opacity:1}
+
+/* TABLE */
+.table-wrap{max-width:1280px;margin:0 auto;padding:0 40px 80px}
+.table{width:100%;border-collapse:collapse;
+  border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;
+  box-shadow:0 1px 4px rgba(0,0,0,.06)}
+
+thead tr{background:var(--bg3);border-bottom:1px solid var(--border2)}
+thead th{padding:10px 16px;text-align:left;font-family:var(--font-mono);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);font-weight:400;
+  white-space:nowrap;cursor:pointer;user-select:none;transition:color .12s}
+thead th:hover{color:var(--text-mid)}
+thead th.sorted{color:var(--accent)}
+.sort-arrow{display:inline-block;margin-left:4px;opacity:.5;font-size:9px}
+thead th.sorted .sort-arrow{opacity:1}
+
+tbody tr{border-bottom:1px solid var(--border);background:#fff;
+  transition:background .1s;cursor:pointer}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:#FAFBFF}
+tbody tr.no-data{cursor:default}
+tbody tr.no-data:hover{background:#fff}
+tbody tr.no-data td{opacity:.55}
+
+td{padding:12px 16px;font-size:13.5px;vertical-align:middle}
+
+/* JUR CELL */
+.jur-cell{display:flex;align-items:center;gap:12px}
+.jur-flag{width:28px;height:28px;border-radius:50%;border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.jur-flag svg{display:block;width:28px;height:28px;border-radius:50%}
+.jur-flag-emoji{font-size:18px;line-height:1}
+.jur-name{font-weight:500;color:var(--text);line-height:1.2;margin-bottom:1px}
+.jur-sub{font-size:11px;color:var(--text-dim);font-family:var(--font-mono)}
+
+/* LEGAL FAMILY */
+.legal-chip{display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:11px;
+  color:var(--text-mid);background:var(--bg3);border:1px solid var(--border);
+  border-radius:4px;padding:2px 8px;white-space:nowrap}
+
+/* MARKET TYPE */
+.market-badge{display:inline-flex;align-items:center;font-family:var(--font-mono);
+  font-size:10px;letter-spacing:.05em;padding:2px 8px;border-radius:4px;white-space:nowrap}
+.market-dm{background:rgba(5,150,105,.07);color:var(--green);border:1px solid rgba(5,150,105,.2)}
+.market-em{background:rgba(217,119,6,.07);color:var(--orange);border:1px solid rgba(217,119,6,.2)}
+
+/* VENUES COUNT */
+.venues-val{font-family:var(--font-mono);font-size:14px;font-weight:500;color:var(--text)}
+.venues-val.zero{color:var(--text-dim);font-size:12px}
+
+/* DATA STATUS */
+.status{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-family:var(--font-mono)}
+.status::before{content:'';width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.status-full{color:var(--green)}
+.status-full::before{background:var(--green)}
+.status-partial{color:var(--orange)}
+.status-partial::before{background:var(--orange)}
+.status-empty{color:var(--text-dim)}
+.status-empty::before{background:var(--bg4);border:1px solid var(--border2)}
+
+/* PRIORITY */
+.priority{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+.pri-high{color:var(--accent)}
+.pri-med{color:var(--text-dim)}
+
+/* ACTION BTN */
+.btn-open{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;
+  background:var(--accent);color:#fff;border-radius:6px;font-size:12.5px;font-weight:500;
+  border:none;cursor:pointer;transition:background .15s;white-space:nowrap}
+.btn-open:hover{background:#1D4ED8}
+.btn-soon{display:inline-flex;align-items:center;padding:5px 14px;
+  background:transparent;color:var(--text-dim);border-radius:6px;font-size:12px;
+  border:1px solid var(--border);font-family:var(--font-mono);letter-spacing:.04em;
+  white-space:nowrap}
+
+td.act{text-align:right}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:60px 20px;color:var(--text-dim)}
+.empty-state p{font-size:14px;margin-top:8px}
+
+/* PAGINATION */
+.pagination{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;background:var(--bg);border-top:1px solid var(--border)}
+.page-info{font-family:var(--font-mono);font-size:12px;color:var(--text-dim)}
+.page-btns{display:flex;gap:4px}
+.page-btn{height:28px;min-width:28px;padding:0 8px;border-radius:5px;border:1px solid var(--border2);
+  background:#fff;font-size:12.5px;color:var(--text-mid);cursor:pointer;
+  transition:all .12s;font-family:var(--font-sans)}
+.page-btn:hover{border-color:var(--accent2);color:var(--accent)}
+.page-btn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.page-btn:disabled{opacity:.4;cursor:default}
+
+@keyframes fadeInUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.page-header{animation:fadeInUp .35s ease both}
+.stats-strip{animation:fadeInUp .35s .05s ease both}
+.filter-bar{animation:fadeInUp .35s .08s ease both}
+.table-wrap{animation:fadeInUp .35s .12s ease both}
+
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark">LR</div>
+    <span class="nav-logo-text">Listing Research</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="#">Главная</a>
+    <a class="nav-link active" href="#">Справочник</a>
+    <a class="nav-link" href="#">Каталог параметров</a>
+    <a class="nav-link" href="#">Анализ <span class="nav-badge">SOON</span></a>
+    <a class="nav-link" href="#">Ассистент <span class="nav-badge">SOON</span></a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="#">Главная</a><span class="bc-sep">›</span>
+  <span style="color:var(--text-mid)">Справочник</span>
+</div>
+
+<div class="page-header">
+  <div>
+    <h1 class="ph-title">Справочник юрисдикций</h1>
+    <p class="ph-sub">Регуляторные режимы листинга ценных бумаг по юрисдикциям</p>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat-pill accent-pill">
+    <span class="stat-val" id="stat-total">47</span>
+    <span class="stat-label">юрисдикций в периметре</span>
+  </div>
+  <div class="stat-pill">
+    <span class="stat-val" id="stat-full">2</span>
+    <span class="stat-label">с полными данными</span>
+  </div>
+  <div class="stat-pill">
+    <span class="stat-val" id="stat-venues">5</span>
+    <span class="stat-label">площадок в базе</span>
+  </div>
+  <div class="stat-pill">
+    <span class="stat-val" id="stat-shown">—</span>
+    <span class="stat-label">показано</span>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="filter-search" type="text" id="search-input" placeholder="Поиск юрисдикции..." oninput="applyFilters()">
+  </div>
+
+  <div class="filter-sep"></div>
+
+  <div class="filter-group" id="market-group">
+    <button class="filter-btn active" data-filter="market" data-val="all" onclick="setFilter('market','all',this)">Все рынки</button>
+    <button class="filter-btn" data-filter="market" data-val="DM" onclick="setFilter('market','DM',this)">DM — развитые</button>
+    <button class="filter-btn" data-filter="market" data-val="EM" onclick="setFilter('market','EM',this)">EM — развивающиеся</button>
+  </div>
+
+  <div class="filter-sep"></div>
+
+  <div class="filter-group" id="legal-group">
+    <button class="filter-btn active" data-filter="legal" data-val="all" onclick="setFilter('legal','all',this)">Все семьи</button>
+    <button class="filter-btn" data-filter="legal" data-val="common" onclick="setFilter('legal','common',this)">Common law</button>
+    <button class="filter-btn" data-filter="legal" data-val="civil" onclick="setFilter('legal','civil',this)">Civil law</button>
+    <button class="filter-btn" data-filter="legal" data-val="mixed" onclick="setFilter('legal','mixed',this)">Mixed</button>
+  </div>
+
+  <div id="active-tags" class="active-filters"></div>
+</div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width:260px" onclick="sortBy('name')">Юрисдикция <span class="sort-arrow" id="sort-name">↕</span></th>
+        <th onclick="sortBy('legal')">Правовая семья <span class="sort-arrow" id="sort-legal">↕</span></th>
+        <th onclick="sortBy('market')">Рынок <span class="sort-arrow" id="sort-market">↕</span></th>
+        <th onclick="sortBy('venues')" style="text-align:center">Площадок <span class="sort-arrow" id="sort-venues">↕</span></th>
+        <th onclick="sortBy('priority')">Приоритет <span class="sort-arrow" id="sort-priority">↕</span></th>
+        <th onclick="sortBy('status')">Данные <span class="sort-arrow" id="sort-status">↕</span></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+</div>
+
+<script>
+/* ── DATA ── */
+const JURISDICTIONS = [
+  { id:'gb',  name:'Великобритания',   en:'United Kingdom',    flag:'gb',  legal:'common', market:'DM', venues:3, priority:'high', status:'full' },
+  { id:'hk',  name:'Гонконг',          en:'Hong Kong',         flag:'hk',  legal:'common', market:'DM', venues:2, priority:'high', status:'full' },
+  { id:'au',  name:'Австралия',        en:'Australia',         flag:'au',  legal:'common', market:'DM', venues:0, priority:'med',  status:'empty' },
+  { id:'ru',  name:'Россия',           en:'Russia',            flag:'ru',  legal:'civil',  market:'EM', venues:0, priority:'high', status:'empty' },
+  { id:'sg',  name:'Сингапур',         en:'Singapore',         flag:'sg',  legal:'common', market:'DM', venues:0, priority:'med',  status:'empty' },
+  { id:'us',  name:'США',              en:'United States',     flag:'us',  legal:'common', market:'DM', venues:0, priority:'high', status:'empty' },
+  { id:'de',  name:'Германия',         en:'Germany',           flag:'de',  legal:'civil',  market:'DM', venues:0, priority:'high', status:'empty' },
+  { id:'fr',  name:'Франция',          en:'France',            flag:'fr',  legal:'civil',  market:'DM', venues:0, priority:'med',  status:'empty' },
+  { id:'jp',  name:'Япония',           en:'Japan',             flag:'jp',  legal:'civil',  market:'DM', venues:0, priority:'med',  status:'empty' },
+  { id:'cn',  name:'Китай',            en:'China (Mainland)',  flag:'cn',  legal:'civil',  market:'EM', venues:0, priority:'high', status:'empty' },
+  { id:'in',  name:'Индия',            en:'India',             flag:'in',  legal:'common', market:'EM', venues:0, priority:'med',  status:'empty' },
+  { id:'br',  name:'Бразилия',         en:'Brazil',            flag:'br',  legal:'civil',  market:'EM', venues:0, priority:'low',  status:'empty' },
+  { id:'za',  name:'ЮАР',              en:'South Africa',      flag:'za',  legal:'mixed',  market:'EM', venues:0, priority:'low',  status:'empty' },
+  { id:'ca',  name:'Канада',           en:'Canada',            flag:'ca',  legal:'mixed',  market:'DM', venues:0, priority:'med',  status:'empty' },
+  { id:'ch',  name:'Швейцария',        en:'Switzerland',       flag:'ch',  legal:'civil',  market:'DM', venues:0, priority:'med',  status:'empty' },
+  { id:'nl',  name:'Нидерланды',       en:'Netherlands',       flag:'nl',  legal:'civil',  market:'DM', venues:0, priority:'low',  status:'empty' },
+  { id:'lu',  name:'Люксембург',       en:'Luxembourg',        flag:'lu',  legal:'civil',  market:'DM', venues:0, priority:'low',  status:'empty' },
+  { id:'ie',  name:'Ирландия',         en:'Ireland',           flag:'ie',  legal:'common', market:'DM', venues:0, priority:'med',  status:'empty' },
+  { id:'it',  name:'Италия',           en:'Italy',             flag:'it',  legal:'civil',  market:'DM', venues:0, priority:'low',  status:'empty' },
+  { id:'es',  name:'Испания',          en:'Spain',             flag:'es',  legal:'civil',  market:'DM', venues:0, priority:'low',  status:'empty' },
+  { id:'kr',  name:'Южная Корея',      en:'South Korea',       flag:'kr',  legal:'civil',  market:'DM', venues:0, priority:'med',  status:'empty' },
+  { id:'ae',  name:'ОАЭ',              en:'UAE',               flag:'ae',  legal:'mixed',  market:'EM', venues:0, priority:'med',  status:'empty' },
+  { id:'sa',  name:'Саудовская Аравия',en:'Saudi Arabia',      flag:'sa',  legal:'mixed',  market:'EM', venues:0, priority:'med',  status:'empty' },
+  { id:'my',  name:'Малайзия',         en:'Malaysia',          flag:'my',  legal:'common', market:'EM', venues:0, priority:'low',  status:'empty' },
+  { id:'th',  name:'Таиланд',          en:'Thailand',          flag:'th',  legal:'civil',  market:'EM', venues:0, priority:'low',  status:'empty' },
+  { id:'id',  name:'Индонезия',        en:'Indonesia',         flag:'id',  legal:'civil',  market:'EM', venues:0, priority:'low',  status:'empty' },
+  { id:'mx',  name:'Мексика',          en:'Mexico',            flag:'mx',  legal:'civil',  market:'EM', venues:0, priority:'low',  status:'empty' },
+  { id:'pl',  name:'Польша',           en:'Poland',            flag:'pl',  legal:'civil',  market:'EM', venues:0, priority:'low',  status:'empty' },
+  { id:'cz',  name:'Чехия',            en:'Czech Republic',    flag:'cz',  legal:'civil',  market:'EM', venues:0, priority:'low',  status:'empty' },
+  { id:'at',  name:'Австрия',          en:'Austria',           flag:'at',  legal:'civil',  market:'DM', venues:0, priority:'low',  status:'empty' },
+];
+
+const LEGAL_LABELS = { common:'Common law', civil:'Civil law', mixed:'Mixed' };
+const PRI_LABELS   = { high:'Высокий', med:'Средний', low:'Низкий' };
+const STATUS_LABELS= { full:'Верифицировано', partial:'Частично', empty:'В работе' };
+
+/* ── STATE ── */
+let filters = { market:'all', legal:'all' };
+let sortKey = 'priority';
+let sortDir = 1; /* 1=asc, -1=desc */
+let currentData = [];
+const PAGE_SIZE = 15;
+let currentPage = 1;
+
+/* ── FLAGS: emoji with fallback text ── */
+function flagHtml(code) {
+  const emoji = code.toUpperCase().split('').map(c =>
+    String.fromCodePoint(c.charCodeAt(0) + 127397)).join('');
+  return `<div class="jur-flag"><span class="jur-flag-emoji">${emoji}</span></div>`;
+}
+
+/* ── SORT ── */
+const SORT_PRI = { high:0, med:1, low:2 };
+const SORT_STATUS = { full:0, partial:1, empty:2 };
+
+function sortBy(key) {
+  if (sortKey === key) { sortDir *= -1; }
+  else { sortKey = key; sortDir = 1; }
+  document.querySelectorAll('.sort-arrow').forEach(el => el.textContent = '↕');
+  const el = document.getElementById('sort-'+key);
+  if (el) el.textContent = sortDir === 1 ? '↑' : '↓';
+  document.querySelectorAll('thead th').forEach(th => th.classList.remove('sorted'));
+  event.currentTarget.classList.add('sorted');
+  applyFilters();
+}
+
+/* ── FILTERS ── */
+function setFilter(type, val, btn) {
+  filters[type] = val;
+  btn.closest('.filter-group').querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentPage = 1;
+  applyFilters();
+  renderActiveTags();
+}
+
+function renderActiveTags() {
+  const box = document.getElementById('active-tags');
+  box.innerHTML = '';
+  if (filters.market !== 'all') {
+    box.innerHTML += `<span class="active-tag">${filters.market === 'DM' ? 'DM — развитые' : 'EM — развивающиеся'}
+      <span class="active-tag-remove" onclick="clearFilter('market')">×</span></span>`;
+  }
+  if (filters.legal !== 'all') {
+    box.innerHTML += `<span class="active-tag">${LEGAL_LABELS[filters.legal]}
+      <span class="active-tag-remove" onclick="clearFilter('legal')">×</span></span>`;
+  }
+}
+
+function clearFilter(type) {
+  filters[type] = 'all';
+  document.querySelectorAll(`[data-filter="${type}"]`).forEach(b => b.classList.remove('active'));
+  document.querySelector(`[data-filter="${type}"][data-val="all"]`).classList.add('active');
+  currentPage = 1;
+  applyFilters();
+  renderActiveTags();
+}
+
+/* ── MAIN FILTER + SORT + RENDER ── */
+function applyFilters() {
+  const q = document.getElementById('search-input').value.toLowerCase().trim();
+
+  currentData = JURISDICTIONS.filter(j => {
+    if (filters.market !== 'all' && j.market !== filters.market) return false;
+    if (filters.legal  !== 'all' && j.legal  !== filters.legal)  return false;
+    if (q && !j.name.toLowerCase().includes(q) && !j.en.toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  /* Sort */
+  currentData.sort((a, b) => {
+    let av, bv;
+    switch (sortKey) {
+      case 'name':     av = a.name; bv = b.name; break;
+      case 'legal':    av = a.legal; bv = b.legal; break;
+      case 'market':   av = a.market; bv = b.market; break;
+      case 'venues':   av = a.venues; bv = b.venues; break;
+      case 'priority': av = SORT_PRI[a.priority] ?? 9; bv = SORT_PRI[b.priority] ?? 9; break;
+      case 'status':   av = SORT_STATUS[a.status] ?? 9; bv = SORT_STATUS[b.status] ?? 9; break;
+      default: return 0;
+    }
+    if (av < bv) return -sortDir;
+    if (av > bv) return  sortDir;
+    return 0;
+  });
+
+  /* Always: full/partial first, then by sortKey */
+  /* Actually keep pure sort — user can sort by status explicitly */
+
+  currentPage = Math.min(currentPage, Math.ceil(currentData.length / PAGE_SIZE) || 1);
+  renderTable();
+  renderStats();
+}
+
+function renderStats() {
+  document.getElementById('stat-shown').textContent = currentData.length;
+}
+
+function renderTable() {
+  const tbody = document.getElementById('table-body');
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const page  = currentData.slice(start, start + PAGE_SIZE);
+
+  if (page.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7">
+      <div class="empty-state">
+        <div style="font-size:24px;opacity:.3">⊘</div>
+        <p>Ничего не найдено. Измените фильтры.</p>
+      </div>
+    </td></tr>`;
+    renderPagination();
+    return;
+  }
+
+  tbody.innerHTML = page.map(j => {
+    const hasData = j.status !== 'empty';
+    const rowClass = hasData ? '' : 'no-data';
+    const statusHtml = `<span class="status status-${j.status}">${STATUS_LABELS[j.status]}</span>`;
+    const venuesHtml = j.venues > 0
+      ? `<span class="venues-val">${j.venues}</span>`
+      : `<span class="venues-val zero">—</span>`;
+    const priClass = j.priority === 'high' ? 'pri-high' : 'pri-med';
+    const priLabel = PRI_LABELS[j.priority] ?? '—';
+    const marketHtml = `<span class="market-badge market-${j.market}">${j.market}</span>`;
+    const legalHtml  = `<span class="legal-chip">${LEGAL_LABELS[j.legal]}</span>`;
+    const actionHtml = hasData
+      ? `<button class="btn-open" onclick="event.stopPropagation()">Открыть →</button>`
+      : `<span class="btn-soon">Скоро</span>`;
+
+    return `<tr class="${rowClass}" onclick="${hasData ? `window.location='#jur-${j.id}'` : ''}">
+      <td>
+        <div class="jur-cell">
+          ${flagHtml(j.flag)}
+          <div>
+            <div class="jur-name">${j.name}</div>
+            <div class="jur-sub">${j.en}</div>
+          </div>
+        </div>
+      </td>
+      <td>${legalHtml}</td>
+      <td>${marketHtml}</td>
+      <td style="text-align:center">${venuesHtml}</td>
+      <td><span class="priority ${priClass}">${priLabel}</span></td>
+      <td>${statusHtml}</td>
+      <td class="act">${actionHtml}</td>
+    </tr>`;
+  }).join('');
+
+  renderPagination();
+}
+
+function renderPagination() {
+  const total = currentData.length;
+  const pages = Math.ceil(total / PAGE_SIZE);
+  const start = (currentPage - 1) * PAGE_SIZE + 1;
+  const end   = Math.min(currentPage * PAGE_SIZE, total);
+
+  /* Find or create pagination row */
+  let prow = document.querySelector('.pagination-row');
+  if (!prow) {
+    prow = document.createElement('tr');
+    prow.className = 'pagination-row';
+    const td = document.createElement('td');
+    td.colSpan = 7;
+    td.style.padding = '0';
+    prow.appendChild(td);
+    document.getElementById('table-body').after(
+      document.createElement('tbody')
+    );
+  }
+
+  /* Inject pagination into table footer */
+  let tfoot = document.querySelector('tfoot');
+  if (!tfoot) {
+    tfoot = document.createElement('tfoot');
+    document.querySelector('.table').appendChild(tfoot);
+  }
+
+  if (pages <= 1) { tfoot.innerHTML = ''; return; }
+
+  let btns = '';
+  btns += `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
+  for (let p = 1; p <= pages; p++) {
+    if (p === 1 || p === pages || Math.abs(p - currentPage) <= 1) {
+      btns += `<button class="page-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
+    } else if (Math.abs(p - currentPage) === 2) {
+      btns += `<span style="padding:0 4px;color:var(--text-dim);font-size:12px;align-self:center">…</span>`;
+    }
+  }
+  btns += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage===pages?'disabled':''}>›</button>`;
+
+  tfoot.innerHTML = `<tr><td colspan="7">
+    <div class="pagination">
+      <span class="page-info">${start}–${end} из ${total}</span>
+      <div class="page-btns">${btns}</div>
+    </div>
+  </td></tr>`;
+}
+
+function goPage(p) {
+  const pages = Math.ceil(currentData.length / PAGE_SIZE);
+  if (p < 1 || p > pages) return;
+  currentPage = p;
+  renderTable();
+  document.querySelector('.table-wrap').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+/* ── INIT ── */
+/* Default sort: full data first, then by priority */
+JURISDICTIONS.sort((a,b) => {
+  const sd = SORT_STATUS[a.status] - SORT_STATUS[b.status];
+  if (sd !== 0) return sd;
+  return (SORT_PRI[a.priority] ?? 9) - (SORT_PRI[b.priority] ?? 9);
+});
+
+applyFilters();
+document.getElementById('stat-full').textContent =
+  JURISDICTIONS.filter(j => j.status === 'full').length;
+document.getElementById('stat-venues').textContent =
+  JURISDICTIONS.reduce((s,j) => s + j.venues, 0);
+</script>
+
+</body>
+</html>

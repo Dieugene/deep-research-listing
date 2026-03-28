@@ -32,6 +32,7 @@ class CellParameters(BaseModel):
     cell_id: str
     venue_key: str
     tier: str
+    tier_ru: str | None = None
     instrument_class_label: str
     parameters: list[ParameterValue]
 

@@ -13,12 +13,28 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 
-from pipeline.config import LLM_SMART_MODEL, LLM_FAST_MODEL
+from pipeline.config import LLM_SMART_MODEL, LLM_FAST_MODEL, DATA_DIR
 from pipeline.logging_setup import get_logger
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[2] / ".env")
 
 logger = get_logger("llm_postprocessor")
+
+EXCHANGES_PATH = DATA_DIR / "exchanges.json"
+
+
+def _load_mandatory_primary(jurisdiction_ru: str) -> list[str]:
+    """Load curated venue names from exchanges.json for a jurisdiction."""
+    if not EXCHANGES_PATH.exists():
+        return []
+    try:
+        data = json.loads(EXCHANGES_PATH.read_text(encoding="utf-8"))
+        for group in data.values():  # DM / EM
+            if jurisdiction_ru in group:
+                return list(group[jurisdiction_ru].keys())
+        return []
+    except Exception:
+        return []
 
 
 def _get_llm(model: str = LLM_SMART_MODEL) -> ChatOpenAI:
@@ -39,6 +55,7 @@ class VenueRef(BaseModel):
     name_local: str
     type: str
     tiers: list[str]
+    research_priority: str = "primary"  # "primary" or "deferred"
 
 
 class ExcludedVenueRef(BaseModel):
@@ -91,6 +108,22 @@ def build_jurisdiction_card(
     content_1b_str = _to_str(content_1b)
     content_1c_str = _to_str(content_1c)
 
+    # Build mandatory primary block from exchanges.json
+    mandatory_venues = _load_mandatory_primary(jurisdiction_ru)
+    if mandatory_venues:
+        venue_lines = "\n".join(f"   - {v.replace('_', ' ')}" for v in mandatory_venues)
+        mandatory_primary_block = (
+            "\n"
+            "   Step 4 (ADDITIONAL CONSTRAINT): The following venues come from a curated\n"
+            "   reference list and MUST be \"primary\" even if Steps 1-2 would mark them\n"
+            "   as \"deferred\". Apply Steps 1-3 as normal for ALL other venues first,\n"
+            "   then override these specific venues to \"primary\" if they were marked\n"
+            "   \"deferred\":\n"
+            f"{venue_lines}\n"
+        )
+    else:
+        mandatory_primary_block = ""
+
     prompt = f"""You are processing research results about {jurisdiction_en} securities markets.
 All necessary information is provided below — this prompt is fully self-contained.
 
@@ -124,10 +157,27 @@ Your tasks:
    (e.g., "excluded: foreign venue, cross-listing reference" or
    "excluded: no formal admission procedures (dark pool)").
 4. Set supranational_flag=true ONLY if a supranational legislative framework directly governs listing/admission to trading requirements in this jurisdiction (e.g., EU Prospectus Regulation, MiFID II for EU member states). Do NOT set supranational_flag=true for: cross-border investor access schemes (Stock Connect, Bond Connect, etc.); mutual recognition arrangements for investment products; international standards (IOSCO principles) that are not binding legislation; any arrangement that affects who can invest, not what is required for listing. If such a supranational framework exists, name it in supranational_framework.
-5. Fill key_terms_mapping with local official terms mapped to their English equivalents (at least 5-10 key terms).
-6. Be precise about legal_family (common law / civil law / mixed / other).
-7. For regulator_type use: central bank / commission / supranational / other.
-8. For admission_architecture describe whether official listing and admission to trading are unified or separate concepts.
+5. RESEARCH PRIORITY — for each included venue, assign research_priority:
+
+   Step 1: Group venues by their type/regulatory_status (e.g., all "Regulated Market" venues together, all "MTF" together, all "Freiverkehr" together).
+
+   Step 2: For each group:
+   - If the group contains exactly ONE venue -> "primary"
+   - If the group contains MULTIPLE venues -> select the ONE most significant venue as "primary", mark the rest as "deferred"
+
+   Criteria for selecting primary (apply in order, use the first that distinguishes):
+   - Explicitly described as "main", "largest", "leading", "principal" in the source data
+   - Has the most complex structure (more tiers, segments, instrument classes)
+   - Is located in the financial capital of the jurisdiction
+   - Is mentioned first or most prominently in the regulatory overview (1A data)
+
+   Step 3: Venues with a UNIQUE type/regulatory_status (no other venue shares it) -> always "primary".
+{mandatory_primary_block}
+   Record research_priority: "primary" or "deferred" for each venue in the venues array.
+6. Fill key_terms_mapping with local official terms mapped to their English equivalents (at least 5-10 key terms).
+7. Be precise about legal_family (common law / civil law / mixed / other).
+8. For regulator_type use: central bank / commission / supranational / other.
+9. For admission_architecture describe whether official listing and admission to trading are unified or separate concepts.
 
 Return valid JSON matching the required schema. All fields must be populated.
 Jurisdiction (English): {jurisdiction_en}

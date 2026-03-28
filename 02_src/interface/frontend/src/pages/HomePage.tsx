@@ -65,6 +65,13 @@ export default function HomePage() {
 
   const totalVenues = jurisdictions.reduce((sum, j) => sum + j.venue_count, 0)
 
+  // Compute real cell count and instrument class count from loaded venue data
+  const totalCells = Object.values(venueMap).reduce(
+    (sum, venues) => sum + venues.reduce((s, v) => s + v.cell_count, 0),
+    0,
+  )
+  const venuesFullyLoaded = Object.keys(venueMap).length === activeJurisdictions.length && activeJurisdictions.length > 0
+
   // Determine venue type badge label — use venueKey suffix heuristics
   const getVenueTag = (venueKey: string): string => {
     const key = venueKey.toLowerCase()
@@ -127,21 +134,15 @@ export default function HomePage() {
           {/* Stats strip */}
           <div className={styles.statsStrip}>
             <div className={styles.statItem}>
-              <div className={styles.statVal}>47</div>
+              <div className={styles.statVal}>{loading ? '—' : jurisdictions.length}</div>
               <div className={styles.statLabel}>Юрисдикций</div>
             </div>
             <div className={styles.statItem}>
-              <div className={styles.statVal}>{loading ? '—' : totalVenues || 65}</div>
+              <div className={styles.statVal}>{loading ? '—' : totalVenues}</div>
               <div className={styles.statLabel}>Площадок</div>
             </div>
             <div className={styles.statItem}>
-              <div className={styles.statVal}>4</div>
-              <div className={styles.statLabel}>Класса инстр.</div>
-            </div>
-            <div className={styles.statItem}>
-              <div className={styles.statVal}>
-                <span className={styles.statTilde}>~</span>1000
-              </div>
+              <div className={styles.statVal}>{loading || !venuesFullyLoaded ? '—' : totalCells}</div>
               <div className={styles.statLabel}>Режимов</div>
             </div>
           </div>

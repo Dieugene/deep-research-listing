@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing Research — Запросы к пайплайну: постобработка для интерфейса</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F8FA;--bg2:#fff;--bg3:#F0F2F7;
+  --border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.16);
+  --text:#111827;--text-mid:#374151;--text-dim:#6B7280;
+  --accent:#2563EB;--accent-bg:rgba(37,99,235,0.06);
+  --green:#059669;--green-bg:rgba(5,150,105,0.07);--green-border:rgba(5,150,105,0.2);
+  --red:#DC2626;--red-bg:rgba(220,38,38,0.05);
+  --orange:#D97706;--orange-bg:rgba(217,119,6,0.06);
+  --purple:#7C3AED;--purple-bg:rgba(124,58,237,0.06);
+  --font-sans:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --r:8px;--r-lg:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:14.5px;line-height:1.7;padding:48px}
+.wrap{max-width:860px;margin:0 auto}
+h1{font-size:24px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+.meta{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;display:flex;gap:20px;flex-wrap:wrap}
+.intro{color:var(--text-mid);font-size:14px;line-height:1.75;margin-bottom:36px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.intro strong{color:var(--text);font-weight:500}
+
+h2{font-size:13px;font-weight:500;font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin:36px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+
+p{color:var(--text-mid);font-size:14px;line-height:1.75;margin-bottom:10px}
+p strong{color:var(--text);font-weight:500}
+ul{color:var(--text-mid);font-size:14px;line-height:1.75;padding-left:20px;margin-bottom:10px}
+li{margin-bottom:4px}
+li strong{color:var(--text);font-weight:500}
+code{font-family:var(--font-mono);font-size:12px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:1px 5px}
+pre{background:#1E2433;color:#E2E8F4;border-radius:var(--r);padding:14px 18px;font-family:var(--font-mono);font-size:12.5px;line-height:1.65;overflow-x:auto;margin:10px 0}
+.cm{color:#6B7A99}.cs{color:#A5D6A7}.ck{color:#80DEEA}.cn{color:#FFB74D}.cv{color:#CE93D8}
+
+.req{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:12px}
+.req-hd{display:flex;align-items:center;gap:10px;padding:11px 16px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.req-num{font-family:var(--font-mono);font-size:10px;background:var(--bg2);border:1px solid var(--border2);border-radius:4px;padding:2px 7px;color:var(--text-dim);flex-shrink:0}
+.req-title{font-size:13.5px;font-weight:600;color:var(--text);flex:1}
+.req-file{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);background:var(--bg2);border:1px solid var(--border2);border-radius:4px;padding:2px 7px;white-space:nowrap}
+.prio{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:4px;flex-shrink:0;border:1px solid;white-space:nowrap}
+.p-crit{background:var(--red-bg);color:var(--red);border-color:rgba(220,38,38,.2)}
+.p-high{background:var(--orange-bg);color:var(--orange);border-color:rgba(217,119,6,.2)}
+.p-med{background:var(--accent-bg);color:var(--accent);border-color:rgba(37,99,235,.2)}
+.p-low{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+.req-body{padding:14px 16px}
+.req-body p,.req-body ul{margin-bottom:8px}
+.req-body p:last-child,.req-body ul:last-child{margin-bottom:0}
+.req-body h4{font-size:12px;font-weight:500;font-family:var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);margin:12px 0 6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Запросы к пайплайну: постобработка для интерфейса</h1>
+<div class="meta">
+  <span>UX-дизайнер → Tech Lead / Пайплайн</span>
+  <span>Март 2026</span>
+</div>
+
+<p class="intro">
+  Документ содержит перечень полей и структур данных, которые нужны для реализации интерфейса согласно прототипам, но в текущих данных отсутствуют или структурированы иначе. Поскольку пайплайн запускается на переструктурирование, просим заложить эти элементы в постобработку. <strong>Каждый пункт содержит: что нужно, зачем, желаемый формат.</strong>
+</p>
+
+<!-- ═══════════════════════════════
+     ИСТОЧНИКИ
+═══════════════════════════════ -->
+<h2>Блок 1 — Система источников</h2>
+
+<div class="req">
+  <div class="req-hd">
+    <span class="req-num">И-1</span>
+    <span class="req-title">Классификация источника по типу документа</span>
+    <span class="req-file">все уровни</span>
+    <span class="prio p-crit">Критично</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Зачем:</strong> при 38–94 источниках на юрисдикцию список без фильтрации неудобен. Тип документа — основной способ навигации: аналитик хочет видеть только законодательные акты или только правила регулятора.</p>
+    <p><strong>Что нужно:</strong> добавить поле <code>type</code> к каждому объекту источника во всех уровнях (L1, L2, L3, L4).</p>
+    <pre><span class="cm">// Предлагаемые значения</span>
+<span class="ck">type</span>: <span class="cs">"legislation"</span>     <span class="cm">// законы, директивы, регламенты</span>
+<span class="ck">type</span>: <span class="cs">"rulebook"</span>        <span class="cm">// правила регуляторов и бирж</span>
+<span class="ck">type</span>: <span class="cs">"government"</span>      <span class="cm">// правительственные документы, позиции</span>
+<span class="ck">type</span>: <span class="cs">"consultation"</span>    <span class="cm">// консультативные документы, отзывы</span>
+<span class="ck">type</span>: <span class="cs">"research"</span>        <span class="cm">// академические и аналитические работы</span>
+<span class="ck">type</span>: <span class="cs">"other"</span>           <span class="cm">// прочее</span></pre>
+    <p>Можно автоматически по домену (fca.org.uk → rulebook, legislation.gov.uk → legislation и т.д.) и уточнять LLM там где домен неоднозначен.</p>
+  </div>
+</div>
+
+<div class="req">
+  <div class="req-hd">
+    <span class="req-num">И-2</span>
+    <span class="req-title">Привязка источников к блокам карточки юрисдикции</span>
+    <span class="req-file">jurisdiction_card.json</span>
+    <span class="prio p-high">Высокий</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Зачем:</strong> сейчас L1-источники — объединённый пул без атрибуции по блоку. По прототипу каждый блок («Архитектура допуска», «Регулятор», «Примечания») должен иметь свой список источников с кнопкой «N источников» в шапке. Без атрибуции это невозможно реализовать честно.</p>
+    <p><strong>Что нужно:</strong> при слиянии источников из raw-файлов сохранять признак происхождения:</p>
+    <pre>{
+  <span class="ck">"url"</span>: <span class="cs">"https://..."</span>,
+  <span class="ck">"title"</span>: <span class="cs">"..."</span>,
+  <span class="ck">"type"</span>: <span class="cs">"rulebook"</span>,
+  <span class="ck">"block"</span>: <span class="cs">"architecture"</span>  <span class="cm">// "architecture" | "regulator" | "notes" | "general"</span>
+}</pre>
+    <p>Источники из <code>1A_architecture</code> → <code>block: "architecture"</code>, из <code>1B_institutional</code> → <code>block: "regulator"</code>. Источники, не привязанные к конкретному блоку → <code>block: "general"</code> (попадут во вкладку «Источники» без привязки).</p>
+  </div>
+</div>
+
+<div class="req">
+  <div class="req-hd">
+    <span class="req-num">И-3</span>
+    <span class="req-title">Привязка источников к отдельным записям регуляторного анализа</span>
+    <span class="req-file">level4.json</span>
+    <span class="prio p-high">Высокий</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Зачем:</strong> сейчас один пул источников на весь L4-блок. По прототипу каждая запись (проблема, реформа, противоречие) в drawer должна показывать свои источники — именно те, которые обосновывают это конкретное утверждение.</p>
+    <p><strong>Что нужно:</strong> добавить поле <code>sources</code> к каждой записи внутри Level4:</p>
+    <pre>{
+  <span class="ck">"id"</span>: <span class="cs">"prob-001"</span>,
+  <span class="ck">"type"</span>: <span class="cs">"problem"</span>,
+  <span class="ck">"text_ru"</span>: <span class="cs">"..."</span>,
+  <span class="ck">"sources"</span>: [           <span class="cm">// источники именно этой записи</span>
+    { <span class="ck">"url"</span>: <span class="cs">"..."</span>, <span class="ck">"title"</span>: <span class="cs">"..."</span>, <span class="ck">"type"</span>: <span class="cs">"legislation"</span> }
+  ]
+}</pre>
+    <p>LLM при синтезе записи обычно опирается на конкретные документы — их можно извлечь из контекста генерации или попросить LLM явно указать при постобработке.</p>
+  </div>
+</div>
+
+<div class="req">
+  <div class="req-hd">
+    <span class="req-num">И-4</span>
+    <span class="req-title">Текстовая цитата (excerpt) из первоисточника</span>
+    <span class="req-file">все уровни</span>
+    <span class="prio p-med">Средний</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Зачем:</strong> регуляторный аналитик хочет видеть не только ссылку, но и дословный фрагмент нормы или правила — это принципиально другой уровень верификации по сравнению с пересказом LLM. «В документе написано X» vs «документ говорит буквально следующее».</p>
+    <p><strong>Что нужно:</strong> опциональное поле <code>excerpt</code> — дословная цитата из документа, обосновывающая конкретное утверждение:</p>
+    <pre>{
+  <span class="ck">"url"</span>: <span class="cs">"https://..."</span>,
+  <span class="ck">"title"</span>: <span class="cs">"UKLR sourcebook"</span>,
+  <span class="ck">"type"</span>: <span class="cs">"rulebook"</span>,
+  <span class="ck">"excerpt"</span>: <span class="cs">"An applicant for admission of equity shares to the UKLR must have a minimum market capitalisation of £30 million..."</span>  <span class="cm">// опционально</span>
+}</pre>
+    <p>Поле опциональное — заполнять только там где LLM может извлечь точный фрагмент с высокой уверенностью. Лучше пустое поле чем галлюцинированная цитата.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     РЕГУЛЯТОРНЫЙ АНАЛИЗ
+═══════════════════════════════ -->
+<h2>Блок 2 — Записи регуляторного анализа (Level4)</h2>
+
+<div class="req">
+  <div class="req-hd">
+    <span class="req-num">А-1</span>
+    <span class="req-title">Короткий лейбл для отображения на таймлайне</span>
+    <span class="req-file">level4.json</span>
+    <span class="prio p-crit">Критично</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Зачем:</strong> таймлайн отображает горизонтальные отрезки с подписями. Подпись должна быть ≤30–35 символов — иначе текст обрезается и теряет смысл. Сейчас используется начало полного текста, что даёт бессмысленные обрывки («В 2013–2014 годах после громких пр…»).</p>
+    <p><strong>Что нужно:</strong> поле <code>label</code> — короткое смысловое название записи на русском, 3–6 слов:</p>
+    <pre>{
+  <span class="ck">"label"</span>: <span class="cs">"Защита миноритариев ENRC/Bumi"</span>,  <span class="cm">// ≤35 символов</span>
+  <span class="ck">"text_ru"</span>: <span class="cs">"В 2013–2014 годах после громких провалов..."</span>
+}</pre>
+    <p>LLM-задача: по полному тексту записи сгенерировать лаконичный лейбл — существительное или именная группа, без даты (дата есть в поле <code>start</code>/<code>end</code>).</p>
+  </div>
+</div>
+
+<div class="req">
+  <div class="req-hd">
+    <span class="req-num">А-2</span>
+    <span class="req-title">Русский текст для всех записей</span>
+    <span class="req-file">level4.json</span>
+    <span class="prio p-crit">Критично</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Зачем:</strong> часть записей Level4 существует только на английском (особенно у Германии). Интерфейс полностью на русском — английский текст в карточках выбивается и снижает читаемость.</p>
+    <p><strong>Что нужно:</strong> гарантировать наличие <code>text_ru</code> для каждой записи. Где поле отсутствует — перевести при постобработке. Аналогично для полей <code>resolution_ru</code> (у противоречий), <code>problem_addressed</code>, <code>calibration_debate</code>, <code>opposition</code> — все должны быть на русском.</p>
+  </div>
+</div>
+
+<div class="req">
+  <div class="req-hd">
+    <span class="req-num">А-3</span>
+    <span class="req-title">Локализованные значения поля articulated_by</span>
+    <span class="req-file">level4.json → problems</span>
+    <span class="prio p-med">Средний</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Зачем:</strong> поле уже используется в интерфейсе (тег «Поставили проблему»), но значения на английском (<code>"government"</code>, <code>"academic"</code>). В интерфейсе нужны русские лейблы — либо добавить в постобработку, либо хранить маппинг на фронтенде.</p>
+    <p><strong>Что нужно:</strong> либо добавить поле <code>articulated_by_ru: string[]</code> с готовыми русскими лейблами, либо ограничить значения фиксированным словарём чтобы фронтенд мог делать маппинг сам:</p>
+    <pre><span class="cm">// Допустимые значения (enum):</span>
+<span class="cs">"government"</span>         → <span class="cs">"правительство"</span>
+<span class="cs">"regulator"</span>          → <span class="cs">"регулятор"</span>
+<span class="cs">"academic"</span>           → <span class="cs">"академическое сообщество"</span>
+<span class="cs">"market_participants"</span> → <span class="cs">"участники рынка"</span>
+<span class="cs">"exchange"</span>           → <span class="cs">"биржа"</span></pre>
+    <p>Если пайплайн выдаёт произвольные строки — нужна нормализация к этому словарю при постобработке.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     КАРТОЧКА ЮРИСДИКЦИИ
+═══════════════════════════════ -->
+<h2>Блок 3 — Карточка юрисдикции</h2>
+
+<div class="req">
+  <div class="req-hd">
+    <span class="req-num">Ю-1</span>
+    <span class="req-title">Короткое название органа листинга</span>
+    <span class="req-file">jurisdiction_card.json</span>
+    <span class="prio p-high">Высокий</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Зачем:</strong> поле <code>listing_authority</code> содержит длинный описательный текст («Exchange management (Börsengeschäftsführung) for the Regulated Market, decided by…»). В регулятор-стрипе нужно краткое название — иначе текст обрезается или ломает layout.</p>
+    <p><strong>Что нужно:</strong> добавить поле <code>listing_authority_short</code> — краткое название, 1–5 слов:</p>
+    <pre>{
+  <span class="ck">"listing_authority"</span>: <span class="cs">"Exchange management (Börsengeschäftsführung) for..."</span>,
+  <span class="ck">"listing_authority_short"</span>: <span class="cs">"Börsengeschäftsführung"</span>
+}</pre>
+  </div>
+</div>
+
+<div class="req">
+  <div class="req-hd">
+    <span class="req-num">Ю-2</span>
+    <span class="req-title">Схожие юрисдикции (кластеризация)</span>
+    <span class="req-file">jurisdiction_card.json</span>
+    <span class="prio p-high">Высокий</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Зачем:</strong> блок «Похожие юрисдикции» в прототипе — одна из ключевых аналитических функций продукта для выявления релевантных примеров при выборе режима листинга для РФ. Сейчас блок показывает «В разработке».</p>
+    <p><strong>Что нужно:</strong> массив схожих юрисдикций с коэффициентом сходства по институциональным факторам (правовая семья, WGI, структура рынка):</p>
+    <pre>{
+  <span class="ck">"similar_jurisdictions"</span>: [
+    { <span class="ck">"name_ru"</span>: <span class="cs">"Гонконг"</span>, <span class="ck">"iso_code"</span>: <span class="cs">"hk"</span>, <span class="ck">"similarity"</span>: <span class="cn">0.91</span> },
+    { <span class="ck">"name_ru"</span>: <span class="cs">"Австралия"</span>, <span class="ck">"iso_code"</span>: <span class="cs">"au"</span>, <span class="ck">"similarity"</span>: <span class="cn">0.87</span> }
+  ]
+}</pre>
+    <p>Алгоритм кластеризации — на усмотрение пайплайна. Минимум: по правовой семье + market_type + ключевым WGI-показателям. Желательно: взвешенная метрика по всем институциональным факторам.</p>
+  </div>
+</div>
+
+<div class="req">
+  <div class="req-hd">
+    <span class="req-num">Ю-3</span>
+    <span class="req-title">Метрики Всемирного банка (WGI/WDI)</span>
+    <span class="req-file">jurisdiction_card.json</span>
+    <span class="prio p-med">Средний</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Зачем:</strong> блок институциональных метрик в прототипе показывает Rule of Law, Regulatory Quality, Government Effectiveness и Market Cap/GDP. Сейчас везде «—». Это важные характеристики для сравнительного анализа юрисдикций.</p>
+    <p><strong>Что нужно:</strong> загрузить из публичных датасетов Всемирного банка (WGI и WDI <code>CM.MKT.LCAP.GD.ZS</code>) и добавить в структуру:</p>
+    <pre>{
+  <span class="ck">"world_bank_metrics"</span>: {
+    <span class="ck">"rule_of_law"</span>: { <span class="ck">"score"</span>: <span class="cn">1.74</span>, <span class="ck">"percentile"</span>: <span class="cn">92</span>, <span class="ck">"year"</span>: <span class="cn">2022</span> },
+    <span class="ck">"regulatory_quality"</span>: { <span class="ck">"score"</span>: <span class="cn">1.68</span>, <span class="ck">"percentile"</span>: <span class="cn">90</span>, <span class="ck">"year"</span>: <span class="cn">2022</span> },
+    <span class="ck">"gov_effectiveness"</span>: { <span class="ck">"score"</span>: <span class="cn">1.42</span>, <span class="ck">"percentile"</span>: <span class="cn">88</span>, <span class="ck">"year"</span>: <span class="cn">2022</span> },
+    <span class="ck">"market_cap_gdp"</span>: { <span class="ck">"value"</span>: <span class="cn">96.4</span>, <span class="ck">"year"</span>: <span class="cn">2022</span> }
+  }
+}</pre>
+    <p>Данные статичные (не меняются чаще раза в год) — можно подгрузить один раз при построении датасета.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     СПИСОК ЮРИСДИКЦИЙ
+═══════════════════════════════ -->
+<h2>Блок 4 — Список юрисдикций</h2>
+
+<div class="req">
+  <div class="req-hd">
+    <span class="req-num">С-1</span>
+    <span class="req-title">Нормализованное значение legal_family</span>
+    <span class="req-file">jurisdiction_card.json / list</span>
+    <span class="prio p-high">Высокий</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Зачем:</strong> поле приходит с разным регистром («Civil law» / «civil law» / «Common Law»). Это ломает фильтрацию и вызывает дублирование кнопок фильтра в UI. Хотя фронтенд может нормализовать сам, правильнее исправить в источнике.</p>
+    <p><strong>Что нужно:</strong> зафиксированный enum строчными буквами: <code>"common law"</code> | <code>"civil law"</code> | <code>"mixed"</code>. Никаких вариаций.</p>
+  </div>
+</div>
+
+<div class="req">
+  <div class="req-hd">
+    <span class="req-num">С-2</span>
+    <span class="req-title">Поле market_type (DM/EM) для всех юрисдикций</span>
+    <span class="req-file">jurisdiction_card.json / list</span>
+    <span class="prio p-med">Средний</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Зачем:</strong> фильтр DM/EM в списке юрисдикций работает только если поле есть у всех записей. Проверить что оно заполнено для всех 47 юрисдикций в периметре.</p>
+    <p><strong>Что нужно:</strong> поле <code>market_type</code> со значением <code>"DM"</code> или <code>"EM"</code> у каждой юрисдикции. Классификация стандартная (MSCI или FTSE Russell).</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     КАРТОЧКА ПЛОЩАДКИ
+═══════════════════════════════ -->
+<h2>Блок 5 — Карточка площадки</h2>
+
+<div class="req">
+  <div class="req-hd">
+    <span class="req-num">П-1</span>
+    <span class="req-title">Маппинг field-ключей L3 на читаемые лейблы</span>
+    <span class="req-file">level_3 citations</span>
+    <span class="prio p-high">Высокий</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Зачем:</strong> L3 citations содержат поле <code>field</code> — техническое имя раздела JSON-схемы (<code>"admission_overview"</code>, <code>"eligibility_requirements"</code>). Это позволяет показывать источники конкретного параметра на карточке площадки. Но <code>field</code>-ключи не читаемы пользователем.</p>
+    <p><strong>Что нужно:</strong> предоставить таблицу всех используемых <code>field</code>-ключей с русскими лейблами. Формат — отдельный словарный файл или поле в схеме:</p>
+    <pre>{
+  <span class="cs">"admission_overview"</span>: <span class="cs">"Архитектура допуска"</span>,
+  <span class="cs">"eligibility_requirements"</span>: <span class="cs">"Требования к эмитенту"</span>,
+  <span class="cs">"free_float"</span>: <span class="cs">"Минимальный free float"</span>,
+  <span class="cm">// ... все используемые ключи</span>
+}</pre>
+    <p>Без этой таблицы per-parameter sources на карточке площадки реализовать невозможно.</p>
+  </div>
+</div>
+
+<div class="req">
+  <div class="req-hd">
+    <span class="req-num">П-2</span>
+    <span class="req-title">Нормализованный тип площадки</span>
+    <span class="req-file">venue_card.json</span>
+    <span class="prio p-med">Средний</span>
+  </div>
+  <div class="req-body">
+    <p><strong>Зачем:</strong> у ряда площадок Германии тип отображается как <code>"other"</code> — технический fallback. В интерфейсе это ничего не говорит пользователю.</p>
+    <p><strong>Что нужно:</strong> нормализованное поле <code>venue_type</code> с фиксированными значениями:</p>
+    <pre><span class="cs">"regulated_market"</span>  <span class="cm">// Regulated Market (RM)</span>
+<span class="cs">"mtf"</span>                <span class="cm">// Multilateral Trading Facility</span>
+<span class="cs">"otf"</span>                <span class="cm">// Organised Trading Facility</span>
+<span class="cs">"exchange_regulated"</span> <span class="cm">// биржевой рынок вне RM (Freiverkehr и т.п.)</span></pre>
+    <p>Текущий <code>"other"</code> для немецких площадок (Freiverkehr) скорее всего должен быть <code>"exchange_regulated"</code>.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     СВОДНАЯ ТАБЛИЦА
+═══════════════════════════════ -->
+<h2>Сводная таблица по приоритетам</h2>
+
+<table style="width:100%;border-collapse:collapse;font-size:13.5px">
+  <thead>
+    <tr style="background:var(--bg3)">
+      <th style="padding:8px 12px;text-align:left;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);font-weight:400;border-bottom:1px solid var(--border2)">#</th>
+      <th style="padding:8px 12px;text-align:left;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);font-weight:400;border-bottom:1px solid var(--border2)">Поле</th>
+      <th style="padding:8px 12px;text-align:left;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);font-weight:400;border-bottom:1px solid var(--border2)">Файл</th>
+      <th style="padding:8px 12px;text-align:left;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);font-weight:400;border-bottom:1px solid var(--border2)">Приоритет</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-family:var(--font-mono);font-size:12px">А-1</td><td style="padding:8px 12px;color:var(--text)"><code>label</code> — короткий лейбл для таймлайна</td><td style="padding:8px 12px;color:var(--text-dim);font-family:var(--font-mono);font-size:11px">level4.json</td><td style="padding:8px 12px"><span style="font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);border:1px solid rgba(220,38,38,.2)">Критично</span></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-family:var(--font-mono);font-size:12px">И-1</td><td style="padding:8px 12px;color:var(--text)"><code>type</code> — классификация источника</td><td style="padding:8px 12px;color:var(--text-dim);font-family:var(--font-mono);font-size:11px">все уровни</td><td style="padding:8px 12px"><span style="font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);border:1px solid rgba(220,38,38,.2)">Критично</span></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-family:var(--font-mono);font-size:12px">А-2</td><td style="padding:8px 12px;color:var(--text)"><code>text_ru</code> — русский текст для всех записей</td><td style="padding:8px 12px;color:var(--text-dim);font-family:var(--font-mono);font-size:11px">level4.json</td><td style="padding:8px 12px"><span style="font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:4px;background:var(--red-bg);color:var(--red);border:1px solid rgba(220,38,38,.2)">Критично</span></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-family:var(--font-mono);font-size:12px">И-2</td><td style="padding:8px 12px;color:var(--text)"><code>block</code> — привязка источника к блоку карточки</td><td style="padding:8px 12px;color:var(--text-dim);font-family:var(--font-mono);font-size:11px">jurisdiction_card.json</td><td style="padding:8px 12px"><span style="font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:4px;background:var(--orange-bg);color:var(--orange);border:1px solid rgba(217,119,6,.2)">Высокий</span></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-family:var(--font-mono);font-size:12px">И-3</td><td style="padding:8px 12px;color:var(--text)"><code>sources[]</code> — источники на запись Level4</td><td style="padding:8px 12px;color:var(--text-dim);font-family:var(--font-mono);font-size:11px">level4.json</td><td style="padding:8px 12px"><span style="font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:4px;background:var(--orange-bg);color:var(--orange);border:1px solid rgba(217,119,6,.2)">Высокий</span></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-family:var(--font-mono);font-size:12px">Ю-1</td><td style="padding:8px 12px;color:var(--text)"><code>listing_authority_short</code> — краткое название органа листинга</td><td style="padding:8px 12px;color:var(--text-dim);font-family:var(--font-mono);font-size:11px">jurisdiction_card.json</td><td style="padding:8px 12px"><span style="font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:4px;background:var(--orange-bg);color:var(--orange);border:1px solid rgba(217,119,6,.2)">Высокий</span></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-family:var(--font-mono);font-size:12px">Ю-2</td><td style="padding:8px 12px;color:var(--text)"><code>similar_jurisdictions[]</code> — схожие юрисдикции</td><td style="padding:8px 12px;color:var(--text-dim);font-family:var(--font-mono);font-size:11px">jurisdiction_card.json</td><td style="padding:8px 12px"><span style="font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:4px;background:var(--orange-bg);color:var(--orange);border:1px solid rgba(217,119,6,.2)">Высокий</span></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-family:var(--font-mono);font-size:12px">С-1</td><td style="padding:8px 12px;color:var(--text)"><code>legal_family</code> — нормализованный регистр</td><td style="padding:8px 12px;color:var(--text-dim);font-family:var(--font-mono);font-size:11px">все</td><td style="padding:8px 12px"><span style="font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:4px;background:var(--orange-bg);color:var(--orange);border:1px solid rgba(217,119,6,.2)">Высокий</span></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-family:var(--font-mono);font-size:12px">П-1</td><td style="padding:8px 12px;color:var(--text)">Маппинг <code>field</code>-ключей L3 на читаемые лейблы</td><td style="padding:8px 12px;color:var(--text-dim);font-family:var(--font-mono);font-size:11px">level_3 citations</td><td style="padding:8px 12px"><span style="font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:4px;background:var(--orange-bg);color:var(--orange);border:1px solid rgba(217,119,6,.2)">Высокий</span></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-family:var(--font-mono);font-size:12px">А-3</td><td style="padding:8px 12px;color:var(--text)"><code>articulated_by</code> — нормализованный enum</td><td style="padding:8px 12px;color:var(--text-dim);font-family:var(--font-mono);font-size:11px">level4.json</td><td style="padding:8px 12px"><span style="font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:4px;background:var(--accent-bg);color:var(--accent);border:1px solid rgba(37,99,235,.2)">Средний</span></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-family:var(--font-mono);font-size:12px">Ю-3</td><td style="padding:8px 12px;color:var(--text)"><code>world_bank_metrics</code> — WGI/WDI метрики</td><td style="padding:8px 12px;color:var(--text-dim);font-family:var(--font-mono);font-size:11px">jurisdiction_card.json</td><td style="padding:8px 12px"><span style="font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:4px;background:var(--accent-bg);color:var(--accent);border:1px solid rgba(37,99,235,.2)">Средний</span></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-family:var(--font-mono);font-size:12px">П-2</td><td style="padding:8px 12px;color:var(--text)"><code>venue_type</code> — нормализованный тип площадки</td><td style="padding:8px 12px;color:var(--text-dim);font-family:var(--font-mono);font-size:11px">venue_card.json</td><td style="padding:8px 12px"><span style="font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:4px;background:var(--accent-bg);color:var(--accent);border:1px solid rgba(37,99,235,.2)">Средний</span></td></tr>
+    <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px 12px;font-family:var(--font-mono);font-size:12px">С-2</td><td style="padding:8px 12px;color:var(--text)"><code>market_type</code> (DM/EM) для всех 47 юрисдикций</td><td style="padding:8px 12px;color:var(--text-dim);font-family:var(--font-mono);font-size:11px">jurisdiction_card.json</td><td style="padding:8px 12px"><span style="font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:4px;background:var(--accent-bg);color:var(--accent);border:1px solid rgba(37,99,235,.2)">Средний</span></td></tr>
+    <tr><td style="padding:8px 12px;font-family:var(--font-mono);font-size:12px">И-4</td><td style="padding:8px 12px;color:var(--text)"><code>excerpt</code> — текстовая цитата из первоисточника</td><td style="padding:8px 12px;color:var(--text-dim);font-family:var(--font-mono);font-size:11px">все уровни</td><td style="padding:8px 12px"><span style="font-family:var(--font-mono);font-size:9.5px;padding:2px 8px;border-radius:4px;background:var(--green-bg);color:var(--green);border:1px solid rgba(5,150,105,.2)">Низкий</span></td></tr>
+  </tbody>
+</table>
+
+</div>
+</body>
+</html>
